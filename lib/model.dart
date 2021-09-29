@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:Habo/habit_data.dart';
 import 'package:Habo/helpers.dart';
 import 'package:Habo/widgets/habit.dart';
 import 'package:path/path.dart';
@@ -34,7 +35,7 @@ class HaboModel {
         "habits",
         habit.toMap(),
         where: "id = ?",
-        whereArgs: [habit.id],
+        whereArgs: [habit.habitData.id],
       );
       return id;
     } catch (_) {
@@ -54,49 +55,110 @@ class HaboModel {
         if (events != null) {
           events.forEach((event) {
             eventsMap[DateTime.parse(event["dateTime"])] = [
-              DayType.values[event["dayType"]]
+              DayType.values[event["dayType"]],
+              event["comment"]
             ];
           });
         }
-        result.add(Habit(
-          id: id,
-          position: hab["position"],
-          title: hab["title"],
-          twoDayRule: hab["twoDayRule"] == 0 ? false : true,
-          cue: hab["cue"],
-          routine: hab["routine"],
-          reward: hab["reward"],
-          showReward: hab["showReward"] == 0 ? false : true,
-          advanced: hab["advanced"] == 0 ? false : true,
-          notification: hab["notification"] == 0 ? false : true,
-          notTime: parseTimeOfDay(hab["notTime"]),
-          events: eventsMap,
-        ));
+        result.add(
+          Habit(
+            habitData: HabitData(
+              id: id,
+              position: hab["position"],
+              title: hab["title"],
+              twoDayRule: hab["twoDayRule"] == 0 ? false : true,
+              cue: hab["cue"],
+              routine: hab["routine"],
+              reward: hab["reward"],
+              showReward: hab["showReward"] == 0 ? false : true,
+              advanced: hab["advanced"] == 0 ? false : true,
+              notification: hab["notification"] == 0 ? false : true,
+              notTime: parseTimeOfDay(hab["notTime"]),
+              events: eventsMap,
+            ),
+          ),
+        );
       });
     });
 
     return result;
   }
 
+  /// Update Company table V1 to V2
+  void _updateTableEventsV1toV2(Batch batch) {
+    batch.execute('ALTER TABLE Events ADD comment TEXT');
+  }
+
+  /// Create Events table V2
+  void _createTableEventsV2(Batch batch) {
+    batch.execute('DROP TABLE IF EXISTS events');
+    batch.execute('''CREATE TABLE events (
+    id INTEGER,
+    dateTime TEXT,
+    dayType INTEGER,
+    comment TEXT,
+    PRIMARY KEY(id, dateTime),
+    FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
+    )''');
+  }
+
+  /// Create Company table V2
+  void _createTableHabitsV2(Batch batch) {
+    batch.execute('DROP TABLE IF EXISTS habits');
+    batch.execute('''CREATE TABLE habits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    position INTEGER,
+    title TEXT,
+    twoDayRule INTEGER,
+    cue TEXT,
+    routine TEXT,
+    reward TEXT,
+    showReward INTEGER,
+    advanced INTEGER,
+    notification INTEGER,
+    notTime TEXT
+    )''');
+  }
+
+  /// Let's use FOREIGN KEY constraints
+  Future onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
+  }
+
   Future<void> initDatabase() async {
+    var databasesPath = await getDatabasesPath();
+    print(databasesPath);
     db = await openDatabase(
       join(await getDatabasesPath(), 'habo_db0.db'),
+      version: 2,
+      // onConfigure: onConfigure,
       onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE habits(id INTEGER PRIMARY KEY AUTOINCREMENT, position INTEGER, title TEXT, twoDayRule INTEGER, cue TEXT, routine TEXT, reward TEXT, showReward INTEGER, advanced INTEGER, notification INTEGER, notTime TEXT);",
-        );
-        db.execute(
-          "CREATE TABLE events(id INTEGER, dateTime TEXT, dayType INTEGER, PRIMARY KEY(id, dateTime));",
-        );
+        var batch = db.batch();
+        _createTableHabitsV2(batch);
+        _createTableEventsV2(batch);
+        batch.commit();
       },
-      version: 1,
+      onUpgrade: (db, oldVersion, newVersion) {
+        var batch = db.batch();
+        if (oldVersion == 1) {
+          // We update existing table and create the new tables
+          _updateTableEventsV1toV2(batch);
+        }
+        batch.commit();
+      },
     );
   }
 
-  Future<void> inserEvent(int id, DateTime date, List event) async {
+  Future<void> insertEvent(int id, DateTime date, List event) async {
     try {
-      db.insert("events",
-          {"id": id, "dateTime": date.toString(), "dayType": event[0].index},
+      db.insert(
+          "events",
+          {
+            "id": id,
+            "dateTime": date.toString(),
+            "dayType": event[0].index,
+            "comment": event[1],
+          },
           conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (_) {
       print(_);
@@ -121,7 +183,7 @@ class HaboModel {
           "habits",
           habit.toMap(),
           where: "id = ?",
-          whereArgs: [habit.id],
+          whereArgs: [habit.habitData.id],
         );
         return id;
       });

@@ -11,7 +11,7 @@ description: Minimalistic habit tracker.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.5.1+5
+version: 0.6.0+5
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -19,15 +19,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  table_calendar: ^2.2.3
-  sqflite: ^1.3.1
-  provider: ^4.0.4
-  shared_preferences: ^0.5.6+3
-  package_info: ^0.4.0+17
-  flutter_svg: ^0.17.4
-  flutter_launcher_icons: ^0.7.5
-  flutter_local_notifications: ^1.4.3
-  url_launcher: ^5.4.10
+  table_calendar: ^2.3.3
+  sqflite: ^2.0.0+4
+  provider: ^6.0.0
+  shared_preferences: ^2.0.7
+  package_info: ^2.0.2
+  flutter_svg: ^0.22.0
+  flutter_local_notifications: ^8.2.0
+  url_launcher: ^6.0.10
+  awesome_dialog: ^2.0.0
+  just_audio: ^0.9.11
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/sounds/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
