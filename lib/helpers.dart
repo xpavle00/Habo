@@ -1,14 +1,15 @@
-import 'package:Habo/widgets/create_page.dart';
-import 'package:Habo/widgets/settings_page.dart';
+import 'package:Habo/screens/create_habit_screen.dart';
+import 'package:Habo/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 Future navigateToSettingsPage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => SettingsScreen()));
 }
 
 Future navigateToCreatePage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => CreateHabitPage()));
+      context, MaterialPageRoute(builder: (context) => CreateHabitScreen()));
 }
 
 TimeOfDay parseTimeOfDay(String value) {
@@ -20,3 +21,5 @@ TimeOfDay parseTimeOfDay(String value) {
 
   return TimeOfDay(hour: 12, minute: 0);
 }
+
+enum DayType { Clear, Check, Fail, Skip }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationCetner {
+class NotificationCenter {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
   var initializationSettingsAndroid;
@@ -30,7 +30,8 @@ class NotificationCetner {
         'Habo: 0', 'Habo: Habo', 'Habo: Minimalistic habit tracker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
         id, title, desc, time, platformChannelSpecifics);
   }
@@ -40,7 +41,7 @@ class NotificationCetner {
         new AndroidInitializationSettings('app_icon');
     initializationSettingsIOS = new IOSInitializationSettings();
     initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: null);
   }

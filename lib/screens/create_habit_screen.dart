@@ -3,14 +3,12 @@ import 'package:Habo/widgets/text_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateHabitPage extends StatefulWidget {
-  CreateHabitPage({Key key}) : super(key: key);
-
+class CreateHabitScreen extends StatefulWidget {
   @override
-  _CreateHabitPageState createState() => _CreateHabitPageState();
+  _CreateHabitScreenState createState() => _CreateHabitScreenState();
 }
 
-class _CreateHabitPageState extends State<CreateHabitPage> {
+class _CreateHabitScreenState extends State<CreateHabitScreen> {
   TextEditingController title = TextEditingController();
   TextEditingController cue = TextEditingController();
   TextEditingController routine = TextEditingController();
@@ -30,59 +28,70 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
             ? initialTime
             : TimeOfDay(hour: 20, minute: 0));
     if (selectedTime != null) {
-      setState(() {
-        notTime = selectedTime;
-      });
+      setState(
+        () {
+          notTime = selectedTime;
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Create Habit'),
-          backgroundColor: Colors.transparent,
-          iconTheme: Theme.of(context).iconTheme,
-          textTheme: Theme.of(context).textTheme,
+      appBar: AppBar(
+        title: Text(
+          'Create Habit',
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
-        floatingActionButton: Builder(builder: (BuildContext context) {
-          return FloatingActionButton(
-            onPressed: () {
-              if (title.text.length != 0) {
-                Provider.of<Bloc>(context, listen: false).addHabit(
-                    title.text.toString(),
-                    twoDayRule,
-                    cue.text.toString(),
-                    routine.text.toString(),
-                    reward.text.toString(),
-                    showReward,
-                    advanced,
-                    notification,
-                    notTime);
-                Navigator.of(context).pop();
-              } else {
-                Scaffold.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: Theme.of(context).iconTheme,
+      ),
+      floatingActionButton: Builder(builder: (BuildContext context) {
+        return FloatingActionButton(
+          onPressed: () {
+            if (title.text.length != 0) {
+              Provider.of<Bloc>(context, listen: false).addHabit(
+                  title.text.toString(),
+                  twoDayRule,
+                  cue.text.toString(),
+                  routine.text.toString(),
+                  reward.text.toString(),
+                  showReward,
+                  advanced,
+                  notification,
+                  notTime);
+              Navigator.of(context).pop();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
                   duration: Duration(seconds: 3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   behavior: SnackBarBehavior.floating,
                   content: Text("The habit title can not be empty."),
-                ));
-              }
-            },
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-              size: 35.0,
-            ),
-          );
-        }),
-        body: Builder(builder: (BuildContext context) {
+                ),
+              );
+            }
+          },
+          child: Icon(
+            Icons.check,
+            semanticLabel: 'Save',
+            color: Colors.white,
+            size: 35.0,
+          ),
+        );
+      }),
+      body: Builder(
+        builder: (BuildContext context) {
           return SingleChildScrollView(
             child: Center(
               child: Column(
                 children: <Widget>[
                   TextContainer(
                     title: title,
-                    hint: 'Excercise',
+                    hint: 'Exercise',
                     label: 'Habit',
                   ),
                   Container(
@@ -91,9 +100,11 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                       children: <Widget>[
                         Checkbox(
                           onChanged: (bool value) {
-                            setState(() {
-                              twoDayRule = value;
-                            });
+                            setState(
+                              () {
+                                twoDayRule = value;
+                              },
+                            );
                           },
                           value: twoDayRule,
                         ),
@@ -141,40 +152,41 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                           label: 'Cue',
                         ),
                         ListTile(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 25),
-                            title: Text("Notifications"),
-                            trailing: Switch(
-                                value: notification,
-                                onChanged: (value) {
-                                  notification = value;
-                                  setState(() {});
-                                })),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 25),
+                          title: Text("Notifications"),
+                          trailing: Switch(
+                            value: notification,
+                            onChanged: (value) {
+                              notification = value;
+                              setState(() {});
+                            },
+                          ),
+                        ),
                         ListTile(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 25),
-                            enabled: notification,
-                            title: Text("Notification time"),
-                            trailing: InkWell(
-                              onTap: () {
-                                if (Provider.of<Bloc>(context, listen: false)
-                                    .getShowDailyNot) {
-                                  testTime(context);
-                                }
-                              },
-                              child: Text(
-                                notTime.hour.toString().padLeft(2, '0') +
-                                    ":" +
-                                    notTime.minute.toString().padLeft(2, '0'),
-                                style: TextStyle(
-                                    color: (notification)
-                                        ? null
-                                        : Theme.of(context).disabledColor),
-                              ),
-                            )),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 25),
+                          enabled: notification,
+                          title: Text("Notification time"),
+                          trailing: InkWell(
+                            onTap: () {
+                              if (Provider.of<Bloc>(context, listen: false)
+                                  .getShowDailyNot) {
+                                testTime(context);
+                              }
+                            },
+                            child: Text(
+                              notTime.hour.toString().padLeft(2, '0') +
+                                  ":" +
+                                  notTime.minute.toString().padLeft(2, '0'),
+                              style: TextStyle(
+                                  color: (notification)
+                                      ? null
+                                      : Theme.of(context).disabledColor),
+                            ),
+                          ),
+                        ),
                         TextContainer(
                           title: routine,
-                          hint: 'e.g. Do 50 pushups',
+                          hint: 'e.g. Do 50 push ups',
                           label: 'Routine',
                         ),
                         TextContainer(
@@ -189,9 +201,11 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                             children: <Widget>[
                               Checkbox(
                                 onChanged: (bool value) {
-                                  setState(() {
-                                    showReward = value;
-                                  });
+                                  setState(
+                                    () {
+                                      showReward = value;
+                                    },
+                                  );
                                 },
                                 value: showReward,
                               ),
@@ -199,6 +213,7 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                               Tooltip(
                                 child: Icon(
                                   Icons.info,
+                                  semanticLabel: 'Tooltip',
                                   color: Colors.grey,
                                   size: 18,
                                 ),
@@ -208,6 +223,9 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
                   )
@@ -215,6 +233,8 @@ class _CreateHabitPageState extends State<CreateHabitPage> {
               ),
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }
