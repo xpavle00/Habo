@@ -26,14 +26,14 @@ class Habit extends StatefulWidget {
     return {
       "id": this.habitData.id,
       "title": this.habitData.title,
-      "twoDayRule": this.habitData.twoDayRule,
+      "twoDayRule": this.habitData.twoDayRule ? 1 : 0,
       "position": this.habitData.position,
       "cue": this.habitData.cue,
       "routine": this.habitData.routine,
       "reward": this.habitData.reward,
-      "showReward": this.habitData.showReward,
-      "advanced": this.habitData.advanced,
-      "notification": this.habitData.advanced,
+      "showReward": this.habitData.showReward ? 1 : 0,
+      "advanced": this.habitData.advanced ? 1 : 0,
+      "notification": this.habitData.notification ? 1 : 0,
       "notTime": this.habitData.notTime.hour.toString() +
           ":" +
           this.habitData.notTime.minute.toString(),
