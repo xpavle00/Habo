@@ -134,6 +134,11 @@ class Bloc with ChangeNotifier {
 
   set setSoundEffects(bool value) {
     settingsData.setSoundEffects = value;
+    _prefs.then((SharedPreferences prefs) {
+      var st = settingsData.toJson().toString();
+      prefs.remove('habo_settings');
+      prefs.setString('habo_settings', st);
+    });
     notifyListeners();
   }
 
