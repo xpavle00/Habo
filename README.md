@@ -1,5 +1,7 @@
 [![Habo logo](https://habo.space/img/feature.png "Logo Title Text 1")](https://habo.space)
 
+![Codemagic build status](https://api.codemagic.io/apps/6154a5e032cdf915d1ce822b/6154a5e032cdf915d1ce822a/status_badge.svg)
+
 [Habo](https://habo.space) is a simple open-source habit tracking application. It is created in the [Flutter](https://flutter.dev/) framework with a single codebase for Android and iOS. 
 
 Currently available on the Play store.
