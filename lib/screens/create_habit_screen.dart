@@ -19,7 +19,7 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
   bool advanced = false;
   bool notification = false;
 
-  Future<void> testTime(context) async {
+  Future<void> setNotificationTime(context) async {
     TimeOfDay selectedTime;
     TimeOfDay initialTime = notTime;
     selectedTime = await showTimePicker(
@@ -168,9 +168,8 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
                           title: Text("Notification time"),
                           trailing: InkWell(
                             onTap: () {
-                              if (Provider.of<Bloc>(context, listen: false)
-                                  .getShowDailyNot) {
-                                testTime(context);
+                              if (notification) {
+                                setNotificationTime(context);
                               }
                             },
                             child: Text(

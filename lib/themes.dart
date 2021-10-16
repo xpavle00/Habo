@@ -37,7 +37,7 @@ ThemeData darkTheme = ThemeData(
       primaryVariant: Color(0xFF505050),
       secondaryVariant: Color(0xFF353535),
       onSecondary: Color(0xFF4A4A4A),
-      onPrimary: Colors.white),
+      onPrimary: Colors.black),
   buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.normal),
   iconTheme: IconThemeData(color: Colors.white),
   appBarTheme: AppBarTheme(elevation: 0),
