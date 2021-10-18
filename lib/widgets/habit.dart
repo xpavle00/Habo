@@ -150,9 +150,17 @@ class _HabitState extends State<Habit> {
                 },
                 weekendDayBuilder: (context, date, _) {
                   int ind = 0;
+                  String comment = "";
                   if (_habitData.events[date] != null &&
                       _habitData.events[date][0] != 0) {
                     ind = (_habitData.events[date][0].index);
+                  }
+
+                  if (_habitData.events[date] != null &&
+                      _habitData.events[date].length > 1 &&
+                      _habitData.events[date][1] != null &&
+                      _habitData.events[date][1] != "") {
+                    comment = (_habitData.events[date][1]);
                   }
 
                   return OneDayButton(
@@ -166,6 +174,7 @@ class _HabitState extends State<Habit> {
                       date.day.toString(),
                       style: TextStyle(color: Colors.red[300]),
                     ),
+                    comment: comment,
                   );
                 },
                 outsideDayBuilder: (context, date, _) {
