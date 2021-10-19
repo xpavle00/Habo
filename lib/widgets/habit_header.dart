@@ -1,6 +1,8 @@
 import 'package:Habo/widgets/habit.dart';
 import 'package:flutter/material.dart';
 
+import 'package:Habo/helpers.dart';
+
 class HabitHeader extends StatelessWidget {
   const HabitHeader({
     Key key,
@@ -59,11 +61,12 @@ class HabitHeader extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(
                     color: (this._orangeStreak)
-                        ? Colors.orange
-                        : Color(0xFF09BF30),
+                        ? HaboColors.orange
+                        : HaboColors.primary,
                   ),
-                  color:
-                      (this._orangeStreak) ? Colors.orange : Color(0xFF09BF30),
+                  color: (this._orangeStreak)
+                      ? HaboColors.orange
+                      : HaboColors.primary,
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(

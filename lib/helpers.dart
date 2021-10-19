@@ -23,3 +23,11 @@ TimeOfDay parseTimeOfDay(String value) {
 }
 
 enum DayType { Clear, Check, Fail, Skip }
+
+class HaboColors {
+  static final Color primary = Color(0xFF09BF30);
+  static final Color red = Colors.red;
+  static final Color skip = Color(0xFF505050);
+  static final Color comment = Colors.yellow[700];
+  static final Color orange = Colors.orange;
+}

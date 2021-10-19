@@ -1,4 +1,5 @@
 import 'package:Habo/habit_data.dart';
+import 'package:Habo/helpers.dart';
 import 'package:Habo/provider.dart';
 import 'package:Habo/widgets/text_container.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
               Icons.delete,
               semanticLabel: 'Delete',
             ),
-            color: Colors.red,
+            color: HaboColors.red,
             tooltip: 'Delete',
             onPressed: () {
               Navigator.of(context).pop();
@@ -129,7 +130,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   label: 'Habit',
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: Row(
                     children: <Widget>[
                       Checkbox(
@@ -142,7 +144,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       Text("Use Two day rule"),
                       Tooltip(
-                        child: Icon(
+                        child: const Icon(
                           Icons.info,
                           color: Colors.grey,
                           size: 18,
