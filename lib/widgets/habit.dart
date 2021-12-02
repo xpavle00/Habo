@@ -257,20 +257,20 @@ class _HabitState extends State<Habit> {
 
   _updateLastStreakNormal() {
     int inStreak = 0;
-    var _checkDay = _habitData.events.lastKey();
+    var checkDayKey = _habitData.events.lastKey();
+    var lastDayKey = _habitData.events.lastKey();
 
-    while (_habitData.events[_checkDay] != null &&
-        (_habitData.events[_checkDay][0] == DayType.Check ||
-            _habitData.events[_checkDay][0] == DayType.Skip)) {
-      if (_habitData.events[_checkDay][0] == DayType.Check) inStreak++;
+    while (_habitData.events[checkDayKey] != null &&
+        _habitData.events[checkDayKey][0] != DayType.Fail) {
+      if (_habitData.events[checkDayKey][0] != DayType.Clear) {
+        if (_habitData.events[lastDayKey][0] != null &&
+            _habitData.events[lastDayKey][0] != DayType.Clear &&
+            lastDayKey.difference(checkDayKey).inDays > 1) break;
+        lastDayKey = checkDayKey;
+      }
 
-      if (_habitData.events.lastKeyBefore(_checkDay) != null &&
-          _checkDay
-                  .difference(_habitData.events.lastKeyBefore(_checkDay))
-                  .inDays !=
-              1) break;
-
-      _checkDay = _habitData.events.lastKeyBefore(_checkDay);
+      if (_habitData.events[checkDayKey][0] == DayType.Check) inStreak++;
+      checkDayKey = _habitData.events.lastKeyBefore(checkDayKey);
     }
 
     if (inStreak >= 2)
@@ -283,26 +283,34 @@ class _HabitState extends State<Habit> {
 
   _updateLastStreakTwoDay() {
     int inStreak = 0;
-    var checkDay = _habitData.events.lastKey();
+    var trueLastKey = _habitData.events.lastKey();
 
+    while (_habitData.events[trueLastKey] != null &&
+        _habitData.events[trueLastKey][0] != null &&
+        _habitData.events[trueLastKey][0] == DayType.Clear) {
+      trueLastKey = _habitData.events.lastKeyBefore(trueLastKey);
+    }
+
+    var checkDayKey = trueLastKey;
+    var lastDayKey = trueLastKey;
     DayType lastDay = DayType.Check;
 
-    while (_habitData.events[checkDay] != null) {
-      if (_habitData.events[checkDay][0] == DayType.Check) inStreak++;
+    while (_habitData.events[checkDayKey] != null) {
+      if (_habitData.events[checkDayKey][0] != DayType.Clear) {
+        if (_habitData.events[checkDayKey][0] == DayType.Fail &&
+            (lastDay != DayType.Check && lastDay != DayType.Clear)) {
+          break;
+        }
 
-      if (_habitData.events[checkDay][0] == DayType.Fail &&
-          lastDay != DayType.Check) {
-        break;
+        if (_habitData.events[lastDayKey][0] != null &&
+            _habitData.events[lastDayKey][0] != DayType.Clear &&
+            lastDayKey.difference(checkDayKey).inDays > 1) break;
+        lastDayKey = checkDayKey;
       }
 
-      if (_habitData.events.lastKeyBefore(checkDay) != null &&
-          checkDay
-                  .difference(_habitData.events.lastKeyBefore(checkDay))
-                  .inDays !=
-              1) break;
-
-      lastDay = _habitData.events[checkDay][0];
-      checkDay = _habitData.events.lastKeyBefore(checkDay);
+      lastDay = _habitData.events[checkDayKey][0];
+      if (_habitData.events[checkDayKey][0] == DayType.Check) inStreak++;
+      checkDayKey = _habitData.events.lastKeyBefore(checkDayKey);
     }
 
     if (inStreak >= 2)
@@ -311,8 +319,8 @@ class _HabitState extends State<Habit> {
       _streakVisible = false;
 
     this._habitData.streak = inStreak;
-    if (_habitData.events[_habitData.events.lastKey()] != null &&
-        _habitData.events[_habitData.events.lastKey()][0] == DayType.Fail) {
+    if (_habitData.events[trueLastKey] != null &&
+        _habitData.events[trueLastKey][0] == DayType.Fail) {
       this._orangeStreak = true;
     } else {
       this._orangeStreak = false;
