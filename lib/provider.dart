@@ -5,6 +5,7 @@ import 'package:Habo/habit_data.dart';
 import 'package:Habo/model.dart';
 import 'package:Habo/notification_center.dart';
 import 'package:Habo/settings_data.dart';
+import 'package:Habo/statistics.dart';
 import 'package:Habo/widgets/habit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,10 @@ class Bloc with ChangeNotifier {
     initPackageInfo();
     _checkPlayer.setAsset('assets/sounds/check.wav');
     _clickPlayer.setAsset('assets/sounds/click.wav');
+  }
+
+  Future<AllStatistics> getFutureStatsData() async {
+    return await Statistics.calculateStatistics(allHabits);
   }
 
   playCheckSound() {
