@@ -1,6 +1,7 @@
 import 'package:Habo/helpers.dart';
 import 'package:Habo/provider.dart';
 import 'package:Habo/statistics.dart';
+import 'package:Habo/widgets/empty_statistics_image.dart';
 import 'package:Habo/widgets/overall_statistics_card.dart';
 import 'package:Habo/widgets/statistics_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,28 +32,32 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           builder:
               (BuildContext context, AsyncSnapshot<AllStatistics> snapshot) {
             if (snapshot.hasData) {
-              return ListView(
-                scrollDirection: Axis.vertical,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  OverallStatisticsCard(
-                    total: snapshot.data.total,
-                    habits: snapshot.data.habitsData.length,
-                  ),
-                  ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: snapshot.data.habitsData
-                        .map(
-                          (index) => Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: StatisticsCard(data: index),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ],
-              );
+              if (snapshot.data.habitsData.length == 0) {
+                return EmptyStatisticsImage();
+              } else {
+                return ListView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    OverallStatisticsCard(
+                      total: snapshot.data.total,
+                      habits: snapshot.data.habitsData.length,
+                    ),
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: snapshot.data.habitsData
+                          .map(
+                            (index) => Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: StatisticsCard(data: index),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                );
+              }
             } else {
               return Center(
                 child: CircularProgressIndicator(

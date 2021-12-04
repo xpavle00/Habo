@@ -87,6 +87,8 @@ class Statistics {
             }
           },
         );
+
+        generateYearIfNull(stat, DateTime.now().year);
         stats.habitsData.add(stat);
         stats.total.checks += stat.checks;
         stats.total.fails += stat.fails;

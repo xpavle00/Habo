@@ -135,7 +135,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
           ],
         ),
         Container(
-          height: 200,
+          height: 150,
           child: BarChart(
             BarChartData(
               barTouchData: barTouchData,
@@ -234,37 +234,52 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
     if (showSkip) width -= 2;
     if (showFail) width -= 2;
 
-    for (int i = 0; i < data.monthlyCheck[year][DayType.Check].length; ++i) {
+    if (data.monthlyCheck.length != 0) {
+      for (int i = 0; i < data.monthlyCheck[year][DayType.Check].length; ++i) {
+        result.add(
+          BarChartGroupData(
+            x: i,
+            barRods: [
+              if (showCheck)
+                BarChartRodData(
+                  y: data.monthlyCheck[year][DayType.Check][i].toDouble(),
+                  colors: [HaboColors.primary],
+                  width: width,
+                ),
+              if (showSkip)
+                BarChartRodData(
+                  y: data.monthlyCheck[year][DayType.Skip][i].toDouble(),
+                  colors: [HaboColors.skip],
+                  width: width,
+                ),
+              if (showFail)
+                BarChartRodData(
+                  y: data.monthlyCheck[year][DayType.Fail][i].toDouble(),
+                  colors: [HaboColors.red],
+                  width: width,
+                ),
+              if (!showCheck && !showSkip && !showFail)
+                BarChartRodData(
+                  y: 0,
+                  colors: [Colors.transparent],
+                  width: 4,
+                ),
+            ],
+            showingTooltipIndicators: [0],
+          ),
+        );
+      }
+    } else {
       result.add(
         BarChartGroupData(
-          x: i,
+          x: 0,
           barRods: [
-            if (showCheck)
-              BarChartRodData(
-                y: data.monthlyCheck[year][DayType.Check][i].toDouble(),
-                colors: [HaboColors.primary],
-                width: width,
-              ),
-            if (showSkip)
-              BarChartRodData(
-                y: data.monthlyCheck[year][DayType.Skip][i].toDouble(),
-                colors: [HaboColors.skip],
-                width: width,
-              ),
-            if (showFail)
-              BarChartRodData(
-                y: data.monthlyCheck[year][DayType.Fail][i].toDouble(),
-                colors: [HaboColors.red],
-                width: width,
-              ),
-            if (!showCheck && !showSkip && !showFail)
-              BarChartRodData(
-                y: 0,
-                colors: [Colors.transparent],
-                width: 4,
-              ),
+            BarChartRodData(
+              y: 0,
+              colors: [Colors.transparent],
+              width: width,
+            ),
           ],
-          showingTooltipIndicators: [0],
         ),
       );
     }

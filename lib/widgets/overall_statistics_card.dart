@@ -57,7 +57,7 @@ class OverallStatisticsCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 12,
+              height: 22,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,7 +72,7 @@ class OverallStatisticsCard extends StatelessWidget {
                     Text(
                       total.checks.toString(),
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -88,7 +88,7 @@ class OverallStatisticsCard extends StatelessWidget {
                     Text(
                       total.skips.toString(),
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -104,7 +104,7 @@ class OverallStatisticsCard extends StatelessWidget {
                     Text(
                       total.fails.toString(),
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -120,42 +120,45 @@ class OverallStatisticsCard extends StatelessWidget {
 
   List<PieChartSectionData> showingSections() {
     return [
-      PieChartSectionData(
-        color: HaboColors.primary,
-        value: total.checks.toDouble(),
-        badgeWidget: Icon(
-          Icons.check,
-          color: Colors.white,
+      if (total.checks != 0)
+        PieChartSectionData(
+          color: HaboColors.primary,
+          value: total.checks.toDouble(),
+          badgeWidget: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          title: "",
+          radius: 25.0,
+          titleStyle: TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        title: "",
-        radius: 25.0,
-        titleStyle: TextStyle(
-            fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
-      PieChartSectionData(
-        color: HaboColors.skip,
-        value: total.skips.toDouble(),
-        badgeWidget: Icon(
-          Icons.last_page,
-          color: Colors.white,
+      if (total.skips != 0)
+        PieChartSectionData(
+          color: HaboColors.skip,
+          value: total.skips.toDouble(),
+          badgeWidget: Icon(
+            Icons.last_page,
+            color: Colors.white,
+          ),
+          title: "",
+          radius: 25.0,
+          titleStyle: TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        title: "",
-        radius: 25.0,
-        titleStyle: TextStyle(
-            fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
-      PieChartSectionData(
-        color: HaboColors.red,
-        value: total.fails.toDouble(),
-        badgeWidget: Icon(
-          Icons.close,
-          color: Colors.white,
+      if (total.fails != 0)
+        PieChartSectionData(
+          color: HaboColors.red,
+          value: total.fails.toDouble(),
+          badgeWidget: Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          title: "",
+          radius: 25.0,
+          titleStyle: TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        title: "",
-        radius: 25.0,
-        titleStyle: TextStyle(
-            fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
     ];
   }
 }

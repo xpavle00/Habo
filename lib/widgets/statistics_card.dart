@@ -23,12 +23,16 @@ class StatisticsCard extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
-                  data.title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    data.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -43,11 +47,14 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       'Top streak',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                     Text(
                       data.topStreak.toString(),
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -57,11 +64,14 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       'Actual streak',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                     Text(
                       data.actualStreak.toString(),
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -72,7 +82,12 @@ class StatisticsCard extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            Text('Total'),
+            Text(
+              'Total',
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
             SizedBox(
               height: 16,
             ),
@@ -89,7 +104,7 @@ class StatisticsCard extends StatelessWidget {
                     Text(
                       data.checks.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -105,7 +120,7 @@ class StatisticsCard extends StatelessWidget {
                     Text(
                       data.skips.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -121,7 +136,7 @@ class StatisticsCard extends StatelessWidget {
                     Text(
                       data.fails.toString(),
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
