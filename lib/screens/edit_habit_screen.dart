@@ -1,4 +1,5 @@
 import 'package:Habo/habit_data.dart';
+import 'package:Habo/helpers.dart';
 import 'package:Habo/provider.dart';
 import 'package:Habo/widgets/text_container.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,15 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   }
 
   @override
+  void dispose() {
+    title.dispose();
+    cue.dispose();
+    routine.dispose();
+    reward.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -69,7 +79,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
               Icons.delete,
               semanticLabel: 'Delete',
             ),
-            color: Colors.red,
+            color: HaboColors.red,
             tooltip: 'Delete',
             onPressed: () {
               Navigator.of(context).pop();
@@ -129,7 +139,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   label: 'Habit',
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: Row(
                     children: <Widget>[
                       Checkbox(
@@ -142,7 +153,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       Text("Use Two day rule"),
                       Tooltip(
-                        child: Icon(
+                        child: const Icon(
                           Icons.info,
                           color: Colors.grey,
                           size: 18,
@@ -171,9 +182,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     },
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Center(
-                          child: Text(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Center(
+                          child: const Text(
                             "This section helps you better define your habits. You should define cue, routine, and reward for every habit.",
                             textAlign: TextAlign.center,
                           ),
@@ -185,7 +196,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         label: 'Cue',
                       ),
                       ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 25),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 25),
                         title: Text("Notifications"),
                         trailing: Switch(
                             value: notification,
@@ -195,7 +207,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             }),
                       ),
                       ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 25),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 25),
                         enabled: notification,
                         title: Text("Notification time"),
                         trailing: InkWell(
@@ -217,7 +230,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       TextContainer(
                         title: routine,
-                        hint: 'Do 50 pushups',
+                        hint: 'Do 50 push ups',
                         label: 'Routine',
                       ),
                       TextContainer(

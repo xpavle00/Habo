@@ -18,6 +18,18 @@ class HomeScreen extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: const Icon(
+                Icons.bar_chart,
+                semanticLabel: 'Statistics',
+              ),
+              color: Colors.grey[400],
+              tooltip: 'Statistics',
+              onPressed: () {
+                Provider.of<Bloc>(context, listen: false).hideSnackBar();
+                navigateToStatisticsPage(context);
+              },
+            ),
+            IconButton(
+              icon: const Icon(
                 Icons.settings,
                 semanticLabel: 'Settings',
               ),

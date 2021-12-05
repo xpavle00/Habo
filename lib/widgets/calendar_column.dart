@@ -22,6 +22,7 @@ class CalendarColumn extends StatelessWidget {
           child: (calendars.length != 0)
               ? Container(
                   child: ReorderableListView(
+                    physics: const BouncingScrollPhysics(),
                     children: calendars
                         .map(
                           (index) => Container(

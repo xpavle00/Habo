@@ -14,8 +14,7 @@ class OneDayButton extends StatelessWidget {
       this.id,
       this.parent,
       this.callback,
-      this.index,
-      this.comment})
+      this.event})
       : super(key: key);
 
   final int id;
@@ -24,8 +23,7 @@ class OneDayButton extends StatelessWidget {
   final Widget child;
   final parent;
   final void Function() callback;
-  final int index;
-  final String comment;
+  final event;
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +39,14 @@ class OneDayButton extends StatelessWidget {
       InButton(
         icon: Icon(
           Icons.check,
-          color: Color(0xFF09BF30),
+          color: HaboColors.primary,
           semanticLabel: 'Check',
         ),
       ),
       InButton(
         icon: Icon(
           Icons.close,
-          color: Colors.red,
+          color: HaboColors.red,
           semanticLabel: 'Fail',
         ),
       ),
@@ -62,10 +60,24 @@ class OneDayButton extends StatelessWidget {
         icon: Icon(
           Icons.chat_bubble_outline,
           semanticLabel: 'Comment',
-          color: Colors.yellow[700],
+          color: HaboColors.comment,
         ),
       )
     ];
+
+    int index = 0;
+    String comment = "";
+
+    if (event != null) {
+      if (event[0] != 0) {
+        index = (event[0].index);
+      }
+
+      if (event.length > 1 && event[1] != null && event[1] != "") {
+        comment = (event[1]);
+      }
+    }
+
     return Container(
       margin: const EdgeInsets.all(4.0),
       child: Material(
@@ -106,52 +118,7 @@ class OneDayButton extends StatelessWidget {
                   Provider.of<Bloc>(context, listen: false).playClickSound();
                 }
               } else if (icons.indexOf(value) == icons.length - 1) {
-                TextEditingController commentController =
-                    TextEditingController(text: comment);
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.NO_HEADER,
-                  animType: AnimType.BOTTOMSLIDE,
-                  body: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 10.0,
-                      ),
-                      child: Column(
-                        children: [
-                          Text("Comment"),
-                          TextField(
-                            controller: commentController,
-                            autofocus: true,
-                            maxLines: 5,
-                            showCursor: true,
-                            textAlignVertical: TextAlignVertical.bottom,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(11),
-                              border: InputBorder.none,
-                              hintText: "Your comment here",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  btnOkText: "Save",
-                  btnCancelText: "Close",
-                  btnCancelColor: Colors.grey,
-                  btnOkColor: Color(0xFF09BF30),
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () {
-                    Provider.of<Bloc>(context, listen: false).addEvent(id, date,
-                        [DayType.values[index], commentController.text]);
-                    parent.events[date] = [
-                      DayType.values[index],
-                      commentController.text
-                    ];
-                    callback();
-                  },
-                )..show();
+                showCommentDialog(context, index, comment);
               } else {
                 if (comment != null && comment != "") {
                   Provider.of<Bloc>(context, listen: false)
@@ -169,5 +136,51 @@ class OneDayButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  showCommentDialog(BuildContext context, int index, String comment) {
+    TextEditingController commentController =
+        TextEditingController(text: comment);
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.NO_HEADER,
+      animType: AnimType.BOTTOMSLIDE,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 10.0,
+          ),
+          child: Column(
+            children: [
+              Text("Comment"),
+              TextField(
+                controller: commentController,
+                autofocus: true,
+                maxLines: 5,
+                showCursor: true,
+                textAlignVertical: TextAlignVertical.bottom,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(11),
+                  border: InputBorder.none,
+                  hintText: "Your comment here",
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      btnOkText: "Save",
+      btnCancelText: "Close",
+      btnCancelColor: Colors.grey,
+      btnOkColor: HaboColors.primary,
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {
+        Provider.of<Bloc>(context, listen: false).addEvent(
+            id, date, [DayType.values[index], commentController.text]);
+        parent.events[date] = [DayType.values[index], commentController.text];
+        callback();
+      },
+    )..show();
   }
 }

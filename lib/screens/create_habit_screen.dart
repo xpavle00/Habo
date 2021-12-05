@@ -37,6 +37,15 @@ class _CreateHabitScreenState extends State<CreateHabitScreen> {
   }
 
   @override
+  void dispose() {
+    title.dispose();
+    cue.dispose();
+    routine.dispose();
+    reward.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
