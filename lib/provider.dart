@@ -91,6 +91,10 @@ class Bloc with ChangeNotifier {
     return settingsData.getSoundEffects;
   }
 
+  bool get getShowMonthName {
+    return settingsData.getShowMonthName;
+  }
+
   String get getTheme {
     return settingsData.getTheme;
   }
@@ -139,6 +143,16 @@ class Bloc with ChangeNotifier {
 
   set setSoundEffects(bool value) {
     settingsData.setSoundEffects = value;
+    _prefs.then((SharedPreferences prefs) {
+      var st = settingsData.toJson().toString();
+      prefs.remove('habo_settings');
+      prefs.setString('habo_settings', st);
+    });
+    notifyListeners();
+  }
+
+  set setShowMonthName(bool value) {
+    settingsData.setShowMonthName = value;
     _prefs.then((SharedPreferences prefs) {
       var st = settingsData.toJson().toString();
       prefs.remove('habo_settings');

@@ -30,6 +30,22 @@ TimeOfDay parseTimeOfDay(String value) {
 
 enum DayType { Clear, Check, Fail, Skip }
 
+List<String> months = [
+  "",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 class HaboColors {
   static final Color primary = Color(0xFF09BF30);
   static final Color red = Colors.red;

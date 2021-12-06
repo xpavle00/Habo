@@ -60,6 +60,8 @@ class _HabitState extends State<Habit> {
   bool _streakVisible = false;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   HabitData _habitData;
+  bool _showMonth = false;
+  String _actualMonth = "";
 
   _HabitState(habitData) : this._habitData = habitData;
 
@@ -108,9 +110,15 @@ class _HabitState extends State<Habit> {
                 streakVisible: _streakVisible,
                 orangeStreak: _orangeStreak,
                 streak: _habitData.streak),
+            if (_showMonth && Provider.of<Bloc>(context).getShowMonthName)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Text(_actualMonth),
+              ),
             TableCalendar(
               headerVisible: false,
               events: _habitData.events,
+              calendarController: _habitData.calendarController,
               endDay: DateTime.now(),
               initialCalendarFormat: _calendarFormat,
               availableCalendarFormats: const {
@@ -121,6 +129,18 @@ class _HabitState extends State<Habit> {
                   renderDaysOfWeek: false,
                   contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
               startingDayOfWeek: Provider.of<Bloc>(context).getWeekStartEnum,
+              onCalendarCreated: (start, end, format) {
+                _showMonth = (format == CalendarFormat.month);
+                var days = _habitData.calendarController.visibleDays;
+                _actualMonth = months[days[days.length ~/ 2].month];
+              },
+              onVisibleDaysChanged: (start, end, format) {
+                setState(() {
+                  _showMonth = (format == CalendarFormat.month);
+                  var days = _habitData.calendarController.visibleDays;
+                  _actualMonth = months[days[days.length ~/ 2].month];
+                });
+              },
               builders: CalendarBuilders(
                 dayBuilder: (context, date, _) {
                   return OneDayButton(
@@ -186,7 +206,6 @@ class _HabitState extends State<Habit> {
                   return children;
                 },
               ),
-              calendarController: _habitData.calendarController,
             )
           ],
         ),

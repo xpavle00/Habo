@@ -127,6 +127,16 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               ListTile(
+                title: Text("Show month name"),
+                trailing: Switch(
+                  value: Provider.of<Bloc>(context).getShowMonthName,
+                  onChanged: (value) {
+                    Provider.of<Bloc>(context, listen: false).setShowMonthName =
+                        value;
+                  },
+                ),
+              ),
+              ListTile(
                 title: Text("About"),
                 onTap: () {
                   showAboutDialog(
