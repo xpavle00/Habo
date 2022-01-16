@@ -29,6 +29,29 @@ class HaboModel {
     }
   }
 
+  Future<void> emptyTables() async {
+    try {
+      await db.delete("habits");
+      await db.delete("events");
+    } catch (_) {
+      print(_);
+    }
+  }
+
+  Future<void> useBackup(List<Habit> habits) async {
+    try {
+      await emptyTables();
+      habits.forEach((element) {
+        insertHabit(element);
+        element.habitData.events.forEach((key, value) {
+          insertEvent(element.habitData.id, key, value);
+        });
+      });
+    } catch (_) {
+      print(_);
+    }
+  }
+
   Future<void> editHabit(Habit habit) async {
     try {
       var id = await db.update(
@@ -84,12 +107,10 @@ class HaboModel {
     return result;
   }
 
-  /// Update Company table V1 to V2
   void _updateTableEventsV1toV2(Batch batch) {
     batch.execute('ALTER TABLE Events ADD comment TEXT');
   }
 
-  /// Create Events table V2
   void _createTableEventsV2(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS events');
     batch.execute('''CREATE TABLE events (
@@ -102,7 +123,6 @@ class HaboModel {
     )''');
   }
 
-  /// Create Company table V2
   void _createTableHabitsV2(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS habits');
     batch.execute('''CREATE TABLE habits (

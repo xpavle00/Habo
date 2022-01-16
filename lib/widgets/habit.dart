@@ -8,7 +8,6 @@ import 'package:Habo/screens/edit_habit_screen.dart';
 import 'package:Habo/widgets/habit_header.dart';
 import 'package:Habo/widgets/one_day.dart';
 import 'package:Habo/widgets/one_day_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -38,6 +37,55 @@ class Habit extends StatefulWidget {
           ":" +
           this.habitData.notTime.minute.toString(),
     };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": this.habitData.id,
+      "title": this.habitData.title,
+      "twoDayRule": this.habitData.twoDayRule ? 1 : 0,
+      "position": this.habitData.position,
+      "cue": this.habitData.cue,
+      "routine": this.habitData.routine,
+      "reward": this.habitData.reward,
+      "showReward": this.habitData.showReward ? 1 : 0,
+      "advanced": this.habitData.advanced ? 1 : 0,
+      "notification": this.habitData.notification ? 1 : 0,
+      "notTime": this.habitData.notTime.hour.toString() +
+          ":" +
+          this.habitData.notTime.minute.toString(),
+      "events": this.habitData.events.map((key, value) {
+        return MapEntry(key.toString(), [value[0].toString(), value[1]]);
+      }),
+    };
+  }
+
+  Habit.fromJson(Map<String, dynamic> json)
+      : habitData = HabitData(
+          id: json['id'],
+          position: json['position'],
+          title: json['title'],
+          twoDayRule: json['twoDayRule'] != 0 ? true : false,
+          cue: json['cue'],
+          routine: json['routine'],
+          reward: json['reward'],
+          showReward: json['showReward'] != 0 ? true : false,
+          advanced: json['advanced'] != 0 ? true : false,
+          notification: json['notification'] != 0 ? true : false,
+          notTime: parseTimeOfDay(json['notTime']),
+          events: doEvents(json['events']),
+        );
+
+  static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
+    SplayTreeMap<DateTime, List> result = new SplayTreeMap<DateTime, List>();
+
+    input.forEach((key, value) {
+      result[DateTime.parse(key)] = [
+        DayType.values.firstWhere((e) => e.toString() == value[0]),
+        value[1]
+      ];
+    });
+    return result;
   }
 
   @override
@@ -132,13 +180,17 @@ class _HabitState extends State<Habit> {
               onCalendarCreated: (start, end, format) {
                 _showMonth = (format == CalendarFormat.month);
                 var days = _habitData.calendarController.visibleDays;
-                _actualMonth = months[days[days.length ~/ 2].month];
+                _actualMonth = months[days[days.length ~/ 2].month] +
+                    " " +
+                    days[days.length ~/ 2].year.toString();
               },
               onVisibleDaysChanged: (start, end, format) {
                 setState(() {
                   _showMonth = (format == CalendarFormat.month);
                   var days = _habitData.calendarController.visibleDays;
-                  _actualMonth = months[days[days.length ~/ 2].month];
+                  _actualMonth = months[days[days.length ~/ 2].month] +
+                      " " +
+                      days[days.length ~/ 2].year.toString();
                 });
               },
               builders: CalendarBuilders(

@@ -30,6 +30,9 @@ dependencies:
   awesome_dialog: ^2.0.0
   just_audio: ^0.9.11
   fl_chart: ^0.40.2
+  flutter_file_dialog: ^2.3.0
+  path_provider: ^2.0.7
+  loader_overlay: ^2.0.5
 
 dev_dependencies:
   flutter_test:

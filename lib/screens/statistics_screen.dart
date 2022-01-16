@@ -4,9 +4,7 @@ import 'package:Habo/statistics.dart';
 import 'package:Habo/widgets/empty_statistics_image.dart';
 import 'package:Habo/widgets/overall_statistics_card.dart';
 import 'package:Habo/widgets/statistics_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 class StatisticsScreen extends StatefulWidget {
