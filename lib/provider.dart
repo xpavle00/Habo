@@ -145,6 +145,10 @@ class Bloc with ChangeNotifier {
     return settingsData.getShowMonthName;
   }
 
+  bool get getSeenOnboarding {
+    return settingsData.getSeenOnboarding;
+  }
+
   String get getTheme {
     return settingsData.getTheme;
   }
@@ -165,24 +169,30 @@ class Bloc with ChangeNotifier {
     return settingsData.getWeekStartList;
   }
 
-  set setDailyNot(TimeOfDay value) {
-    settingsData.setDailyNot = value;
+  set setSeenOnboarding(bool value) {
+    settingsData.setSeenOnboarding = value;
+    _saveSharedPreferences();
+    notifyListeners();
+  }
+
+  _saveSharedPreferences() async {
     _prefs.then((SharedPreferences prefs) {
       var st = settingsData.toJson().toString();
       prefs.remove('habo_settings');
       prefs.setString('habo_settings', st);
     });
+  }
+
+  set setDailyNot(TimeOfDay value) {
+    settingsData.setDailyNot = value;
+    _saveSharedPreferences();
     _notificationCenter.setNotification(settingsData.getDailyNot);
     notifyListeners();
   }
 
   set setShowDailyNot(bool value) {
     settingsData.setShowDailyNot = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     if (value) {
       _notificationCenter.setNotification(settingsData.getDailyNot);
     } else {
@@ -193,41 +203,25 @@ class Bloc with ChangeNotifier {
 
   set setSoundEffects(bool value) {
     settingsData.setSoundEffects = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 
   set setShowMonthName(bool value) {
     settingsData.setShowMonthName = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 
   set setTheme(String value) {
     settingsData.setTheme = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 
   set setWeekStart(String value) {
     settingsData.setWeekStart = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 

@@ -20,6 +20,7 @@ class SettingsData {
   bool showDailyNot = true;
   bool soundEffects = true;
   bool showMonthName = true;
+  bool seenOnboarding = false;
 
   SettingsData();
 
@@ -34,7 +35,9 @@ class SettingsData {
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
-            : TimeOfDay(hour: 20, minute: 0);
+            : TimeOfDay(hour: 20, minute: 0),
+        seenOnboarding =
+            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false;
 
   ThemeData get getDark {
     if (theme != Themes.Light) {
@@ -88,6 +91,10 @@ class SettingsData {
     return showMonthName;
   }
 
+  bool get getSeenOnboarding {
+    return seenOnboarding;
+  }
+
   set setDailyNot(TimeOfDay notTime) {
     dailyNotTime = notTime;
   }
@@ -112,6 +119,10 @@ class SettingsData {
     showMonthName = value;
   }
 
+  set setSeenOnboarding(bool value) {
+    seenOnboarding = value;
+  }
+
   Map<String, dynamic> toJson() => {
         '"theme"': theme.index,
         '"weekStart"': weekStart.index,
@@ -122,7 +133,8 @@ class SettingsData {
             '"',
         '"showDailyNot"': showDailyNot,
         '"soundEffects"': soundEffects,
-        '"showMonthName"': showMonthName
+        '"showMonthName"': showMonthName,
+        '"seenOnboarding"': seenOnboarding
       };
 }
 
