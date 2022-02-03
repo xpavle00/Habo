@@ -64,7 +64,10 @@ class Bloc with ChangeNotifier {
   createBackup() async {
     try {
       var file = await Backup.writeBackup(allHabits);
-      final params = SaveFileDialogParams(sourceFilePath: file.path);
+      final params = SaveFileDialogParams(
+        sourceFilePath: file.path,
+        mimeTypesFilter: ['application/json'],
+      );
       await FlutterFileDialog.saveFile(params: params);
     } catch (e) {
       showErrorMessage('ERROR: Creating backup failed.');
@@ -73,7 +76,10 @@ class Bloc with ChangeNotifier {
 
   loadBackup() async {
     try {
-      final params = OpenFileDialogParams(fileExtensionsFilter: ['json']);
+      final params = OpenFileDialogParams(
+        fileExtensionsFilter: ['json'],
+        mimeTypesFilter: ['application/json'],
+      );
       final filePath = await FlutterFileDialog.pickFile(params: params);
       if (filePath == null) {
         return;
