@@ -234,7 +234,7 @@ class SettingsScreen extends StatelessWidget {
                         Provider.of<Bloc>(context, listen: false)
                             .getPackageInfo
                             .version,
-                    applicationLegalese: '©2021 Habo',
+                    applicationLegalese: '©2022 Habo',
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 15),
