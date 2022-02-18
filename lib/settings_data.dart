@@ -19,6 +19,8 @@ class SettingsData {
   TimeOfDay dailyNotTime = TimeOfDay(hour: 20, minute: 0);
   bool showDailyNot = true;
   bool soundEffects = true;
+  bool showMonthName = true;
+  bool seenOnboarding = false;
 
   SettingsData();
 
@@ -29,9 +31,13 @@ class SettingsData {
             (json['showDailyNot'] != null) ? json['showDailyNot'] : true,
         soundEffects =
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
+        showMonthName =
+            (json['showMonthName'] != null) ? json['showMonthName'] : true,
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
-            : TimeOfDay(hour: 20, minute: 0);
+            : TimeOfDay(hour: 20, minute: 0),
+        seenOnboarding =
+            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false;
 
   ThemeData get getDark {
     if (theme != Themes.Light) {
@@ -81,6 +87,14 @@ class SettingsData {
     return soundEffects;
   }
 
+  bool get getShowMonthName {
+    return showMonthName;
+  }
+
+  bool get getSeenOnboarding {
+    return seenOnboarding;
+  }
+
   set setDailyNot(TimeOfDay notTime) {
     dailyNotTime = notTime;
   }
@@ -101,6 +115,14 @@ class SettingsData {
     soundEffects = value;
   }
 
+  set setShowMonthName(bool value) {
+    showMonthName = value;
+  }
+
+  set setSeenOnboarding(bool value) {
+    seenOnboarding = value;
+  }
+
   Map<String, dynamic> toJson() => {
         '"theme"': theme.index,
         '"weekStart"': weekStart.index,
@@ -110,7 +132,9 @@ class SettingsData {
             dailyNotTime.minute.toString() +
             '"',
         '"showDailyNot"': showDailyNot,
-        '"soundEffects"': soundEffects
+        '"soundEffects"': soundEffects,
+        '"showMonthName"': showMonthName,
+        '"seenOnboarding"': seenOnboarding
       };
 }
 

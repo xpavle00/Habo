@@ -1,14 +1,16 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:Habo/backup.dart';
 import 'package:Habo/habit_data.dart';
+import 'package:Habo/helpers.dart';
 import 'package:Habo/model.dart';
 import 'package:Habo/notification_center.dart';
 import 'package:Habo/settings_data.dart';
 import 'package:Habo/statistics.dart';
 import 'package:Habo/widgets/habit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,6 +61,60 @@ class Bloc with ChangeNotifier {
     }
   }
 
+  createBackup() async {
+    try {
+      var file = await Backup.writeBackup(allHabits);
+      final params = SaveFileDialogParams(
+        sourceFilePath: file.path,
+        mimeTypesFilter: ['application/json'],
+      );
+      await FlutterFileDialog.saveFile(params: params);
+    } catch (e) {
+      showErrorMessage('ERROR: Creating backup failed.');
+    }
+  }
+
+  loadBackup() async {
+    try {
+      final params = OpenFileDialogParams(
+        fileExtensionsFilter: ['json'],
+        mimeTypesFilter: ['application/json'],
+      );
+      final filePath = await FlutterFileDialog.pickFile(params: params);
+      if (filePath == null) {
+        return;
+      }
+      final json = await Backup.readBackup(filePath);
+      List<Habit> habits = [];
+      jsonDecode(json).forEach((element) {
+        habits.add(Habit.fromJson(element));
+      });
+      await _haboModel.useBackup(habits);
+      removeNotifications(allHabits);
+      allHabits = habits;
+      resetNotifications(allHabits);
+      notifyListeners();
+    } catch (e) {
+      showErrorMessage('ERROR: Restoring backup failed.');
+    }
+  }
+
+  resetNotifications(List<Habit> habits) {
+    habits.forEach((element) {
+      if (element.habitData.notification) {
+        var data = element.habitData;
+        _notificationCenter.setHabitNotification(
+            data.id, data.notTime, 'Habo', data.title);
+      }
+    });
+  }
+
+  removeNotifications(List<Habit> habits) {
+    habits.forEach((element) {
+      _notificationCenter.disableNotification(element.habitData.id);
+    });
+  }
+
   List<Habit> get getAllHabits {
     return allHabits;
   }
@@ -91,6 +147,14 @@ class Bloc with ChangeNotifier {
     return settingsData.getSoundEffects;
   }
 
+  bool get getShowMonthName {
+    return settingsData.getShowMonthName;
+  }
+
+  bool get getSeenOnboarding {
+    return settingsData.getSeenOnboarding;
+  }
+
   String get getTheme {
     return settingsData.getTheme;
   }
@@ -111,24 +175,30 @@ class Bloc with ChangeNotifier {
     return settingsData.getWeekStartList;
   }
 
-  set setDailyNot(TimeOfDay value) {
-    settingsData.setDailyNot = value;
+  set setSeenOnboarding(bool value) {
+    settingsData.setSeenOnboarding = value;
+    _saveSharedPreferences();
+    notifyListeners();
+  }
+
+  _saveSharedPreferences() async {
     _prefs.then((SharedPreferences prefs) {
       var st = settingsData.toJson().toString();
       prefs.remove('habo_settings');
       prefs.setString('habo_settings', st);
     });
+  }
+
+  set setDailyNot(TimeOfDay value) {
+    settingsData.setDailyNot = value;
+    _saveSharedPreferences();
     _notificationCenter.setNotification(settingsData.getDailyNot);
     notifyListeners();
   }
 
   set setShowDailyNot(bool value) {
     settingsData.setShowDailyNot = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     if (value) {
       _notificationCenter.setNotification(settingsData.getDailyNot);
     } else {
@@ -139,31 +209,25 @@ class Bloc with ChangeNotifier {
 
   set setSoundEffects(bool value) {
     settingsData.setSoundEffects = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
+    notifyListeners();
+  }
+
+  set setShowMonthName(bool value) {
+    settingsData.setShowMonthName = value;
+    _saveSharedPreferences();
     notifyListeners();
   }
 
   set setTheme(String value) {
     settingsData.setTheme = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 
   set setWeekStart(String value) {
     settingsData.setWeekStart = value;
-    _prefs.then((SharedPreferences prefs) {
-      var st = settingsData.toJson().toString();
-      prefs.remove('habo_settings');
-      prefs.setString('habo_settings', st);
-    });
+    _saveSharedPreferences();
     notifyListeners();
   }
 
@@ -341,5 +405,17 @@ class Bloc with ChangeNotifier {
         h.habitData.twoDayRule = twoDayRule;
       }
     });
+  }
+
+  showErrorMessage(String message) {
+    _scaffoldKey.currentState.hideCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 3),
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: HaboColors.red,
+      ),
+    );
   }
 }

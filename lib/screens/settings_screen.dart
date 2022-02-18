@@ -1,7 +1,9 @@
+import 'package:Habo/helpers.dart';
 import 'package:Habo/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,9 +21,36 @@ class SettingsScreen extends StatelessWidget {
       Provider.of<Bloc>(context, listen: false).setDailyNot = selectedTime;
   }
 
+  showRestoreDialog(BuildContext context) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.WARNING,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: "Warning",
+      desc: "All habits will be replaced with habits from backup.",
+      btnOkText: "Restore",
+      btnCancelText: "Cancel",
+      btnCancelColor: Colors.grey,
+      btnOkColor: HaboColors.primary,
+      btnCancelOnPress: () {},
+      btnOkOnPress: () async {
+        context.loaderOverlay.show();
+        await Provider.of<Bloc>(context, listen: false).loadBackup();
+        context.loaderOverlay.hide();
+      },
+    )..show();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LoaderOverlay(
+      useDefaultLoading: false,
+      overlayWidget: Center(
+        child: CircularProgressIndicator(
+          color: HaboColors.primary,
+        ),
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -55,7 +84,22 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text("First day of the week"),
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("First day of the week"),
+                    SizedBox(width: 5),
+                    Tooltip(
+                      child: Icon(
+                        Icons.info,
+                        color: Colors.grey,
+                        size: 18,
+                      ),
+                      message:
+                          "The setting will take effect after the app restarts.",
+                    ),
+                  ],
+                ),
                 trailing: DropdownButton<String>(
                   alignment: Alignment.center,
                   items: Provider.of<Bloc>(context)
@@ -127,6 +171,55 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               ListTile(
+                title: Text("Show month name"),
+                trailing: Switch(
+                  value: Provider.of<Bloc>(context).getShowMonthName,
+                  onChanged: (value) {
+                    Provider.of<Bloc>(context, listen: false).setShowMonthName =
+                        value;
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text("Backup"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MaterialButton(
+                      onPressed: () async {
+                        Provider.of<Bloc>(context, listen: false)
+                            .createBackup();
+                      },
+                      child: Text(
+                        'Create',
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                    const VerticalDivider(
+                      thickness: 1,
+                      indent: 20,
+                      endIndent: 20,
+                      color: Colors.grey,
+                    ),
+                    MaterialButton(
+                      onPressed: () async {
+                        showRestoreDialog(context);
+                      },
+                      child: Text(
+                        'Restore',
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Text("Onboarding"),
+                onTap: () {
+                  navigateToOnboarding(context);
+                },
+              ),
+              ListTile(
                 title: Text("About"),
                 onTap: () {
                   showAboutDialog(
@@ -141,7 +234,7 @@ class SettingsScreen extends StatelessWidget {
                         Provider.of<Bloc>(context, listen: false)
                             .getPackageInfo
                             .version,
-                    applicationLegalese: '©2021 Habo',
+                    applicationLegalese: '©2022 Habo',
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 15),
