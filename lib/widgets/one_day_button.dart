@@ -53,6 +53,7 @@ class OneDayButton extends StatelessWidget {
       InButton(
         icon: Icon(
           Icons.last_page,
+          color: HaboColors.skip,
           semanticLabel: 'Skip',
         ),
       ),
