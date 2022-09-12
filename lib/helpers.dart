@@ -55,7 +55,7 @@ List<String> months = [
 class HaboColors {
   static final Color primary = Color(0xFF09BF30);
   static final Color red = Colors.red;
-  static final Color skip = Color(0xFF818181); //0xFF505050
-  static final Color comment = Colors.yellow[700];
+  static final Color skip = Colors.yellow[700]; //0xFF505050 //Color(0xFF818181)
+  static final Color comment = Colors.orange;
   static final Color orange = Colors.orange;
 }
