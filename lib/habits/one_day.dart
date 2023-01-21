@@ -14,23 +14,28 @@ class OneDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(4.0),
-      child: Material(
-        color: color,
-        borderRadius: BorderRadius.circular(15.0),
-        elevation: 3,
-        shadowColor: Theme.of(context).shadowColor,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Center(
         child: Container(
-          alignment: Alignment.center,
-          child: child ??
-              Center(
-                child: Text(
-                  date.day.toString(),
-                  style: TextStyle(
-                      color: (date.weekday > 5) ? Colors.red[300] : null),
-                ),
-              ),
+          margin: const EdgeInsets.all(4.0),
+          child: Material(
+            color: color,
+            borderRadius: BorderRadius.circular(10.0),
+            elevation: 2,
+            shadowColor: Theme.of(context).shadowColor,
+            child: Container(
+              alignment: Alignment.center,
+              child: child ??
+                  Center(
+                    child: Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                          color: (date.weekday > 5) ? Colors.red[300] : null),
+                    ),
+                  ),
+            ),
+          ),
         ),
       ),
     );

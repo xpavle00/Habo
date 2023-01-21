@@ -90,74 +90,79 @@ class OneDayButton extends StatelessWidget {
       }
     }
 
-    return Container(
-      margin: const EdgeInsets.all(4.0),
-      child: Material(
-        color: color,
-        borderRadius: BorderRadius.circular(15.0),
-        elevation: 3.0,
-        shadowColor: Theme.of(context).shadowColor,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Center(
         child: Container(
-          alignment: Alignment.center,
-          child: DropdownButton<InButton>(
-            iconSize: 0,
-            elevation: 3,
-            alignment: Alignment.center,
-            dropdownColor: Theme.of(context).colorScheme.primaryContainer,
-            underline: Container(),
-            items: icons.map(
-              (InButton value) {
-                return DropdownMenuItem<InButton>(
-                  key: value.key,
-                  value: value,
-                  child: Center(child: value),
-                );
-              },
-            ).toList(),
-            value: icons[index],
-            onTap: () {
-              parent.setSelectedDay(date);
-            },
-            onChanged: (value) {
-              if (value != null) {
-                if (value.key == const Key('Check') ||
-                    value.key == const Key('Fail') ||
-                    value.key == const Key('Skip')) {
-                  Provider.of<HabitsManager>(context, listen: false).addEvent(
-                      id, date, [
-                    DayType.values[icons
-                        .indexWhere((element) => element.key == value.key)],
-                    comment
-                  ]);
-                  parent.events[date] = [
-                    DayType.values[icons
-                        .indexWhere((element) => element.key == value.key)],
-                    comment
-                  ];
-                  if (value.key == const Key('Check')) {
-                    parent.showRewardNotification(date);
-                    Provider.of<SettingsManager>(context, listen: false)
-                        .playCheckSound();
-                  } else {
-                    Provider.of<SettingsManager>(context, listen: false)
-                        .playClickSound();
+          margin: const EdgeInsets.all(4.0),
+          child: Material(
+            color: color,
+            borderRadius: BorderRadius.circular(10.0),
+            elevation: 2,
+            shadowColor: Theme.of(context).shadowColor,
+            child: Container(
+              alignment: Alignment.center,
+              child: DropdownButton<InButton>(
+                iconSize: 0,
+                elevation: 3,
+                alignment: Alignment.center,
+                dropdownColor: Theme.of(context).colorScheme.primaryContainer,
+                underline: Container(),
+                items: icons.map(
+                  (InButton value) {
+                    return DropdownMenuItem<InButton>(
+                      key: value.key,
+                      value: value,
+                      child: Center(child: value),
+                    );
+                  },
+                ).toList(),
+                value: icons[index],
+                onTap: () {
+                  parent.setSelectedDay(date);
+                },
+                onChanged: (value) {
+                  if (value != null) {
+                    if (value.key == const Key('Check') ||
+                        value.key == const Key('Fail') ||
+                        value.key == const Key('Skip')) {
+                      Provider.of<HabitsManager>(context, listen: false).addEvent(
+                          id, date, [
+                        DayType.values[icons
+                            .indexWhere((element) => element.key == value.key)],
+                        comment
+                      ]);
+                      parent.events[date] = [
+                        DayType.values[icons
+                            .indexWhere((element) => element.key == value.key)],
+                        comment
+                      ];
+                      if (value.key == const Key('Check')) {
+                        parent.showRewardNotification(date);
+                        Provider.of<SettingsManager>(context, listen: false)
+                            .playCheckSound();
+                      } else {
+                        Provider.of<SettingsManager>(context, listen: false)
+                            .playClickSound();
+                      }
+                    } else if (value.key == const Key('Comment')) {
+                      showCommentDialog(context, index, comment);
+                    } else {
+                      if (comment != "") {
+                        Provider.of<HabitsManager>(context, listen: false)
+                            .addEvent(id, date, [DayType.clear, comment]);
+                        parent.events[date] = [DayType.clear, comment];
+                      } else {
+                        Provider.of<HabitsManager>(context, listen: false)
+                            .deleteEvent(id, date);
+                        parent.events.remove(date);
+                      }
+                    }
+                    callback();
                   }
-                } else if (value.key == const Key('Comment')) {
-                  showCommentDialog(context, index, comment);
-                } else {
-                  if (comment != "") {
-                    Provider.of<HabitsManager>(context, listen: false)
-                        .addEvent(id, date, [DayType.clear, comment]);
-                    parent.events[date] = [DayType.clear, comment];
-                  } else {
-                    Provider.of<HabitsManager>(context, listen: false)
-                        .deleteEvent(id, date);
-                    parent.events.remove(date);
-                  }
-                }
-                callback();
-              }
-            },
+                },
+              ),
+            ),
           ),
         ),
       ),

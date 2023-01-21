@@ -94,7 +94,7 @@ class Habit extends StatefulWidget {
     return "${all[0]}.${all[1].toLowerCase()}";
   }
 
-  Future navigateToEditPage(context) async {
+  void navigateToEditPage(context) {
     Provider.of<AppStateManager>(context, listen: false).goEditHabit(habitData);
   }
 
@@ -197,7 +197,6 @@ class HabitState extends State<Habit> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             HabitHeader(
-              name: widget.habitData.title,
               widget: widget,
               streakVisible: _streakVisible,
               orangeStreak: _orangeStreak,
@@ -286,58 +285,61 @@ class HabitState extends State<Habit> {
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    return IgnorePointer(
-      child: Stack(children: [
-        (events[0] != DayType.clear)
-            ? Container(
-                margin: const EdgeInsets.all(4.0),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: events[0] == DayType.check
-                      ? Provider.of<SettingsManager>(context, listen: false)
-                          .checkColor
+    return AspectRatio(
+      aspectRatio: 1,
+      child: IgnorePointer(
+        child: Stack(children: [
+          (events[0] != DayType.clear)
+              ? Container(
+                  margin: const EdgeInsets.all(4.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: events[0] == DayType.check
+                        ? Provider.of<SettingsManager>(context, listen: false)
+                            .checkColor
+                        : events[0] == DayType.fail
+                            ? Provider.of<SettingsManager>(context, listen: false)
+                                .failColor
+                            : Provider.of<SettingsManager>(context, listen: false)
+                                .skipColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: events[0] == DayType.check
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        )
                       : events[0] == DayType.fail
-                          ? Provider.of<SettingsManager>(context, listen: false)
-                              .failColor
-                          : Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: events[0] == DayType.check
-                    ? const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      )
-                    : events[0] == DayType.fail
-                        ? const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          )
-                        : const Icon(
-                            Icons.last_page,
-                            color: Colors.white,
-                          ),
-              )
-            : Container(),
-        (events[1] != null && events[1] != "")
-            ? Container(
-                alignment: const Alignment(1.0, 1.0),
-                padding: const EdgeInsets.fromLTRB(0, 0, 7.0, 3.0),
-                child: Material(
-                  borderRadius: BorderRadius.circular(15.0),
-                  elevation: 1,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: HaboColors.orange,
-                      shape: BoxShape.circle,
+                          ? const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.last_page,
+                              color: Colors.white,
+                            ),
+                )
+              : Container(),
+          (events[1] != null && events[1] != "")
+              ? Container(
+                  alignment: const Alignment(1.0, 1.0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 2.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(15.0),
+                    elevation: 1,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: HaboColors.orange,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
-                ),
-              )
-            : Container(),
-      ]),
+                )
+              : Container(),
+        ]),
+      ),
     );
   }
 
