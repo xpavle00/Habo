@@ -4,27 +4,27 @@ import 'package:habo/constants.dart';
 
 void initializeNotifications() {
   AwesomeNotifications().initialize(
-      'resource://drawable/app_icon',
-      [
-        NotificationChannel(
-            channelKey: 'app_notifications_habo',
-            channelName: 'App notifications',
-            channelShowBadge: true,
-            channelDescription:
-                'Notification channel for application notifications',
-            defaultColor: HaboColors.primary,
-            importance: NotificationImportance.Max,
-            criticalAlerts: true),
-        NotificationChannel(
-            channelKey: 'habit_notifications_habo',
-            channelName: 'Habit notifications',
-            channelShowBadge: true,
-            channelDescription: 'Notification channel for habit notifications',
-            defaultColor: HaboColors.primary,
-            importance: NotificationImportance.Max,
-            criticalAlerts: true)
-      ],
-      debug: true);
+    'resource://raw/res_app_icon',
+    [
+      NotificationChannel(
+          channelKey: 'app_notifications_habo',
+          channelName: 'App notifications',
+          channelShowBadge: true,
+          channelDescription:
+              'Notification channel for application notifications',
+          defaultColor: HaboColors.primary,
+          importance: NotificationImportance.Max,
+          criticalAlerts: true),
+      NotificationChannel(
+          channelKey: 'habit_notifications_habo',
+          channelName: 'Habit notifications',
+          channelShowBadge: true,
+          channelDescription: 'Notification channel for habit notifications',
+          defaultColor: HaboColors.primary,
+          importance: NotificationImportance.Max,
+          criticalAlerts: true)
+    ],
+  );
 }
 
 void resetAppNotificationIfMissing(TimeOfDay timeOfDay) async {
