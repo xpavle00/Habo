@@ -35,7 +35,7 @@ class _ColorIconState extends State<ColorIcon> {
       child: Material(
         color: tempColor,
         borderRadius: BorderRadius.circular(10.0),
-        elevation: 3,
+        elevation: 2,
         shadowColor: Theme.of(context).colorScheme.shadow,
         child: SizedBox(
           width: 32,

@@ -18,7 +18,7 @@ class StatisticsCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(15.0),
       color: Theme.of(context).colorScheme.primaryContainer,
       shadowColor: Theme.of(context).shadowColor,
-      elevation: 3,
+      elevation: 2,
       child: Container(
         padding: const EdgeInsets.all(15.0),
         child: Column(

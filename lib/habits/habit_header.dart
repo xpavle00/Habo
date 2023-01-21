@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
+import 'package:habo/habits/habits_manager.dart';
+import 'package:provider/provider.dart';
 
 class HabitHeader extends StatelessWidget {
   const HabitHeader({
     Key? key,
-    required this.name,
     required this.widget,
     required bool streakVisible,
     required bool orangeStreak,
@@ -15,7 +16,6 @@ class HabitHeader extends StatelessWidget {
         _streak = streak,
         super(key: key);
 
-  final String name;
   final Habit widget;
   final bool _streakVisible;
   final bool _orangeStreak;
@@ -30,7 +30,7 @@ class HabitHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
             child: Text(
-              name,
+              Provider.of<HabitsManager>(context).getNameOfHabit(widget.habitData.id!),
               style: const TextStyle(fontSize: 20),
               overflow: TextOverflow.ellipsis,
             ),

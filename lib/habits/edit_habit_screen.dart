@@ -94,7 +94,6 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
             tooltip: 'Delete',
             onPressed: () {
               Navigator.of(context).pop();
-
               if (widget.habitData != null)
                 {
                   Provider.of<HabitsManager>(context, listen: false)

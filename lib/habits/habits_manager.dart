@@ -189,6 +189,7 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.advanced = habitData.advanced;
     hab.habitData.notification = habitData.notification;
     hab.habitData.notTime = habitData.notTime;
+    _haboModel.editHabit(hab);
     if (habitData.notification) {
       setHabitNotification(
           habitData.id!, habitData.notTime, 'Habo', habitData.title);
@@ -196,6 +197,12 @@ class HabitsManager extends ChangeNotifier {
       disableHabitNotification(habitData.id!);
     }
     notifyListeners();
+  }
+
+  String getNameOfHabit(int id)
+  {
+    Habit? hab = findHabitById(id);
+    return (hab != null) ? hab.habitData.title : "";
   }
 
   Habit? findHabitById(int id) {
