@@ -17,16 +17,14 @@ class HabitsManager extends ChangeNotifier {
       GlobalKey<ScaffoldMessengerState>();
 
   late List<Habit> allHabits = [];
-  bool dataLoaded = false;
+  bool _isInitialized = false;
 
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
 
-  HabitsManager() {
-    initModel();
-  }
-
   void initialize() async {
+    await initModel();
+    await Future.delayed(const Duration(seconds: 5));
     notifyListeners();
   }
 
@@ -37,7 +35,7 @@ class HabitsManager extends ChangeNotifier {
   initModel() async {
     await _haboModel.initDatabase();
     allHabits = await _haboModel.getAllHabits();
-    dataLoaded = true;
+    _isInitialized = true;
     notifyListeners();
   }
 
@@ -116,6 +114,10 @@ class HabitsManager extends ChangeNotifier {
 
   List<Habit> get getAllHabits {
     return allHabits;
+  }
+
+  bool get isInitialized {
+    return _isInitialized;
   }
 
   reorderList(oldIndex, newIndex) {
@@ -199,8 +201,7 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getNameOfHabit(int id)
-  {
+  String getNameOfHabit(int id) {
     Habit? hab = findHabitById(id);
     return (hab != null) ? hab.habitData.title : "";
   }

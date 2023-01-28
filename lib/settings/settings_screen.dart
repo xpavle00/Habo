@@ -79,9 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
-        context.loaderOverlay.show();
         await Provider.of<HabitsManager>(context, listen: false).loadBackup();
-        context.loaderOverlay.hide();
       },
     ).show();
   }
@@ -109,282 +107,289 @@ class _SettingsScreenState extends State<SettingsScreen> {
               backgroundColor: Colors.transparent,
               iconTheme: Theme.of(context).iconTheme,
             ),
-            body: Center(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: const Text("Theme"),
-                    trailing: DropdownButton<String>(
-                      items: Provider.of<SettingsManager>(context)
-                          .getThemeList
-                          .map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }).toList(),
-                      value: Provider.of<SettingsManager>(context).getTheme,
-                      onChanged: (value) {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .setTheme = value!;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text("First day of the week"),
-                        SizedBox(width: 5),
-                      ],
-                    ),
-                    trailing: DropdownButton<String>(
-                      alignment: Alignment.center,
-                      items: Provider.of<SettingsManager>(context)
-                          .getWeekStartList
-                          .map((String value) {
-                        return DropdownMenuItem<String>(
-                          alignment: Alignment.center,
-                          value: value,
-                          child: Text(
-                            value,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }).toList(),
-                      value: Provider.of<SettingsManager>(context).getWeekStart,
-                      onChanged: (value) {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .setWeekStart = value!;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Notifications"),
-                    trailing: Switch(
-                      value:
-                          Provider.of<SettingsManager>(context).getShowDailyNot,
-                      onChanged: (value) async {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .setShowDailyNot = value;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    enabled:
-                        Provider.of<SettingsManager>(context).getShowDailyNot,
-                    title: const Text("Notification time"),
-                    trailing: InkWell(
-                      onTap: () {
-                        if (Provider.of<SettingsManager>(context, listen: false)
-                            .getShowDailyNot) {
-                          testTime(context);
-                        }
-                      },
-                      child: Text(
-                        "${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}"
-                        ":"
-                        "${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}",
-                        style: TextStyle(
-                            color: (Provider.of<SettingsManager>(context)
-                                    .getShowDailyNot)
-                                ? null
-                                : Theme.of(context).disabledColor),
+            body: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: const Text("Theme"),
+                      trailing: DropdownButton<String>(
+                        items: Provider.of<SettingsManager>(context)
+                            .getThemeList
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }).toList(),
+                        value: Provider.of<SettingsManager>(context).getTheme,
+                        onChanged: (value) {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setTheme = value!;
+                        },
                       ),
                     ),
-                  ),
-                  ListTile(
-                    title: const Text("Sound effects"),
-                    trailing: Switch(
-                      value:
-                          Provider.of<SettingsManager>(context).getSoundEffects,
-                      onChanged: (value) {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .setSoundEffects = value;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Show month name"),
-                    trailing: Switch(
-                      value: Provider.of<SettingsManager>(context)
-                          .getShowMonthName,
-                      onChanged: (value) {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .setShowMonthName = value;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Set colors"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ColorIcon(
-                          color: Provider.of<SettingsManager>(context,
-                                  listen: false)
-                              .checkColor,
-                          icon: Icons.check,
-                          defaultColor: HaboColors.primary,
-                          onPicked: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .checkColor = value;
-                          },
-                        ),
-                        ColorIcon(
-                          color: Provider.of<SettingsManager>(context,
-                                  listen: false)
-                              .failColor,
-                          icon: Icons.close,
-                          defaultColor: HaboColors.red,
-                          onPicked: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .failColor = value;
-                          },
-                        ),
-                        ColorIcon(
-                          color: Provider.of<SettingsManager>(context,
-                                  listen: false)
-                              .skipColor,
-                          icon: Icons.last_page,
-                          defaultColor: HaboColors.skip,
-                          onPicked: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .skipColor = value;
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Backup"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        MaterialButton(
-                          onPressed: () async {
-                            Provider.of<HabitsManager>(context, listen: false)
-                                .createBackup();
-                          },
-                          child: const Text(
-                            'Create',
-                            style:
-                                TextStyle(decoration: TextDecoration.underline),
-                          ),
-                        ),
-                        const VerticalDivider(
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                          color: Colors.grey,
-                        ),
-                        MaterialButton(
-                          onPressed: () async {
-                            showRestoreDialog(context);
-                          },
-                          child: const Text(
-                            'Restore',
-                            style:
-                                TextStyle(decoration: TextDecoration.underline),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text("Onboarding"),
-                    onTap: () {
-                      // navigateToOnboarding(context);
-                      Provider.of<AppStateManager>(context, listen: false)
-                          .goOnboarding(true);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text("About"),
-                    onTap: () {
-                      showAboutDialog(
-                        context: context,
-                        applicationIcon: Image.asset(
-                          "assets/images/icon.png",
-                          width: 55,
-                          height: 55,
-                        ),
-                        applicationName: 'Habo',
-                        applicationVersion: _packageInfo.version,
-                        applicationLegalese: '©2022 Habo',
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: RichText(
-                              text: TextSpan(
-                                style: Theme.of(context).textTheme.bodyText2,
-                                children: [
-                                  TextSpan(
-                                    style: const TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline),
-                                    text: "Terms and Conditions\n",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final Uri url = Uri.parse(
-                                            'https://habo.space/terms.html#terms');
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        }
-                                      },
-                                  ),
-                                  TextSpan(
-                                    style: const TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline),
-                                    text: "Privacy Policy\n",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final Uri url = Uri.parse(
-                                            'https://habo.space/terms.html#privacy');
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        }
-                                      },
-                                  ),
-                                  TextSpan(
-                                    style: const TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline),
-                                    text: "Disclaimer\n",
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final Uri url = Uri.parse(
-                                            'https://habo.space/terms.html#disclaimer');
-                                        if (await canLaunchUrl(url)) {
-                                          await launchUrl(
-                                            url,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        }
-                                      },
-                                  ),
-                                ],
-                              ),
+                    ListTile(
+                      title: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text("First day of the week"),
+                          SizedBox(width: 5),
+                        ],
+                      ),
+                      trailing: DropdownButton<String>(
+                        alignment: Alignment.center,
+                        items: Provider.of<SettingsManager>(context)
+                            .getWeekStartList
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            alignment: Alignment.center,
+                            value: value,
+                            child: Text(
+                              value,
+                              textAlign: TextAlign.center,
                             ),
+                          );
+                        }).toList(),
+                        value:
+                            Provider.of<SettingsManager>(context).getWeekStart,
+                        onChanged: (value) {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setWeekStart = value!;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Notifications"),
+                      trailing: Switch(
+                        value: Provider.of<SettingsManager>(context)
+                            .getShowDailyNot,
+                        onChanged: (value) async {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setShowDailyNot = value;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      enabled:
+                          Provider.of<SettingsManager>(context).getShowDailyNot,
+                      title: const Text("Notification time"),
+                      trailing: InkWell(
+                        onTap: () {
+                          if (Provider.of<SettingsManager>(context,
+                                  listen: false)
+                              .getShowDailyNot) {
+                            testTime(context);
+                          }
+                        },
+                        child: Text(
+                          "${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}"
+                          ":"
+                          "${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}",
+                          style: TextStyle(
+                              color: (Provider.of<SettingsManager>(context)
+                                      .getShowDailyNot)
+                                  ? null
+                                  : Theme.of(context).disabledColor),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Sound effects"),
+                      trailing: Switch(
+                        value: Provider.of<SettingsManager>(context)
+                            .getSoundEffects,
+                        onChanged: (value) {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setSoundEffects = value;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Show month name"),
+                      trailing: Switch(
+                        value: Provider.of<SettingsManager>(context)
+                            .getShowMonthName,
+                        onChanged: (value) {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setShowMonthName = value;
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Set colors"),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ColorIcon(
+                            color: Provider.of<SettingsManager>(context,
+                                    listen: false)
+                                .checkColor,
+                            icon: Icons.check,
+                            defaultColor: HaboColors.primary,
+                            onPicked: (value) {
+                              Provider.of<SettingsManager>(context,
+                                      listen: false)
+                                  .checkColor = value;
+                            },
+                          ),
+                          ColorIcon(
+                            color: Provider.of<SettingsManager>(context,
+                                    listen: false)
+                                .failColor,
+                            icon: Icons.close,
+                            defaultColor: HaboColors.red,
+                            onPicked: (value) {
+                              Provider.of<SettingsManager>(context,
+                                      listen: false)
+                                  .failColor = value;
+                            },
+                          ),
+                          ColorIcon(
+                            color: Provider.of<SettingsManager>(context,
+                                    listen: false)
+                                .skipColor,
+                            icon: Icons.last_page,
+                            defaultColor: HaboColors.skip,
+                            onPicked: (value) {
+                              Provider.of<SettingsManager>(context,
+                                      listen: false)
+                                  .skipColor = value;
+                            },
                           )
                         ],
-                      );
-                    },
-                  ),
-                ],
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Backup"),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          MaterialButton(
+                            onPressed: () async {
+                              Provider.of<HabitsManager>(context, listen: false)
+                                  .createBackup();
+                            },
+                            child: const Text(
+                              'Create',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                          const VerticalDivider(
+                            thickness: 1,
+                            indent: 20,
+                            endIndent: 20,
+                            color: Colors.grey,
+                          ),
+                          MaterialButton(
+                            onPressed: () async {
+                              showRestoreDialog(context);
+                            },
+                            child: const Text(
+                              'Restore',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text("Onboarding"),
+                      onTap: () {
+                        // navigateToOnboarding(context);
+                        Provider.of<AppStateManager>(context, listen: false)
+                            .goOnboarding(true);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text("About"),
+                      onTap: () {
+                        showAboutDialog(
+                          context: context,
+                          applicationIcon: Image.asset(
+                            "assets/images/icon.png",
+                            width: 55,
+                            height: 55,
+                          ),
+                          applicationName: 'Habo',
+                          applicationVersion: _packageInfo.version,
+                          applicationLegalese: '©2022 Habo',
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                      text: "Terms and Conditions\n",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final Uri url = Uri.parse(
+                                              'https://habo.space/terms.html#terms');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                    ),
+                                    TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                      text: "Privacy Policy\n",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final Uri url = Uri.parse(
+                                              'https://habo.space/terms.html#privacy');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                    ),
+                                    TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                      text: "Disclaimer\n",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final Uri url = Uri.parse(
+                                              'https://habo.space/terms.html#disclaimer');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
