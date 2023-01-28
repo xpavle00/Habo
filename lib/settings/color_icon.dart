@@ -60,7 +60,7 @@ class _ColorIconState extends State<ColorIcon> {
                               onColorChanged: (Color color) {
                                 setState(
                                   () {
-                                    tempColor = color;
+                                    tempColor = color.withOpacity(1.0);
                                   },
                                 );
                               },

@@ -38,6 +38,7 @@ class _HaboState extends State<Habo> {
     _appRouter = AppRouter(
       appStateManager: _appStateManager,
       settingsManager: _settingsManager,
+      habitsManager: _habitManager,
     );
     super.initState();
   }

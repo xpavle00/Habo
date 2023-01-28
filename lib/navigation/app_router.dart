@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:habo/habits/edit_habit_screen.dart';
+import 'package:habo/habits/habits_manager.dart';
+import 'package:habo/habits/habits_screen.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/onboarding/onboarding_screen.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/settings/settings_screen.dart';
 import 'package:habo/splash_screen.dart';
-import 'package:habo/habits/habits_screen.dart';
 import 'package:habo/statistics/statistics_screen.dart';
 
 class AppRouter extends RouterDelegate
@@ -16,11 +17,16 @@ class AppRouter extends RouterDelegate
 
   final AppStateManager appStateManager;
   final SettingsManager settingsManager;
+  final HabitsManager habitsManager;
 
-  AppRouter({required this.appStateManager, required this.settingsManager})
+  AppRouter(
+      {required this.appStateManager,
+      required this.settingsManager,
+      required this.habitsManager})
       : navigatorKey = GlobalKey<NavigatorState>() {
     appStateManager.addListener(notifyListeners);
     settingsManager.addListener(notifyListeners);
+    habitsManager.addListener(notifyListeners);
     settingsManager.getSeenOnboarding;
   }
 
@@ -28,6 +34,7 @@ class AppRouter extends RouterDelegate
   void dispose() {
     appStateManager.removeListener(notifyListeners);
     settingsManager.removeListener(notifyListeners);
+    habitsManager.removeListener(notifyListeners);
     super.dispose();
   }
 
@@ -37,17 +44,21 @@ class AppRouter extends RouterDelegate
       key: navigatorKey,
       onPopPage: _handlePopPage,
       pages: [
-        if (!appStateManager.isInitialized) SplashScreen.page(),
-        if (appStateManager.isInitialized) HabitsScreen.page(),
+        if (allInitialized()) HabitsScreen.page(),
         if (appStateManager.getStatistics) StatisticsScreen.page(),
         if (appStateManager.getSettings) SettingsScreen.page(),
         if (appStateManager.getOnboarding || !settingsManager.getSeenOnboarding)
           OnboardingScreen.page(),
-        if (appStateManager.getCreateHabit)  EditHabitScreen.page(null),
+        if (appStateManager.getCreateHabit) EditHabitScreen.page(null),
         if (appStateManager.getEditHabit != null)
           EditHabitScreen.page(appStateManager.getEditHabit!),
+        if (!allInitialized()) SplashScreen.page(),
       ],
     );
+  }
+
+  bool allInitialized() {
+    return settingsManager.isInitialized && habitsManager.isInitialized;
   }
 
   bool _handlePopPage(Route<dynamic> route, result) {

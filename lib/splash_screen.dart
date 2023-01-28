@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/navigation/routes.dart';
-import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   static MaterialPage page() {
@@ -20,12 +18,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    Provider.of<AppStateManager>(context, listen: false).initializeApp();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -38,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Text(
               "Habo",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ],
         ),
