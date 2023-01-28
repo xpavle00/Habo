@@ -52,8 +52,8 @@ class SettingsData {
         'soundEffects': soundEffects,
         'showMonthName': showMonthName,
         'seenOnboarding': seenOnboarding,
-        'checkColor': checkColor.hashCode,
-        'failColor': failColor.hashCode,
-        'skipColor': skipColor.hashCode,
+        'checkColor': checkColor.value,
+        'failColor': failColor.value,
+        'skipColor': skipColor.value,
       };
 }

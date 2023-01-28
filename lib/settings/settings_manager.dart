@@ -12,13 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsManager extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SettingsData _settingsData = SettingsData();
+  bool _isInitialized = false;
 
   final _checkPlayer = AudioPlayer();
   final _clickPlayer = AudioPlayer();
 
   void initialize() async {
-    loadData();
-
+    await loadData();
+    _isInitialized = true;
     notifyListeners();
     _checkPlayer.setAsset('assets/sounds/check.wav');
     _clickPlayer.setAsset('assets/sounds/click.wav');
@@ -58,7 +59,7 @@ class SettingsManager extends ChangeNotifier {
     prefs.setString('habo_settings', jsonEncode(_settingsData));
   }
 
-  void loadData() async {
+  Future<void> loadData() async {
     final SharedPreferences prefs = await _prefs;
     String? json = prefs.getString('habo_settings');
     if (json != null) {
@@ -132,6 +133,10 @@ class SettingsManager extends ChangeNotifier {
 
   Color get skipColor {
     return _settingsData.skipColor;
+  }
+
+  bool get isInitialized {
+    return _isInitialized;
   }
 
   set setTheme(String value) {
