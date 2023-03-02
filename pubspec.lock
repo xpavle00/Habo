@@ -191,13 +191,13 @@ packages:
     source: hosted
     version: "2.3.2"
   flutter_launcher_icons:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_launcher_icons
-      sha256: a9de6706cd844668beac27c0aed5910fa0534832b3c2cad61a5fd977fce82a5d
+      sha256: "02dcaf49d405f652b7160e882bacfc02cb497041bb2eab2a49b1c393cf9aac12"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.0"
+    version: "0.12.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -260,10 +260,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "8e9d133755c3e84c73288363e6343157c383a0c6c56fc51afcc5d4d7180306d6"
+      sha256: "483a389d6ccb292b570c31b3a193779b1b0178e7eb571986d9a49904b6861227"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "4.0.15"
   intl:
     dependency: transitive
     description:
@@ -830,5 +830,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.1 <4.0.0"
+  dart: ">=2.18.1 <3.0.0"
   flutter: ">=3.3.0"
