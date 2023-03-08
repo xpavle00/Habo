@@ -24,6 +24,8 @@ Currently available on the Play store.
 
 [![Google play store](https://habo.space/img/resources/en_get.svg)](https://play.google.com/store/apps/details?id=com.pavlenko.Habo)
 
+iOS open beta on TestFlight: https://testflight.apple.com/join/F39jE9eL
+
 ## Contributing
 
 We welcome contributions from the community to help make Habo even better! Whether you're a developer, designer, or just an enthusiastic user, there are many ways you can help. 
