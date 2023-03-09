@@ -38,9 +38,13 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 
+# For now mipmaps are used.
 flutter_icons:
   image_path_android: "assets/images/icon.png"
   image_path_ios: "assets/images/ios_icon.jpg"
+  adaptive_icon_foreground: "assets/images/android_foreground.png"
+  adaptive_icon_background: "#FFFFFF"
+  min_sdk_android: 21
   android: true
   ios: true
   remove_alpha_ios: true
