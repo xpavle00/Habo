@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habo/constants.dart';
 
@@ -20,6 +21,10 @@ class HaboTheme {
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF09BF30),
       ),
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
     );
   }
 
@@ -29,7 +34,6 @@ class HaboTheme {
       scaffoldBackgroundColor: const Color(0xFF303030),
       dialogTheme: const DialogTheme(surfaceTintColor: Colors.white),
       primaryColor: Colors.grey,
-      appBarTheme: const AppBarTheme(elevation: 0),
       fontFamily: GoogleFonts.nunito().fontFamily,
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.resolveWith(getSwitchColorThumb),
@@ -43,6 +47,10 @@ class HaboTheme {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF09BF30),
+      ),
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
     );
   }

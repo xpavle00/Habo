@@ -83,7 +83,7 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
-  String get getTheme {
+  String get getThemeString {
     return _settingsData.themeList[_settingsData.theme.index];
   }
 

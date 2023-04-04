@@ -125,7 +125,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         }).toList(),
-                        value: Provider.of<SettingsManager>(context).getTheme,
+                        value: Provider.of<SettingsManager>(context)
+                            .getThemeString,
                         onChanged: (value) {
                           Provider.of<SettingsManager>(context, listen: false)
                               .setTheme = value!;
