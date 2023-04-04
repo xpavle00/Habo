@@ -10,7 +10,9 @@ class EditHabitScreen extends StatefulWidget {
   static MaterialPage page(HabitData? data) {
     return MaterialPage(
       name: (data != null) ? Routes.editHabitPath : Routes.createHabitPath,
-      key: (data != null) ?  ValueKey(Routes.editHabitPath) : ValueKey(Routes.createHabitPath),
+      key: (data != null)
+          ? ValueKey(Routes.editHabitPath)
+          : ValueKey(Routes.createHabitPath),
       child: EditHabitScreen(habitData: data),
     );
   }
@@ -49,18 +51,17 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.habitData != null)
-      {
-        title.text = widget.habitData!.title;
-        cue.text = widget.habitData!.cue;
-        routine.text = widget.habitData!.routine;
-        reward.text = widget.habitData!.reward;
-        twoDayRule = widget.habitData!.twoDayRule;
-        showReward = widget.habitData!.showReward;
-        advanced = widget.habitData!.advanced;
-        notification = widget.habitData!.notification;
-        notTime = widget.habitData!.notTime;
-      }
+    if (widget.habitData != null) {
+      title.text = widget.habitData!.title;
+      cue.text = widget.habitData!.cue;
+      routine.text = widget.habitData!.routine;
+      reward.text = widget.habitData!.reward;
+      twoDayRule = widget.habitData!.twoDayRule;
+      showReward = widget.habitData!.showReward;
+      advanced = widget.habitData!.advanced;
+      notification = widget.habitData!.notification;
+      notTime = widget.habitData!.notTime;
+    }
   }
 
   @override
@@ -77,68 +78,63 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          (widget.habitData != null) ?
-          'Edit Habit':
-          'Create Habit',
+          (widget.habitData != null) ? 'Edit Habit' : 'Create Habit',
         ),
         backgroundColor: Colors.transparent,
         iconTheme: Theme.of(context).iconTheme,
         actions: <Widget>[
           if (widget.habitData != null)
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              semanticLabel: 'Delete',
-            ),
-            color: HaboColors.red,
-            tooltip: 'Delete',
-            onPressed: () {
-              Navigator.of(context).pop();
-              if (widget.habitData != null)
-                {
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                semanticLabel: 'Delete',
+              ),
+              color: HaboColors.red,
+              tooltip: 'Delete',
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (widget.habitData != null) {
                   Provider.of<HabitsManager>(context, listen: false)
                       .deleteHabit(widget.habitData!.id!);
                 }
-            },
-          ),
+              },
+            ),
         ],
       ),
       floatingActionButton: Builder(builder: (BuildContext context) {
         return FloatingActionButton(
           onPressed: () {
             if (title.text.isNotEmpty) {
-              if (widget.habitData != null)
-                {
-                  Provider.of<HabitsManager>(context, listen: false).editHabit(
-                    HabitData(
-                      id: widget.habitData!.id,
-                      title: title.text.toString(),
-                      twoDayRule: twoDayRule,
-                      cue: cue.text.toString(),
-                      routine: routine.text.toString(),
-                      reward: reward.text.toString(),
-                      showReward: showReward,
-                      advanced: advanced,
-                      notification: notification,
-                      notTime: notTime,
-                      position: widget.habitData!.position,
-                      events: widget.habitData!.events,
-                    ),
-                  );
-                }
-              else
-                {
-                  Provider.of<HabitsManager>(context, listen: false).addHabit(
-                      title.text.toString(),
-                      twoDayRule,
-                      cue.text.toString(),
-                      routine.text.toString(),
-                      reward.text.toString(),
-                      showReward,
-                      advanced,
-                      notification,
-                      notTime,);
-                }
+              if (widget.habitData != null) {
+                Provider.of<HabitsManager>(context, listen: false).editHabit(
+                  HabitData(
+                    id: widget.habitData!.id,
+                    title: title.text.toString(),
+                    twoDayRule: twoDayRule,
+                    cue: cue.text.toString(),
+                    routine: routine.text.toString(),
+                    reward: reward.text.toString(),
+                    showReward: showReward,
+                    advanced: advanced,
+                    notification: notification,
+                    notTime: notTime,
+                    position: widget.habitData!.position,
+                    events: widget.habitData!.events,
+                  ),
+                );
+              } else {
+                Provider.of<HabitsManager>(context, listen: false).addHabit(
+                  title.text.toString(),
+                  twoDayRule,
+                  cue.text.toString(),
+                  routine.text.toString(),
+                  reward.text.toString(),
+                  showReward,
+                  advanced,
+                  notification,
+                  notTime,
+                );
+              }
               Navigator.of(context).pop();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -185,13 +181,17 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         value: twoDayRule,
                       ),
                       const Text("Use Two day rule"),
-                      const Tooltip(
-                        message:
-                            "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
-                        child: Icon(
-                          Icons.info,
-                          color: Colors.grey,
-                          size: 18,
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        child: Tooltip(
+                          triggerMode: TooltipTriggerMode.tap,
+                          message:
+                              "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
+                          child: Icon(
+                            Icons.info,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                         ),
                       ),
                     ],
@@ -282,14 +282,18 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             value: showReward,
                           ),
                           const Text("Show reward"),
-                          const Tooltip(
-                            message:
-                                "The remainder of the reward after a successful routine.",
-                            child: Icon(
-                              Icons.info,
-                              semanticLabel: 'Tooltip',
-                              color: Colors.grey,
-                              size: 18,
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Tooltip(
+                              triggerMode: TooltipTriggerMode.tap,
+                              message:
+                                  "The remainder of the reward after a successful routine.",
+                              child: Icon(
+                                Icons.info,
+                                semanticLabel: 'Tooltip',
+                                color: Colors.grey,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ],
