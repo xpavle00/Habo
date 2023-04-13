@@ -148,7 +148,10 @@ class HabitsManager extends ChangeNotifier {
       bool showReward,
       bool advanced,
       bool notification,
-      TimeOfDay notTime) {
+      TimeOfDay notTime,
+      String sanction,
+      bool showSanction,
+      String accountant) {
     Habit newHabit = Habit(
       habitData: HabitData(
         position: allHabits.length,
@@ -162,6 +165,9 @@ class HabitsManager extends ChangeNotifier {
         events: SplayTreeMap<DateTime, List>(),
         notification: notification,
         notTime: notTime,
+        sanction: sanction,
+        showSanction: showSanction,
+        accountant: accountant,
       ),
     );
     _haboModel.insertHabit(newHabit).then(
@@ -191,6 +197,9 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.advanced = habitData.advanced;
     hab.habitData.notification = habitData.notification;
     hab.habitData.notTime = habitData.notTime;
+    hab.habitData.sanction = habitData.sanction;
+    hab.habitData.showSanction = habitData.showSanction;
+    hab.habitData.accountant = habitData.accountant;
     _haboModel.editHabit(hab);
     if (habitData.notification) {
       setHabitNotification(

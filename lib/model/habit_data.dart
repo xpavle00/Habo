@@ -16,6 +16,9 @@ class HabitData {
     required this.notification,
     required this.notTime,
     required this.events,
+    required this.sanction,
+    required this.showSanction,
+    required this.accountant,
   });
 
   SplayTreeMap<DateTime, List> events;
@@ -31,4 +34,7 @@ class HabitData {
   bool advanced;
   bool notification;
   TimeOfDay notTime;
+  String sanction;
+  bool showSanction;
+  String accountant;
 }

@@ -104,14 +104,17 @@ class HaboModel {
                   position: hab["position"],
                   title: hab["title"],
                   twoDayRule: hab["twoDayRule"] == 0 ? false : true,
-                  cue: hab["cue"],
-                  routine: hab["routine"],
-                  reward: hab["reward"],
+                  cue: hab["cue"] ?? "",
+                  routine: hab["routine"] ?? "",
+                  reward: hab["reward"] ?? "",
                   showReward: hab["showReward"] == 0 ? false : true,
                   advanced: hab["advanced"] == 0 ? false : true,
                   notification: hab["notification"] == 0 ? false : true,
                   notTime: parseTimeOfDay(hab["notTime"]),
                   events: eventsMap,
+                  sanction: hab["sanction"] ?? "",
+                  showSanction: (hab["showSanction"] ?? 0) == 0 ? false : true,
+                  accountant: hab["accountant"] ?? "",
                 ),
               ),
             );
@@ -123,10 +126,16 @@ class HaboModel {
   }
 
   void _updateTableEventsV1toV2(Batch batch) {
-    batch.execute('ALTER TABLE Events ADD comment TEXT');
+    batch.execute('ALTER TABLE Events ADD comment TEXT DEFAULT ""');
   }
 
-  void _createTableEventsV2(Batch batch) {
+  void _updateTableHabitsV2toV3(Batch batch) {
+    batch.execute('ALTER TABLE habits ADD sanction TEXT DEFAULT "" NOT NULL');
+    batch.execute('ALTER TABLE habits ADD showSanction INTEGER DEFAULT 0 NOT NULL');
+    batch.execute('ALTER TABLE habits ADD accountant TEXT DEFAULT "" NOT NULL');
+  }
+
+  void _createTableEventsV3(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS events');
     batch.execute('''CREATE TABLE events (
     id INTEGER,
@@ -138,7 +147,7 @@ class HaboModel {
     )''');
   }
 
-  void _createTableHabitsV2(Batch batch) {
+  void _createTableHabitsV3(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS habits');
     batch.execute('''CREATE TABLE habits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -151,7 +160,10 @@ class HaboModel {
     showReward INTEGER,
     advanced INTEGER,
     notification INTEGER,
-    notTime TEXT
+    notTime TEXT,
+    sanction TEXT,
+    showSanction INTEGER,
+    accountant TEXT
     )''');
   }
 
@@ -166,18 +178,21 @@ class HaboModel {
     }
     db = await openDatabase(
       join(await getDatabasesPath(), 'habo_db0.db'),
-      version: 2,
+      version: 3,
       onCreate: (db, version) {
         var batch = db.batch();
-        _createTableHabitsV2(batch);
-        _createTableEventsV2(batch);
+        _createTableHabitsV3(batch);
+        _createTableEventsV3(batch);
         batch.commit();
       },
       onUpgrade: (db, oldVersion, newVersion) {
         var batch = db.batch();
         if (oldVersion == 1) {
-          // We update existing table and create the new tables
           _updateTableEventsV1toV2(batch);
+          _updateTableHabitsV2toV3(batch);
+        }
+        if (oldVersion == 2) {
+          _updateTableHabitsV2toV3(batch);
         }
         batch.commit();
       },
