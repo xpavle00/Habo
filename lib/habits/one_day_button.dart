@@ -126,8 +126,8 @@ class OneDayButton extends StatelessWidget {
                     if (value.key == const Key('Check') ||
                         value.key == const Key('Fail') ||
                         value.key == const Key('Skip')) {
-                      Provider.of<HabitsManager>(context, listen: false).addEvent(
-                          id, date, [
+                      Provider.of<HabitsManager>(context, listen: false)
+                          .addEvent(id, date, [
                         DayType.values[icons
                             .indexWhere((element) => element.key == value.key)],
                         comment
@@ -144,6 +144,9 @@ class OneDayButton extends StatelessWidget {
                       } else {
                         Provider.of<SettingsManager>(context, listen: false)
                             .playClickSound();
+                        if (value.key == const Key('Fail')) {
+                          parent.showSanctionNotification(date);
+                        }
                       }
                     } else if (value.key == const Key('Comment')) {
                       showCommentDialog(context, index, comment);

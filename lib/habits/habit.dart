@@ -35,6 +35,9 @@ class Habit extends StatefulWidget {
       "advanced": habitData.advanced ? 1 : 0,
       "notification": habitData.notification ? 1 : 0,
       "notTime": "${habitData.notTime.hour}:${habitData.notTime.minute}",
+      "sanction": habitData.sanction,
+      "showSanction": habitData.showSanction ? 1 : 0,
+      "accountant": habitData.accountant,
     };
   }
 
@@ -54,6 +57,9 @@ class Habit extends StatefulWidget {
       "events": habitData.events.map((key, value) {
         return MapEntry(key.toString(), [value[0].toString(), value[1]]);
       }),
+      "sanction": habitData.sanction,
+      "showSanction": habitData.showSanction ? 1 : 0,
+      "accountant": habitData.accountant,
     };
   }
 
@@ -71,6 +77,9 @@ class Habit extends StatefulWidget {
           notification: json['notification'] != 0 ? true : false,
           notTime: parseTimeOfDay(json['notTime']),
           events: doEvents(json['events']),
+          sanction: json['sanction'] ?? "",
+          showSanction: (json['showSanction'] ?? 0) != 0 ? true : false,
+          accountant: json['accountant'] ?? "",
         );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
@@ -78,9 +87,7 @@ class Habit extends StatefulWidget {
 
     input.forEach((key, value) {
       result[DateTime.parse(key)] = [
-        DayType.values.firstWhere((e) =>
-          e.toString() == reformatOld(value[0])
-        ),
+        DayType.values.firstWhere((e) => e.toString() == reformatOld(value[0])),
         value[1]
       ];
     });
@@ -88,8 +95,7 @@ class Habit extends StatefulWidget {
   }
 
   // To be compatible with older version backup
-  static String reformatOld(String value)
-  {
+  static String reformatOld(String value) {
     var all = value.split('.');
     return "${all[0]}.${all[1].toLowerCase()}";
   }
@@ -149,6 +155,30 @@ class HabitState extends State<Habit> {
             style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  showSanctionNotification(date) {
+    if (isSameDay(date, DateTime.now()) &&
+        widget.habitData.showSanction &&
+        widget.habitData.sanction != "") {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          content: Text(
+            "Oh no! Your sanction:\n${widget.habitData.sanction}",
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor:
+              Provider.of<SettingsManager>(context, listen: false).failColor,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -298,9 +328,11 @@ class HabitState extends State<Habit> {
                         ? Provider.of<SettingsManager>(context, listen: false)
                             .checkColor
                         : events[0] == DayType.fail
-                            ? Provider.of<SettingsManager>(context, listen: false)
+                            ? Provider.of<SettingsManager>(context,
+                                    listen: false)
                                 .failColor
-                            : Provider.of<SettingsManager>(context, listen: false)
+                            : Provider.of<SettingsManager>(context,
+                                    listen: false)
                                 .skipColor,
                     borderRadius: BorderRadius.circular(10.0),
                   ),

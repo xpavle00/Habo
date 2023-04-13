@@ -30,11 +30,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   TextEditingController cue = TextEditingController();
   TextEditingController routine = TextEditingController();
   TextEditingController reward = TextEditingController();
+  TextEditingController sanction = TextEditingController();
+  TextEditingController accountant = TextEditingController();
   TimeOfDay notTime = const TimeOfDay(hour: 12, minute: 0);
   bool twoDayRule = false;
   bool showReward = false;
   bool advanced = false;
   bool notification = false;
+  bool showSanction = false;
 
   Future<void> setNotificationTime(context) async {
     TimeOfDay? selectedTime;
@@ -61,6 +64,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       advanced = widget.habitData!.advanced;
       notification = widget.habitData!.notification;
       notTime = widget.habitData!.notTime;
+      sanction.text = widget.habitData!.sanction;
+      showSanction = widget.habitData!.showSanction;
+      accountant.text = widget.habitData!.accountant;
     }
   }
 
@@ -70,6 +76,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     cue.dispose();
     routine.dispose();
     reward.dispose();
+    sanction.dispose();
+    accountant.dispose();
     super.dispose();
   }
 
@@ -120,6 +128,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     notTime: notTime,
                     position: widget.habitData!.position,
                     events: widget.habitData!.events,
+                    sanction: sanction.text.toString(),
+                    showSanction: showSanction,
+                    accountant: accountant.text.toString(),
                   ),
                 );
               } else {
@@ -133,6 +144,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   advanced,
                   notification,
                   notTime,
+                  sanction.text.toString(),
+                  showSanction,
+                  accountant.text.toString(),
                 );
               }
               Navigator.of(context).pop();
@@ -184,7 +198,6 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       const Padding(
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: Tooltip(
-                          triggerMode: TooltipTriggerMode.tap,
                           message:
                               "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
                           child: Icon(
@@ -218,7 +231,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       child: const Center(
                         child: Text(
                           "This section helps you better define your habits. You should define cue, routine, and reward for every habit.",
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                         ),
                       ),
                     ),
@@ -285,7 +298,6 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           const Padding(
                             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                             child: Tooltip(
-                              triggerMode: TooltipTriggerMode.tap,
                               message:
                                   "The remainder of the reward after a successful routine.",
                               child: Icon(
@@ -299,8 +311,69 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ],
                       ),
                     ),
+                    const ListTile(
+                      title: Text(
+                        "Habit contract",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Center(
+                        child: Text(
+                          "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountant who helps supervise your goals.",
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
                     const SizedBox(
-                      height: 50,
+                      height: 10,
+                    ),
+                    TextContainer(
+                      title: sanction,
+                      hint: 'Donate 10\$ to charity',
+                      label: 'Sanction',
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Checkbox(
+                            onChanged: (bool? value) {
+                              setState(() {
+                                showSanction = value!;
+                              });
+                            },
+                            value: showSanction,
+                          ),
+                          const Text("Show sanction"),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Tooltip(
+                              message:
+                                  "The remainder of the sanction after a unsuccessful routine.",
+                              child: Icon(
+                                Icons.info,
+                                semanticLabel: 'Tooltip',
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextContainer(
+                      title: accountant,
+                      hint: 'Dan',
+                      label: 'Accountant',
+                    ),
+                    const SizedBox(
+                      height: 110,
                     ),
                   ],
                 )
