@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +66,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _packageInfo = info;
     });
   }
+
+  bool _platformSupportsFileDialogs() => Platform.isAndroid || Platform.isIOS;
 
   showRestoreDialog(BuildContext context) {
     AwesomeDialog(
@@ -269,33 +273,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          MaterialButton(
-                            onPressed: () async {
-                              Provider.of<HabitsManager>(context, listen: false)
-                                  .createBackup();
-                            },
-                            child: const Text(
-                              'Create',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline),
+                          if (_platformSupportsFileDialogs())
+                            MaterialButton(
+                              onPressed: () async {
+                                Provider.of<HabitsManager>(context,
+                                        listen: false)
+                                    .createBackup();
+                              },
+                              child: const Text(
+                                'Create',
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline),
+                              ),
                             ),
-                          ),
-                          const VerticalDivider(
-                            thickness: 1,
-                            indent: 20,
-                            endIndent: 20,
-                            color: Colors.grey,
-                          ),
-                          MaterialButton(
-                            onPressed: () async {
-                              showRestoreDialog(context);
-                            },
-                            child: const Text(
-                              'Restore',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline),
+                          if (_platformSupportsFileDialogs())
+                            const VerticalDivider(
+                              thickness: 1,
+                              indent: 20,
+                              endIndent: 20,
+                              color: Colors.grey,
                             ),
-                          ),
+                          if (_platformSupportsFileDialogs())
+                            MaterialButton(
+                              onPressed: () async {
+                                showRestoreDialog(context);
+                              },
+                              child: const Text(
+                                'Restore',
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
                         ],
                       ),
                     ),
