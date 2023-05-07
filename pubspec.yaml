@@ -48,6 +48,9 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
+  macos:
+    generate: true
+    image_path: "assets/images/macos_icon.png"
 
 flutter:
 
