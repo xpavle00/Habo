@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:habo/habits/calendar_column.dart';
 import 'package:habo/habits/habits_manager.dart';
@@ -29,9 +30,11 @@ class _HabitsScreenState extends State<HabitsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 0), () async {
-      showNotificationDialog(context);
-    });
+    if (platformSupportsNotifications()) {
+      Future.delayed(const Duration(seconds: 0), () async {
+        showNotificationDialog(context);
+      });
+    }
   }
 
   @override

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+
+bool platformSupportsNotifications() => Platform.isAndroid || Platform.isIOS;
 
 void initializeNotifications() {
   AwesomeNotifications().initialize(
@@ -48,7 +52,9 @@ void setHabitNotification(
 }
 
 void disableHabitNotification(int id) {
-  AwesomeNotifications().cancel(id);
+  if (platformSupportsNotifications()) {
+    AwesomeNotifications().cancel(id);
+  }
 }
 
 void disableAppNotification() {
@@ -57,25 +63,27 @@ void disableAppNotification() {
 
 Future<void> _setupDailyNotification(int id, TimeOfDay timeOfDay, String title,
     String desc, String channel) async {
-  String localTimeZone =
-      await AwesomeNotifications().getLocalTimeZoneIdentifier();
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: id,
-      channelKey: channel,
-      title: title,
-      body: desc,
-      wakeUpScreen: true,
-      criticalAlert: true,
-      category: NotificationCategory.Reminder,
-    ),
-    schedule: NotificationCalendar(
-        hour: timeOfDay.hour,
-        minute: timeOfDay.minute,
-        second: 0,
-        millisecond: 0,
-        repeats: true,
-        preciseAlarm: true,
-        timeZone: localTimeZone),
-  );
+  if (platformSupportsNotifications()) {
+    String localTimeZone =
+        await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: id,
+        channelKey: channel,
+        title: title,
+        body: desc,
+        wakeUpScreen: true,
+        criticalAlert: true,
+        category: NotificationCategory.Reminder,
+      ),
+      schedule: NotificationCalendar(
+          hour: timeOfDay.hour,
+          minute: timeOfDay.minute,
+          second: 0,
+          millisecond: 0,
+          repeats: true,
+          preciseAlarm: true,
+          timeZone: localTimeZone),
+    );
+  }
 }

@@ -33,7 +33,9 @@ class _HaboState extends State<Habo> {
   void initState() {
     _settingsManager.initialize();
     _habitManager.initialize();
-    initializeNotifications();
+    if (platformSupportsNotifications()) {
+      initializeNotifications();
+    }
     GoogleFonts.config.allowRuntimeFetching = false;
     _appRouter = AppRouter(
       appStateManager: _appStateManager,
