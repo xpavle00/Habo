@@ -7,6 +7,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/navigation/routes.dart';
+import 'package:habo/notifications.dart';
 import 'package:habo/settings/color_icon.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -167,41 +168,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                     ),
-                    ListTile(
-                      title: const Text("Notifications"),
-                      trailing: Switch(
-                        value: Provider.of<SettingsManager>(context)
-                            .getShowDailyNot,
-                        onChanged: (value) async {
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .setShowDailyNot = value;
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      enabled:
-                          Provider.of<SettingsManager>(context).getShowDailyNot,
-                      title: const Text("Notification time"),
-                      trailing: InkWell(
-                        onTap: () {
-                          if (Provider.of<SettingsManager>(context,
-                                  listen: false)
-                              .getShowDailyNot) {
-                            testTime(context);
-                          }
-                        },
-                        child: Text(
-                          "${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}"
-                          ":"
-                          "${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}",
-                          style: TextStyle(
-                              color: (Provider.of<SettingsManager>(context)
-                                      .getShowDailyNot)
-                                  ? null
-                                  : Theme.of(context).disabledColor),
+                    if (platformSupportsNotifications())
+                      ListTile(
+                        title: const Text("Notifications"),
+                        trailing: Switch(
+                          value: Provider.of<SettingsManager>(context)
+                              .getShowDailyNot,
+                          onChanged: (value) async {
+                            Provider.of<SettingsManager>(context, listen: false)
+                                .setShowDailyNot = value;
+                          },
                         ),
                       ),
-                    ),
+                    if (platformSupportsNotifications())
+                      ListTile(
+                        enabled: Provider.of<SettingsManager>(context)
+                            .getShowDailyNot,
+                        title: const Text("Notification time"),
+                        trailing: InkWell(
+                          onTap: () {
+                            if (Provider.of<SettingsManager>(context,
+                                    listen: false)
+                                .getShowDailyNot) {
+                              testTime(context);
+                            }
+                          },
+                          child: Text(
+                            "${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}"
+                            ":"
+                            "${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}",
+                            style: TextStyle(
+                                color: (Provider.of<SettingsManager>(context)
+                                        .getShowDailyNot)
+                                    ? null
+                                    : Theme.of(context).disabledColor),
+                          ),
+                        ),
+                      ),
                     ListTile(
                       title: const Text("Sound effects"),
                       trailing: Switch(

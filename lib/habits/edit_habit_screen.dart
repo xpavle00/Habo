@@ -3,6 +3,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/navigation/routes.dart';
+import 'package:habo/notifications.dart';
 import 'package:habo/widgets/text_container.dart';
 import 'package:provider/provider.dart';
 
@@ -240,37 +241,39 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       hint: 'At 7:00AM',
                       label: 'Cue',
                     ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 25),
-                      title: const Text("Notifications"),
-                      trailing: Switch(
-                          value: notification,
-                          onChanged: (value) {
-                            notification = value;
-                            setState(() {});
-                          }),
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 25),
-                      enabled: notification,
-                      title: const Text("Notification time"),
-                      trailing: InkWell(
-                        onTap: () {
-                          if (notification) {
-                            setNotificationTime(context);
-                          }
-                        },
-                        child: Text(
-                          "${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}",
-                          style: TextStyle(
-                              color: (notification)
-                                  ? null
-                                  : Theme.of(context).disabledColor),
+                    if (platformSupportsNotifications())
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 25),
+                        title: const Text("Notifications"),
+                        trailing: Switch(
+                            value: notification,
+                            onChanged: (value) {
+                              notification = value;
+                              setState(() {});
+                            }),
+                      ),
+                    if (platformSupportsNotifications())
+                      ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 25),
+                        enabled: notification,
+                        title: const Text("Notification time"),
+                        trailing: InkWell(
+                          onTap: () {
+                            if (notification) {
+                              setNotificationTime(context);
+                            }
+                          },
+                          child: Text(
+                            "${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}",
+                            style: TextStyle(
+                                color: (notification)
+                                    ? null
+                                    : Theme.of(context).disabledColor),
+                          ),
                         ),
                       ),
-                    ),
                     TextContainer(
                       title: routine,
                       hint: 'Do 50 push ups',
