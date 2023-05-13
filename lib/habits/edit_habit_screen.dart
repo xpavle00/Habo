@@ -327,7 +327,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: const Center(
                         child: Text(
-                          "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountant who helps supervise your goals.",
+                          "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.",
                           textAlign: TextAlign.left,
                         ),
                       ),
@@ -373,7 +373,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     TextContainer(
                       title: accountant,
                       hint: 'Dan',
-                      label: 'Accountant',
+                      label: 'Accountability partner',
                     ),
                     const SizedBox(
                       height: 110,
