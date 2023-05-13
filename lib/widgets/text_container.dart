@@ -33,6 +33,7 @@ class TextContainer extends StatelessWidget {
         maxLines: 1,
         maxLength: 120,
         textAlignVertical: TextAlignVertical.bottom,
+        textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(11),
           border: InputBorder.none,
