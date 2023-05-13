@@ -7,6 +7,7 @@ import 'package:habo/habits/in_button.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class OneDayButton extends StatelessWidget {
   OneDayButton(
@@ -37,8 +38,13 @@ class OneDayButton extends StatelessWidget {
         text: child ??
             Text(
               date.day.toString(),
-              style:
-                  TextStyle(color: (date.weekday > 5) ? Colors.red[300] : null),
+              style: TextStyle(
+                color: (date.weekday > 5) ? Colors.red[300] : null,
+                fontWeight: (isSameDay(date, DateTime.now()))
+                    ? FontWeight.w900
+                    : FontWeight.normal,
+                fontSize: (isSameDay(date, DateTime.now())) ? 17 : null,
+              ),
               textAlign: TextAlign.center,
             ),
       ),
