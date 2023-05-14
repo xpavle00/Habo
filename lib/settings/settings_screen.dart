@@ -69,6 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   showRestoreDialog(BuildContext context) {
     AwesomeDialog(
       context: context,
+      dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
       dialogType: DialogType.warning,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,

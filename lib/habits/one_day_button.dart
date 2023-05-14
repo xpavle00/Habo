@@ -183,6 +183,7 @@ class OneDayButton extends StatelessWidget {
         TextEditingController(text: comment);
     AwesomeDialog(
       context: context,
+      dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
       dialogType: DialogType.noHeader,
       animType: AnimType.bottomSlide,
       body: Center(
