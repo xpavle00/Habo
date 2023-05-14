@@ -19,20 +19,20 @@ class Onboarding extends StatelessWidget {
         semanticsLabel: 'Empty list',
         width: 250,
       ),
-      bodyWidget: Center(
+      bodyWidget: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text(
+              Text(
                 'To better stick to your habits, you can define:',
                 style: TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     '1. Cue',
                     style: TextStyle(fontSize: 18),
@@ -64,15 +64,15 @@ class Onboarding extends StatelessWidget {
         semanticsLabel: 'Empty list',
         width: 250,
       ),
-      bodyWidget: Center(
+      bodyWidget: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.check,
                     color: HaboColors.primary,
@@ -86,10 +86,10 @@ class Onboarding extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.close,
                     color: HaboColors.red,
@@ -103,10 +103,10 @@ class Onboarding extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.last_page,
                     color: HaboColors.skip,
@@ -120,10 +120,10 @@ class Onboarding extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(
                     Icons.chat_bubble_outline,
                     color: HaboColors.orange,
