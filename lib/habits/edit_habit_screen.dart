@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
@@ -50,6 +51,84 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
         notTime = selectedTime!;
       });
     }
+  }
+
+  void showSmallTooltip(BuildContext context, String title, String desc) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      title: title,
+      desc: desc,
+    ).show();
+  }
+
+  void showAdvancedTooltip(BuildContext context) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 28),
+        child: Column(
+          children: [
+            const Text(
+              "Habit loop",
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: const <TextSpan>[
+                  TextSpan(
+                    text:
+                        'Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n',
+                  ),
+                  TextSpan(
+                    text: 'Cue',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text:
+                        ' is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n',
+                  ),
+                  TextSpan(
+                    text: 'Routine',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text:
+                        ' is the action you take in response to the cue. This is the habit itself.\n\n',
+                  ),
+                  TextSpan(
+                    text: 'Reward',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text:
+                        ' is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).show();
   }
 
   @override
@@ -172,219 +251,244 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
           ),
         );
       }),
-      body: Builder(builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                TextContainer(
-                  title: title,
-                  hint: 'Exercise',
-                  label: 'Habit',
-                ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Checkbox(
-                        onChanged: (bool? value) {
-                          setState(() {
-                            twoDayRule = value!;
-                          });
-                        },
-                        value: twoDayRule,
-                      ),
-                      const Text("Use Two day rule"),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: Tooltip(
-                          message:
-                              "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
-                          child: Icon(
+      body: Builder(
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  TextContainer(
+                    title: title,
+                    hint: 'Exercise',
+                    label: 'Habit',
+                  ),
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Checkbox(
+                          onChanged: (bool? value) {
+                            setState(() {
+                              twoDayRule = value!;
+                            });
+                          },
+                          value: twoDayRule,
+                        ),
+                        const Text("Use Two day rule"),
+                        IconButton(
+                          onPressed: () {
+                            showSmallTooltip(context, "Two day rule",
+                                "With two day rule, you can miss one day and do not lose a streak if the next day is successful.");
+                          },
+                          icon: const Icon(
                             Icons.info,
                             color: Colors.grey,
                             size: 20,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                ExpansionTile(
-                  title: const Padding(
-                    padding: EdgeInsets.all(7.0),
-                    child: Text(
-                      "Advanced habit building",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      ],
                     ),
                   ),
-                  initiallyExpanded: advanced,
-                  onExpansionChanged: (bool value) {
-                    advanced = value;
-                  },
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: const Center(
-                        child: Text(
-                          "This section helps you better define your habits. You should define cue, routine, and reward for every habit.",
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                    TextContainer(
-                      title: cue,
-                      hint: 'At 7:00AM',
-                      label: 'Cue',
-                    ),
-                    if (platformSupportsNotifications())
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 25),
-                        title: const Text("Notifications"),
-                        trailing: Switch(
-                            value: notification,
-                            onChanged: (value) {
-                              notification = value;
-                              setState(() {});
-                            }),
-                      ),
-                    if (platformSupportsNotifications())
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 25),
-                        enabled: notification,
-                        title: const Text("Notification time"),
-                        trailing: InkWell(
-                          onTap: () {
-                            if (notification) {
-                              setNotificationTime(context);
-                            }
-                          },
-                          child: Text(
-                            "${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}",
-                            style: TextStyle(
-                                color: (notification)
-                                    ? null
-                                    : Theme.of(context).disabledColor),
-                          ),
-                        ),
-                      ),
-                    TextContainer(
-                      title: routine,
-                      hint: 'Do 50 push ups',
-                      label: 'Routine',
-                    ),
-                    TextContainer(
-                      title: reward,
-                      hint: '15 min. of video games',
-                      label: 'Reward',
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 20),
-                      child: Row(
-                        children: <Widget>[
-                          Checkbox(
-                            onChanged: (bool? value) {
-                              setState(() {
-                                showReward = value!;
-                              });
-                            },
-                            value: showReward,
-                          ),
-                          const Text("Show reward"),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Tooltip(
-                              message:
-                                  "The remainder of the reward after a successful routine.",
-                              child: Icon(
-                                Icons.info,
-                                semanticLabel: 'Tooltip',
-                                color: Colors.grey,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const ListTile(
-                      title: Text(
-                        "Habit contract",
+                  ExpansionTile(
+                    title: const Padding(
+                      padding: EdgeInsets.all(7.0),
+                      child: Text(
+                        "Advanced habit building",
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: const Center(
-                        child: Text(
-                          "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.",
-                          textAlign: TextAlign.left,
+                    initiallyExpanded: advanced,
+                    onExpansionChanged: (bool value) {
+                      advanced = value;
+                    },
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(
+                          child: RichText(
+                            text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: [
+                                const TextSpan(
+                                    text:
+                                        "This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit."),
+                                WidgetSpan(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showAdvancedTooltip(context);
+                                      },
+                                      child: const Icon(
+                                        Icons.info,
+                                        color: Colors.grey,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextContainer(
-                      title: sanction,
-                      hint: 'Donate 10\$ to charity',
-                      label: 'Sanction',
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 20),
-                      child: Row(
-                        children: <Widget>[
-                          Checkbox(
-                            onChanged: (bool? value) {
-                              setState(() {
-                                showSanction = value!;
-                              });
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextContainer(
+                        title: cue,
+                        hint: 'At 7:00AM',
+                        label: 'Cue',
+                      ),
+                      if (platformSupportsNotifications())
+                        ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 25),
+                          title: const Text("Notifications"),
+                          trailing: Switch(
+                            value: notification,
+                            onChanged: (value) {
+                              notification = value;
+                              setState(() {});
                             },
-                            value: showSanction,
                           ),
-                          const Text("Show sanction"),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Tooltip(
-                              message:
-                                  "The remainder of the sanction after a unsuccessful routine.",
-                              child: Icon(
+                        ),
+                      if (platformSupportsNotifications())
+                        ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 25),
+                          enabled: notification,
+                          title: const Text("Notification time"),
+                          trailing: InkWell(
+                            onTap: () {
+                              if (notification) {
+                                setNotificationTime(context);
+                              }
+                            },
+                            child: Text(
+                              "${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}",
+                              style: TextStyle(
+                                  color: (notification)
+                                      ? null
+                                      : Theme.of(context).disabledColor),
+                            ),
+                          ),
+                        ),
+                      TextContainer(
+                        title: routine,
+                        hint: 'Do 50 push ups',
+                        label: 'Routine',
+                      ),
+                      TextContainer(
+                        title: reward,
+                        hint: '15 min. of video games',
+                        label: 'Reward',
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        child: Row(
+                          children: <Widget>[
+                            Checkbox(
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  showReward = value!;
+                                });
+                              },
+                              value: showReward,
+                            ),
+                            const Text("Show reward"),
+                            IconButton(
+                              onPressed: () {
+                                showSmallTooltip(context, "Show reward",
+                                    "The remainder of the reward after a successful routine.");
+                              },
+                              icon: const Icon(
                                 Icons.info,
-                                semanticLabel: 'Tooltip',
                                 color: Colors.grey,
                                 size: 20,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    TextContainer(
-                      title: accountant,
-                      hint: 'Dan',
-                      label: 'Accountability partner',
-                    ),
-                    const SizedBox(
-                      height: 110,
-                    ),
-                  ],
-                )
-              ],
+                      const ListTile(
+                        title: Text(
+                          "Habit contract",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Center(
+                          child: Text(
+                            "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextContainer(
+                        title: sanction,
+                        hint: 'Donate 10\$ to charity',
+                        label: 'Sanction',
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        child: Row(
+                          children: <Widget>[
+                            Checkbox(
+                              onChanged: (bool? value) {
+                                setState(
+                                  () {
+                                    showSanction = value!;
+                                  },
+                                );
+                              },
+                              value: showSanction,
+                            ),
+                            const Text("Show sanction"),
+                            IconButton(
+                              onPressed: () {
+                                showSmallTooltip(context, "Show sanction",
+                                    "The remainder of the sanction after a unsuccessful routine.");
+                              },
+                              icon: const Icon(
+                                Icons.info,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      TextContainer(
+                        title: accountant,
+                        hint: 'Dan',
+                        label: 'Accountability partner',
+                      ),
+                      const SizedBox(
+                        height: 110,
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
