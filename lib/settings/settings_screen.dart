@@ -135,9 +135,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
-                      title: Row(
+                      title: const Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           Text("First day of the week"),
                           SizedBox(width: 5),
                         ],
@@ -305,7 +305,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ListTile(
                       title: const Text("Onboarding"),
                       onTap: () {
-                        // navigateToOnboarding(context);
                         Provider.of<AppStateManager>(context, listen: false)
                             .goOnboarding(true);
                       },
