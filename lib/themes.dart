@@ -25,6 +25,7 @@ class HaboTheme {
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
           systemNavigationBarColor: Color(0xFFFAFAFA),
           systemNavigationBarDividerColor: Color(0xFFFAFAFA),
           systemNavigationBarIconBrightness: Brightness.dark,
@@ -57,6 +58,7 @@ class HaboTheme {
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
           systemNavigationBarColor: Color(0xFF303030),
           systemNavigationBarDividerColor: Color(0xFF303030),
           systemNavigationBarIconBrightness: Brightness.light,
