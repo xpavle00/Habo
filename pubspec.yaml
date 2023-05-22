@@ -26,6 +26,7 @@ dependencies:
   path: ^1.8.2
   fl_chart: ^0.55.2
   just_audio: ^0.9.30
+  just_audio_mpv: ^0.1.6
   flutter_file_dialog: ^2.3.2
   file_picker: ^5.2.9
   path_provider: ^2.0.11
