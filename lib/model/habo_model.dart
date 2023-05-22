@@ -1,15 +1,19 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/model/habit_data.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
+  static const _dbVersion = 3;
   late Database db;
 
   Future<void> deleteEvent(int id, DateTime dateTime) async {
@@ -131,7 +135,8 @@ class HaboModel {
 
   void _updateTableHabitsV2toV3(Batch batch) {
     batch.execute('ALTER TABLE habits ADD sanction TEXT DEFAULT "" NOT NULL');
-    batch.execute('ALTER TABLE habits ADD showSanction INTEGER DEFAULT 0 NOT NULL');
+    batch.execute(
+        'ALTER TABLE habits ADD showSanction INTEGER DEFAULT 0 NOT NULL');
     batch.execute('ALTER TABLE habits ADD accountant TEXT DEFAULT "" NOT NULL');
   }
 
@@ -172,31 +177,51 @@ class HaboModel {
   }
 
   Future<void> initDatabase() async {
-    var databasesPath = await getDatabasesPath();
+    final databasesPath = Platform.isLinux
+        ? (await getApplicationSupportDirectory()).path
+        : await getDatabasesPath();
+
     if (kDebugMode) {
       print(databasesPath);
     }
-    db = await openDatabase(
-      join(await getDatabasesPath(), 'habo_db0.db'),
-      version: 3,
-      onCreate: (db, version) {
-        var batch = db.batch();
-        _createTableHabitsV3(batch);
-        _createTableEventsV3(batch);
-        batch.commit();
-      },
-      onUpgrade: (db, oldVersion, newVersion) {
-        var batch = db.batch();
-        if (oldVersion == 1) {
-          _updateTableEventsV1toV2(batch);
-          _updateTableHabitsV2toV3(batch);
-        }
-        if (oldVersion == 2) {
-          _updateTableHabitsV2toV3(batch);
-        }
-        batch.commit();
-      },
-    );
+
+    final databaseFilePath = join(databasesPath, 'habo_db0.db');
+
+    if (Platform.isLinux) {
+      ffi.sqfliteFfiInit();
+      db = await ffi.databaseFactoryFfi.openDatabase(databaseFilePath,
+          options: OpenDatabaseOptions(
+            version: _dbVersion,
+            onCreate: _onCreate,
+            onUpgrade: _onUpgrade,
+          ));
+    } else {
+      db = await openDatabase(
+        databaseFilePath,
+        version: _dbVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+      );
+    }
+  }
+
+  void _onCreate(db, version) {
+    var batch = db.batch();
+    _createTableHabitsV3(batch);
+    _createTableEventsV3(batch);
+    batch.commit();
+  }
+
+  void _onUpgrade(db, oldVersion, newVersion) {
+    var batch = db.batch();
+    if (oldVersion == 1) {
+      _updateTableEventsV1toV2(batch);
+      _updateTableHabitsV2toV3(batch);
+    }
+    if (oldVersion == 2) {
+      _updateTableHabitsV2toV3(batch);
+    }
+    batch.commit();
   }
 
   Future<void> insertEvent(int id, DateTime date, List event) async {
