@@ -1,8 +1,10 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/model/backup.dart';
@@ -47,14 +49,24 @@ class HabitsManager extends ChangeNotifier {
     _scaffoldKey.currentState!.hideCurrentSnackBar();
   }
 
-  createBackup() async {
+  void createBackup() async {
     try {
-      var file = await Backup.writeBackup(allHabits);
-      final params = SaveFileDialogParams(
-        sourceFilePath: file.path,
-        mimeTypesFilter: ['application/json'],
-      );
-      await FlutterFileDialog.saveFile(params: params);
+      final file = await Backup.writeBackup(allHabits);
+      if (Platform.isAndroid || Platform.isIOS) {
+        final params = SaveFileDialogParams(
+          sourceFilePath: file.path,
+          mimeTypesFilter: ['application/json'],
+        );
+        await FlutterFileDialog.saveFile(params: params);
+      } else {
+        final outputFile = await FilePicker.platform.saveFile(
+          dialogTitle: "",
+          fileName: file.path.split("/").last,
+        );
+        if (outputFile != null) {
+          await file.copy(outputFile);
+        }
+      }
     } catch (e) {
       showErrorMessage('ERROR: Creating backup failed.');
     }
@@ -62,11 +74,22 @@ class HabitsManager extends ChangeNotifier {
 
   loadBackup() async {
     try {
-      const params = OpenFileDialogParams(
-        fileExtensionsFilter: ['json'],
-        mimeTypesFilter: ['application/json'],
-      );
-      final filePath = await FlutterFileDialog.pickFile(params: params);
+      final String? filePath;
+      if (Platform.isAndroid || Platform.isIOS) {
+        const params = OpenFileDialogParams(
+          fileExtensionsFilter: ['json'],
+          mimeTypesFilter: ['application/json'],
+        );
+        filePath = await FlutterFileDialog.pickFile(params: params);
+      } else {
+        filePath = (await FilePicker.platform.pickFiles(
+                type: FileType.any,
+                allowMultiple: false,
+                withReadStream: Platform.isLinux))
+            ?.files
+            .first
+            .path;
+      }
       if (filePath == null) {
         return;
       }
