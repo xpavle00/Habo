@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,7 @@ import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:window_size/window_size.dart';
 
 void main() {
   addLicenses();
@@ -31,6 +34,11 @@ class _HaboState extends State<Habo> {
 
   @override
   void initState() {
+    if (Platform.isLinux || Platform.isMacOS) {
+      // setWindowTitle('Habo!!!');
+      setWindowMinSize(const Size(320, 320));
+      setWindowMaxSize(Size.infinite);
+    }
     _settingsManager.initialize();
     _habitManager.initialize();
     if (platformSupportsNotifications()) {
