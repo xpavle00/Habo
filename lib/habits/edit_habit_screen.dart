@@ -56,7 +56,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   void showSmallTooltip(BuildContext context, String title, String desc) {
     AwesomeDialog(
       context: context,
-      dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      dialogBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
@@ -68,7 +68,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   void showAdvancedTooltip(BuildContext context) {
     AwesomeDialog(
       context: context,
-      dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      dialogBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
