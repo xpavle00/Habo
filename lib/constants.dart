@@ -16,7 +16,7 @@ List<String> months = [
   "December",
 ];
 
-enum Themes { device, light, dark }
+enum Themes { device, light, dark, oled }
 
 enum DayType { clear, check, fail, skip }
 

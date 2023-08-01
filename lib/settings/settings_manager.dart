@@ -68,18 +68,32 @@ class SettingsManager extends ChangeNotifier {
   }
 
   ThemeData get getDark {
-    if (_settingsData.theme != Themes.light) {
-      return HaboTheme.darkTheme;
-    } else {
-      return HaboTheme.lightTheme;
+    switch (_settingsData.theme) {
+      case Themes.device:
+        return HaboTheme.darkTheme;
+      case Themes.light:
+        return HaboTheme.lightTheme;
+      case Themes.dark:
+        return HaboTheme.darkTheme;
+      case Themes.oled:
+        return HaboTheme.oledTheme;
+      default:
+        return HaboTheme.darkTheme;
     }
   }
 
   ThemeData get getLight {
-    if (_settingsData.theme != Themes.dark) {
-      return HaboTheme.lightTheme;
-    } else {
-      return HaboTheme.darkTheme;
+    switch (_settingsData.theme) {
+      case Themes.device:
+        return HaboTheme.lightTheme;
+      case Themes.light:
+        return HaboTheme.lightTheme;
+      case Themes.dark:
+        return HaboTheme.darkTheme;
+      case Themes.oled:
+        return HaboTheme.oledTheme;
+      default:
+        return HaboTheme.lightTheme;
     }
   }
 
