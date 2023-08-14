@@ -1,9 +1,9 @@
 PODS:
   - audio_session (0.0.1):
     - Flutter
-  - awesome_notifications (0.7.5-dev.2):
+  - awesome_notifications (0.7.5-dev.3):
     - Flutter
-    - IosAwnCore (= 0.7.5-dev.2)
+    - IosAwnCore (= 0.7.5-dev.3)
   - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -46,7 +46,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - IosAwnCore (0.7.5-dev.2)
+  - IosAwnCore (0.7.5-dev.3)
   - just_audio (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -123,7 +123,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
-  awesome_notifications: b1298b690fcfc25bb885af65056e92cec04ad9c9
+  awesome_notifications: 1b6393d6ce02878dc50d0ae87baf7bdbc9d802a2
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: ce3938a0df3cc1ef404671531facef740d03f920
@@ -131,13 +131,13 @@ SPEC CHECKSUMS:
   flutter_file_dialog: 4c014a45b105709a27391e266c277d7e588e9299
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  IosAwnCore: f91ab77c879277e40e57924c3c9699fafcfc3c02
+  IosAwnCore: edf31913fd18960ebcde7c05912dc860ca2b63b2
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
-  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
-  rive_common: 60ae7896ab40f9513974f36f015de33f70d2c5c5
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  rive_common: 8a159d68033a8b073e5853acc50f03aa486a2888
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
-  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4

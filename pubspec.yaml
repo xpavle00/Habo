@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^4.0.4
+  google_fonts: ^5.1.0
   provider: ^6.0.5
   shared_preferences: ^2.0.15
   table_calendar: ^3.0.9
@@ -24,7 +24,7 @@ dependencies:
   sqflite: ^2.2.8
   sqflite_common_ffi: ^2.2.5
   path: ^1.8.2
-  fl_chart: ^0.62.0
+  fl_chart: ^0.63.0
   just_audio: ^0.9.34
   just_audio_mpv: ^0.1.6
   flutter_file_dialog: ^3.0.1
