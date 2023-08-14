@@ -160,7 +160,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
               borderData: borderData,
               barGroups: barGroups(),
               alignment: BarChartAlignment.spaceAround,
-              gridData: FlGridData(
+              gridData: const FlGridData(
                 show: false,
               ),
               maxY: 31,
@@ -200,13 +200,13 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
           sideTitles: SideTitles(
               showTitles: true, reservedSize: 30, getTitlesWidget: getTitles),
         ),
-        leftTitles: AxisTitles(
+        leftTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
       );
