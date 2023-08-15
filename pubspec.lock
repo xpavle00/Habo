@@ -202,10 +202,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_file_dialog
-      sha256: "5a1507833473b38839056d63c5125750a6d12e904f78131324fa4632504de513"
+      sha256: "9344b8f07be6a1b6f9854b723fb0cf84a8094ba94761af1d213589d3cb087488"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.2"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -380,10 +380,10 @@ packages:
     dependency: "direct main"
     description:
       name: just_audio_mpv
-      sha256: "98ac36712f3fe4fb0cf545f29c250fbd55e52c8445a4b0a4ee0bc9322f192797"
+      sha256: d6e4e9fd20bfb9d2fd5e3dcd7906c90ed07f83d1d2f44f31204160821ab62fed
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.6"
+    version: "0.1.7"
   just_audio_platform_interface:
     dependency: transitive
     description:
@@ -580,18 +580,18 @@ packages:
     dependency: transitive
     description:
       name: rive
-      sha256: ab9754345ad77aee96befadbd6f8907f497d8a76676d7d77e0bf64ae67980e42
+      sha256: b7780ebdc56320da1f02a39a18f050a6079cad60c0cb92003c0801cc4eec6673
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.13"
+    version: "0.11.14"
   rive_common:
     dependency: transitive
     description:
       name: rive_common
-      sha256: f0f277cb5df6f6b40173cdd9cec95a8f3246dcbf63ca97dcc32aac8b575734e0
+      sha256: "1431b99c9f361234cc6fa9aee7987b20030622df25ff64343a4010f9446b275e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5"
+    version: "0.2.6"
   rxdart:
     dependency: transitive
     description:
@@ -620,10 +620,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_foundation
-      sha256: f39696b83e844923b642ce9dd4bd31736c17e697f6731a5adf445b1274cf3cd4
+      sha256: d29753996d8eb8f7619a1f13df6ce65e34bc107bef6330739ed76f18b22310ef
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -697,10 +697,10 @@ packages:
     dependency: "direct main"
     description:
       name: sqflite_common_ffi
-      sha256: "8e3b8fc8bc53e1eac87a80a255a1fb88549359aafcfb58107402c69bf0b88828"
+      sha256: "0d5cc1be2eb18400ac6701c31211d44164393aa75886093002ecdd947be04f93"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.0+2"
   sqlite3:
     dependency: transitive
     description:
