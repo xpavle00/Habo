@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdk flutter.compileSdkVersion
-    ndkVersion "25.2.9519653"
+    ndkVersion '25.1.8937393'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -56,6 +56,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        ndk { abiFilters "arm64-v8a", "armeabi-v7a", "x86_64" }
     }
 
     signingConfigs {
