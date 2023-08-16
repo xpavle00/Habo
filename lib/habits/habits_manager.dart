@@ -61,6 +61,8 @@ class HabitsManager extends ChangeNotifier {
       } else {
         final outputFile = await FilePicker.platform.saveFile(
           dialogTitle: "",
+          type: FileType.custom,
+          allowedExtensions: ['json'],
           fileName: file.path.split("/").last,
         );
         if (outputFile != null) {
@@ -83,7 +85,8 @@ class HabitsManager extends ChangeNotifier {
         filePath = await FlutterFileDialog.pickFile(params: params);
       } else {
         filePath = (await FilePicker.platform.pickFiles(
-                type: FileType.any,
+                type: FileType.custom,
+                allowedExtensions: ['json'],
                 allowMultiple: false,
                 withReadStream: Platform.isLinux))
             ?.files
