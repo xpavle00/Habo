@@ -68,12 +68,16 @@ class _ColorIconState extends State<ColorIcon> {
                           ),
                           actions: <Widget>[
                             ElevatedButton(
-                              style: const ButtonStyle(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                ),
                                 foregroundColor:
-                                    MaterialStatePropertyAll<Color>(
+                                    const MaterialStatePropertyAll<Color>(
                                         Colors.white),
                                 backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
+                                    const MaterialStatePropertyAll<Color>(
                                         Colors.grey),
                               ),
                               child: const Text('Cancel'),
@@ -84,6 +88,10 @@ class _ColorIconState extends State<ColorIcon> {
                             ),
                             ElevatedButton(
                               style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                ),
                                 foregroundColor:
                                     const MaterialStatePropertyAll<Color>(
                                         Colors.white),
@@ -101,12 +109,16 @@ class _ColorIconState extends State<ColorIcon> {
                               child: const Text('Reset'),
                             ),
                             ElevatedButton(
-                              style: const ButtonStyle(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                ),
                                 foregroundColor:
-                                    MaterialStatePropertyAll<Color>(
+                                    const MaterialStatePropertyAll<Color>(
                                         Colors.white),
                                 backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
+                                    const MaterialStatePropertyAll<Color>(
                                         HaboColors.primary),
                               ),
                               child: const Text('Done'),
