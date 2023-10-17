@@ -384,6 +384,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           }
                                         },
                                     ),
+                                    TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                      text: "Source code (GitHub)\n",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final Uri url = Uri.parse(
+                                              'https://github.com/xpavle00/Habo');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                    ),
+                                    TextSpan(
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline),
+                                      text: "Buy me a coffee\n",
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final Uri url = Uri.parse(
+                                              'https://www.buymeacoffee.com/peterpavlenko');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(
+                                              url,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        },
+                                    ),
                                   ],
                                 ),
                               ),
