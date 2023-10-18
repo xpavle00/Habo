@@ -30,7 +30,8 @@ class HabitHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
             child: Text(
-              Provider.of<HabitsManager>(context).getNameOfHabit(widget.habitData.id!),
+              Provider.of<HabitsManager>(context)
+                  .getNameOfHabit(widget.habitData.id!),
               style: const TextStyle(fontSize: 20),
               overflow: TextOverflow.ellipsis,
             ),
@@ -73,7 +74,7 @@ class HabitHeader extends StatelessWidget {
                   ]),
               alignment: Alignment.center,
               child: Text(
-                "$_streak",
+                '$_streak',
                 textAlign: TextAlign.right,
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),

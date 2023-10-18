@@ -48,7 +48,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              "Habo",
+              'Habo',
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
             backgroundColor: Colors.transparent,
@@ -118,10 +118,10 @@ class _HabitsScreenState extends State<HabitsScreen> {
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
-      title: "Notifications",
-      desc: "Habo needs permission to send notifications to work properly.",
-      btnOkText: "Allow",
-      btnCancelText: "Cancel",
+      title: 'Notifications',
+      desc: 'Habo needs permission to send notifications to work properly.',
+      btnOkText: 'Allow',
+      btnCancelText: 'Cancel',
       btnCancelColor: Colors.grey,
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},

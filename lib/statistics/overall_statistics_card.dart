@@ -39,7 +39,7 @@ class OverallStatisticsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          "Habits:",
+                          'Habits:',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class OverallStatisticsCard extends StatelessWidget {
             Icons.check,
             color: Colors.white,
           ),
-          title: "",
+          title: '',
           radius: 25.0,
           titleStyle: const TextStyle(
               fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
@@ -150,7 +150,7 @@ class OverallStatisticsCard extends StatelessWidget {
             Icons.last_page,
             color: Colors.white,
           ),
-          title: "",
+          title: '',
           radius: 25.0,
           titleStyle: const TextStyle(
               fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
@@ -163,7 +163,7 @@ class OverallStatisticsCard extends StatelessWidget {
             Icons.close,
             color: Colors.white,
           ),
-          title: "",
+          title: '',
           radius: 25.0,
           titleStyle: const TextStyle(
               fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),

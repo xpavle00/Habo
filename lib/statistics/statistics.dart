@@ -4,7 +4,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
 
 class StatisticsData {
-  String title = "";
+  String title = '';
   int topStreak = 0;
   int actualStreak = 0;
   int checks = 0;

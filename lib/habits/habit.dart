@@ -24,42 +24,42 @@ class Habit extends StatefulWidget {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": habitData.id,
-      "title": habitData.title,
-      "twoDayRule": habitData.twoDayRule ? 1 : 0,
-      "position": habitData.position,
-      "cue": habitData.cue,
-      "routine": habitData.routine,
-      "reward": habitData.reward,
-      "showReward": habitData.showReward ? 1 : 0,
-      "advanced": habitData.advanced ? 1 : 0,
-      "notification": habitData.notification ? 1 : 0,
-      "notTime": "${habitData.notTime.hour}:${habitData.notTime.minute}",
-      "sanction": habitData.sanction,
-      "showSanction": habitData.showSanction ? 1 : 0,
-      "accountant": habitData.accountant,
+      'id': habitData.id,
+      'title': habitData.title,
+      'twoDayRule': habitData.twoDayRule ? 1 : 0,
+      'position': habitData.position,
+      'cue': habitData.cue,
+      'routine': habitData.routine,
+      'reward': habitData.reward,
+      'showReward': habitData.showReward ? 1 : 0,
+      'advanced': habitData.advanced ? 1 : 0,
+      'notification': habitData.notification ? 1 : 0,
+      'notTime': '${habitData.notTime.hour}:${habitData.notTime.minute}',
+      'sanction': habitData.sanction,
+      'showSanction': habitData.showSanction ? 1 : 0,
+      'accountant': habitData.accountant,
     };
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": habitData.id,
-      "title": habitData.title,
-      "twoDayRule": habitData.twoDayRule ? 1 : 0,
-      "position": habitData.position,
-      "cue": habitData.cue,
-      "routine": habitData.routine,
-      "reward": habitData.reward,
-      "showReward": habitData.showReward ? 1 : 0,
-      "advanced": habitData.advanced ? 1 : 0,
-      "notification": habitData.notification ? 1 : 0,
-      "notTime": "${habitData.notTime.hour}:${habitData.notTime.minute}",
-      "events": habitData.events.map((key, value) {
+      'id': habitData.id,
+      'title': habitData.title,
+      'twoDayRule': habitData.twoDayRule ? 1 : 0,
+      'position': habitData.position,
+      'cue': habitData.cue,
+      'routine': habitData.routine,
+      'reward': habitData.reward,
+      'showReward': habitData.showReward ? 1 : 0,
+      'advanced': habitData.advanced ? 1 : 0,
+      'notification': habitData.notification ? 1 : 0,
+      'notTime': '${habitData.notTime.hour}:${habitData.notTime.minute}',
+      'events': habitData.events.map((key, value) {
         return MapEntry(key.toString(), [value[0].toString(), value[1]]);
       }),
-      "sanction": habitData.sanction,
-      "showSanction": habitData.showSanction ? 1 : 0,
-      "accountant": habitData.accountant,
+      'sanction': habitData.sanction,
+      'showSanction': habitData.showSanction ? 1 : 0,
+      'accountant': habitData.accountant,
     };
   }
 
@@ -77,9 +77,9 @@ class Habit extends StatefulWidget {
           notification: json['notification'] != 0 ? true : false,
           notTime: parseTimeOfDay(json['notTime']),
           events: doEvents(json['events']),
-          sanction: json['sanction'] ?? "",
+          sanction: json['sanction'] ?? '',
           showSanction: (json['showSanction'] ?? 0) != 0 ? true : false,
-          accountant: json['accountant'] ?? "",
+          accountant: json['accountant'] ?? '',
         );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
@@ -97,7 +97,7 @@ class Habit extends StatefulWidget {
   // To be compatible with older version backup
   static String reformatOld(String value) {
     var all = value.split('.');
-    return "${all[0]}.${all[1].toLowerCase()}";
+    return '${all[0]}.${all[1].toLowerCase()}';
   }
 
   void navigateToEditPage(context) {
@@ -113,7 +113,7 @@ class HabitState extends State<Habit> {
   bool _streakVisible = false;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   bool _showMonth = false;
-  String _actualMonth = "";
+  String _actualMonth = '';
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
@@ -141,7 +141,7 @@ class HabitState extends State<Habit> {
   showRewardNotification(date) {
     if (isSameDay(date, DateTime.now()) &&
         widget.habitData.showReward &&
-        widget.habitData.reward != "") {
+        widget.habitData.reward != '') {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -150,7 +150,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            "Congratulation! Your reward:\n${widget.habitData.reward}",
+            'Congratulation! Your reward:\n${widget.habitData.reward}',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -164,7 +164,7 @@ class HabitState extends State<Habit> {
   showSanctionNotification(date) {
     if (isSameDay(date, DateTime.now()) &&
         widget.habitData.showSanction &&
-        widget.habitData.sanction != "") {
+        widget.habitData.sanction != '') {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -173,7 +173,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            "Oh no! Your sanction:\n${widget.habitData.sanction}",
+            'Oh no! Your sanction:\n${widget.habitData.sanction}',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -205,7 +205,7 @@ class HabitState extends State<Habit> {
 
   reloadMonth(DateTime selectedDay) {
     _showMonth = (_calendarFormat == CalendarFormat.month);
-    _actualMonth = "${months[selectedDay.month]} ${selectedDay.year}";
+    _actualMonth = '${months[selectedDay.month]} ${selectedDay.year}';
   }
 
   _onFormatChanged(CalendarFormat format) {
@@ -352,7 +352,7 @@ class HabitState extends State<Habit> {
                             ),
                 )
               : Container(),
-          (events[1] != null && events[1] != "")
+          (events[1] != null && events[1] != '')
               ? Container(
                   alignment: const Alignment(1.0, 1.0),
                   padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 2.0),

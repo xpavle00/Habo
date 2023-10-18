@@ -77,7 +77,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
         child: Column(
           children: [
             const Text(
-              "Habit loop",
+              'Habit loop',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -240,7 +240,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   behavior: SnackBarBehavior.floating,
-                  content: const Text("The habit title can not be empty."),
+                  content: const Text('The habit title can not be empty.'),
                 ),
               );
             }
@@ -277,11 +277,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           },
                           value: twoDayRule,
                         ),
-                        const Text("Use Two day rule"),
+                        const Text('Use Two day rule'),
                         IconButton(
                           onPressed: () {
-                            showSmallTooltip(context, "Two day rule",
-                                "With two day rule, you can miss one day and do not lose a streak if the next day is successful.");
+                            showSmallTooltip(context, 'Two day rule',
+                                'With two day rule, you can miss one day and do not lose a streak if the next day is successful.');
                           },
                           icon: const Icon(
                             Icons.info,
@@ -297,7 +297,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     title: const Padding(
                       padding: EdgeInsets.all(7.0),
                       child: Text(
-                        "Advanced habit building",
+                        'Advanced habit building',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -318,7 +318,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               children: [
                                 const TextSpan(
                                     text:
-                                        "This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit."),
+                                        'This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit.'),
                                 WidgetSpan(
                                   child: Padding(
                                     padding:
@@ -352,7 +352,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ListTile(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 25),
-                          title: const Text("Notifications"),
+                          title: const Text('Notifications'),
                           trailing: Switch(
                             value: notification,
                             onChanged: (value) {
@@ -366,7 +366,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 25),
                           enabled: notification,
-                          title: const Text("Notification time"),
+                          title: const Text('Notification time'),
                           trailing: InkWell(
                             onTap: () {
                               if (notification) {
@@ -374,7 +374,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               }
                             },
                             child: Text(
-                              "${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}",
+                              '${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}',
                               style: TextStyle(
                                   color: (notification)
                                       ? null
@@ -405,11 +405,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               },
                               value: showReward,
                             ),
-                            const Text("Show reward"),
+                            const Text('Show reward'),
                             IconButton(
                               onPressed: () {
-                                showSmallTooltip(context, "Show reward",
-                                    "The remainder of the reward after a successful routine.");
+                                showSmallTooltip(context, 'Show reward',
+                                    'The remainder of the reward after a successful routine.');
                               },
                               icon: const Icon(
                                 Icons.info,
@@ -422,7 +422,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       const ListTile(
                         title: Text(
-                          "Habit contract",
+                          'Habit contract',
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -433,7 +433,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: const Center(
                           child: Text(
-                            "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.",
+                            'While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.',
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -461,11 +461,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               },
                               value: showSanction,
                             ),
-                            const Text("Show sanction"),
+                            const Text('Show sanction'),
                             IconButton(
                               onPressed: () {
-                                showSmallTooltip(context, "Show sanction",
-                                    "The remainder of the sanction after a unsuccessful routine.");
+                                showSmallTooltip(context, 'Show sanction',
+                                    'The remainder of the sanction after a unsuccessful routine.');
                               },
                               icon: const Icon(
                                 Icons.info,

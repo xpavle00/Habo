@@ -185,7 +185,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
             int rodIndex,
           ) {
             return BarTooltipItem(
-              "",
+              '',
               const TextStyle(
                 color: Colors.transparent,
               ),

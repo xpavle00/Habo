@@ -19,7 +19,7 @@ class EmptyStatisticsImage extends StatelessWidget {
                   semanticsLabel: 'Empty list'),
             ),
             const Text(
-              "There are no data about habits.",
+              'There are no data about habits.',
               style: TextStyle(color: Colors.grey),
             ),
           ],

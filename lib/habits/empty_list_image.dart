@@ -26,7 +26,7 @@ class EmptyListImage extends StatelessWidget {
                     semanticsLabel: 'Empty list'),
               ),
               const Text(
-                "Create your first habit.",
+                'Create your first habit.',
                 style: TextStyle(color: Colors.grey),
               ),
             ],

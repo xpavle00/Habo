@@ -84,14 +84,14 @@ class OneDayButton extends StatelessWidget {
     ];
 
     int index = 0;
-    String comment = "";
+    String comment = '';
 
     if (event != null) {
       if (event![0] != 0) {
         index = (event![0].index);
       }
 
-      if (event!.length > 1 && event![1] != null && event![1] != "") {
+      if (event!.length > 1 && event![1] != null && event![1] != '') {
         comment = (event![1]);
       }
     }
@@ -157,7 +157,7 @@ class OneDayButton extends StatelessWidget {
                     } else if (value.key == const Key('Comment')) {
                       showCommentDialog(context, index, comment);
                     } else {
-                      if (comment != "") {
+                      if (comment != '') {
                         Provider.of<HabitsManager>(context, listen: false)
                             .addEvent(id, date, [DayType.clear, comment]);
                         parent.events[date] = [DayType.clear, comment];
@@ -194,7 +194,7 @@ class OneDayButton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Text("Comment"),
+              const Text('Comment'),
               TextField(
                 controller: commentController,
                 autofocus: true,
@@ -204,15 +204,15 @@ class OneDayButton extends StatelessWidget {
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.all(11),
                   border: InputBorder.none,
-                  hintText: "Your comment here",
+                  hintText: 'Your comment here',
                 ),
               ),
             ],
           ),
         ),
       ),
-      btnOkText: "Save",
-      btnCancelText: "Close",
+      btnOkText: 'Save',
+      btnCancelText: 'Close',
       btnCancelColor: Colors.grey,
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
