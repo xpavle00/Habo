@@ -73,10 +73,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       dialogType: DialogType.warning,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
-      title: "Warning",
-      desc: "All habits will be replaced with habits from backup.",
-      btnOkText: "Restore",
-      btnCancelText: "Cancel",
+      title: 'Warning',
+      desc: 'All habits will be replaced with habits from backup.',
+      btnOkText: 'Restore',
+      btnCancelText: 'Cancel',
       btnCancelColor: Colors.grey,
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
@@ -114,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      title: const Text("Theme"),
+                      title: const Text('Theme'),
                       trailing: DropdownButton<String>(
                         items: Provider.of<SettingsManager>(context)
                             .getThemeList
@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("First day of the week"),
+                          Text('First day of the week'),
                           SizedBox(width: 5),
                         ],
                       ),
@@ -167,7 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     if (platformSupportsNotifications())
                       ListTile(
-                        title: const Text("Notifications"),
+                        title: const Text('Notifications'),
                         trailing: Switch(
                           value: Provider.of<SettingsManager>(context)
                               .getShowDailyNot,
@@ -181,7 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ListTile(
                         enabled: Provider.of<SettingsManager>(context)
                             .getShowDailyNot,
-                        title: const Text("Notification time"),
+                        title: const Text('Notification time'),
                         trailing: InkWell(
                           onTap: () {
                             if (Provider.of<SettingsManager>(context,
@@ -191,9 +191,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             }
                           },
                           child: Text(
-                            "${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}"
-                            ":"
-                            "${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}",
+                            '${Provider.of<SettingsManager>(context).getDailyNot.hour.toString().padLeft(2, '0')}'
+                            ':'
+                            '${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                                 color: (Provider.of<SettingsManager>(context)
                                         .getShowDailyNot)
@@ -203,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ListTile(
-                      title: const Text("Sound effects"),
+                      title: const Text('Sound effects'),
                       trailing: Switch(
                         value: Provider.of<SettingsManager>(context)
                             .getSoundEffects,
@@ -214,7 +214,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
-                      title: const Text("Show month name"),
+                      title: const Text('Show month name'),
                       trailing: Switch(
                         value: Provider.of<SettingsManager>(context)
                             .getShowMonthName,
@@ -225,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
-                      title: const Text("Set colors"),
+                      title: const Text('Set colors'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -269,7 +269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
-                      title: const Text("Backup"),
+                      title: const Text('Backup'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -304,19 +304,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
-                      title: const Text("Onboarding"),
+                      title: const Text('Onboarding'),
                       onTap: () {
                         Provider.of<AppStateManager>(context, listen: false)
                             .goOnboarding(true);
                       },
                     ),
                     ListTile(
-                      title: const Text("About"),
+                      title: const Text('About'),
                       onTap: () {
                         showAboutDialog(
                           context: context,
                           applicationIcon: Image.asset(
-                            "assets/images/icon.png",
+                            'assets/images/icon.png',
                             width: 55,
                             height: 55,
                           ),
@@ -334,7 +334,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline),
-                                      text: "Terms and Conditions\n",
+                                      text: 'Terms and Conditions\n',
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
                                           final Uri url = Uri.parse(
@@ -352,7 +352,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline),
-                                      text: "Privacy Policy\n",
+                                      text: 'Privacy Policy\n',
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
                                           final Uri url = Uri.parse(
@@ -370,7 +370,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline),
-                                      text: "Disclaimer\n",
+                                      text: 'Disclaimer\n',
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
                                           final Uri url = Uri.parse(
@@ -388,7 +388,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline),
-                                      text: "Source code (GitHub)\n",
+                                      text: 'Source code (GitHub)\n',
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
                                           final Uri url = Uri.parse(
@@ -406,7 +406,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       style: const TextStyle(
                                           color: Colors.blue,
                                           decoration: TextDecoration.underline),
-                                      text: "Buy me a coffee\n",
+                                      text: 'Buy me a coffee\n',
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
                                           final Uri url = Uri.parse(

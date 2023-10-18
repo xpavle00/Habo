@@ -22,7 +22,7 @@ class Backup {
       final contents = await file.readAsString();
       return contents;
     } catch (e) {
-      return "";
+      return '';
     }
   }
 }

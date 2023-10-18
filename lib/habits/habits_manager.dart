@@ -60,10 +60,10 @@ class HabitsManager extends ChangeNotifier {
         await FlutterFileDialog.saveFile(params: params);
       } else {
         final outputFile = await FilePicker.platform.saveFile(
-          dialogTitle: "",
+          dialogTitle: '',
           type: FileType.custom,
           allowedExtensions: ['json'],
-          fileName: file.path.split("/").last,
+          fileName: file.path.split('/').last,
         );
         if (outputFile != null) {
           await file.copy(outputFile);
@@ -238,7 +238,7 @@ class HabitsManager extends ChangeNotifier {
 
   String getNameOfHabit(int id) {
     Habit? hab = findHabitById(id);
-    return (hab != null) ? hab.habitData.title : "";
+    return (hab != null) ? hab.habitData.title : '';
   }
 
   Habit? findHabitById(int id) {
@@ -260,7 +260,7 @@ class HabitsManager extends ChangeNotifier {
     _scaffoldKey.currentState!.showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
-        content: const Text("Habit deleted."),
+        content: const Text('Habit deleted.'),
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
           label: 'Undo',

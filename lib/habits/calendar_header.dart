@@ -21,8 +21,8 @@ class CalendarHeader extends StatelessWidget {
           int start = settingsManager.getWeekStartEnum.index;
           int day = (start + index) % settingsManager.getWeekStartList.length;
           TextStyle tex = const TextStyle(fontSize: 18, color: Colors.grey);
-          if (settingsManager.getWeekStartList[day] == "Sa" ||
-              settingsManager.getWeekStartList[day] == "Su") {
+          if (settingsManager.getWeekStartList[day] == 'Sa' ||
+              settingsManager.getWeekStartList[day] == 'Su') {
             tex = TextStyle(fontSize: 18, color: Colors.red[300]);
           }
           return SizedBox(

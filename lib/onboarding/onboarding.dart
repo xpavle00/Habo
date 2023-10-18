@@ -143,7 +143,7 @@ class Onboarding extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: "Observe your progress",
+      title: 'Observe your progress',
       image: SvgPicture.asset(
         'assets/images/onboard/3.svg',
         semanticsLabel: 'Empty list',
@@ -166,7 +166,7 @@ class Onboarding extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: listPagesViewModel,
-      done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
       onDone: () {
         if (Provider.of<SettingsManager>(context, listen: false)
             .getSeenOnboarding) {
@@ -179,7 +179,7 @@ class Onboarding extends StatelessWidget {
       next: const Icon(Icons.arrow_forward),
       showSkipButton: true,
       dotsDecorator: const DotsDecorator(activeColor: HaboColors.primary),
-      skip: const Text("Skip"),
+      skip: const Text('Skip'),
     );
   }
 }

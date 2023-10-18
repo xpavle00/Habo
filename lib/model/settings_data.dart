@@ -4,8 +4,8 @@ import 'package:habo/helpers.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SettingsData {
-  final List<String> themeList = ["Device", "Light", "Dark", "Oled black"];
-  final List<String> weekStartList = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+  final List<String> themeList = ['Device', 'Light', 'Dark', 'Oled black'];
+  final List<String> weekStartList = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
   Themes theme = Themes.device;
   StartingDayOfWeek weekStart = StartingDayOfWeek.monday;
   TimeOfDay dailyNotTime = const TimeOfDay(hour: 20, minute: 0);

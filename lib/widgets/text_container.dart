@@ -39,7 +39,7 @@ class TextContainer extends StatelessWidget {
           border: InputBorder.none,
           hintText: hint,
           labelText: label,
-          counterText: "",
+          counterText: '',
         ),
       ),
     );
