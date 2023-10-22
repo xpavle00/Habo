@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 
 bool platformSupportsNotifications() => Platform.isAndroid || Platform.isIOS;
 
@@ -42,7 +43,7 @@ void resetAppNotificationIfMissing(TimeOfDay timeOfDay) async {
 
 void setAppNotification(TimeOfDay timeOfDay) async {
   _setupDailyNotification(0, timeOfDay, 'Habo',
-      'Do not forget to check your habits.', 'app_notifications_habo');
+      S.current.doNotForgetToCheckYourHabits, 'app_notifications_habo');
 }
 
 void setHabitNotification(

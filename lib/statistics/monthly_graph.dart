@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/statistics/statistics.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class MonthlyGraph extends StatefulWidget {
@@ -218,46 +219,10 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
       fontSize: 12,
     );
     String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'J';
-        break;
-      case 1:
-        text = 'F';
-        break;
-      case 2:
-        text = 'M';
-        break;
-      case 3:
-        text = 'A';
-        break;
-      case 4:
-        text = 'M';
-        break;
-      case 5:
-        text = 'J';
-        break;
-      case 6:
-        text = 'J';
-        break;
-      case 7:
-        text = 'A';
-        break;
-      case 8:
-        text = 'S';
-        break;
-      case 9:
-        text = 'O';
-        break;
-      case 10:
-        text = 'N';
-        break;
-      case 11:
-        text = 'D';
-        break;
-      default:
-        text = '';
-    }
+    text = DateFormat('M', Intl.getCurrentLocale())
+        .dateSymbols
+        .NARROWMONTHS[value.toInt()]
+        .toUpperCase();
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,

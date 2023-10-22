@@ -30,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         appStateManager,
         child,
       ) {
-        return Onboarding();
+        return const Onboarding();
       },
     );
   }

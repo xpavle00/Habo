@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 
 class ColorIcon extends StatefulWidget {
   const ColorIcon(
@@ -80,7 +81,7 @@ class _ColorIconState extends State<ColorIcon> {
                                     const MaterialStatePropertyAll<Color>(
                                         Colors.grey),
                               ),
-                              child: const Text('Cancel'),
+                              child: Text(S.of(context).cancel),
                               onPressed: () {
                                 Navigator.of(context)
                                     .pop(); //dismiss the color picker
@@ -106,7 +107,7 @@ class _ColorIconState extends State<ColorIcon> {
                                   },
                                 );
                               },
-                              child: const Text('Reset'),
+                              child: Text(S.of(context).reset),
                             ),
                             ElevatedButton(
                               style: ButtonStyle(
@@ -121,7 +122,7 @@ class _ColorIconState extends State<ColorIcon> {
                                     const MaterialStatePropertyAll<Color>(
                                         HaboColors.primary),
                               ),
-                              child: const Text('Done'),
+                              child: Text(S.of(context).done),
                               onPressed: () {
                                 widget.onPicked(tempColor);
                                 Navigator.of(context).pop();

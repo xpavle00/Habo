@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/statistics/statistics.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +39,9 @@ class OverallStatisticsCard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Habits:',
-                          style: TextStyle(
+                        Text(
+                          S.of(context).habits,
+                          style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),

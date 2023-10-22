@@ -97,24 +97,12 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
-  String get getThemeString {
-    return _settingsData.themeList[_settingsData.theme.index];
-  }
-
-  List<String> get getThemeList {
-    return _settingsData.themeList;
-  }
-
-  String get getWeekStart {
-    return _settingsData.weekStartList[_settingsData.weekStart.index];
+  Themes get getThemeString {
+    return _settingsData.theme;
   }
 
   StartingDayOfWeek get getWeekStartEnum {
     return _settingsData.weekStart;
-  }
-
-  List<String> get getWeekStartList {
-    return _settingsData.weekStartList;
   }
 
   TimeOfDay get getDailyNot {
@@ -153,15 +141,14 @@ class SettingsManager extends ChangeNotifier {
     return _isInitialized;
   }
 
-  set setTheme(String value) {
-    _settingsData.theme = Themes.values[_settingsData.themeList.indexOf(value)];
+  set setTheme(Themes value) {
+    _settingsData.theme = value;
     saveData();
     notifyListeners();
   }
 
-  set setWeekStart(String value) {
-    _settingsData.weekStart =
-        StartingDayOfWeek.values[_settingsData.weekStartList.indexOf(value)];
+  set setWeekStart(StartingDayOfWeek value) {
+    _settingsData.weekStart = value;
     saveData();
     notifyListeners();
   }

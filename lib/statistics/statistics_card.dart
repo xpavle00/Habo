@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/statistics/monthly_graph.dart';
 import 'package:habo/statistics/statistics.dart';
@@ -47,9 +48,9 @@ class StatisticsCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    const Text(
-                      'Top streak',
-                      style: TextStyle(
+                    Text(
+                      S.of(context).topStreak,
+                      style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),
@@ -64,9 +65,9 @@ class StatisticsCard extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    const Text(
-                      'Actual streak',
-                      style: TextStyle(
+                    Text(
+                      S.of(context).actualStreak,
+                      style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),
@@ -84,9 +85,9 @@ class StatisticsCard extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            const Text(
-              'Total',
-              style: TextStyle(
+            Text(
+              S.of(context).total,
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),

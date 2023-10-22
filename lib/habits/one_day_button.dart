@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/habits/in_button.dart';
@@ -54,7 +55,7 @@ class OneDayButton extends StatelessWidget {
           Icons.check,
           color:
               Provider.of<SettingsManager>(context, listen: false).checkColor,
-          semanticLabel: 'Check',
+          semanticLabel: S.of(context).check,
         ),
       ),
       InButton(
@@ -62,7 +63,7 @@ class OneDayButton extends StatelessWidget {
         icon: Icon(
           Icons.close,
           color: Provider.of<SettingsManager>(context, listen: false).failColor,
-          semanticLabel: 'Fail',
+          semanticLabel: S.of(context).fail,
         ),
       ),
       InButton(
@@ -70,14 +71,14 @@ class OneDayButton extends StatelessWidget {
         icon: Icon(
           Icons.last_page,
           color: Provider.of<SettingsManager>(context, listen: false).skipColor,
-          semanticLabel: 'Skip',
+          semanticLabel: S.of(context).skip,
         ),
       ),
-      const InButton(
-        key: Key('Comment'),
+      InButton(
+        key: const Key('Comment'),
         icon: Icon(
           Icons.chat_bubble_outline,
-          semanticLabel: 'Comment',
+          semanticLabel: S.of(context).comment,
           color: HaboColors.orange,
         ),
       )
@@ -194,25 +195,25 @@ class OneDayButton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Text('Comment'),
+              Text(S.of(context).comment),
               TextField(
                 controller: commentController,
                 autofocus: true,
                 maxLines: 5,
                 showCursor: true,
                 textAlignVertical: TextAlignVertical.bottom,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(11),
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(11),
                   border: InputBorder.none,
-                  hintText: 'Your comment here',
+                  hintText: S.of(context).yourCommentHere,
                 ),
               ),
             ],
           ),
         ),
       ),
-      btnOkText: 'Save',
-      btnCancelText: 'Close',
+      btnOkText: S.of(context).save,
+      btnCancelText: S.of(context).close,
       btnCancelColor: Colors.grey,
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
