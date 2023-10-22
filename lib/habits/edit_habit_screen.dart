@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/navigation/routes.dart';
@@ -76,9 +77,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 28),
         child: Column(
           children: [
-            const Text(
-              'Habit loop',
-              style: TextStyle(
+            Text(
+              S.of(context).habitLoop,
+              style: const TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -89,40 +90,36 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
             RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: const <TextSpan>[
+                children: <TextSpan>[
                   TextSpan(
-                    text:
-                        'Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n',
+                    text: S.of(context).habitLoopDescription,
                   ),
                   TextSpan(
-                    text: 'Cue',
-                    style: TextStyle(
+                    text: S.of(context).cue,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
-                    text:
-                        ' is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n',
+                    text: S.of(context).cueDescription,
                   ),
                   TextSpan(
-                    text: 'Routine',
-                    style: TextStyle(
+                    text: S.of(context).routine,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
-                    text:
-                        ' is the action you take in response to the cue. This is the habit itself.\n\n',
+                    text: S.of(context).routineDescription,
                   ),
                   TextSpan(
-                    text: 'Reward',
-                    style: TextStyle(
+                    text: S.of(context).reward,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
-                    text:
-                        ' is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.',
+                    text: S.of(context).rewardDescription,
                   ),
                 ],
               ),
@@ -168,19 +165,21 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          (widget.habitData != null) ? 'Edit Habit' : 'Create Habit',
+          (widget.habitData != null)
+              ? S.of(context).editHabit
+              : S.of(context).createHabit,
         ),
         backgroundColor: Colors.transparent,
         iconTheme: Theme.of(context).iconTheme,
         actions: <Widget>[
           if (widget.habitData != null)
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.delete,
-                semanticLabel: 'Delete',
+                semanticLabel: S.of(context).delete,
               ),
               color: HaboColors.red,
-              tooltip: 'Delete',
+              tooltip: S.of(context).delete,
               onPressed: () {
                 Navigator.of(context).pop();
                 if (widget.habitData != null) {
@@ -240,14 +239,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   behavior: SnackBarBehavior.floating,
-                  content: const Text('The habit title can not be empty.'),
+                  content: Text(S.of(context).habitTitleEmptyError),
                 ),
               );
             }
           },
-          child: const Icon(
+          child: Icon(
             Icons.check,
-            semanticLabel: 'Save',
+            semanticLabel: S.of(context).save,
             color: Colors.white,
             size: 35.0,
           ),
@@ -261,8 +260,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                 children: <Widget>[
                   TextContainer(
                     title: title,
-                    hint: 'Exercise',
-                    label: 'Habit',
+                    hint: S.of(context).exercise,
+                    label: S.of(context).habit,
                   ),
                   Container(
                     margin:
@@ -277,11 +276,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           },
                           value: twoDayRule,
                         ),
-                        const Text('Use Two day rule'),
+                        Text(S.of(context).useTwoDayRule),
                         IconButton(
                           onPressed: () {
-                            showSmallTooltip(context, 'Two day rule',
-                                'With two day rule, you can miss one day and do not lose a streak if the next day is successful.');
+                            showSmallTooltip(context, S.of(context).twoDayRule,
+                                S.of(context).twoDayRuleDescription);
                           },
                           icon: const Icon(
                             Icons.info,
@@ -294,11 +293,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   ),
                   ExpansionTile(
                     shape: const Border(),
-                    title: const Padding(
-                      padding: EdgeInsets.all(7.0),
+                    title: Padding(
+                      padding: const EdgeInsets.all(7.0),
                       child: Text(
-                        'Advanced habit building',
-                        style: TextStyle(
+                        S.of(context).advancedHabitBuilding,
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -316,9 +315,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             text: TextSpan(
                               style: DefaultTextStyle.of(context).style,
                               children: [
-                                const TextSpan(
-                                    text:
-                                        'This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit.'),
+                                TextSpan(
+                                    text: S
+                                        .of(context)
+                                        .advancedHabitBuildingDescription),
                                 WidgetSpan(
                                   child: Padding(
                                     padding:
@@ -345,14 +345,16 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       TextContainer(
                         title: cue,
-                        hint: 'At 7:00AM',
-                        label: 'Cue',
+                        hint: S.of(context).at7AM,
+                        label: S.of(context).cue,
                       ),
                       if (platformSupportsNotifications())
                         ListTile(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 25),
-                          title: const Text('Notifications'),
+                          title: Text(
+                            S.of(context).notifications,
+                          ),
                           trailing: Switch(
                             value: notification,
                             onChanged: (value) {
@@ -366,7 +368,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 25),
                           enabled: notification,
-                          title: const Text('Notification time'),
+                          title: Text(
+                            S.of(context).notificationTime,
+                          ),
                           trailing: InkWell(
                             onTap: () {
                               if (notification) {
@@ -384,13 +388,13 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                       TextContainer(
                         title: routine,
-                        hint: 'Do 50 push ups',
-                        label: 'Routine',
+                        hint: S.of(context).do50PushUps,
+                        label: S.of(context).routine,
                       ),
                       TextContainer(
                         title: reward,
-                        hint: '15 min. of video games',
-                        label: 'Reward',
+                        hint: S.of(context).fifteenMinOfVideoGames,
+                        label: S.of(context).reward,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(
@@ -405,11 +409,16 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               },
                               value: showReward,
                             ),
-                            const Text('Show reward'),
+                            Text(
+                              S.of(context).showReward,
+                            ),
                             IconButton(
                               onPressed: () {
-                                showSmallTooltip(context, 'Show reward',
-                                    'The remainder of the reward after a successful routine.');
+                                showSmallTooltip(
+                                  context,
+                                  S.of(context).showReward,
+                                  S.of(context).remainderOfReward,
+                                );
                               },
                               icon: const Icon(
                                 Icons.info,
@@ -420,10 +429,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           ],
                         ),
                       ),
-                      const ListTile(
+                      ListTile(
                         title: Text(
-                          'Habit contract',
-                          style: TextStyle(
+                          S.of(context).habitContract,
+                          style: const TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
@@ -431,9 +440,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            'While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.',
+                            S.of(context).habitContractDescription,
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -443,8 +452,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       TextContainer(
                         title: sanction,
-                        hint: 'Donate 10\$ to charity',
-                        label: 'Sanction',
+                        hint: S.of(context).donateToCharity,
+                        label: S.of(context).sanction,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(
@@ -461,11 +470,16 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               },
                               value: showSanction,
                             ),
-                            const Text('Show sanction'),
+                            Text(
+                              S.of(context).showSanction,
+                            ),
                             IconButton(
                               onPressed: () {
-                                showSmallTooltip(context, 'Show sanction',
-                                    'The remainder of the sanction after a unsuccessful routine.');
+                                showSmallTooltip(
+                                  context,
+                                  S.of(context).showSanction,
+                                  S.of(context).remainderOfSanction,
+                                );
                               },
                               icon: const Icon(
                                 Icons.info,
@@ -478,8 +492,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       TextContainer(
                         title: accountant,
-                        hint: 'Dan',
-                        label: 'Accountability partner',
+                        hint: S.of(context).dan,
+                        label: S.of(context).accountabilityPartner,
                       ),
                       const SizedBox(
                         height: 110,

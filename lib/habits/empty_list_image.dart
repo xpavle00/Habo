@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -23,11 +24,11 @@ class EmptyListImage extends StatelessWidget {
                 width: 300,
                 height: 300,
                 child: SvgPicture.asset('assets/images/emptyList.svg',
-                    semanticsLabel: 'Empty list'),
+                    semanticsLabel: S.of(context).emptyList),
               ),
-              const Text(
-                'Create your first habit.',
-                style: TextStyle(color: Colors.grey),
+              Text(
+                S.of(context).createYourFirstHabit,
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),

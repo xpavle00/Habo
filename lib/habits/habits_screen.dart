@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:habo/habits/calendar_column.dart';
@@ -54,12 +55,12 @@ class _HabitsScreenState extends State<HabitsScreen> {
             backgroundColor: Colors.transparent,
             actions: <Widget>[
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.bar_chart,
-                  semanticLabel: 'Statistics',
+                  semanticLabel: S.of(context).statistics,
                 ),
                 color: Colors.grey[400],
-                tooltip: 'Statistics',
+                tooltip: S.of(context).statistics,
                 onPressed: () {
                   Provider.of<HabitsManager>(context, listen: false)
                       .hideSnackBar();
@@ -68,12 +69,12 @@ class _HabitsScreenState extends State<HabitsScreen> {
                 },
               ),
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.settings,
-                  semanticLabel: 'Settings',
+                  semanticLabel: S.of(context).settings,
                 ),
                 color: Colors.grey[400],
-                tooltip: 'Settings',
+                tooltip: S.of(context).settings,
                 onPressed: () {
                   Provider.of<AppStateManager>(context, listen: false)
                       .goSettings(true);
@@ -83,17 +84,17 @@ class _HabitsScreenState extends State<HabitsScreen> {
               ),
             ],
           ),
-          body: const CalendarColumn(), //CalendarColumn(),
+          body: const CalendarColumn(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               Provider.of<AppStateManager>(context, listen: false)
                   .goCreateHabit(true);
               Provider.of<HabitsManager>(context, listen: false).hideSnackBar();
             },
-            child: const Icon(
+            child: Icon(
               Icons.add,
               color: Colors.white,
-              semanticLabel: 'Add',
+              semanticLabel: S.of(context).add,
               size: 35.0,
             ),
           ),
@@ -118,10 +119,10 @@ class _HabitsScreenState extends State<HabitsScreen> {
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       animType: AnimType.bottomSlide,
-      title: 'Notifications',
-      desc: 'Habo needs permission to send notifications to work properly.',
-      btnOkText: 'Allow',
-      btnCancelText: 'Cancel',
+      title: S.of(context).notifications,
+      desc: S.of(context).haboNeedsPermission,
+      btnOkText: S.of(context).allow,
+      btnCancelText: S.of(context).cancel,
       btnCancelColor: Colors.grey,
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},

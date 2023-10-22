@@ -3,7 +3,7 @@ description: Minimalistic habit tracker.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.3+1
+version: 2.1.0+1
 
 environment:
   sdk: ">=2.18.1 <4.0.0"
@@ -38,6 +38,10 @@ dependencies:
     git:
       url: https://github.com/google/flutter-desktop-embedding
       path: plugins/window_size
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  intl_utils: ^2.8.5
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +65,7 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/
@@ -68,3 +73,6 @@ flutter:
     - assets/images/onboard/
     - assets/sounds/
     - assets/google_fonts/
+
+flutter_intl:
+  enabled: true

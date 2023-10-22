@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/statistics/empty_statistics_image.dart';
@@ -30,8 +31,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Statistics',
+        title: Text(
+          S.of(context).statistics,
         ),
         backgroundColor: Colors.transparent,
         iconTheme: Theme.of(context).iconTheme,

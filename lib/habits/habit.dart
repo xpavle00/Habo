@@ -2,16 +2,18 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit_header.dart';
+import 'package:habo/habits/one_day.dart';
+import 'package:habo/habits/one_day_button.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import 'one_day.dart';
-import 'one_day_button.dart';
+import 'package:habo/extensions.dart';
 
 class Habit extends StatefulWidget {
   const Habit({super.key, required this.habitData});
@@ -150,7 +152,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            'Congratulation! Your reward:\n${widget.habitData.reward}',
+            S.of(context).congratulationReward(widget.habitData.reward),
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -173,7 +175,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            'Oh no! Your sanction:\n${widget.habitData.sanction}',
+            S.of(context).ohNoSanction(widget.habitData.sanction),
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -205,7 +207,9 @@ class HabitState extends State<Habit> {
 
   reloadMonth(DateTime selectedDay) {
     _showMonth = (_calendarFormat == CalendarFormat.month);
-    _actualMonth = '${months[selectedDay.month]} ${selectedDay.year}';
+    _actualMonth = DateFormat('yMMMM', Intl.getCurrentLocale())
+        .format(selectedDay)
+        .capitalize();
   }
 
   _onFormatChanged(CalendarFormat format) {
@@ -244,9 +248,9 @@ class HabitState extends State<Habit> {
               lastDay: DateTime.now(),
               headerVisible: false,
               currentDay: DateTime.now(),
-              availableCalendarFormats: const {
-                CalendarFormat.month: 'Month',
-                CalendarFormat.week: 'Week'
+              availableCalendarFormats: {
+                CalendarFormat.month: S.of(context).month,
+                CalendarFormat.week: S.of(context).week,
               },
               eventLoader: _getEventsForDay,
               calendarFormat: _calendarFormat,
