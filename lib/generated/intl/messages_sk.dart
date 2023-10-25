@@ -53,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Zrušiť"),
         "check": MessageLookupByLibrary.simpleMessage("Skontrolovať"),
         "close": MessageLookupByLibrary.simpleMessage("Zavrieť"),
+        "congratulationsReward":
+            MessageLookupByLibrary.simpleMessage("Gratulujem! Vaša odmena:"),
         "copyright": MessageLookupByLibrary.simpleMessage("©2023 Habo"),
         "create": MessageLookupByLibrary.simpleMessage("Vytvoriť"),
         "createHabit": MessageLookupByLibrary.simpleMessage("Vytvoriť zvyk"),
