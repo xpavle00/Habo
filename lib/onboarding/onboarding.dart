@@ -135,7 +135,7 @@ class Onboarding extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      S.of(context).comment,
+                      S.of(context).note,
                       style: const TextStyle(fontSize: 18),
                     ),
                   ],

@@ -66,7 +66,7 @@ class StatisticsCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      S.of(context).actualStreak,
+                      S.of(context).currentStreak,
                       style: const TextStyle(
                         fontSize: 18,
                       ),

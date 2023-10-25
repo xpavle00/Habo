@@ -94,14 +94,21 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   TextSpan(
                     text: S.of(context).habitLoopDescription,
                   ),
+                  const TextSpan(
+                    text: '\n\n',
+                  ),
                   TextSpan(
                     text: S.of(context).cue,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const TextSpan(text: ' '),
                   TextSpan(
                     text: S.of(context).cueDescription,
+                  ),
+                  const TextSpan(
+                    text: '\n\n',
                   ),
                   TextSpan(
                     text: S.of(context).routine,
@@ -109,8 +116,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const TextSpan(text: ' '),
                   TextSpan(
                     text: S.of(context).routineDescription,
+                  ),
+                  const TextSpan(
+                    text: '\n\n',
                   ),
                   TextSpan(
                     text: S.of(context).reward,
@@ -118,6 +129,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const TextSpan(text: ' '),
                   TextSpan(
                     text: S.of(context).rewardDescription,
                   ),
