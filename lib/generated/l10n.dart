@@ -80,10 +80,10 @@ class S {
     );
   }
 
-  /// `There are no data about habits.`
+  /// `There is no data about habits.`
   String get noDataAboutHabits {
     return Intl.message(
-      'There are no data about habits.',
+      'There is no data about habits.',
       name: 'noDataAboutHabits',
       desc: '',
       args: [],
@@ -100,11 +100,11 @@ class S {
     );
   }
 
-  /// `Actual streak`
-  String get actualStreak {
+  /// `Current streak`
+  String get currentStreak {
     return Intl.message(
-      'Actual streak',
-      name: 'actualStreak',
+      'Current streak',
+      name: 'currentStreak',
       desc: '',
       args: [],
     );
@@ -310,50 +310,60 @@ class S {
     );
   }
 
-  /// `Terms and Conditions\n`
+  /// `Terms and Conditions`
   String get termsAndConditions {
     return Intl.message(
-      'Terms and Conditions\n',
+      'Terms and Conditions',
       name: 'termsAndConditions',
       desc: '',
       args: [],
     );
   }
 
-  /// `Privacy Policy\n`
+  /// `Privacy Policy`
   String get privacyPolicy {
     return Intl.message(
-      'Privacy Policy\n',
+      'Privacy Policy',
       name: 'privacyPolicy',
       desc: '',
       args: [],
     );
   }
 
-  /// `Disclaimer\n`
+  /// `Disclaimer`
   String get disclaimer {
     return Intl.message(
-      'Disclaimer\n',
+      'Disclaimer',
       name: 'disclaimer',
       desc: '',
       args: [],
     );
   }
 
-  /// `Source code (GitHub)\n`
+  /// `Source code (GitHub)`
   String get sourceCode {
     return Intl.message(
-      'Source code (GitHub)\n',
+      'Source code (GitHub)',
       name: 'sourceCode',
       desc: '',
       args: [],
     );
   }
 
-  /// `Buy me a coffee\n`
+  /// `If you want to support Habo you can:`
+  String get ifYouWantToSupport {
+    return Intl.message(
+      'If you want to support Habo you can:',
+      name: 'ifYouWantToSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buy me a coffee`
   String get buyMeACoffee {
     return Intl.message(
-      'Buy me a coffee\n',
+      'Buy me a coffee',
       name: 'buyMeACoffee',
       desc: '',
       args: [],
@@ -380,23 +390,23 @@ class S {
     );
   }
 
-  /// `Congratulation! Your reward:\n{reward}`
-  String congratulationReward(String reward) {
+  /// `Congratulations! Your reward:`
+  String get congratulationsReward {
     return Intl.message(
-      'Congratulation! Your reward:\n$reward',
-      name: 'congratulationReward',
+      'Congratulations! Your reward:',
+      name: 'congratulationsReward',
       desc: '',
-      args: [reward],
+      args: [],
     );
   }
 
-  /// `Oh no! Your sanction:\n{sanction}`
-  String ohNoSanction(String sanction) {
+  /// `Oh no! Your sanction:`
+  String get ohNoSanction {
     return Intl.message(
-      'Oh no! Your sanction:\n$sanction',
+      'Oh no! Your sanction:',
       name: 'ohNoSanction',
       desc: '',
-      args: [sanction],
+      args: [],
     );
   }
 
@@ -430,10 +440,10 @@ class S {
     );
   }
 
-  /// `Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n`
+  /// `Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.`
   String get habitLoopDescription {
     return Intl.message(
-      'Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n',
+      'Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.',
       name: 'habitLoopDescription',
       desc: '',
       args: [],
@@ -450,10 +460,10 @@ class S {
     );
   }
 
-  /// ` is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n`
+  /// `is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.`
   String get cueDescription {
     return Intl.message(
-      ' is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n',
+      'is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.',
       name: 'cueDescription',
       desc: '',
       args: [],
@@ -470,10 +480,10 @@ class S {
     );
   }
 
-  /// ` is the action you take in response to the cue. This is the habit itself.\n\n`
+  /// `is the action you take in response to the cue. This is the habit itself.`
   String get routineDescription {
     return Intl.message(
-      ' is the action you take in response to the cue. This is the habit itself.\n\n',
+      'is the action you take in response to the cue. This is the habit itself.',
       name: 'routineDescription',
       desc: '',
       args: [],
@@ -490,10 +500,10 @@ class S {
     );
   }
 
-  /// ` is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.`
+  /// `is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.`
   String get rewardDescription {
     return Intl.message(
-      ' is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.',
+      'is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.',
       name: 'rewardDescription',
       desc: '',
       args: [],
@@ -820,20 +830,20 @@ class S {
     );
   }
 
-  /// `Comment`
-  String get comment {
+  /// `Note`
+  String get note {
     return Intl.message(
-      'Comment',
-      name: 'comment',
+      'Note',
+      name: 'note',
       desc: '',
       args: [],
     );
   }
 
-  /// `Your comment here`
+  /// `Your note here`
   String get yourCommentHere {
     return Intl.message(
-      'Your comment here',
+      'Your note here',
       name: 'yourCommentHere',
       desc: '',
       args: [],
@@ -960,7 +970,7 @@ class S {
     );
   }
 
-  /// `{theme, select, device {Device} light {Light} dark {Dark} oled {Oled black} other{}}`
+  /// `{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} other{Device}}`
   String themeSelect(String theme) {
     return Intl.select(
       theme,
@@ -968,8 +978,8 @@ class S {
         'device': 'Device',
         'light': 'Light',
         'dark': 'Dark',
-        'oled': 'Oled black',
-        'other': '',
+        'oled': 'OLED black',
+        'other': 'Device',
       },
       name: 'themeSelect',
       desc: '',

@@ -152,7 +152,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            S.of(context).congratulationReward(widget.habitData.reward),
+            '${S.of(context).congratulationsReward}\n${widget.habitData.reward}',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -175,7 +175,7 @@ class HabitState extends State<Habit> {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            S.of(context).ohNoSanction(widget.habitData.sanction),
+            '${S.of(context).ohNoSanction}\n${widget.habitData.sanction}',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),

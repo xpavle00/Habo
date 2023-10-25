@@ -20,16 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(reward) => "Congratulation! Your reward:\n${reward}";
-
-  static String m1(sanction) => "Oh no! Your sanction:\n${sanction}";
-
-  static String m2(theme) => "${Intl.select(theme, {
+  static String m0(theme) => "${Intl.select(theme, {
             'device': 'Device',
             'light': 'Light',
             'dark': 'Dark',
-            'oled': 'Oled black',
-            'other': '',
+            'oled': 'OLED black',
+            'other': 'Device',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -37,7 +33,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "about": MessageLookupByLibrary.simpleMessage("About"),
         "accountabilityPartner":
             MessageLookupByLibrary.simpleMessage("Accountability partner"),
-        "actualStreak": MessageLookupByLibrary.simpleMessage("Actual streak"),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "advancedHabitBuilding":
             MessageLookupByLibrary.simpleMessage("Advanced habit building"),
@@ -54,13 +49,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "backup": MessageLookupByLibrary.simpleMessage("Backup"),
         "backupFailedError": MessageLookupByLibrary.simpleMessage(
             "ERROR: Creating backup failed."),
-        "buyMeACoffee":
-            MessageLookupByLibrary.simpleMessage("Buy me a coffee\n"),
+        "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Buy me a coffee"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "check": MessageLookupByLibrary.simpleMessage("Check"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
-        "comment": MessageLookupByLibrary.simpleMessage("Comment"),
-        "congratulationReward": m0,
+        "congratulationsReward": MessageLookupByLibrary.simpleMessage(
+            "Congratulations! Your reward:"),
         "copyright": MessageLookupByLibrary.simpleMessage("©2023 Habo"),
         "create": MessageLookupByLibrary.simpleMessage("Create"),
         "createHabit": MessageLookupByLibrary.simpleMessage("Create Habit"),
@@ -68,8 +62,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create your first habit."),
         "cue": MessageLookupByLibrary.simpleMessage("Cue"),
         "cueDescription": MessageLookupByLibrary.simpleMessage(
-            " is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n"),
+            "is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event."),
         "cueNumbered": MessageLookupByLibrary.simpleMessage("1. Cue"),
+        "currentStreak": MessageLookupByLibrary.simpleMessage("Current streak"),
         "dan": MessageLookupByLibrary.simpleMessage("Dan"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "defineYourHabits":
@@ -77,7 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "defineYourHabitsDescription": MessageLookupByLibrary.simpleMessage(
             "To better stick to your habits, you can define:"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "disclaimer": MessageLookupByLibrary.simpleMessage("Disclaimer\n"),
+        "disclaimer": MessageLookupByLibrary.simpleMessage("Disclaimer"),
         "do50PushUps": MessageLookupByLibrary.simpleMessage("Do 50 push ups"),
         "doNotForgetToCheckYourHabits": MessageLookupByLibrary.simpleMessage(
             "Do not forget to check your habits."),
@@ -99,7 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "habitDeleted": MessageLookupByLibrary.simpleMessage("Habit deleted."),
         "habitLoop": MessageLookupByLibrary.simpleMessage("Habit loop"),
         "habitLoopDescription": MessageLookupByLibrary.simpleMessage(
-            "Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n"),
+            "Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated."),
         "habitNotifications":
             MessageLookupByLibrary.simpleMessage("Habit notifications"),
         "habitNotificationsChannel": MessageLookupByLibrary.simpleMessage(
@@ -110,22 +105,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "habo": MessageLookupByLibrary.simpleMessage("Habo"),
         "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
             "Habo needs permission to send notifications to work properly."),
+        "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
+            "If you want to support Habo you can:"),
         "logYourDays": MessageLookupByLibrary.simpleMessage("Log your days"),
         "modify": MessageLookupByLibrary.simpleMessage("Modify"),
         "month": MessageLookupByLibrary.simpleMessage("Month"),
         "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
-            "There are no data about habits."),
+            "There is no data about habits."),
         "notSoSuccessful":
             MessageLookupByLibrary.simpleMessage("Not so successful"),
+        "note": MessageLookupByLibrary.simpleMessage("Note"),
         "notificationTime":
             MessageLookupByLibrary.simpleMessage("Notification time"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "observeYourProgress":
             MessageLookupByLibrary.simpleMessage("Observe your progress"),
-        "ohNoSanction": m1,
+        "ohNoSanction":
+            MessageLookupByLibrary.simpleMessage("Oh no! Your sanction:"),
         "onboarding": MessageLookupByLibrary.simpleMessage("Onboarding"),
-        "privacyPolicy":
-            MessageLookupByLibrary.simpleMessage("Privacy Policy\n"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "remainderOfReward": MessageLookupByLibrary.simpleMessage(
             "The remainder of the reward after a successful routine."),
         "remainderOfSanction": MessageLookupByLibrary.simpleMessage(
@@ -136,11 +134,11 @@ class MessageLookup extends MessageLookupByLibrary {
             "ERROR: Restoring backup failed."),
         "reward": MessageLookupByLibrary.simpleMessage("Reward"),
         "rewardDescription": MessageLookupByLibrary.simpleMessage(
-            " is the benefit or positive feeling you experience after performing the routine. It reinforces the habit."),
+            "is the benefit or positive feeling you experience after performing the routine. It reinforces the habit."),
         "rewardNumbered": MessageLookupByLibrary.simpleMessage("3. Reward"),
         "routine": MessageLookupByLibrary.simpleMessage("Routine"),
         "routineDescription": MessageLookupByLibrary.simpleMessage(
-            " is the action you take in response to the cue. This is the habit itself.\n\n"),
+            "is the action you take in response to the cue. This is the habit itself."),
         "routineNumbered": MessageLookupByLibrary.simpleMessage("2. Routine"),
         "sanction": MessageLookupByLibrary.simpleMessage("Sanction"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -155,13 +153,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "Skip (does not affect streaks)"),
         "soundEffects": MessageLookupByLibrary.simpleMessage("Sound effects"),
         "sourceCode":
-            MessageLookupByLibrary.simpleMessage("Source code (GitHub)\n"),
+            MessageLookupByLibrary.simpleMessage("Source code (GitHub)"),
         "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
         "successful": MessageLookupByLibrary.simpleMessage("Successful"),
         "termsAndConditions":
-            MessageLookupByLibrary.simpleMessage("Terms and Conditions\n"),
+            MessageLookupByLibrary.simpleMessage("Terms and Conditions"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),
-        "themeSelect": m2,
+        "themeSelect": m0,
         "topStreak": MessageLookupByLibrary.simpleMessage("Top streak"),
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "trackYourProgress": MessageLookupByLibrary.simpleMessage(
@@ -176,6 +174,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
         "week": MessageLookupByLibrary.simpleMessage("Week"),
         "yourCommentHere":
-            MessageLookupByLibrary.simpleMessage("Your comment here")
+            MessageLookupByLibrary.simpleMessage("Your note here")
       };
 }

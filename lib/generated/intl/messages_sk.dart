@@ -20,127 +20,128 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'sk';
 
-  static String m0(reward) => "Gratulujeme! Tvoja odmena:\n${reward}";
-
-  static String m1(sanction) => "O nie! Tvoja sankcia:\n${sanction}";
-
-  static String m2(theme) => "${Intl.select(theme, {
+  static String m0(theme) => "${Intl.select(theme, {
             'device': 'Zariadenie',
-            'light': 'Svetlý',
-            'dark': 'Tmavý',
-            'oled': 'Oled čierna',
-            'other': '',
+            'light': 'Svetlá',
+            'dark': 'Tmavá',
+            'oled': 'OLED čierna',
+            'other': 'Zariadenie',
           })}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("O aplikácii"),
         "accountabilityPartner":
-            MessageLookupByLibrary.simpleMessage("Partner zodpovednosti"),
-        "actualStreak": MessageLookupByLibrary.simpleMessage("Aktuálny rekord"),
+            MessageLookupByLibrary.simpleMessage("Partner dohľadu"),
         "add": MessageLookupByLibrary.simpleMessage("Pridať"),
         "advancedHabitBuilding":
-            MessageLookupByLibrary.simpleMessage("Pokročilé budovanie zvykov"),
+            MessageLookupByLibrary.simpleMessage("Pokročilá tvorba zvykov"),
         "advancedHabitBuildingDescription": MessageLookupByLibrary.simpleMessage(
-            "Táto sekcia ti pomôže lepšie definovať svoje zvyky pomocou Zvykovej slučky. Pre každý zvyk by si mal definovať Cueva, Rutinu a Odmenu."),
+            "Táto sekcia vám pomôže lepšie definovať vaše zvyky pomocou Cyklu zvyku. Mali by ste definovať signály, rutiny a odmeny pre každý zvyk."),
         "allHabitsWillBeReplaced": MessageLookupByLibrary.simpleMessage(
-            "Všetky zvyky budú nahradené zvykmi zálohy."),
+            "Všetky zvyky budú nahradené zálohovanými zvykmi."),
         "allow": MessageLookupByLibrary.simpleMessage("Povoliť"),
         "appNotifications":
-            MessageLookupByLibrary.simpleMessage("Upozornenia aplikácie"),
+            MessageLookupByLibrary.simpleMessage("Oznámenia aplikácie"),
         "appNotificationsChannel": MessageLookupByLibrary.simpleMessage(
-            "Kanál upozornení pre upozornenia aplikácie"),
-        "at7AM": MessageLookupByLibrary.simpleMessage("O 7:00 ráno"),
-        "backup": MessageLookupByLibrary.simpleMessage("Zálohovať"),
+            "Kanál oznámení pre aplikáciu"),
+        "at7AM": MessageLookupByLibrary.simpleMessage("O 7:00"),
+        "backup": MessageLookupByLibrary.simpleMessage("Záloha"),
         "backupFailedError": MessageLookupByLibrary.simpleMessage(
             "CHYBA: Vytvorenie zálohy zlyhalo."),
-        "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Kúp mi kávu\n"),
+        "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Kúpiť mi kávu"),
         "cancel": MessageLookupByLibrary.simpleMessage("Zrušiť"),
-        "check": MessageLookupByLibrary.simpleMessage("Kontrolovať"),
+        "check": MessageLookupByLibrary.simpleMessage("Skontrolovať"),
         "close": MessageLookupByLibrary.simpleMessage("Zavrieť"),
-        "comment": MessageLookupByLibrary.simpleMessage("Komentár"),
-        "congratulationReward": m0,
         "copyright": MessageLookupByLibrary.simpleMessage("©2023 Habo"),
         "create": MessageLookupByLibrary.simpleMessage("Vytvoriť"),
         "createHabit": MessageLookupByLibrary.simpleMessage("Vytvoriť zvyk"),
         "createYourFirstHabit":
             MessageLookupByLibrary.simpleMessage("Vytvorte svoj prvý zvyk."),
-        "cue": MessageLookupByLibrary.simpleMessage("Cue"),
+        "cue": MessageLookupByLibrary.simpleMessage("Signál"),
         "cueDescription": MessageLookupByLibrary.simpleMessage(
-            " je spúšťač, ktorý spúšťa tvoj zvyk. Môže to byť konkrétny čas, miesto, pocit alebo udalosť.\n\n"),
-        "cueNumbered": MessageLookupByLibrary.simpleMessage("1. Cue"),
+            "je spúšťač, ktorý inicializuje váš zvyk. Môže to byť konkrétny čas, miesto, pocit alebo udalosť."),
+        "cueNumbered": MessageLookupByLibrary.simpleMessage("1. Signál"),
+        "currentStreak": MessageLookupByLibrary.simpleMessage("Aktuálna séria"),
         "dan": MessageLookupByLibrary.simpleMessage("Dan"),
         "date": MessageLookupByLibrary.simpleMessage("Dátum"),
         "defineYourHabits":
-            MessageLookupByLibrary.simpleMessage("Definuj svoje zvyky"),
+            MessageLookupByLibrary.simpleMessage("Definujte svoje zvyky"),
         "defineYourHabitsDescription": MessageLookupByLibrary.simpleMessage(
-            "Aby si sa lepšie držal svojich zvykov, môžeš definovať:"),
+            "Aby ste sa lepšie držali svojich zvykov, môžete definovať:"),
         "delete": MessageLookupByLibrary.simpleMessage("Vymazať"),
-        "disclaimer": MessageLookupByLibrary.simpleMessage("Zodpovednosť\n"),
-        "do50PushUps": MessageLookupByLibrary.simpleMessage("Urob 50 klikov"),
+        "disclaimer":
+            MessageLookupByLibrary.simpleMessage("Vylúčenie zodpovednosti"),
+        "do50PushUps":
+            MessageLookupByLibrary.simpleMessage("Spraviť 50 klikov"),
         "doNotForgetToCheckYourHabits": MessageLookupByLibrary.simpleMessage(
             "Nezabudnite skontrolovať svoje zvyky."),
         "donateToCharity":
-            MessageLookupByLibrary.simpleMessage("Prispej 10 \$ na charitu"),
+            MessageLookupByLibrary.simpleMessage("Prispejte 10\$ na charitu"),
         "done": MessageLookupByLibrary.simpleMessage("Hotovo"),
         "editHabit": MessageLookupByLibrary.simpleMessage("Upraviť zvyk"),
         "emptyList": MessageLookupByLibrary.simpleMessage("Prázdny zoznam"),
         "exercise": MessageLookupByLibrary.simpleMessage("Cvičenie"),
-        "fail": MessageLookupByLibrary.simpleMessage("Zlyhať"),
+        "fail": MessageLookupByLibrary.simpleMessage("Zlyhanie"),
         "fifteenMinOfVideoGames":
-            MessageLookupByLibrary.simpleMessage("15 minút video hier"),
+            MessageLookupByLibrary.simpleMessage("15 min. hrania videohier"),
         "firstDayOfWeek":
             MessageLookupByLibrary.simpleMessage("Prvý deň týždňa"),
         "habit": MessageLookupByLibrary.simpleMessage("Zvyk"),
         "habitContract": MessageLookupByLibrary.simpleMessage("Zmluva o zvyku"),
         "habitContractDescription": MessageLookupByLibrary.simpleMessage(
-            "Aj keď sa odporúča pozitívne posilňovanie, niektorí ľudia sa môžu rozhodnúť pre zmluvu o zvyku. Zmluva o zvyku ti umožňuje špecifikovať sankciu, ktorá bude uložená, ak zmeškáš svoj zvyk, a môže zahŕňať partnera zodpovednosti, ktorý pomáha dohliadať na tvoje ciele."),
-        "habitDeleted": MessageLookupByLibrary.simpleMessage("Zvyk vymazaný."),
-        "habitLoop": MessageLookupByLibrary.simpleMessage("Zvyková slučka"),
+            "Hoci sa odporúča pozitívne posilnenie, niektorí ľudia môžu uprednostniť zmluvu o zvyku. Zmluva o zvyku vám umožňuje špecifikovať sankciu, ktorá bude uložená, ak zvyk nesplníte, a môže zahŕňať partnera, ktorý dohliada na vaše ciele."),
+        "habitDeleted":
+            MessageLookupByLibrary.simpleMessage("Zvyk bol odstránený."),
+        "habitLoop": MessageLookupByLibrary.simpleMessage("Cyklus zvyku"),
         "habitLoopDescription": MessageLookupByLibrary.simpleMessage(
-            "Zvyková slučka je psychologický model popisujúci proces formovania zvykov. Skladá sa z troch komponentov: Cueva, Rutiny a Odmeny. Cueva spúšťa Rutinu (zvykovú akciu), ktorá je potom posilnená Odmenou, vytvárajúc slučku, ktorá robí zvyk viac zakorenený a pravdepodobne sa bude opakovať.\n\n"),
+            "Cyklus zvyku je psychologický model popisujúci proces tvorby zvyku. Skladá sa z troch komponentov: Signál, Rutina a Odmena. Signál spustí Rutinu (zvykovú činnosť), ktorá je potom posilnená Odmenou, čím vytvára slučku, ktorá zvyk zabezpečí a pravdepodobne sa bude opakovať."),
         "habitNotifications":
-            MessageLookupByLibrary.simpleMessage("Upozornenia na zvyky"),
-        "habitNotificationsChannel": MessageLookupByLibrary.simpleMessage(
-            "Kanál upozornení pre upozornenia na zvyky"),
+            MessageLookupByLibrary.simpleMessage("Oznámenia o zvykoch"),
+        "habitNotificationsChannel":
+            MessageLookupByLibrary.simpleMessage("Kanál oznámení pre zvyky"),
         "habitTitleEmptyError": MessageLookupByLibrary.simpleMessage(
             "Názov zvyku nemôže byť prázdny."),
         "habits": MessageLookupByLibrary.simpleMessage("Zvyky:"),
         "habo": MessageLookupByLibrary.simpleMessage("Habo"),
         "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
-            "Habo potrebuje povolenie na odosielanie upozornení, aby správne fungoval."),
+            "Habo potrebuje povolenie na odosielanie oznámení na správne fungovanie."),
+        "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
+            "Ak chcete podporiť Habo, môžete:"),
         "logYourDays":
-            MessageLookupByLibrary.simpleMessage("Zaznamenaj svoje dni"),
+            MessageLookupByLibrary.simpleMessage("Zaznamenávajte svoje dni"),
         "modify": MessageLookupByLibrary.simpleMessage("Upraviť"),
         "month": MessageLookupByLibrary.simpleMessage("Mesiac"),
         "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
-            "Nie sú k dispozícii žiadne údaje o zvykoch."),
+            "Nie sú žiadne údaje o zvykoch."),
         "notSoSuccessful":
             MessageLookupByLibrary.simpleMessage("Nie tak úspešný"),
+        "note": MessageLookupByLibrary.simpleMessage("Poznámka"),
         "notificationTime":
-            MessageLookupByLibrary.simpleMessage("Čas upozornenia"),
-        "notifications": MessageLookupByLibrary.simpleMessage("Upozornenia"),
+            MessageLookupByLibrary.simpleMessage("Čas oznámenia"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Oznámenia"),
         "observeYourProgress":
-            MessageLookupByLibrary.simpleMessage("Sleduj svoj pokrok"),
-        "ohNoSanction": m1,
-        "onboarding": MessageLookupByLibrary.simpleMessage("Onboarding"),
-        "privacyPolicy": MessageLookupByLibrary.simpleMessage(
-            "Zásady ochrany osobných údajov\n"),
+            MessageLookupByLibrary.simpleMessage("Sledujte svoj pokrok"),
+        "ohNoSanction":
+            MessageLookupByLibrary.simpleMessage("Ó nie! Vaša sankcia:"),
+        "onboarding": MessageLookupByLibrary.simpleMessage("Úvod"),
+        "privacyPolicy":
+            MessageLookupByLibrary.simpleMessage("Ochrana osobných údajov"),
         "remainderOfReward": MessageLookupByLibrary.simpleMessage(
-            "Zvyšok odmeny po úspešnej Rutine."),
+            "Pripomenutie odmeny po úspešnej rutine."),
         "remainderOfSanction": MessageLookupByLibrary.simpleMessage(
-            "Zvyšok sankcie po neúspešnej Rutine."),
+            "Pripomenutie sankcie po neúspešnej rutine."),
         "reset": MessageLookupByLibrary.simpleMessage("Resetovať"),
         "restore": MessageLookupByLibrary.simpleMessage("Obnoviť"),
         "restoreFailedError": MessageLookupByLibrary.simpleMessage(
             "CHYBA: Obnovenie zálohy zlyhalo."),
         "reward": MessageLookupByLibrary.simpleMessage("Odmena"),
         "rewardDescription": MessageLookupByLibrary.simpleMessage(
-            " je výhoda alebo pozitívne pocity, ktoré zažiješ po vykonaní Rutiny. Posilňuje to zvyk."),
+            "je výhoda alebo pozitívny pocit, ktorý zažívate po vykonaní rutiny. Posilňuje zvyk."),
         "rewardNumbered": MessageLookupByLibrary.simpleMessage("3. Odmena"),
         "routine": MessageLookupByLibrary.simpleMessage("Rutina"),
         "routineDescription": MessageLookupByLibrary.simpleMessage(
-            " je akcia, ktorú vykonáš v reakcii na Cue. Toto je samotný zvyk.\n\n"),
+            "je činnosť, ktorú vykonávate ako reakciu na signál. Ide o samotný zvyk."),
         "routineNumbered": MessageLookupByLibrary.simpleMessage("2. Rutina"),
         "sanction": MessageLookupByLibrary.simpleMessage("Sankcia"),
         "save": MessageLookupByLibrary.simpleMessage("Uložiť"),
@@ -153,31 +154,31 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zobraziť sankciu"),
         "skip": MessageLookupByLibrary.simpleMessage("Preskočiť"),
         "skipDoesNotAffectStreaks": MessageLookupByLibrary.simpleMessage(
-            "Preskočiť (neovplyvňuje rekordy)"),
+            "Preskočiť (neovplyvňuje sériu)"),
         "soundEffects": MessageLookupByLibrary.simpleMessage("Zvukové efekty"),
         "sourceCode":
-            MessageLookupByLibrary.simpleMessage("Zdrojový kód (GitHub)\n"),
+            MessageLookupByLibrary.simpleMessage("Zdrojový kód (GitHub)"),
         "statistics": MessageLookupByLibrary.simpleMessage("Štatistiky"),
         "successful": MessageLookupByLibrary.simpleMessage("Úspešný"),
         "termsAndConditions":
-            MessageLookupByLibrary.simpleMessage("Podmienky používania\n"),
+            MessageLookupByLibrary.simpleMessage("Obchodné podmienky"),
         "theme": MessageLookupByLibrary.simpleMessage("Téma"),
-        "themeSelect": m2,
-        "topStreak": MessageLookupByLibrary.simpleMessage("Najlepší rekord"),
+        "themeSelect": m0,
+        "topStreak": MessageLookupByLibrary.simpleMessage("Najdlhšia séria"),
         "total": MessageLookupByLibrary.simpleMessage("Celkom"),
         "trackYourProgress": MessageLookupByLibrary.simpleMessage(
-            "Môžeš sledovať svoj pokrok prostredníctvom kalendára v každom zvyku alebo na stránke so štatistikami."),
+            "Môžete sledovať svoj pokrok prostredníctvom kalendárneho zobrazenia v každom zvyku alebo na stránke so štatistikami."),
         "twoDayRule":
             MessageLookupByLibrary.simpleMessage("Pravidlo dvoch dní"),
         "twoDayRuleDescription": MessageLookupByLibrary.simpleMessage(
-            "S pravidlom dvoch dní môžeš vynechať jeden deň a nezrušíš rekord, ak je nasledujúci deň úspešný."),
-        "undo": MessageLookupByLibrary.simpleMessage("Späť"),
+            "S pravidlom dvoch dní môžete vynechať jeden deň a nestratiť sériu, ak je nasledujúci deň úspešný."),
+        "undo": MessageLookupByLibrary.simpleMessage("Vrátiť späť"),
         "unknown": MessageLookupByLibrary.simpleMessage("Neznáme"),
         "useTwoDayRule":
             MessageLookupByLibrary.simpleMessage("Použiť pravidlo dvoch dní"),
-        "warning": MessageLookupByLibrary.simpleMessage("Upozornenie"),
+        "warning": MessageLookupByLibrary.simpleMessage("Varovanie"),
         "week": MessageLookupByLibrary.simpleMessage("Týždeň"),
         "yourCommentHere":
-            MessageLookupByLibrary.simpleMessage("Tvoj komentár tu")
+            MessageLookupByLibrary.simpleMessage("Vaša poznámka sem")
       };
 }

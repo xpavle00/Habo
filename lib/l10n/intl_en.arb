@@ -3,9 +3,9 @@
     "habits": "Habits:",
     "statistics": "Statistics",
     "emptyList": "Empty list",
-    "noDataAboutHabits": "There are no data about habits.",
+    "noDataAboutHabits": "There is no data about habits.",
     "topStreak": "Top streak",
-    "actualStreak": "Actual streak",
+    "currentStreak": "Current streak",
     "total": "Total",
     "unknown": "Unknown",
     "warning": "Warning",
@@ -26,41 +26,26 @@
     "about": "About",
     "habo": "Habo",
     "copyright": "©2023 Habo",
-    "termsAndConditions": "Terms and Conditions\n",
-    "privacyPolicy": "Privacy Policy\n",
-    "disclaimer": "Disclaimer\n",
-    "sourceCode": "Source code (GitHub)\n",
-    "buyMeACoffee": "Buy me a coffee\n",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "disclaimer": "Disclaimer",
+    "sourceCode": "Source code (GitHub)",
+    "ifYouWantToSupport": "If you want to support Habo you can:",
+    "buyMeACoffee": "Buy me a coffee",
     "reset": "Reset",
     "done": "Done",
-    "congratulationReward": "Congratulation! Your reward:\n{reward}",
-    "@congratulationReward": {
-      "placeholders": {
-        "reward": {
-          "type": "String",
-          "example": "Play video games for 15 minutes."
-        }
-      }
-    },
-    "ohNoSanction": "Oh no! Your sanction:\n{sanction}",
-    "@ohNoSanction": {
-      "placeholders": {
-        "sanction": {
-          "type": "String",
-          "example": "Donate 10$ to charity."
-        }
-      }
-    },
+    "congratulationsReward": "Congratulations! Your reward:",
+    "ohNoSanction": "Oh no! Your sanction:",
     "month": "Month",
     "week": "Week",
     "habitLoop": "Habit loop",
-    "habitLoopDescription": "Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.\n\n",
+    "habitLoopDescription": "Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.",
     "cue": "Cue",
-    "cueDescription": " is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.\n\n",
+    "cueDescription": "is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.",
     "routine": "Routine",
-    "routineDescription": " is the action you take in response to the cue. This is the habit itself.\n\n",
+    "routineDescription": "is the action you take in response to the cue. This is the habit itself.",
     "reward": "Reward",
-    "rewardDescription": " is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.",
+    "rewardDescription": "is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.",
     "editHabit": "Edit Habit",
     "createHabit": "Create Habit",
     "delete": "Delete",
@@ -93,8 +78,8 @@
     "check": "Check",
     "fail": "Fail",
     "skip": "Skip",
-    "comment": "Comment",
-    "yourCommentHere": "Your comment here",
+    "note": "Note",
+    "yourCommentHere": "Your note here",
     "close": "Close",
     "createYourFirstHabit": "Create your first habit.",
     "modify": "Modify",
@@ -107,7 +92,7 @@
     "habitNotifications": "Habit notifications",
     "habitNotificationsChannel": "Notification channel for habit notifications",
     "doNotForgetToCheckYourHabits": "Do not forget to check your habits.",
-    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {Oled black} other{}}",
+    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} other{Device}}",
     "@themeSelect": {
       "placeholders": {
         "theme": {

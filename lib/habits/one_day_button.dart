@@ -78,7 +78,7 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Comment'),
         icon: Icon(
           Icons.chat_bubble_outline,
-          semanticLabel: S.of(context).comment,
+          semanticLabel: S.of(context).note,
           color: HaboColors.orange,
         ),
       )
@@ -195,7 +195,7 @@ class OneDayButton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text(S.of(context).comment),
+              Text(S.of(context).note),
               TextField(
                 controller: commentController,
                 autofocus: true,

@@ -374,6 +374,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           }
                                         },
                                     ),
+                                    const TextSpan(text: '\n'),
                                     TextSpan(
                                       style: const TextStyle(
                                           color: Colors.blue,
@@ -392,6 +393,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           }
                                         },
                                     ),
+                                    const TextSpan(text: '\n'),
                                     TextSpan(
                                       style: const TextStyle(
                                           color: Colors.blue,
@@ -410,6 +412,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           }
                                         },
                                     ),
+                                    const TextSpan(text: '\n'),
                                     TextSpan(
                                       style: const TextStyle(
                                           color: Colors.blue,
@@ -428,6 +431,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           }
                                         },
                                     ),
+                                    const TextSpan(text: '\n\n'),
+                                    TextSpan(
+                                      text: S.of(context).ifYouWantToSupport,
+                                    ),
+                                    const TextSpan(text: '\n'),
                                     TextSpan(
                                       style: const TextStyle(
                                           color: Colors.blue,
