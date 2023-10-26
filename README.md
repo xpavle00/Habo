@@ -20,7 +20,7 @@ It is built using the [Flutter](https://flutter.dev/) framework, a popular and p
 
 ## Getting Started
 
-Currently available on the Play store and App Store.
+Currently available on the Play Store and App Store.
 
 [![Google play store](https://habo.space/img/resources/en_get.svg)](https://play.google.com/store/apps/details?id=com.pavlenko.Habo) <a target="_blank" href="https://apps.apple.com/us/app/habo-habit-tracker/id1670223360?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 134px; height: 40px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1682121600" alt="Download on the App Store" style="border-radius: 13px; width: 134px; height: 40px;"></a>
 
@@ -35,6 +35,13 @@ Please read our [contributing guidelines](CONTRIBUTING.md) to learn how you can 
 ## License
 
 Habo is released under the [GPL-3.0 license](LICENSE). Feel free to use, modify, and distribute it as you wish. 
+
+## Localization
+We believe that the best tools should be available to everyone, no matter what language they speak. To make Habo more accessible to users worldwide, we're excited to offer community-driven localization through Weblate.
+
+<a href="https://hosted.weblate.org/engage/habo/">
+<img src="https://hosted.weblate.org/widget/habo/open-graph.png" alt="Translation status" width="350" />
+</a>
 
 ## Acknowledgments
 
