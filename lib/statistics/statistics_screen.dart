@@ -19,8 +19,8 @@ class StatisticsScreen extends StatefulWidget {
   }
 
   const StatisticsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatisticsScreen> createState() => _StatisticsScreenState();

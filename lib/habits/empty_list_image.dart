@@ -5,7 +5,7 @@ import 'package:habo/navigation/app_state_manager.dart';
 import 'package:provider/provider.dart';
 
 class EmptyListImage extends StatelessWidget {
-  const EmptyListImage({Key? key}) : super(key: key);
+  const EmptyListImage({super.key});
 
   @override
   Widget build(BuildContext context) {

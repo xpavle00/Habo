@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class OneDay extends StatelessWidget {
   const OneDay({
-    Key? key,
+    super.key,
     required this.date,
     required this.color,
     this.child,
-  }) : super(key: key);
+  });
 
   final DateTime date;
   final Color color;

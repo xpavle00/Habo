@@ -27,8 +27,8 @@ class SettingsScreen extends StatefulWidget {
   }
 
   const SettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();

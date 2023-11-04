@@ -7,15 +7,14 @@ import 'package:provider/provider.dart';
 
 class HabitHeader extends StatelessWidget {
   const HabitHeader({
-    Key? key,
+    super.key,
     required this.widget,
     required bool streakVisible,
     required bool orangeStreak,
     required int streak,
   })  : _streakVisible = streakVisible,
         _orangeStreak = orangeStreak,
-        _streak = streak,
-        super(key: key);
+        _streak = streak;
 
   final Habit widget;
   final bool _streakVisible;

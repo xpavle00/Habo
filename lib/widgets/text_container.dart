@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class TextContainer extends StatelessWidget {
   const TextContainer(
-      {Key? key, required this.title, required this.hint, required this.label})
-      : super(key: key);
+      {super.key,
+      required this.title,
+      required this.hint,
+      required this.label});
 
   final TextEditingController title;
   final String hint;

@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 
 class StatisticsCard extends StatelessWidget {
   const StatisticsCard({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   final StatisticsData data;
 

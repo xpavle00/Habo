@@ -12,7 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class OneDayButton extends StatelessWidget {
   OneDayButton(
-      {Key? key,
+      {super.key,
       required date,
       this.color,
       this.child,
@@ -20,8 +20,7 @@ class OneDayButton extends StatelessWidget {
       required this.parent,
       required this.callback,
       required this.event})
-      : date = transformDate(date),
-        super(key: key);
+      : date = transformDate(date);
 
   final int id;
   final DateTime date;
