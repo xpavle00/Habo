@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InButton extends StatelessWidget {
-  const InButton({Key? key, this.icon, this.text}) : super(key: key);
+  const InButton({super.key, this.icon, this.text});
 
   final Icon? icon;
   final Widget? text;

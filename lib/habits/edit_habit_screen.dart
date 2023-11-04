@@ -20,7 +20,7 @@ class EditHabitScreen extends StatefulWidget {
     );
   }
 
-  const EditHabitScreen({Key? key, required this.habitData}) : super(key: key);
+  const EditHabitScreen({super.key, required this.habitData});
 
   final HabitData? habitData;
 

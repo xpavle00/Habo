@@ -22,7 +22,7 @@ void main() {
 }
 
 class Habo extends StatefulWidget {
-  const Habo({Key? key}) : super(key: key);
+  const Habo({super.key});
 
   @override
   State<Habo> createState() => _HaboState();

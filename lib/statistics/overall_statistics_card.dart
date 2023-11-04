@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 
 class OverallStatisticsCard extends StatelessWidget {
   const OverallStatisticsCard(
-      {Key? key, required this.total, required this.habits})
-      : super(key: key);
+      {super.key, required this.total, required this.habits});
 
   final OverallStatisticsData total;
   final int habits;

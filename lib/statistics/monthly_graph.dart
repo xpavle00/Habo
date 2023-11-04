@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class MonthlyGraph extends StatefulWidget {
   final StatisticsData data;
 
-  const MonthlyGraph({Key? key, required this.data}) : super(key: key);
+  const MonthlyGraph({super.key, required this.data});
 
   @override
   State<MonthlyGraph> createState() => _MonthlyGraphState();
