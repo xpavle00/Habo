@@ -14,8 +14,8 @@ class SettingsManager extends ChangeNotifier {
   SettingsData _settingsData = SettingsData();
   bool _isInitialized = false;
 
-  final _checkPlayer = AudioPlayer();
-  final _clickPlayer = AudioPlayer();
+  final _checkPlayer = AudioPlayer(handleAudioSessionActivation: false);
+  final _clickPlayer = AudioPlayer(handleAudioSessionActivation: false);
 
   void initialize() async {
     await loadData();
