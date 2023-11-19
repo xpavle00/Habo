@@ -147,6 +147,8 @@ class OneDayButton extends StatelessWidget {
                         parent.showRewardNotification(date);
                         Provider.of<SettingsManager>(context, listen: false)
                             .playCheckSound();
+                        Provider.of<SettingsManager>(context, listen: false)
+                            .checkInAppReview();
                       } else {
                         Provider.of<SettingsManager>(context, listen: false)
                             .playClickSound();
