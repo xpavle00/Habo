@@ -8,6 +8,7 @@ import 'package:habo/themes.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class SettingsManager extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -16,6 +17,8 @@ class SettingsManager extends ChangeNotifier {
 
   final _checkPlayer = AudioPlayer(handleAudioSessionActivation: false);
   final _clickPlayer = AudioPlayer(handleAudioSessionActivation: false);
+
+  final InAppReview inAppReview = InAppReview.instance;
 
   void initialize() async {
     await loadData();
@@ -51,6 +54,22 @@ class SettingsManager extends ChangeNotifier {
       _clickPlayer.setClip(
           start: const Duration(seconds: 0), end: const Duration(seconds: 2));
       _clickPlayer.play();
+    }
+  }
+
+  void checkInAppReview() async {
+    _settingsData.checks++;
+
+    if (_settingsData.checks >= _settingsData.reviewTresHold) {
+      showInAppReview();
+      _settingsData.reviewTresHold *= 2;
+    }
+    saveData();
+  }
+
+  void showInAppReview() async {
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
     }
   }
 
