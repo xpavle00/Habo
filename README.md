@@ -1,6 +1,12 @@
 [![Screens](https://habo.space/img/social/1.png)](https://habo.space)
 
 ![Codemagic build status](https://api.codemagic.io/apps/6154a5e032cdf915d1ce822b/6154a5e032cdf915d1ce822a/status_badge.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Translation status](https://hosted.weblate.org/widget/habo/habo/svg-badge.svg)](https://hosted.weblate.org/engage/habo/)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/xpavle00/Habo)
+![GitHub Repo stars](https://img.shields.io/github/stars/xpavle00/Habo)
+
+
 
 # Habo - Open-Source Habit Tracking App
 
