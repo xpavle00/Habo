@@ -409,7 +409,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             IconButton(
                               onPressed: () {
                                 showSmallTooltip(context, "Show reward",
-                                    "The remainder of the reward after a successful routine.");
+                                    "The reminder of the reward after a successful routine.");
                               },
                               icon: const Icon(
                                 Icons.info,
@@ -465,7 +465,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             IconButton(
                               onPressed: () {
                                 showSmallTooltip(context, "Show sanction",
-                                    "The remainder of the sanction after a unsuccessful routine.");
+                                    "The reminder of the sanction after a unsuccessful routine.");
                               },
                               icon: const Icon(
                                 Icons.info,
