@@ -45,6 +45,7 @@
 		<string>cs</string>
 		<string>es</string>
 		<string>fr</string>
+		<string>tr</string>
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>

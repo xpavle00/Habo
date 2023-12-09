@@ -125,9 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "onboarding": MessageLookupByLibrary.simpleMessage("Onboarding"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "remainderOfReward": MessageLookupByLibrary.simpleMessage(
-            "The remainder of the reward after a successful routine."),
+            "The reminder of the reward after a successful routine."),
         "remainderOfSanction": MessageLookupByLibrary.simpleMessage(
-            "The remainder of the sanction after a unsuccessful routine."),
+            "The reminder of the sanction after a unsuccessful routine."),
         "reset": MessageLookupByLibrary.simpleMessage("Reset"),
         "restore": MessageLookupByLibrary.simpleMessage("Restore"),
         "restoreFailedError": MessageLookupByLibrary.simpleMessage(
