@@ -670,10 +670,10 @@ class S {
     );
   }
 
-  /// `The remainder of the reward after a successful routine.`
+  /// `The reminder of the reward after a successful routine.`
   String get remainderOfReward {
     return Intl.message(
-      'The remainder of the reward after a successful routine.',
+      'The reminder of the reward after a successful routine.',
       name: 'remainderOfReward',
       desc: '',
       args: [],
@@ -730,10 +730,10 @@ class S {
     );
   }
 
-  /// `The remainder of the sanction after a unsuccessful routine.`
+  /// `The reminder of the sanction after a unsuccessful routine.`
   String get remainderOfSanction {
     return Intl.message(
-      'The remainder of the sanction after a unsuccessful routine.',
+      'The reminder of the sanction after a unsuccessful routine.',
       name: 'remainderOfSanction',
       desc: '',
       args: [],
@@ -1111,6 +1111,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
       Locale.fromSubtags(languageCode: 'pt'),
       Locale.fromSubtags(languageCode: 'sk'),
+      Locale.fromSubtags(languageCode: 'tr'),
     ];
   }
 
