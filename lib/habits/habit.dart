@@ -232,6 +232,7 @@ class HabitState extends State<Habit> {
               orangeStreak: _orangeStreak,
               streak: widget.habitData.streak,
             ),
+            const SizedBox(height: 4,),
             if (_showMonth &&
                 Provider.of<SettingsManager>(context).getShowMonthName)
               Padding(

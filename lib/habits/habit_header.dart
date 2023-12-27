@@ -36,20 +36,20 @@ class HabitHeader extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-          padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
-          constraints:
-              const BoxConstraints(minHeight: 36, minWidth: 36, maxHeight: 48),
-          icon: const Icon(
-            Icons.edit_outlined,
-            semanticLabel: 'Modify',
-          ),
-          color: Colors.grey,
-          tooltip: 'Modify',
-          onPressed: () {
-            widget.navigateToEditPage(context);
-          },
-        ),
+        // IconButton(
+        //   padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
+        //   constraints:
+        //       const BoxConstraints(minHeight: 36, minWidth: 36, maxHeight: 48),
+        //   icon: const Icon(
+        //     Icons.edit_outlined,
+        //     semanticLabel: 'Modify',
+        //   ),
+        //   color: Colors.grey,
+        //   tooltip: 'Modify',
+        //   onPressed: () {
+        //     widget.navigateToEditPage(context);
+        //   },
+        // ),
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 3, 0),
           child: Visibility(

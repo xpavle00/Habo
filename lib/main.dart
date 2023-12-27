@@ -1,5 +1,7 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,8 +14,14 @@ import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:window_size/window_size.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   addLicenses();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     const Habo(),
   );
@@ -50,7 +58,36 @@ class _HaboState extends State<Habo> {
       settingsManager: _settingsManager,
       habitsManager: _habitManager,
     );
+    init();
     super.initState();
+  }
+
+  Future<void> init() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    final ref = FirebaseFirestore.instance.collection('habits').doc(androidInfo.id);
+    ref.get().then((value){
+      if (!value.exists) {
+        ref.set({
+          'docId': androidInfo.id,
+          'id': Timestamp.now().seconds,
+          'position': 0,
+          'title': 'Fajr at Masjid',
+          'twoDayRule': false,
+          'cue': '',
+          'routine': '',
+          'reward': '',
+          'showReward': false,
+          'advanced': false,
+          'notification': false,
+          'notTime': '12:0',
+          'events': null,
+          'sanction': '',
+          'showSanction': false,
+          'accountant': '',
+        });
+      }
+    });
   }
 
   @override

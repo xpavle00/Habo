@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "940690593956",
+    "project_id": "habittracker-42d9c",
+    "storage_bucket": "habittracker-42d9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940690593956:android:2538d27dc9b3a7e32cae31",
+        "android_client_info": {
+          "package_name": "com.pavlenko.Habo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtgC6WOXSMw7YOTPXUtw3cPNSCiIRxgf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

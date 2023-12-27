@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
@@ -17,14 +19,38 @@ class HaboModel {
   late Database db;
 
   Future<void> deleteEvent(int id, DateTime dateTime) async {
-    try {
-      await db.delete("events",
-          where: "id = ? AND dateTime = ?",
-          whereArgs: [id, dateTime.toString()]);
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
+    // try {
+    //   await db.delete("events",
+    //       where: "id = ? AND dateTime = ?",
+    //       whereArgs: [id, dateTime.toString()]);
+    // } catch (_) {
+    //   if (kDebugMode) {
+    //     print(_);
+    //   }
+    // }
+    try{
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      final ref = FirebaseFirestore.instance.collection('habits').doc(androidInfo.id);
+      final DocumentSnapshot<Map<String, dynamic>> habit = await ref.get();
+
+      if (habit.data() != null && habit.data()!['events'] != null) {
+        List array = habit.data()!['events'];
+
+        int indexToRemove = array.indexWhere(
+              (element) =>
+          element['id'] == id && DateTime.parse(element['dateTime'] as String) == dateTime,
+        );
+
+        if (indexToRemove != -1) {
+          array.removeAt(indexToRemove);
+          await ref.update({'events': array});
+        }
       }
+    } catch(_){
+      if (kDebugMode) {
+          print(_);
+        }
     }
   }
 
@@ -84,49 +110,126 @@ class HaboModel {
   }
 
   Future<List<Habit>> getAllHabits() async {
-    final List<Map<String, dynamic>> habits =
-        await db.query("habits", orderBy: "position");
-    List<Habit> result = [];
+    // final List<Map<String, dynamic>> habits =
+    //     await db.query("habits", orderBy: "position");
+    // List<Habit> result = [];
+    //
+    // await Future.forEach(
+    //   habits,
+    //   (hab) async {
+    //     int id = hab["id"];
+    //     SplayTreeMap<DateTime, List> eventsMap = SplayTreeMap<DateTime, List>();
+    //     await db.query("events", where: "id = $id").then(
+    //       (events) {
+    //         for (var event in events) {
+    //           eventsMap[DateTime.parse(event["dateTime"] as String)] = [
+    //             DayType.values[event["dayType"] as int],
+    //             event["comment"]
+    //           ];
+    //         }
+    //         result.add(
+    //           Habit(
+    //             habitData: HabitData(
+    //               id: id,
+    //               position: hab["position"],
+    //               title: hab["title"],
+    //               twoDayRule: hab["twoDayRule"] == 0 ? false : true,
+    //               cue: hab["cue"] ?? "",
+    //               routine: hab["routine"] ?? "",
+    //               reward: hab["reward"] ?? "",
+    //               showReward: hab["showReward"] == 0 ? false : true,
+    //               advanced: hab["advanced"] == 0 ? false : true,
+    //               notification: hab["notification"] == 0 ? false : true,
+    //               notTime: parseTimeOfDay(hab["notTime"]),
+    //               events: eventsMap,
+    //               sanction: hab["sanction"] ?? "",
+    //               showSanction: (hab["showSanction"] ?? 0) == 0 ? false : true,
+    //               accountant: hab["accountant"] ?? "",
+    //             ),
+    //           ),
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
+    // return result;
+   try {
+     List<Habit> result = [];
+     SplayTreeMap<DateTime, List> eventsMap = SplayTreeMap<DateTime, List>();
+     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+     final ref = FirebaseFirestore.instance.collection('habits').doc(androidInfo.id);
+     final DocumentSnapshot<Map<String, dynamic>> habit = await ref.get();
 
-    await Future.forEach(
-      habits,
-      (hab) async {
-        int id = hab["id"];
-        SplayTreeMap<DateTime, List> eventsMap = SplayTreeMap<DateTime, List>();
-        await db.query("events", where: "id = $id").then(
-          (events) {
-            for (var event in events) {
-              eventsMap[DateTime.parse(event["dateTime"] as String)] = [
-                DayType.values[event["dayType"] as int],
-                event["comment"]
-              ];
-            }
-            result.add(
-              Habit(
-                habitData: HabitData(
-                  id: id,
-                  position: hab["position"],
-                  title: hab["title"],
-                  twoDayRule: hab["twoDayRule"] == 0 ? false : true,
-                  cue: hab["cue"] ?? "",
-                  routine: hab["routine"] ?? "",
-                  reward: hab["reward"] ?? "",
-                  showReward: hab["showReward"] == 0 ? false : true,
-                  advanced: hab["advanced"] == 0 ? false : true,
-                  notification: hab["notification"] == 0 ? false : true,
-                  notTime: parseTimeOfDay(hab["notTime"]),
-                  events: eventsMap,
-                  sanction: hab["sanction"] ?? "",
-                  showSanction: (hab["showSanction"] ?? 0) == 0 ? false : true,
-                  accountant: hab["accountant"] ?? "",
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-    return result;
+     if (habit.data() != null) {
+
+       /// events
+       if(habit.data()!['events'] != null) {
+         for (Map<String, dynamic> event in habit.data()!['events']) {
+           DateTime dateTime = DateTime.parse(event["dateTime"] as String);
+           DayType dayType = DayType.values[event["dayType"] as int];
+           String comment = event["comment"] as String;
+
+           List eventDetails = [
+             dayType,
+             comment,
+           ];
+
+           eventsMap[dateTime] = eventDetails;
+         }
+
+         result.add(
+           Habit(
+             habitData: HabitData(
+               id: habit.data()!["id"],
+               position: habit.data()!["position"],
+               title: habit.data()!["title"],
+               twoDayRule: habit.data()!["twoDayRule"],
+               cue: habit.data()!["cue"],
+               routine: habit.data()!["routine"],
+               reward: habit.data()!["reward"],
+               showReward: habit.data()!["showReward"],
+               advanced: habit.data()!["advanced"],
+               notification: habit.data()!["notification"],
+               notTime: parseTimeOfDay(habit.data()!["notTime"]),
+               events: eventsMap,
+               sanction: habit.data()!["sanction"],
+               showSanction: habit.data()!["showSanction"],
+               accountant: habit.data()!["accountant"],
+             ),
+           ),
+         );
+
+       } else {
+         result.add(
+           Habit(
+             habitData: HabitData(
+               id: habit.data()!["id"],
+               position: habit.data()!["position"],
+               title: habit.data()!["title"],
+               twoDayRule: habit.data()!["twoDayRule"],
+               cue: habit.data()!["cue"],
+               routine: habit.data()!["routine"],
+               reward: habit.data()!["reward"],
+               showReward: habit.data()!["showReward"],
+               advanced: habit.data()!["advanced"],
+               notification: habit.data()!["notification"],
+               notTime: parseTimeOfDay(habit.data()!["notTime"]),
+               events: eventsMap,
+               sanction: habit.data()!["sanction"],
+               showSanction: habit.data()!["showSanction"],
+               accountant: habit.data()!["accountant"],
+             ),
+           ),
+         );
+       }
+
+     }
+     return result;
+   } catch(e) {
+    return [];
+   }
+
   }
 
   void _updateTableEventsV1toV2(Batch batch) {
@@ -226,20 +329,41 @@ class HaboModel {
 
   Future<void> insertEvent(int id, DateTime date, List event) async {
     try {
-      db.insert(
-          "events",
-          {
-            "id": id,
-            "dateTime": date.toString(),
-            "dayType": event[0].index,
-            "comment": event[1],
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    } catch (_) {
+
+      final eventMap = {
+        "id": id,
+        "dateTime": date.toString(),
+        "dayType": event[0].index,
+        "comment": event[1],
+      };
+
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      final ref = FirebaseFirestore.instance.collection('habits').doc(androidInfo.id);
+      ref.update({
+        'events': FieldValue.arrayUnion([eventMap]),
+      });
+    } catch(_) {
       if (kDebugMode) {
         print(_);
       }
     }
+
+    // try {
+    //   db.insert(
+    //       "events",
+    //       {
+    //         "id": id,
+    //         "dateTime": date.toString(),
+    //         "dayType": event[0].index,
+    //         "comment": event[1],
+    //       },
+    //       conflictAlgorithm: ConflictAlgorithm.replace);
+    // } catch (_) {
+    //   if (kDebugMode) {
+    //     print(_);
+    //   }
+    // }
   }
 
   Future<int> insertHabit(Habit habit) async {

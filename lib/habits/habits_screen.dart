@@ -84,19 +84,19 @@ class _HabitsScreenState extends State<HabitsScreen> {
             ],
           ),
           body: const CalendarColumn(), //CalendarColumn(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Provider.of<AppStateManager>(context, listen: false)
-                  .goCreateHabit(true);
-              Provider.of<HabitsManager>(context, listen: false).hideSnackBar();
-            },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-              semanticLabel: 'Add',
-              size: 35.0,
-            ),
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () {
+          //     Provider.of<AppStateManager>(context, listen: false)
+          //         .goCreateHabit(true);
+          //     Provider.of<HabitsManager>(context, listen: false).hideSnackBar();
+          //   },
+          //   child: const Icon(
+          //     Icons.add,
+          //     color: Colors.white,
+          //     semanticLabel: 'Add',
+          //     size: 35.0,
+          //   ),
+          // ),
         );
       },
     );
