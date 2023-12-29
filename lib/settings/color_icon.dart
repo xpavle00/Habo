@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/providers/firestore_provider.dart';
+import 'package:provider/provider.dart';
 
 class ColorIcon extends StatefulWidget {
   const ColorIcon(
@@ -20,12 +22,14 @@ class ColorIcon extends StatefulWidget {
 }
 
 class _ColorIconState extends State<ColorIcon> {
+  late FirestoreProvider _firestoreProvider;
   late Color tempColor;
 
   @override
   void initState() {
     super.initState();
     tempColor = widget.color.withOpacity(1.0);
+    _firestoreProvider = context.read<FirestoreProvider>();
   }
 
   @override
@@ -105,6 +109,8 @@ class _ColorIconState extends State<ColorIcon> {
                                     tempColor = widget.defaultColor;
                                   },
                                 );
+                                _firestoreProvider
+                                    .addAction(ActionType.clicked);
                               },
                               child: const Text('Reset'),
                             ),

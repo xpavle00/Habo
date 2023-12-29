@@ -30,6 +30,7 @@ class _HaboState extends State<Habo> {
   final _appStateManager = AppStateManager();
   final _settingsManager = SettingsManager();
   final _habitManager = HabitsManager();
+  final _firestoreProvider = HabitsManager();
   late AppRouter _appRouter;
 
   @override
@@ -73,6 +74,9 @@ class _HaboState extends State<Habo> {
         ),
         ChangeNotifierProvider(
           create: (context) => _habitManager,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => _firestoreProvider,
         ),
       ],
       child: Consumer<SettingsManager>(builder: (context, counter, _) {

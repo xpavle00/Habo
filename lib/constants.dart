@@ -26,3 +26,8 @@ class HaboColors {
   static const Color skip = Color(0xFFFBC02D);
   static const Color orange = Color(0xFFFF9800);
 }
+
+enum ActionType {
+  clicked,
+  navigate,
+}

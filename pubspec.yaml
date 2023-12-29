@@ -11,6 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  firebase_core: ^2.15.0
+  cloud_firestore: ^4.9.3
+  
   google_fonts: ^5.1.0
   provider: ^6.0.5
   shared_preferences: ^2.2.0
