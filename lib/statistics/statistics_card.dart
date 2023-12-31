@@ -1,16 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:habo/settings/settings_manager.dart';
-import 'package:habo/statistics/monthly_graph.dart';
-import 'package:habo/statistics/statistics.dart';
 import 'package:provider/provider.dart';
+import 'package:habo/statistics/statistics.dart';
+import '../settings/settings_manager.dart';
 
-class StatisticsCard extends StatelessWidget {
+class StatisticsCard extends StatefulWidget {
   const StatisticsCard({
     Key? key,
     required this.data,
   }) : super(key: key);
 
   final StatisticsData data;
+
+  @override
+  State<StatisticsCard> createState() => _StatisticsCardState();
+}
+
+class _StatisticsCardState extends State<StatisticsCard> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //calculate total prayers
+  totalPrayers() {
+    var checks = widget.data.checks.toInt();
+    var fails = widget.data.fails.toInt();
+    int total = (checks + fails);
+    return total;
+  }
+
+  //always update  data to firebaseStore
+  Future<void> addStatistics() async {
+    await _firestore.collection("user").doc("data").set({
+      'Total fajar': totalPrayers().toString(),
+      'prayed': widget.data.checks.toString(),
+      'time': Timestamp.now(),
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //update data  to firebase
+    addStatistics();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +60,7 @@ class StatisticsCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    data.title,
+                    widget.data.title,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -43,18 +74,19 @@ class StatisticsCard extends StatelessWidget {
               height: 16,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   children: [
                     const Text(
-                      'Top streak',
+                      ' Total Fajar Prayers',
                       style: TextStyle(
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      data.topStreak.toString(),
+                      //store into firebase cloud
+                      totalPrayers().toString(),
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -65,13 +97,14 @@ class StatisticsCard extends StatelessWidget {
                 Column(
                   children: [
                     const Text(
-                      'Actual streak',
+                      'Pray Fajar',
                       style: TextStyle(
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      data.actualStreak.toString(),
+                      //store into firebase cloud
+                      widget.data.checks.toString(),
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -85,7 +118,7 @@ class StatisticsCard extends StatelessWidget {
               height: 16,
             ),
             const Text(
-              'Total',
+              'Total History',
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -94,7 +127,7 @@ class StatisticsCard extends StatelessWidget {
               height: 16,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -106,25 +139,7 @@ class StatisticsCard extends StatelessWidget {
                               .checkColor,
                     ),
                     Text(
-                      data.checks.toString(),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.last_page,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
-                    ),
-                    Text(
-                      data.skips.toString(),
+                      widget.data.checks.toString(),
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -142,7 +157,7 @@ class StatisticsCard extends StatelessWidget {
                               .failColor,
                     ),
                     Text(
-                      data.fails.toString(),
+                      widget.data.fails.toString(),
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -155,7 +170,7 @@ class StatisticsCard extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            MonthlyGraph(data: data),
+            //MonthlyGraph(data: widget.data),
           ],
         ),
       ),
