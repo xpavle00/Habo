@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
-import 'package:habo/model/settings_data.dart';
-import 'package:habo/notifications.dart';
-import 'package:habo/themes.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:table_calendar/table_calendar.dart';
+//import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+import '../constant_helpers/constants.dart';
+import '../model/settings_data.dart';
+import '../Notification/notifications.dart';
+import '../Themes/themes.dart';
 
 class SettingsManager extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -31,7 +33,10 @@ class SettingsManager extends ChangeNotifier {
     _clickPlayer.dispose();
     super.dispose();
   }
+  actualstreak(){
 
+
+  }
   resetAppNotification() {
     if (_settingsData.showDailyNot) {
       resetAppNotificationIfMissing(_settingsData.dailyNotTime);
@@ -56,12 +61,12 @@ class SettingsManager extends ChangeNotifier {
 
   void saveData() async {
     final SharedPreferences prefs = await _prefs;
-    prefs.setString('habo_settings', jsonEncode(_settingsData));
+    prefs.setString('Namaz Tracker_settings', jsonEncode(_settingsData));
   }
 
   Future<void> loadData() async {
     final SharedPreferences prefs = await _prefs;
-    String? json = prefs.getString('habo_settings');
+    String? json = prefs.getString('Namaz Tracker_setting');
     if (json != null) {
       _settingsData = SettingsData.fromJson(jsonDecode(json));
     }
