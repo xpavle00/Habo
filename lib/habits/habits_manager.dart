@@ -1,26 +1,27 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:habo/constants.dart';
-import 'package:habo/habits/habit.dart';
-import 'package:habo/model/backup.dart';
-import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
-import 'package:habo/notifications.dart';
-import 'package:habo/statistics/statistics.dart';
+
+import '../constant_helpers/constants.dart';
+import '../model/backup.dart';
+import '../model/habit_data.dart';
+import '../model/habo_model.dart';
+import '../Notification/notifications.dart';
+import '../statistics/statistics.dart';
+import 'habit.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HaboModel _haboModel = HaboModel();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
-
+  //empty list
   late List<Habit> allHabits = [];
   bool _isInitialized = false;
-
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
 
@@ -48,7 +49,7 @@ class HabitsManager extends ChangeNotifier {
   void hideSnackBar() {
     _scaffoldKey.currentState!.hideCurrentSnackBar();
   }
-
+ // creating new backup
   void createBackup() async {
     try {
       final file = await Backup.writeBackup(allHabits);
@@ -164,10 +165,10 @@ class HabitsManager extends ChangeNotifier {
   deleteEvent(int id, DateTime dateTime) {
     _haboModel.deleteEvent(id, dateTime);
   }
-
+// adding habit
   addHabit(
       String title,
-      bool twoDayRule,
+      //bool twoDayRule,
       String cue,
       String routine,
       String reward,
@@ -182,7 +183,7 @@ class HabitsManager extends ChangeNotifier {
       habitData: HabitData(
         position: allHabits.length,
         title: title,
-        twoDayRule: twoDayRule,
+       // twoDayRule: twoDayRule,
         cue: cue,
         routine: routine,
         reward: reward,
@@ -201,7 +202,7 @@ class HabitsManager extends ChangeNotifier {
         newHabit.setId = id;
         allHabits.add(newHabit);
         if (notification) {
-          setHabitNotification(id, notTime, 'Habo', title);
+          setHabitNotification(id, notTime, 'Namaz Tracker', title);
         } else {
           disableHabitNotification(id);
         }
@@ -210,12 +211,12 @@ class HabitsManager extends ChangeNotifier {
     );
     updateOrder();
   }
-
+ //edit
   editHabit(HabitData habitData) {
     Habit? hab = findHabitById(habitData.id!);
     if (hab == null) return;
     hab.habitData.title = habitData.title;
-    hab.habitData.twoDayRule = habitData.twoDayRule;
+   // hab.habitData.twoDayRule = habitData.twoDayRule;
     hab.habitData.cue = habitData.cue;
     hab.habitData.routine = habitData.routine;
     hab.habitData.reward = habitData.reward;
