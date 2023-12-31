@@ -1,8 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:habo/settings/settings_manager.dart';
-import 'package:habo/statistics/statistics.dart';
 import 'package:provider/provider.dart';
+import 'package:habo/statistics/statistics.dart';
+
+import '../settings/settings_manager.dart';
 
 class OverallStatisticsCard extends StatelessWidget {
   const OverallStatisticsCard(
@@ -82,23 +83,9 @@ class OverallStatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
+                const Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.last_page,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
-                    ),
-                    Text(
-                      total.skips.toString(),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  children: [],
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -135,19 +122,6 @@ class OverallStatisticsCard extends StatelessWidget {
           value: total.checks.toDouble(),
           badgeWidget: const Icon(
             Icons.check,
-            color: Colors.white,
-          ),
-          title: "",
-          radius: 25.0,
-          titleStyle: const TextStyle(
-              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-      if (total.skips != 0)
-        PieChartSectionData(
-          color: Provider.of<SettingsManager>(context, listen: false).skipColor,
-          value: total.skips.toDouble(),
-          badgeWidget: const Icon(
-            Icons.last_page,
             color: Colors.white,
           ),
           title: "",
