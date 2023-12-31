@@ -1,21 +1,17 @@
 import 'dart:collection';
 
-import 'package:habo/constants.dart';
-import 'package:habo/habits/habit.dart';
-
+import '../constant_helpers/constants.dart';
+import '../habits/habit.dart';
 class StatisticsData {
   String title = "";
   int topStreak = 0;
   int actualStreak = 0;
   int checks = 0;
-  int skips = 0;
   int fails = 0;
   SplayTreeMap<int, Map<DayType, List<int>>> monthlyCheck = SplayTreeMap();
 }
-
 class OverallStatisticsData {
   int checks = 0;
-  int skips = 0;
   int fails = 0;
 }
 
@@ -34,7 +30,7 @@ class Statistics {
       var stat = StatisticsData();
       stat.title = habit.habitData.title;
 
-      bool usingTwoDayRule = false;
+      //bool usingTwoDayRule = false;
 
       var lastDay = habit.habitData.events.firstKey();
 
@@ -52,26 +48,9 @@ class Statistics {
                 if (stat.actualStreak > stat.topStreak) {
                   stat.topStreak = stat.actualStreak;
                 }
-                usingTwoDayRule = false;
-                break;
-              case DayType.skip:
-                stat.skips++;
-                if (usingTwoDayRule) {
-                  stat.actualStreak = 0;
-                }
                 break;
               case DayType.fail:
                 stat.fails++;
-                if (habit.habitData.twoDayRule) {
-                  if (usingTwoDayRule) {
-                    stat.actualStreak = 0;
-                  } else {
-                    usingTwoDayRule = true;
-                  }
-                } else {
-                  stat.actualStreak = 0;
-                }
-                break;
             }
 
             generateYearIfNull(stat, key.year);
@@ -89,7 +68,6 @@ class Statistics {
       stats.habitsData.add(stat);
       stats.total.checks += stat.checks;
       stats.total.fails += stat.fails;
-      stats.total.skips += stat.skips;
     }
     return stats;
   }
@@ -98,7 +76,6 @@ class Statistics {
     if (stat.monthlyCheck[year] == null) {
       stat.monthlyCheck[year] = {
         DayType.check: List.filled(12, 0),
-        DayType.skip: List.filled(12, 0),
         DayType.fail: List.filled(12, 0),
       };
     }
