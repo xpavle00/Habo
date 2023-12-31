@@ -1,14 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
-import 'package:habo/habits/habit.dart';
-import 'package:habo/habits/habits_manager.dart';
-import 'package:habo/habits/in_button.dart';
-import 'package:habo/helpers.dart';
-import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
-
+import '../constant_helpers/constants.dart';
+import '../constant_helpers/helpers.dart';
+import '../settings/settings_manager.dart';
+import 'habit.dart';
+import 'habits_manager.dart';
+import 'in_button.dart';
 class OneDayButton extends StatelessWidget {
   OneDayButton(
       {Key? key,
@@ -18,7 +16,8 @@ class OneDayButton extends StatelessWidget {
       required this.id,
       required this.parent,
       required this.callback,
-      required this.event})
+      required this.event,
+      required this.value})
       : date = transformDate(date),
         super(key: key);
 
@@ -29,7 +28,7 @@ class OneDayButton extends StatelessWidget {
   final HabitState parent;
   final void Function() callback;
   final List? event;
-
+  final int value;
   @override
   Widget build(BuildContext context) {
     List<InButton> icons = [
@@ -37,14 +36,11 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Date'),
         text: child ??
             Text(
-              date.day.toString(),
+              value.toString(),
               style: TextStyle(
-                color: (date.weekday > 5) ? Colors.red[300] : null,
-                fontWeight: (isSameDay(date, DateTime.now()))
-                    ? FontWeight.w900
-                    : FontWeight.normal,
-                fontSize: (isSameDay(date, DateTime.now())) ? 17 : null,
-              ),
+                  color: (date.weekday==7  ) ? Colors.red[400] : null,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 15),
               textAlign: TextAlign.center,
             ),
       ),
@@ -63,14 +59,6 @@ class OneDayButton extends StatelessWidget {
           Icons.close,
           color: Provider.of<SettingsManager>(context, listen: false).failColor,
           semanticLabel: 'Fail',
-        ),
-      ),
-      InButton(
-        key: const Key('Skip'),
-        icon: Icon(
-          Icons.last_page,
-          color: Provider.of<SettingsManager>(context, listen: false).skipColor,
-          semanticLabel: 'Skip',
         ),
       ),
       const InButton(
@@ -130,8 +118,7 @@ class OneDayButton extends StatelessWidget {
                 onChanged: (value) {
                   if (value != null) {
                     if (value.key == const Key('Check') ||
-                        value.key == const Key('Fail') ||
-                        value.key == const Key('Skip')) {
+                        value.key == const Key('Fail')) {
                       Provider.of<HabitsManager>(context, listen: false)
                           .addEvent(id, date, [
                         DayType.values[icons
@@ -178,6 +165,7 @@ class OneDayButton extends StatelessWidget {
     );
   }
 
+  //comment dailogueBox
   showCommentDialog(BuildContext context, int index, String comment) {
     TextEditingController commentController =
         TextEditingController(text: comment);
@@ -198,13 +186,13 @@ class OneDayButton extends StatelessWidget {
               TextField(
                 controller: commentController,
                 autofocus: true,
-                maxLines: 5,
+                maxLines: 4,
                 showCursor: true,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.all(11),
                   border: InputBorder.none,
-                  hintText: "Your comment here",
+                  hintText: "Write comment here",
                 ),
               ),
             ],
@@ -217,6 +205,7 @@ class OneDayButton extends StatelessWidget {
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
+        //save comment on DailogueBox
         Provider.of<HabitsManager>(context, listen: false).addEvent(
             id, date, [DayType.values[index], commentController.text]);
         parent.events[date] = [DayType.values[index], commentController.text];
