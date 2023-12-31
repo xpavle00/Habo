@@ -1,12 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
-import 'package:habo/habits/habits_manager.dart';
-import 'package:habo/model/habit_data.dart';
-import 'package:habo/navigation/routes.dart';
-import 'package:habo/notifications.dart';
-import 'package:habo/widgets/text_container.dart';
 import 'package:provider/provider.dart';
+import '../TextContainer/text_container.dart';
+import '../constant_helpers/constants.dart';
+import '../model/habit_data.dart';
+import '../navigation/routes.dart';
+import '../Notification/notifications.dart';
+import 'habits_manager.dart';
 
 class EditHabitScreen extends StatefulWidget {
   static MaterialPage page(HabitData? data) {
@@ -133,15 +133,13 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     ).show();
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void changeHabit() {
     if (widget.habitData != null) {
       title.text = widget.habitData!.title;
       cue.text = widget.habitData!.cue;
       routine.text = widget.habitData!.routine;
       reward.text = widget.habitData!.reward;
-      twoDayRule = widget.habitData!.twoDayRule;
+      //twoDayRule = widget.habitData!.twoDayRule;
       showReward = widget.habitData!.showReward;
       advanced = widget.habitData!.advanced;
       notification = widget.habitData!.notification;
@@ -150,6 +148,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       showSanction = widget.habitData!.showSanction;
       accountant.text = widget.habitData!.accountant;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    changeHabit();
   }
 
   @override
@@ -168,18 +172,21 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          (widget.habitData != null) ? 'Edit Habit' : 'Create Habit',
+          (widget.habitData != null)
+              ? 'Edit in Fajar Habit'
+              : 'Create Prayer Habit',
         ),
         backgroundColor: Colors.transparent,
         iconTheme: Theme.of(context).iconTheme,
         actions: <Widget>[
           if (widget.habitData != null)
+            //edit habit delete
             IconButton(
               icon: const Icon(
                 Icons.delete,
                 semanticLabel: 'Delete',
               ),
-              color: HaboColors.red,
+              color: HaboColors.primary,
               tooltip: 'Delete',
               onPressed: () {
                 Navigator.of(context).pop();
@@ -200,7 +207,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   HabitData(
                     id: widget.habitData!.id,
                     title: title.text.toString(),
-                    twoDayRule: twoDayRule,
+                    // twoDayRule: twoDayRule,
                     cue: cue.text.toString(),
                     routine: routine.text.toString(),
                     reward: reward.text.toString(),
@@ -218,7 +225,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
               } else {
                 Provider.of<HabitsManager>(context, listen: false).addHabit(
                   title.text.toString(),
-                  twoDayRule,
+                  // twoDayRule,
                   cue.text.toString(),
                   routine.text.toString(),
                   reward.text.toString(),
@@ -261,35 +268,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                 children: <Widget>[
                   TextContainer(
                     title: title,
-                    hint: 'Exercise',
+                    hint: 'Fajar',
                     label: 'Habit',
                   ),
                   Container(
                     margin:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                    child: Row(
-                      children: <Widget>[
-                        Checkbox(
-                          onChanged: (bool? value) {
-                            setState(() {
-                              twoDayRule = value!;
-                            });
-                          },
-                          value: twoDayRule,
-                        ),
-                        const Text("Use Two day rule"),
-                        IconButton(
-                          onPressed: () {
-                            showSmallTooltip(context, "Two day rule",
-                                "With two day rule, you can miss one day and do not lose a streak if the next day is successful.");
-                          },
-                          icon: const Icon(
-                            Icons.info,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                        ),
-                      ],
+                    child: const Row(
+                      children: <Widget>[],
                     ),
                   ),
                   ExpansionTile(
@@ -318,7 +304,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               children: [
                                 const TextSpan(
                                     text:
-                                        "This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit."),
+                                        "This section helps you better define your habits  routines, and rewards for every Namaz."),
                                 WidgetSpan(
                                   child: Padding(
                                     padding:
@@ -345,8 +331,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                       ),
                       TextContainer(
                         title: cue,
-                        hint: 'At 7:00AM',
-                        label: 'Cue',
+                        hint: 'At Fajar Time',
+                        label: 'Wake up',
                       ),
                       if (platformSupportsNotifications())
                         ListTile(
@@ -384,12 +370,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                       TextContainer(
                         title: routine,
-                        hint: 'Do 50 push ups',
+                        hint: 'Pray Tahajjad',
                         label: 'Routine',
                       ),
                       TextContainer(
                         title: reward,
-                        hint: '15 min. of video games',
+                        hint: '30 min of Recite Quran Pak',
                         label: 'Reward',
                       ),
                       Container(
