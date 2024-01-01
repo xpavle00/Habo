@@ -1,21 +1,44 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/helpers.dart';
-import 'package:habo/model/habit_data.dart';
+import 'package:habo/models/habit_data.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:habo/repositories/habo_repo_interface.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
-class HaboModel {
+class HaboLocalRepository implements HaboRepoInterface {
   static const _dbVersion = 3;
   late Database db;
 
+  HaboLocalRepository._create();
+
+  // Factory constructor
+  static Future<HaboLocalRepository> create() async {
+    // Return an instance of HaboRepository
+    HaboLocalRepository instance = HaboLocalRepository._create();
+    await instance.initDatabase();
+    return instance; 
+  }
+
+  @override
+  Future<void> clearDatabase() async {
+    try {
+      await db.delete("habits");
+      await db.delete("events");
+    } catch (_) {
+      if (kDebugMode) {
+        print(_);
+      }
+    }
+  }
+
+  @override
   Future<void> deleteEvent(int id, DateTime dateTime) async {
     try {
       await db.delete("events",
@@ -28,6 +51,7 @@ class HaboModel {
     }
   }
 
+  @override
   Future<void> deleteHabit(int id) async {
     try {
       await db.delete("habits", where: "id = ?", whereArgs: [id]);
@@ -39,35 +63,7 @@ class HaboModel {
     }
   }
 
-  Future<void> emptyTables() async {
-    try {
-      await db.delete("habits");
-      await db.delete("events");
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
-      }
-    }
-  }
-
-  Future<void> useBackup(List<Habit> habits) async {
-    try {
-      await emptyTables();
-      for (var element in habits) {
-        insertHabit(element);
-        element.habitData.events.forEach(
-          (key, value) {
-            insertEvent(element.habitData.id!, key, value);
-          },
-        );
-      }
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
-      }
-    }
-  }
-
+  @override
   Future<void> editHabit(Habit habit) async {
     try {
       await db.update(
@@ -83,6 +79,7 @@ class HaboModel {
     }
   }
 
+  @override
   Future<List<Habit>> getAllHabits() async {
     final List<Map<String, dynamic>> habits =
         await db.query("habits", orderBy: "position");
@@ -96,6 +93,8 @@ class HaboModel {
         await db.query("events", where: "id = $id").then(
           (events) {
             for (var event in events) {
+              debugPrint(
+                  "Habit name: ${hab['title']}, habit_id: ${hab['id']}, events_id: ${event['id']}, Date: ${DateTime.parse(event["dateTime"] as String)}");
               eventsMap[DateTime.parse(event["dateTime"] as String)] = [
                 DayType.values[event["dayType"] as int],
                 event["comment"]
@@ -127,6 +126,76 @@ class HaboModel {
       },
     );
     return result;
+  }
+
+  @override
+  Future<void> insertEvent(int id, DateTime date, List event) async {
+    try {
+      db.insert(
+          "events",
+          {
+            "id": id,
+            "dateTime": date.toString(),
+            "dayType": event[0].index,
+            "comment": event[1],
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } catch (_) {
+      if (kDebugMode) {
+        print(_);
+      }
+    }
+  }
+
+  @override
+  Future<int> insertHabit(Habit habit) async {
+    try {
+      var id = await db.insert("habits", habit.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      return id;
+    } catch (_) {
+      if (kDebugMode) {
+        print(_);
+      }
+    }
+    return 0;
+  }
+
+  @override
+  Future<void> updateOrder(List<Habit> habits) async {
+    try {
+      for (var habit in habits) {
+        db.update(
+          "habits",
+          habit.toMap(),
+          where: "id = ?",
+          whereArgs: [habit.habitData.id],
+        );
+      }
+    } catch (_) {
+      if (kDebugMode) {
+        print(_);
+      }
+    }
+  }
+
+  @override
+  Future<void> useBackup(List<Habit> habits) async {
+    try {
+      await clearDatabase();
+      for (var element in habits) {
+        insertHabit(element);
+        element.habitData.events.forEach(
+          (key, value) {
+            insertEvent(element.habitData.id!, key, value);
+          },
+        );
+      }
+    } catch (_) {
+      if (kDebugMode) {
+        print(_);
+      }
+    }
   }
 
   void _updateTableEventsV1toV2(Batch batch) {
@@ -222,53 +291,5 @@ class HaboModel {
       _updateTableHabitsV2toV3(batch);
     }
     batch.commit();
-  }
-
-  Future<void> insertEvent(int id, DateTime date, List event) async {
-    try {
-      db.insert(
-          "events",
-          {
-            "id": id,
-            "dateTime": date.toString(),
-            "dayType": event[0].index,
-            "comment": event[1],
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
-      }
-    }
-  }
-
-  Future<int> insertHabit(Habit habit) async {
-    try {
-      var id = await db.insert("habits", habit.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      return id;
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
-      }
-    }
-    return 0;
-  }
-
-  Future<void> updateOrder(List<Habit> habits) async {
-    try {
-      for (var habit in habits) {
-        db.update(
-          "habits",
-          habit.toMap(),
-          where: "id = ?",
-          whereArgs: [habit.habitData.id],
-        );
-      }
-    } catch (_) {
-      if (kDebugMode) {
-        print(_);
-      }
-    }
   }
 }
