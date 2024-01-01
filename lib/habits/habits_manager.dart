@@ -7,14 +7,15 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
-import 'package:habo/model/backup.dart';
-import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
+import 'package:habo/models/habit_data.dart';
 import 'package:habo/notifications.dart';
+import 'package:habo/repositories/backup.dart';
+import 'package:habo/repositories/habo_repo_interface.dart';
 import 'package:habo/statistics/statistics.dart';
+import 'package:habo/utils/dependency_injector.dart';
 
 class HabitsManager extends ChangeNotifier {
-  final HaboModel _haboModel = HaboModel();
+  late HaboRepoInterface _haboRepo;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -35,8 +36,8 @@ class HabitsManager extends ChangeNotifier {
   }
 
   initModel() async {
-    await _haboModel.initDatabase();
-    allHabits = await _haboModel.getAllHabits();
+    _haboRepo = await DependencyInjector.getHaboRepository();
+    allHabits = await _haboRepo.getAllHabits();
     _isInitialized = true;
     notifyListeners();
   }
@@ -101,7 +102,7 @@ class HabitsManager extends ChangeNotifier {
       jsonDecode(json).forEach((element) {
         habits.add(Habit.fromJson(element));
       });
-      await _haboModel.useBackup(habits);
+      await _haboRepo.useBackup(habits);
       removeNotifications(allHabits);
       allHabits = habits;
       resetNotifications(allHabits);
@@ -153,16 +154,16 @@ class HabitsManager extends ChangeNotifier {
     Habit moved = allHabits.removeAt(oldIndex);
     allHabits.insert(newIndex, moved);
     updateOrder();
-    _haboModel.updateOrder(allHabits);
+    _haboRepo.updateOrder(allHabits);
     notifyListeners();
   }
 
   addEvent(int id, DateTime dateTime, List event) {
-    _haboModel.insertEvent(id, dateTime, event);
+    _haboRepo.insertEvent(id, dateTime, event);
   }
 
   deleteEvent(int id, DateTime dateTime) {
-    _haboModel.deleteEvent(id, dateTime);
+    _haboRepo.deleteEvent(id, dateTime);
   }
 
   addHabit(
@@ -196,7 +197,7 @@ class HabitsManager extends ChangeNotifier {
         accountant: accountant,
       ),
     );
-    _haboModel.insertHabit(newHabit).then(
+    _haboRepo.insertHabit(newHabit).then(
       (id) {
         newHabit.setId = id;
         allHabits.add(newHabit);
@@ -226,7 +227,7 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.sanction = habitData.sanction;
     hab.habitData.showSanction = habitData.showSanction;
     hab.habitData.accountant = habitData.accountant;
-    _haboModel.editHabit(hab);
+    _haboRepo.editHabit(hab);
     if (habitData.notification) {
       setHabitNotification(
           habitData.id!, habitData.notTime, 'Habo', habitData.title);
@@ -291,7 +292,7 @@ class HabitsManager extends ChangeNotifier {
   Future<void> deleteFromDB() async {
     if (toDelete.isNotEmpty) {
       disableHabitNotification(toDelete.first.habitData.id!);
-      _haboModel.deleteHabit(toDelete.first.habitData.id!);
+      _haboRepo.deleteHabit(toDelete.first.habitData.id!);
       toDelete.removeFirst();
     }
     if (toDelete.isNotEmpty) {
