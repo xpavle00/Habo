@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
-import 'package:habo/model/settings_data.dart';
+import 'package:habo/models/settings_data.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
 import 'package:just_audio/just_audio.dart';

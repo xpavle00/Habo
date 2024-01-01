@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habit_header.dart';
 import 'package:habo/helpers.dart';
-import 'package:habo/model/habit_data.dart';
+import 'package:habo/models/habit_data.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';

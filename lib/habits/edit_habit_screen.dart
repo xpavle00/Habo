@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
-import 'package:habo/model/habit_data.dart';
+import 'package:habo/models/habit_data.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/widgets/text_container.dart';
