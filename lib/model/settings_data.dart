@@ -14,8 +14,6 @@ class SettingsData {
   Color checkColor = HaboColors.primary;
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
-  int checks = 0;
-  int reviewTresHold = 100;
 
   SettingsData();
 
@@ -41,10 +39,7 @@ class SettingsData {
             : HaboColors.red,
         skipColor = (json['skipColor'] != null)
             ? Color(json['skipColor'])
-            : HaboColors.skip,
-        checks = (json['checks'] != null) ? json['checks'] : 0,
-        reviewTresHold =
-            (json['reviewTresHold'] != null) ? json['reviewTresHold'] : 100;
+            : HaboColors.skip;
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
@@ -58,7 +53,5 @@ class SettingsData {
         'checkColor': checkColor.value,
         'failColor': failColor.value,
         'skipColor': skipColor.value,
-        'checks': checks,
-        'reviewTresHold': reviewTresHold,
       };
 }
