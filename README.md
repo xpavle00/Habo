@@ -57,7 +57,7 @@ We hope you enjoy using Habo and find it helpful in building better habits for a
 
 ## Support
 
-If you like this project you can [buy me a coffee](https://www.buymeacoffee.com/peterpavlenko)
+If you like this project you can [buy me a coffee](https://www.buymeacoffee.com/peterpavlenko).
 
 <a href="https://www.buymeacoffee.com/peterpavlenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
