@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class SettingsData {
   Themes theme = Themes.device;
-  StartingDayOfWeek weekStart = StartingDayOfWeek.monday;
+  StartingDayOfWeek? weekStart = StartingDayOfWeek.monday;
   TimeOfDay dailyNotTime = const TimeOfDay(hour: 20, minute: 0);
   bool showDailyNot = true;
   bool soundEffects = true;
@@ -43,7 +43,7 @@ class SettingsData {
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
-        'weekStart': weekStart.index,
+        'weekStart': weekStart?.index,
         'notTime':
             '${dailyNotTime.hour.toString().padLeft(2, '0')}:${dailyNotTime.minute.toString().padLeft(2, '0')}',
         'showDailyNot': showDailyNot,

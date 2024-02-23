@@ -21,7 +21,7 @@ class CalendarHeader extends StatelessWidget {
           BuildContext ctx,
           int index,
         ) {
-          int start = settingsManager.getWeekStartEnum.index;
+          int start = settingsManager.getWeekStartEnum?.index ?? (DateTime.now().weekday % 7);
           int day = (start + index) % StartingDayOfWeek.values.length;
           TextStyle tex = const TextStyle(fontSize: 18, color: Colors.grey);
           if (day == 5 || day == 6) // Sat or Sun

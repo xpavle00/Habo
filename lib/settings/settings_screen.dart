@@ -159,7 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       trailing: DropdownButton<dynamic>(
                         alignment: Alignment.center,
-                        items: StartingDayOfWeek.values.map((dynamic value) {
+                        items: [...StartingDayOfWeek.values.map((dynamic value) {
                           return DropdownMenuItem<dynamic>(
                             alignment: Alignment.center,
                             value: value,
@@ -173,11 +173,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         }).toList(),
+                          const DropdownMenuItem<dynamic>(
+                            alignment: Alignment.center,
+                            value: "None",
+                            child: Text(
+                              "None",
+                              textAlign: TextAlign.center,
+                            )
+                          )
+                        ],
                         value: Provider.of<SettingsManager>(context)
-                            .getWeekStartEnum,
+                            .getWeekStartEnum ?? "None",
                         onChanged: (value) {
                           Provider.of<SettingsManager>(context, listen: false)
-                              .setWeekStart = value;
+                              .setWeekStart = value is String ? null : value;
                         },
                       ),
                     ),

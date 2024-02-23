@@ -259,7 +259,7 @@ class HabitState extends State<Habit> {
               onPageChanged: setSelectedDay,
               onDaySelected: _onDaySelected,
               startingDayOfWeek:
-                  Provider.of<SettingsManager>(context).getWeekStartEnum,
+                  Provider.of<SettingsManager>(context).getWeekStartEnum ?? StartingDayOfWeek.values[DateTime.now().weekday % 7],
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, date, _) {
                   return OneDayButton(

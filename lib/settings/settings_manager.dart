@@ -101,7 +101,7 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.theme;
   }
 
-  StartingDayOfWeek get getWeekStartEnum {
+  StartingDayOfWeek? get getWeekStartEnum {
     return _settingsData.weekStart;
   }
 
@@ -147,7 +147,7 @@ class SettingsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  set setWeekStart(StartingDayOfWeek value) {
+  set setWeekStart(StartingDayOfWeek? value) {
     _settingsData.weekStart = value;
     saveData();
     notifyListeners();
