@@ -114,5 +114,21 @@
   "create": "Stwórz",
   "@create": {},
   "onboarding": "Wprowadzenie",
-  "@onboarding": {}
+  "@onboarding": {},
+  "delete": "Usuń",
+  "@delete": {},
+  "save": "Zapisz",
+  "@save": {},
+  "exercise": "Ćwiczenia",
+  "@exercise": {},
+  "habit": "Nawyk",
+  "@habit": {},
+  "add": "Dodaj",
+  "@add": {},
+  "allow": "Zezwalaj",
+  "@allow": {},
+  "date": "Data",
+  "@date": {},
+  "check": "Sprawdź",
+  "@check": {}
 }
