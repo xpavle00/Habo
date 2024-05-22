@@ -1,4 +1,18 @@
 {
   "habits": "Thói quen:",
-  "@habits": {}
+  "@habits": {},
+  "statistics": "Số liệu thống kê",
+  "@statistics": {},
+  "emptyList": "Danh sách trống",
+  "@emptyList": {},
+  "topStreak": "Kỉ lục hàng đầu",
+  "@topStreak": {},
+  "currentStreak": "Kỉ lục hiện tại",
+  "@currentStreak": {},
+  "noDataAboutHabits": "Không có dữ liệu về thói quen.",
+  "@noDataAboutHabits": {},
+  "total": "Tổng cộng",
+  "@total": {},
+  "warning": "Cảnh báo",
+  "@warning": {}
 }
