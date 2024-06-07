@@ -102,5 +102,19 @@
   "delete": "Xóa",
   "@delete": {},
   "trackYourProgress": "Bạn có thể theo dõi tiến trình của mình thông qua chế độ xem lịch theo từng thói quen hoặc trên trang thống kê.",
-  "@trackYourProgress": {}
+  "@trackYourProgress": {},
+  "twoDayRuleDescription": "Với quy tắc hai ngày, bạn có thể bỏ lỡ một ngày và không bị mất chuỗi nếu ngày hôm sau thành công.",
+  "@twoDayRuleDescription": {},
+  "advancedHabitBuilding": "Xây dựng thói quen nâng cao",
+  "@advancedHabitBuilding": {},
+  "at7AM": "Lúc 7:00 AM",
+  "@at7AM": {},
+  "do50PushUps": "Hít đất 50 cái",
+  "@do50PushUps": {},
+  "fifteenMinOfVideoGames": "15 phút chơi game",
+  "@fifteenMinOfVideoGames": {},
+  "showReward": "Hiển thị phần thưởng",
+  "@showReward": {},
+  "remainderOfReward": "Lời nhắc về phần thưởng sau một thói quen thành công.",
+  "@remainderOfReward": {}
 }
