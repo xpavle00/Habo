@@ -116,5 +116,15 @@
   "showReward": "Hiển thị phần thưởng",
   "@showReward": {},
   "remainderOfReward": "Lời nhắc về phần thưởng sau một thói quen thành công.",
-  "@remainderOfReward": {}
+  "@remainderOfReward": {},
+  "about": "Giới thiệu",
+  "@about": {},
+  "disclaimer": "Tuyên bố miễn trừ trách nhiệm",
+  "@disclaimer": {},
+  "advancedHabitBuildingDescription": "Phần này giúp bạn xác định rõ hơn thói quen của mình bằng cách sử dụng vòng lặp Thói quen. Bạn nên xác định các tín hiệu, thói quen và phần thưởng cho mỗi thói quen.",
+  "@advancedHabitBuildingDescription": {},
+  "donateToCharity": "Tặng 10$ cho tổ chức từ thiện",
+  "@donateToCharity": {},
+  "observeYourProgress": "Quan sát sự tiến bộ của bạn",
+  "@observeYourProgress": {}
 }
