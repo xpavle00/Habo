@@ -126,5 +126,7 @@
   "donateToCharity": "Tặng 10$ cho tổ chức từ thiện",
   "@donateToCharity": {},
   "observeYourProgress": "Quan sát sự tiến bộ của bạn",
-  "@observeYourProgress": {}
+  "@observeYourProgress": {},
+  "add": "Thêm",
+  "@add": {}
 }
