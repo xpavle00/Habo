@@ -100,11 +100,14 @@ class StatisticsCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.check,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .checkColor,
+                    Semantics(
+                      label: S.of(context).checkButtonLabel, 
+                      button: true,
+                      child: IconButton(
+                        icon: Icon(Icons.check, color: Provider.of<SettingsManager>(context, listen: false).checkColor),
+                        onPressed: () {
+                        },
+                      ),
                     ),
                     Text(
                       data.checks.toString(),
@@ -118,11 +121,14 @@ class StatisticsCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.last_page,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
+                    Semantics(
+                      label: S.of(context).lastPageButtonLabel,
+                      button: true,
+                      child: IconButton(
+                        icon: Icon(Icons.last_page, color: Provider.of<SettingsManager>(context, listen: false).skipColor),
+                        onPressed: () {
+                        },
+                      ),
                     ),
                     Text(
                       data.skips.toString(),
@@ -136,11 +142,14 @@ class StatisticsCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.close,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .failColor,
+                    Semantics(
+                      label: S.of(context).closeButtonLabel,
+                      button: true,
+                      child: IconButton(
+                        icon: Icon(Icons.close, color: Provider.of<SettingsManager>(context, listen: false).failColor),
+                        onPressed: () {
+                        },
+                      ),
                     ),
                     Text(
                       data.fails.toString(),
