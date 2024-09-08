@@ -166,5 +166,13 @@
   "done": "Fertig",
   "@done": {},
   "observeYourProgress": "Beobachte deine Fortschritte",
-  "@observeYourProgress": {}
+  "@observeYourProgress": {},
+  "ifYouWantToSupport": "Wenn du Habo unterstützen möchtest, kannst du:",
+  "@ifYouWantToSupport": {},
+  "buyMeACoffee": "Kaufe mir einen Kaffee",
+  "@buyMeACoffee": {},
+  "dan": "Dan",
+  "@dan": {},
+  "fail": "Fehlgeschlagen",
+  "@fail": {}
 }
