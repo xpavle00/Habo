@@ -129,6 +129,14 @@
   "@observeYourProgress": {},
   "add": "Thêm",
   "@add": {},
-  "skipDoesNotAffectStreaks": "Bỏ  qua (không ảnh hưởng tới chuỗi)",
-  "@skipDoesNotAffectStreaks": {}
+  "skipDoesNotAffectStreaks": "Bỏ qua (không ảnh hưởng tới chuỗi)",
+  "@skipDoesNotAffectStreaks": {},
+  "successful": "Hoàn thành",
+  "@successful": {},
+  "notSoSuccessful": "Chưa hoàn thành",
+  "@notSoSuccessful": {},
+  "logYourDays": "Ghi lại ngày của bạn",
+  "@logYourDays": {},
+  "defineYourHabitsDescription": "Đặt các định nghĩa sau đây cho thói quen sẽ giúp bạn theo dõi tốt hơn:",
+  "@defineYourHabitsDescription": {}
 }
