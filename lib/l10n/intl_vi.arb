@@ -128,5 +128,7 @@
   "observeYourProgress": "Quan sát sự tiến bộ của bạn",
   "@observeYourProgress": {},
   "add": "Thêm",
-  "@add": {}
+  "@add": {},
+  "skipDoesNotAffectStreaks": "Bỏ  qua (không ảnh hưởng tới chuỗi)",
+  "@skipDoesNotAffectStreaks": {}
 }
