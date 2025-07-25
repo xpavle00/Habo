@@ -8,7 +8,7 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFFFAFAFA),
-      dialogTheme: const DialogTheme(surfaceTintColor: Colors.white),
+      dialogTheme: const DialogThemeData(surfaceTintColor: Colors.white),
       brightness: Brightness.light,
       primaryColor: const Color(0xFF09BF30),
       timePickerTheme: TimePickerThemeData(
@@ -44,7 +44,7 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFF303030),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Color(0xFF505050),
         surfaceTintColor: Colors.transparent,
       ),
@@ -89,7 +89,7 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Color(0xFF282828),
         surfaceTintColor: Colors.transparent,
       ),

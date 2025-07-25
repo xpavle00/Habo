@@ -178,7 +178,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
   BarTouchData get barTouchData => BarTouchData(
         enabled: false,
         touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.transparent,
+          // tooltipBgColor: Colors.transparent, TODO: trasnparent background
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -224,8 +224,8 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
         .NARROWMONTHS[value.toInt()]
         .toUpperCase();
     return SideTitleWidget(
-      axisSide: meta.axisSide,
       space: 4,
+      meta: meta,
       child: Text(text, style: style),
     );
   }

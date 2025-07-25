@@ -42,7 +42,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   bool notification = false;
   bool showSanction = false;
 
-  Future<void> setNotificationTime(context) async {
+  Future<void> setNotificationTime(BuildContext context) async {
     TimeOfDay? selectedTime;
     TimeOfDay initialTime = notTime;
     selectedTime =
