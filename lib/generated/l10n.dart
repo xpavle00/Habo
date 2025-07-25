@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,32 +56,17 @@ class S {
 
   /// `Habits:`
   String get habits {
-    return Intl.message(
-      'Habits:',
-      name: 'habits',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Habits:', name: 'habits', desc: '', args: []);
   }
 
   /// `Statistics`
   String get statistics {
-    return Intl.message(
-      'Statistics',
-      name: 'statistics',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Statistics', name: 'statistics', desc: '', args: []);
   }
 
   /// `Empty list`
   String get emptyList {
-    return Intl.message(
-      'Empty list',
-      name: 'emptyList',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Empty list', name: 'emptyList', desc: '', args: []);
   }
 
   /// `There is no data about habits.`
@@ -92,12 +81,7 @@ class S {
 
   /// `Top streak`
   String get topStreak {
-    return Intl.message(
-      'Top streak',
-      name: 'topStreak',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Top streak', name: 'topStreak', desc: '', args: []);
   }
 
   /// `Current streak`
@@ -112,32 +96,17 @@ class S {
 
   /// `Total`
   String get total {
-    return Intl.message(
-      'Total',
-      name: 'total',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total', name: 'total', desc: '', args: []);
   }
 
   /// `Unknown`
   String get unknown {
-    return Intl.message(
-      'Unknown',
-      name: 'unknown',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
   }
 
   /// `Warning`
   String get warning {
-    return Intl.message(
-      'Warning',
-      name: 'warning',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Warning', name: 'warning', desc: '', args: []);
   }
 
   /// `All habits will be replaced with habits from backup.`
@@ -152,42 +121,22 @@ class S {
 
   /// `Restore`
   String get restore {
-    return Intl.message(
-      'Restore',
-      name: 'restore',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Restore', name: 'restore', desc: '', args: []);
   }
 
   /// `Cancel`
   String get cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
 
   /// `Settings`
   String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'settings', desc: '', args: []);
   }
 
   /// `Theme`
   String get theme {
-    return Intl.message(
-      'Theme',
-      name: 'theme',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Theme', name: 'theme', desc: '', args: []);
   }
 
   /// `First day of the week`
@@ -242,72 +191,37 @@ class S {
 
   /// `Set colors`
   String get setColors {
-    return Intl.message(
-      'Set colors',
-      name: 'setColors',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Set colors', name: 'setColors', desc: '', args: []);
   }
 
   /// `Backup`
   String get backup {
-    return Intl.message(
-      'Backup',
-      name: 'backup',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Backup', name: 'backup', desc: '', args: []);
   }
 
   /// `Create`
   String get create {
-    return Intl.message(
-      'Create',
-      name: 'create',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Create', name: 'create', desc: '', args: []);
   }
 
   /// `Onboarding`
   String get onboarding {
-    return Intl.message(
-      'Onboarding',
-      name: 'onboarding',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Onboarding', name: 'onboarding', desc: '', args: []);
   }
 
   /// `About`
   String get about {
-    return Intl.message(
-      'About',
-      name: 'about',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('About', name: 'about', desc: '', args: []);
   }
 
   /// `Habo`
   String get habo {
-    return Intl.message(
-      'Habo',
-      name: 'habo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Habo', name: 'habo', desc: '', args: []);
   }
 
   /// `©2023 Habo`
   String get copyright {
-    return Intl.message(
-      '©2023 Habo',
-      name: 'copyright',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('©2023 Habo', name: 'copyright', desc: '', args: []);
   }
 
   /// `Terms and Conditions`
@@ -332,12 +246,7 @@ class S {
 
   /// `Disclaimer`
   String get disclaimer {
-    return Intl.message(
-      'Disclaimer',
-      name: 'disclaimer',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Disclaimer', name: 'disclaimer', desc: '', args: []);
   }
 
   /// `Source code (GitHub)`
@@ -372,22 +281,12 @@ class S {
 
   /// `Reset`
   String get reset {
-    return Intl.message(
-      'Reset',
-      name: 'reset',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reset', name: 'reset', desc: '', args: []);
   }
 
   /// `Done`
   String get done {
-    return Intl.message(
-      'Done',
-      name: 'done',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Done', name: 'done', desc: '', args: []);
   }
 
   /// `Congratulations! Your reward:`
@@ -412,32 +311,17 @@ class S {
 
   /// `Month`
   String get month {
-    return Intl.message(
-      'Month',
-      name: 'month',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Month', name: 'month', desc: '', args: []);
   }
 
   /// `Week`
   String get week {
-    return Intl.message(
-      'Week',
-      name: 'week',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Week', name: 'week', desc: '', args: []);
   }
 
   /// `Habit loop`
   String get habitLoop {
-    return Intl.message(
-      'Habit loop',
-      name: 'habitLoop',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Habit loop', name: 'habitLoop', desc: '', args: []);
   }
 
   /// `Habit Loop is a psychological model describing the process of habit formation. It consists of three components: Cue, Routine, and Reward. The Cue triggers the Routine (habitual action), which is then reinforced by the Reward, creating a loop that makes the habit more ingrained and likely to be repeated.`
@@ -452,12 +336,7 @@ class S {
 
   /// `Cue`
   String get cue {
-    return Intl.message(
-      'Cue',
-      name: 'cue',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cue', name: 'cue', desc: '', args: []);
   }
 
   /// `is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.`
@@ -472,12 +351,7 @@ class S {
 
   /// `Routine`
   String get routine {
-    return Intl.message(
-      'Routine',
-      name: 'routine',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Routine', name: 'routine', desc: '', args: []);
   }
 
   /// `is the action you take in response to the cue. This is the habit itself.`
@@ -492,12 +366,7 @@ class S {
 
   /// `Reward`
   String get reward {
-    return Intl.message(
-      'Reward',
-      name: 'reward',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Reward', name: 'reward', desc: '', args: []);
   }
 
   /// `is the benefit or positive feeling you experience after performing the routine. It reinforces the habit.`
@@ -512,12 +381,7 @@ class S {
 
   /// `Edit Habit`
   String get editHabit {
-    return Intl.message(
-      'Edit Habit',
-      name: 'editHabit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Edit Habit', name: 'editHabit', desc: '', args: []);
   }
 
   /// `Create Habit`
@@ -532,12 +396,7 @@ class S {
 
   /// `Delete`
   String get delete {
-    return Intl.message(
-      'Delete',
-      name: 'delete',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
   }
 
   /// `The habit title can not be empty.`
@@ -552,32 +411,17 @@ class S {
 
   /// `Save`
   String get save {
-    return Intl.message(
-      'Save',
-      name: 'save',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'save', desc: '', args: []);
   }
 
   /// `Exercise`
   String get exercise {
-    return Intl.message(
-      'Exercise',
-      name: 'exercise',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Exercise', name: 'exercise', desc: '', args: []);
   }
 
   /// `Habit`
   String get habit {
-    return Intl.message(
-      'Habit',
-      name: 'habit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Habit', name: 'habit', desc: '', args: []);
   }
 
   /// `Use Two day rule`
@@ -592,12 +436,7 @@ class S {
 
   /// `Two day rule`
   String get twoDayRule {
-    return Intl.message(
-      'Two day rule',
-      name: 'twoDayRule',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Two day rule', name: 'twoDayRule', desc: '', args: []);
   }
 
   /// `With two day rule, you can miss one day and do not lose a streak if the next day is successful.`
@@ -632,12 +471,7 @@ class S {
 
   /// `At 7:00AM`
   String get at7AM {
-    return Intl.message(
-      'At 7:00AM',
-      name: 'at7AM',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('At 7:00AM', name: 'at7AM', desc: '', args: []);
   }
 
   /// `Do 50 push ups`
@@ -662,12 +496,7 @@ class S {
 
   /// `Show reward`
   String get showReward {
-    return Intl.message(
-      'Show reward',
-      name: 'showReward',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Show reward', name: 'showReward', desc: '', args: []);
   }
 
   /// `The reminder of the reward after a successful routine.`
@@ -712,12 +541,7 @@ class S {
 
   /// `Sanction`
   String get sanction {
-    return Intl.message(
-      'Sanction',
-      name: 'sanction',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sanction', name: 'sanction', desc: '', args: []);
   }
 
   /// `Show sanction`
@@ -742,12 +566,7 @@ class S {
 
   /// `Dan`
   String get dan {
-    return Intl.message(
-      'Dan',
-      name: 'dan',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Dan', name: 'dan', desc: '', args: []);
   }
 
   /// `Accountability partner`
@@ -762,12 +581,7 @@ class S {
 
   /// `Add`
   String get add {
-    return Intl.message(
-      'Add',
-      name: 'add',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add', name: 'add', desc: '', args: []);
   }
 
   /// `Habo needs permission to send notifications to work properly.`
@@ -782,62 +596,32 @@ class S {
 
   /// `Allow`
   String get allow {
-    return Intl.message(
-      'Allow',
-      name: 'allow',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Allow', name: 'allow', desc: '', args: []);
   }
 
   /// `Date`
   String get date {
-    return Intl.message(
-      'Date',
-      name: 'date',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Date', name: 'date', desc: '', args: []);
   }
 
   /// `Check`
   String get check {
-    return Intl.message(
-      'Check',
-      name: 'check',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Check', name: 'check', desc: '', args: []);
   }
 
   /// `Fail`
   String get fail {
-    return Intl.message(
-      'Fail',
-      name: 'fail',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fail', name: 'fail', desc: '', args: []);
   }
 
   /// `Skip`
   String get skip {
-    return Intl.message(
-      'Skip',
-      name: 'skip',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Skip', name: 'skip', desc: '', args: []);
   }
 
   /// `Note`
   String get note {
-    return Intl.message(
-      'Note',
-      name: 'note',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Note', name: 'note', desc: '', args: []);
   }
 
   /// `Your note here`
@@ -852,12 +636,7 @@ class S {
 
   /// `Close`
   String get close {
-    return Intl.message(
-      'Close',
-      name: 'close',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Close', name: 'close', desc: '', args: []);
   }
 
   /// `Create your first habit.`
@@ -872,12 +651,7 @@ class S {
 
   /// `Modify`
   String get modify {
-    return Intl.message(
-      'Modify',
-      name: 'modify',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Modify', name: 'modify', desc: '', args: []);
   }
 
   /// `ERROR: Creating backup failed.`
@@ -912,12 +686,7 @@ class S {
 
   /// `Undo`
   String get undo {
-    return Intl.message(
-      'Undo',
-      name: 'undo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Undo', name: 'undo', desc: '', args: []);
   }
 
   /// `App notifications`
@@ -1009,12 +778,7 @@ class S {
 
   /// `1. Cue`
   String get cueNumbered {
-    return Intl.message(
-      '1. Cue',
-      name: 'cueNumbered',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('1. Cue', name: 'cueNumbered', desc: '', args: []);
   }
 
   /// `2. Routine`
@@ -1049,12 +813,7 @@ class S {
 
   /// `Successful`
   String get successful {
-    return Intl.message(
-      'Successful',
-      name: 'successful',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Successful', name: 'successful', desc: '', args: []);
   }
 
   /// `Not so successful`
@@ -1104,14 +863,30 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ar'),
+      Locale.fromSubtags(languageCode: 'ca'),
+      Locale.fromSubtags(languageCode: 'ckb'),
       Locale.fromSubtags(languageCode: 'cs'),
       Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'eo'),
       Locale.fromSubtags(languageCode: 'es'),
       Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'he'),
+      Locale.fromSubtags(languageCode: 'ia'),
+      Locale.fromSubtags(languageCode: 'it'),
       Locale.fromSubtags(languageCode: 'nb', countryCode: 'NO'),
+      Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt'),
+      Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+      Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'sk'),
+      Locale.fromSubtags(languageCode: 'sv'),
+      Locale.fromSubtags(languageCode: 'ta'),
       Locale.fromSubtags(languageCode: 'tr'),
+      Locale.fromSubtags(languageCode: 'uk'),
+      Locale.fromSubtags(languageCode: 'vi'),
+      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
+      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
     ];
   }
 
