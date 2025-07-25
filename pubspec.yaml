@@ -34,10 +34,7 @@ dependencies:
   timezone: ^0.10.1
   flutter_colorpicker: ^1.0.3
   flutter_launcher_icons: ^0.14.4
-  window_size:
-    git:
-      url: https://github.com/google/flutter-desktop-embedding
-      path: plugins/window_size
+  window_manager: ^0.3.8
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2

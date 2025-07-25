@@ -11,10 +11,16 @@ import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:window_size/window_size.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isLinux || Platform.isMacOS) {
+    await windowManager.ensureInitialized();
+    windowManager.setMinimumSize(const Size(320, 320));
+    windowManager.setMaximumSize(Size.infinite);
+  }
   addLicenses();
   runApp(
     const Habo(),
@@ -36,10 +42,6 @@ class _HaboState extends State<Habo> {
 
   @override
   void initState() {
-    if (Platform.isLinux || Platform.isMacOS) {
-      setWindowMinSize(const Size(320, 320));
-      setWindowMaxSize(Size.infinite);
-    }
     _settingsManager.initialize();
     _habitManager.initialize();
     if (platformSupportsNotifications()) {
