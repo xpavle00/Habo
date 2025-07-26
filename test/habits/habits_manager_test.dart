@@ -346,8 +346,7 @@ void main() {
           // Setup a test habit
           when(() => mockHaboModel.insertHabit(any()))
               .thenAnswer((_) async => 1);
-          when(() => mockHaboModel.deleteHabit(any()))
-              .thenAnswer((_) async => null);
+          when(() => mockHaboModel.deleteHabit(any())).thenAnswer((_) async => 1);
 
           habitsManager.addHabit('Test Habit', false, '', '', '', false, false, false, 
               const TimeOfDay(hour: 9, minute: 0), '', false, '');
