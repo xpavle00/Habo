@@ -166,9 +166,8 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
               ),
               maxY: 31,
             ),
-            swapAnimationDuration:
-                const Duration(milliseconds: 150), // Optional
-            swapAnimationCurve: Curves.linear, // Optional
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.linear,
           ),
         ),
       ],
@@ -178,7 +177,9 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
   BarTouchData get barTouchData => BarTouchData(
         enabled: false,
         touchTooltipData: BarTouchTooltipData(
-          // tooltipBgColor: Colors.transparent, TODO: trasnparent background
+          getTooltipColor: (group) => Colors.transparent,
+          tooltipPadding: EdgeInsets.zero,
+          tooltipMargin: 0,
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -189,6 +190,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
               '',
               const TextStyle(
                 color: Colors.transparent,
+                fontSize: 0,
               ),
             );
           },
@@ -214,7 +216,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
 
   Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff7589a2),
+      color: Color.fromARGB(255, 58, 114, 182),
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );
