@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/model/settings_data.dart';
 import 'package:habo/notifications.dart';
@@ -40,17 +41,25 @@ class SettingsManager extends ChangeNotifier {
 
   playCheckSound() {
     if (_settingsData.soundEffects) {
-      _checkPlayer.setClip(
-          start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-      _checkPlayer.play();
+      try {
+        _checkPlayer.setClip(
+            start: const Duration(seconds: 0), end: const Duration(seconds: 2));
+        _checkPlayer.play();
+      } finally {
+        HapticFeedback.lightImpact();
+      }
     }
   }
 
   playClickSound() {
     if (_settingsData.soundEffects) {
-      _clickPlayer.setClip(
-          start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-      _clickPlayer.play();
+      try {
+        _clickPlayer.setClip(
+            start: const Duration(seconds: 0), end: const Duration(seconds: 2));
+        _clickPlayer.play();
+      } finally {
+        HapticFeedback.lightImpact();
+      }
     }
   }
 
