@@ -13,6 +13,7 @@ import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,24 +80,31 @@ class _HaboState extends State<Habo> {
         ),
       ],
       child: Consumer<SettingsManager>(builder: (context, counter, _) {
-        return MaterialApp(
-          title: 'Habo',
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          scaffoldMessengerKey:
-              Provider.of<HabitsManager>(context).getScaffoldKey,
-          theme: Provider.of<SettingsManager>(context).getLight,
-          darkTheme: Provider.of<SettingsManager>(context).getDark,
-          home: Router(
-            routerDelegate: _appRouter,
-            backButtonDispatcher: RootBackButtonDispatcher(),
-          ),
-        );
+        return DynamicColorBuilder(
+            builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+          return MaterialApp(
+            title: 'Habo',
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            scaffoldMessengerKey:
+                Provider.of<HabitsManager>(context).getScaffoldKey,
+            theme: lightDynamic != null ? ThemeData(
+              colorScheme: lightDynamic,
+            ) : Provider.of<SettingsManager>(context).getLight,
+            darkTheme: darkDynamic != null ? ThemeData(
+              colorScheme: darkDynamic,
+            ) : Provider.of<SettingsManager>(context).getDark,
+            home: Router(
+              routerDelegate: _appRouter,
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            ),
+          );
+        });
       }),
     );
   }
