@@ -26,7 +26,7 @@ dependencies:
   path: ^1.8.3
   fl_chart: ^1.0.0
   just_audio: ^0.10.4
-  just_audio_mpv: ^0.1.7
+  just_audio_media_kit: ^2.1.0
   flutter_file_dialog: ^3.0.2
   file_picker: ^10.2.0
   path_provider: ^2.1.0
@@ -34,7 +34,7 @@ dependencies:
   timezone: ^0.10.1
   flutter_colorpicker: ^1.0.3
   flutter_launcher_icons: ^0.14.4
-  window_manager: ^0.3.8
+  window_manager: ^0.5.1
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
@@ -43,6 +43,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mocktail: ^1.0.4
+  build_runner: ^2.4.9
 
   flutter_lints: ^6.0.0
 

@@ -15,7 +15,7 @@ import 'package:habo/notifications.dart';
 import 'package:habo/statistics/statistics.dart';
 
 class HabitsManager extends ChangeNotifier {
-  final HaboModel _haboModel = HaboModel();
+  late final HaboModel _haboModel;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -24,6 +24,10 @@ class HabitsManager extends ChangeNotifier {
 
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
+
+  HabitsManager({HaboModel? haboModel}) {
+    _haboModel = haboModel ?? HaboModel();
+  }
 
   void initialize() async {
     await initModel();
