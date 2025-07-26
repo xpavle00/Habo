@@ -12,6 +12,7 @@ import 'package:habo/model/backup.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:habo/statistics/statistics.dart';
 
 class HabitsManager extends ChangeNotifier {
@@ -119,12 +120,39 @@ class HabitsManager extends ChangeNotifier {
   }
 
   resetNotifications(List<Habit> habits) {
-    for (var element in habits) {
-      if (element.habitData.notification) {
-        var data = element.habitData;
-        setHabitNotification(data.id!, data.notTime, 'Habo', data.title);
+    if (!platformSupportsNotifications()) return;
+    
+    // Check existing notifications and habit completion status
+    AwesomeNotifications().listScheduledNotifications().then((notifications) {
+      final existingIds = notifications.map((n) => n.content?.id).whereType<int>().toSet();
+      
+      for (var element in habits) {
+        if (element.habitData.notification) {
+          var data = element.habitData;
+          
+          // Check if habit is already completed for today
+          DateTime today = DateTime.now();
+          DateTime todayDate = DateTime(today.year, today.month, today.day);
+          bool isCompletedToday = false;
+          
+          // Check if there's a completed event for today
+          data.events.forEach((date, event) {
+            if (date.year == todayDate.year && 
+                date.month == todayDate.month && 
+                date.day == todayDate.day) {
+              if (event[0] == DayType.check) {
+                isCompletedToday = true;
+              }
+            }
+          });
+          
+          // Only schedule notification if not completed today
+          if (!isCompletedToday && !existingIds.contains(data.id)) {
+            setHabitNotification(data.id!, data.notTime, 'Habo', data.title);
+          }
+        }
       }
-    }
+    });
   }
 
   removeNotifications(List<Habit> habits) {
@@ -164,15 +192,31 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  addEvent(int id, DateTime dateTime, List event) {
+  void addEvent(int id, DateTime dateTime, List event) {
     _haboModel.insertEvent(id, dateTime, event);
+    
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final eventDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    
+    if (eventDate == today && event[0] == DayType.check) {
+      rescheduleNotificationForTomorrow(id);
+    }
   }
 
-  deleteEvent(int id, DateTime dateTime) {
+  void deleteEvent(int id, DateTime dateTime) {
     _haboModel.deleteEvent(id, dateTime);
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final eventDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    
+    if (eventDate == today) {
+      rescheduleNotificationForToday(id);
+    }
   }
 
-  addHabit(
+  void addHabit(
       String title,
       bool twoDayRule,
       String cue,
