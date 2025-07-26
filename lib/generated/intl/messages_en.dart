@@ -48,6 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "at7AM": MessageLookupByLibrary.simpleMessage("At 7:00AM"),
     "backup": MessageLookupByLibrary.simpleMessage("Backup"),
+    "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Backup created successfully!",
+    ),
+    "backupFailed": MessageLookupByLibrary.simpleMessage("Backup failed!"),
     "backupFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: Creating backup failed.",
     ),
@@ -155,6 +159,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "reset": MessageLookupByLibrary.simpleMessage("Reset"),
     "restore": MessageLookupByLibrary.simpleMessage("Restore"),
+    "restoreCompletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Restore completed successfully!",
+    ),
+    "restoreFailed": MessageLookupByLibrary.simpleMessage("Restore failed!"),
     "restoreFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: Restoring backup failed.",
     ),

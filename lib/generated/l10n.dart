@@ -134,6 +134,46 @@ class S {
     return Intl.message('Settings', name: 'settings', desc: '', args: []);
   }
 
+  /// `Backup created successfully!`
+  String get backupCreatedSuccessfully {
+    return Intl.message(
+      'Backup created successfully!',
+      name: 'backupCreatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup failed!`
+  String get backupFailed {
+    return Intl.message(
+      'Backup failed!',
+      name: 'backupFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore completed successfully!`
+  String get restoreCompletedSuccessfully {
+    return Intl.message(
+      'Restore completed successfully!',
+      name: 'restoreCompletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore failed!`
+  String get restoreFailed {
+    return Intl.message(
+      'Restore failed!',
+      name: 'restoreFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message('Theme', name: 'theme', desc: '', args: []);

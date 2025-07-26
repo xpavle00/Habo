@@ -12,6 +12,7 @@ import 'package:habo/model/backup.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:habo/statistics/statistics.dart';
 
@@ -58,9 +59,13 @@ class HabitsManager extends ChangeNotifier {
   Future<bool> createBackup() async {
     try {
       final file = await Backup.writeBackup(allHabits);
+      final timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final fileName = 'habo_backup_$timestamp.json';
+      
       if (Platform.isAndroid || Platform.isIOS) {
         final params = SaveFileDialogParams(
           sourceFilePath: file.path,
+          fileName: fileName,
           mimeTypesFilter: ['application/json'],
         );
         await FlutterFileDialog.saveFile(params: params);
@@ -69,13 +74,47 @@ class HabitsManager extends ChangeNotifier {
           dialogTitle: '',
           type: FileType.custom,
           allowedExtensions: ['json'],
-          fileName: file.path.split('/').last,
+          fileName: fileName,
         );
         if (outputFile != null) {
           await file.copy(outputFile);
         }
       }
+      
+      // Show success message
+      _scaffoldKey.currentState?.showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          content: Text(
+            S.of(_scaffoldKey.currentContext!).backupCreatedSuccessfully,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: HaboColors.primary,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      
     } catch (e) {
+      debugPrint('Error creating backup: $e');
+      _scaffoldKey.currentState?.showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          content: Text(
+            S.of(_scaffoldKey.currentContext!).backupFailed,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return false;
     }
     return true;
@@ -113,7 +152,41 @@ class HabitsManager extends ChangeNotifier {
       allHabits = habits;
       resetNotifications(allHabits);
       notifyListeners();
+      
+      // Show success message
+      _scaffoldKey.currentState?.showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          content: Text(
+            S.of(_scaffoldKey.currentContext!).restoreCompletedSuccessfully,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: HaboColors.primary,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      
     } catch (e) {
+      debugPrint('Error loading backup: $e');
+      _scaffoldKey.currentState?.showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          content: Text(
+            S.of(_scaffoldKey.currentContext!).restoreFailed,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       return false;
     }
     return true;
