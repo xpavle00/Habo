@@ -114,5 +114,8 @@
     "notSoSuccessful": "Not so successful",
     "skipDoesNotAffectStreaks": "Skip (does not affect streaks)",
     "observeYourProgress": "Observe your progress",
-    "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page."
+    "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page.",
+    "fileNotFound": "File not found",
+    "fileTooLarge": "File too large (max 10MB)",
+    "invalidBackupFile": "Invalid backup file"
   }

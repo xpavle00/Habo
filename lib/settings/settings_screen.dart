@@ -86,16 +86,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
         await Provider.of<HabitsManager>(context, listen: false)
-            .loadBackup()
-            .then(
-              (value) => {
-                if (!value)
-                  {
-                    Provider.of<HabitsManager>(context, listen: false)
-                        .showErrorMessage(S.of(context).restoreFailedError),
-                  }
-              },
-            );
+            .loadBackup();
+        // loadBackup() now handles its own error messages internally
+        // No need for additional error handling here
       },
     ).show();
   }
@@ -292,19 +285,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           MaterialButton(
                             onPressed: () async {
                               Provider.of<HabitsManager>(context, listen: false)
-                                  .createBackup()
-                                  .then(
-                                    (value) => {
-                                      if (!value)
-                                        {
-                                          Provider.of<HabitsManager>(context,
-                                                  listen: false)
-                                              .showErrorMessage(S
-                                                  .of(context)
-                                                  .backupFailedError),
-                                        }
-                                    },
-                                  );
+                                  .createBackup();
+                              // createBackup() now handles its own error messages internally
+                              // No need for additional error handling here
                             },
                             child: Text(
                               S.of(context).create,

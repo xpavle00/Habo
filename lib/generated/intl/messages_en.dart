@@ -99,6 +99,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 min. of video games",
     ),
+    "fileNotFound": MessageLookupByLibrary.simpleMessage("File not found"),
+    "fileTooLarge": MessageLookupByLibrary.simpleMessage(
+      "File too large (max 10MB)",
+    ),
     "firstDayOfWeek": MessageLookupByLibrary.simpleMessage(
       "First day of the week",
     ),
@@ -128,6 +132,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "If you want to support Habo you can:",
+    ),
+    "invalidBackupFile": MessageLookupByLibrary.simpleMessage(
+      "Invalid backup file",
     ),
     "logYourDays": MessageLookupByLibrary.simpleMessage("Log your days"),
     "modify": MessageLookupByLibrary.simpleMessage("Modify"),

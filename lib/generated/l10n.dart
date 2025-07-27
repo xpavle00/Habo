@@ -895,6 +895,36 @@ class S {
       args: [],
     );
   }
+
+  /// `File not found`
+  String get fileNotFound {
+    return Intl.message(
+      'File not found',
+      name: 'fileNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File too large (max 10MB)`
+  String get fileTooLarge {
+    return Intl.message(
+      'File too large (max 10MB)',
+      name: 'fileTooLarge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid backup file`
+  String get invalidBackupFile {
+    return Intl.message(
+      'Invalid backup file',
+      name: 'invalidBackupFile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

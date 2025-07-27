@@ -37,11 +37,11 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  resetHabitsNotifications() {
+  void resetHabitsNotifications() {
     resetNotifications(allHabits);
   }
 
-  initModel() async {
+  Future<void> initModel() async {
     await _haboModel.initDatabase();
     allHabits = await _haboModel.getAllHabits();
     _isInitialized = true;
@@ -62,13 +62,16 @@ class HabitsManager extends ChangeNotifier {
       final timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
       final fileName = 'habo_backup_$timestamp.json';
       
+      bool? userSaved = false;
+      
       if (Platform.isAndroid || Platform.isIOS) {
         final params = SaveFileDialogParams(
           sourceFilePath: file.path,
           fileName: fileName,
           mimeTypesFilter: ['application/json'],
         );
-        await FlutterFileDialog.saveFile(params: params);
+        final savedPath = await FlutterFileDialog.saveFile(params: params);
+        userSaved = savedPath != null;
       } else {
         final outputFile = await FilePicker.platform.saveFile(
           dialogTitle: '',
@@ -78,25 +81,34 @@ class HabitsManager extends ChangeNotifier {
         );
         if (outputFile != null) {
           await file.copy(outputFile);
+          userSaved = true;
+        } else {
+          // User cancelled - silently return false, no snackbar
+          return false;
         }
       }
       
-      // Show success message
-      _scaffoldKey.currentState?.showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+      // Show success message if user saved the file
+      if (userSaved == true) {
+        _scaffoldKey.currentState?.showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            content: Text(
+              S.of(_scaffoldKey.currentContext!).backupCreatedSuccessfully,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: HaboColors.primary,
+            behavior: SnackBarBehavior.floating,
           ),
-          content: Text(
-            S.of(_scaffoldKey.currentContext!).backupCreatedSuccessfully,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: HaboColors.primary,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+        );
+        return true;
+      }
+      
+      return false;
       
     } catch (e) {
       debugPrint('Error creating backup: $e');
@@ -107,9 +119,9 @@ class HabitsManager extends ChangeNotifier {
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            S.of(_scaffoldKey.currentContext!).backupFailed,
+            '${S.of(_scaffoldKey.currentContext!).backupFailed}: ${e.toString()}',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
@@ -117,7 +129,6 @@ class HabitsManager extends ChangeNotifier {
       );
       return false;
     }
-    return true;
   }
 
   Future<bool> loadBackup() async {
@@ -139,14 +150,103 @@ class HabitsManager extends ChangeNotifier {
             .first
             .path;
       }
+      
+      // User cancelled file picker - silently return false
       if (filePath == null) {
-        return true;
+        return false;
       }
+      
+      // Validate file exists and is readable
+      final file = File(filePath);
+      if (!await file.exists()) {
+        _scaffoldKey.currentState?.showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            content: Text(
+              S.of(_scaffoldKey.currentContext!).fileNotFound,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return false;
+      }
+      
+      // Validate file size (max 10MB)
+      final fileStat = await file.stat();
+      if (fileStat.size > 10 * 1024 * 1024) { // 10MB limit
+        _scaffoldKey.currentState?.showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            content: Text(
+              S.of(_scaffoldKey.currentContext!).fileTooLarge,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return false;
+      }
+      
       final json = await Backup.readBackup(filePath);
+      
+      // Validate JSON structure before attempting to restore
+      try {
+        final decoded = jsonDecode(json);
+        if (decoded is! List) {
+          throw FormatException('Invalid backup format: expected a list of habits');
+        }
+        
+        // Validate each habit has required fields
+        for (var habitJson in decoded) {
+          if (habitJson is! Map<String, dynamic>) {
+            throw FormatException('Invalid habit format: expected object');
+          }
+          
+          // Check for essential fields directly in the habit object
+          final requiredFields = ['id', 'title', 'position', 'events'];
+          for (var field in requiredFields) {
+            if (!habitJson.containsKey(field)) {
+              throw FormatException('Invalid backup: missing required field "$field"');
+            }
+          }
+        }
+        
+      } catch (e) {
+        debugPrint('Backup validation error: $e');
+        _scaffoldKey.currentState?.showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            content: Text(
+              '${S.of(_scaffoldKey.currentContext!).invalidBackupFile}: ${e.toString()}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return false;
+      }
+      
       List<Habit> habits = [];
       jsonDecode(json).forEach((element) {
         habits.add(Habit.fromJson(element));
       });
+      
       await _haboModel.useBackup(habits);
       removeNotifications(allHabits);
       allHabits = habits;
@@ -169,17 +269,18 @@ class HabitsManager extends ChangeNotifier {
           behavior: SnackBarBehavior.floating,
         ),
       );
+      return true;
       
     } catch (e) {
       debugPrint('Error loading backup: $e');
       _scaffoldKey.currentState?.showSnackBar(
         SnackBar(
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           content: Text(
-            S.of(_scaffoldKey.currentContext!).restoreFailed,
+            '${S.of(_scaffoldKey.currentContext!).restoreFailed}: ${e.toString()}',
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
@@ -189,10 +290,9 @@ class HabitsManager extends ChangeNotifier {
       );
       return false;
     }
-    return true;
   }
 
-  resetNotifications(List<Habit> habits) {
+  void resetNotifications(List<Habit> habits) {
     if (!platformSupportsNotifications()) return;
     
     // Check existing notifications and habit completion status
@@ -228,13 +328,13 @@ class HabitsManager extends ChangeNotifier {
     });
   }
 
-  removeNotifications(List<Habit> habits) {
+  void removeNotifications(List<Habit> habits) {
     for (var element in habits) {
       disableHabitNotification(element.habitData.id!);
     }
   }
 
-  showErrorMessage(String message) {
+  void showErrorMessage(String message) {
     _scaffoldKey.currentState!.hideCurrentSnackBar();
     _scaffoldKey.currentState!.showSnackBar(
       SnackBar(
@@ -254,7 +354,7 @@ class HabitsManager extends ChangeNotifier {
     return _isInitialized;
   }
 
-  reorderList(oldIndex, newIndex) {
+  void reorderList(int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
@@ -335,7 +435,7 @@ class HabitsManager extends ChangeNotifier {
     updateOrder();
   }
 
-  editHabit(HabitData habitData) {
+  void editHabit(HabitData habitData) {
     Habit? hab = findHabitById(habitData.id!);
     if (hab == null) return;
     hab.habitData.title = habitData.title;
@@ -375,7 +475,7 @@ class HabitsManager extends ChangeNotifier {
     return result;
   }
 
-  deleteHabit(int id) {
+  void deleteHabit(int id) {
     deletedHabit = findHabitById(id);
     allHabits.remove(deletedHabit);
     toDelete.addLast(deletedHabit!);
@@ -398,7 +498,7 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  undoDeleteHabit(Habit del) {
+  void undoDeleteHabit(Habit del) {
     toDelete.remove(del);
     if (deletedHabit != null) {
       if (deletedHabit!.habitData.position < allHabits.length) {
@@ -423,7 +523,7 @@ class HabitsManager extends ChangeNotifier {
     }
   }
 
-  updateOrder() {
+  void updateOrder() {
     int iterator = 0;
     for (var habit in allHabits) {
       habit.habitData.position = iterator++;
