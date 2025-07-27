@@ -18,12 +18,12 @@ class SettingsManager extends ChangeNotifier {
   final _checkPlayer = AudioPlayer(handleAudioSessionActivation: false);
   final _clickPlayer = AudioPlayer(handleAudioSessionActivation: false);
 
-  void initialize() async {
+  Future<void> initialize() async {
     await loadData();
     _isInitialized = true;
     notifyListeners();
-    _checkPlayer.setAsset('assets/sounds/check.wav');
-    _clickPlayer.setAsset('assets/sounds/click.wav');
+    await _checkPlayer.setAsset('assets/sounds/check.wav');
+    await _clickPlayer.setAsset('assets/sounds/click.wav');
   }
 
   @override

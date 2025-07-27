@@ -5,63 +5,86 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
+import 'package:habo/repositories/habit_repository.dart';
+import 'package:habo/repositories/event_repository.dart';
+import 'package:habo/services/backup_service.dart';
+import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/ui_feedback_service.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Create a mock class for HaboModel
-class MockHaboModel extends Mock implements HaboModel {}
+class MockHabitRepository extends Mock implements HabitRepository {}
+class MockEventRepository extends Mock implements EventRepository {}
+class MockBackupService extends Mock implements BackupService {}
+class MockNotificationService extends Mock implements NotificationService {}
+class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
+  late HabitsManager habitsManager;
+  late MockHabitRepository mockHabitRepository;
+  late MockEventRepository mockEventRepository;
+  late MockBackupService mockBackupService;
+  late MockNotificationService mockNotificationService;
+  late MockUIFeedbackService mockUIFeedbackService;
+
   setUpAll(() {
-    TestWidgetsFlutterBinding.ensureInitialized();
     registerFallbackValue(Habit(
       habitData: HabitData(
         position: 0,
-        title: 'Fallback',
+        title: '',
         twoDayRule: false,
         cue: '',
         routine: '',
         reward: '',
         showReward: false,
         advanced: false,
-        notification: false,
-        notTime: const TimeOfDay(hour: 9, minute: 0),
         events: SplayTreeMap<DateTime, List>(),
+        notification: false,
+        notTime: const TimeOfDay(hour: 0, minute: 0),
         sanction: '',
         showSanction: false,
         accountant: '',
       ),
     ));
+    registerFallbackValue(HabitData(
+      position: 0,
+      title: '',
+      twoDayRule: false,
+      cue: '',
+      routine: '',
+      reward: '',
+      showReward: false,
+      advanced: false,
+      events: SplayTreeMap<DateTime, List>(),
+      notification: false,
+      notTime: const TimeOfDay(hour: 0, minute: 0),
+      sanction: '',
+      showSanction: false,
+      accountant: '',
+    ));
   });
-  late HabitsManager habitsManager;
-  late MockHaboModel mockHaboModel;
 
   setUp(() {
-    mockHaboModel = MockHaboModel();
-    habitsManager = HabitsManager(haboModel: mockHaboModel);
+    mockHabitRepository = MockHabitRepository();
+    mockEventRepository = MockEventRepository();
+    mockBackupService = MockBackupService();
+    mockNotificationService = MockNotificationService();
+    mockUIFeedbackService = MockUIFeedbackService();
+
+    habitsManager = HabitsManager(
+      habitRepository: mockHabitRepository,
+      eventRepository: mockEventRepository,
+      backupService: mockBackupService,
+      notificationService: mockNotificationService,
+      uiFeedbackService: mockUIFeedbackService,
+    );
   });
 
   group('HabitsManager Tests', () {
-    test('should initialize with provided HaboModel', () {
+    test('should initialize with provided repositories', () {
       expect(habitsManager, isNotNull);
     });
 
-    test('should call initDatabase when initModel is called', () async {
-      // Arrange
-      when(() => mockHaboModel.initDatabase())
-          .thenAnswer((_) async => null);
-      when(() => mockHaboModel.getAllHabits())
-          .thenAnswer((_) async => []);
-
-      // Act
-      await habitsManager.initModel();
-
-      // Assert
-      verify(() => mockHaboModel.initDatabase()).called(1);
-      verify(() => mockHaboModel.getAllHabits()).called(1);
-    });
-
-    test('should populate allHabits from model', () async {
+    test('should populate allHabits from repository', () async {
       // Arrange
       final mockHabits = [
         Habit(
@@ -76,25 +99,7 @@ void main() {
             advanced: false,
             notification: false,
             notTime: const TimeOfDay(hour: 9, minute: 0),
-            events: SplayTreeMap<DateTime, List>(),
-            sanction: 'Test sanction',
-            showSanction: false,
-            accountant: 'Test accountant',
-          ),
-        ),
-        Habit(
-          habitData: HabitData(
-            position: 2,
-            title: 'Test Habit 2',
-            twoDayRule: false,
-            cue: 'Test cue',
-            routine: 'Test routine',
-            reward: 'Test reward',
-            showReward: false,
-            advanced: false,
-            notification: false,
-            notTime: const TimeOfDay(hour: 9, minute: 0),
-            events: SplayTreeMap<DateTime, List>(),
+            events: SplayTreeMap<DateTime, List<dynamic>>(),
             sanction: 'Test sanction',
             showSanction: false,
             accountant: 'Test accountant',
@@ -102,26 +107,23 @@ void main() {
         ),
       ];
       
-      when(() => mockHaboModel.initDatabase())
-          .thenAnswer((_) async => null);
-      when(() => mockHaboModel.getAllHabits())
+      when(() => mockHabitRepository.getAllHabits())
           .thenAnswer((_) async => mockHabits);
 
       // Act
       await habitsManager.initModel();
 
       // Assert
-      expect(habitsManager.allHabits.length, 2);
+      verify(() => mockHabitRepository.getAllHabits()).called(1);
+      expect(habitsManager.allHabits.length, 1);
       expect(habitsManager.allHabits[0].habitData.title, 'Test Habit 1');
-      expect(habitsManager.allHabits[1].habitData.title, 'Test Habit 2');
     });
 
     test('should handle empty habits list', () async {
       // Arrange
-      when(() => mockHaboModel.initDatabase())
-          .thenAnswer((_) async => null);
-      when(() => mockHaboModel.getAllHabits())
+      when(() => mockHabitRepository.getAllHabits())
           .thenAnswer((_) async => []);
+
 
       // Act
       await habitsManager.initModel();
@@ -133,10 +135,10 @@ void main() {
     group('CRUD Operations', () {
       setUp(() async {
         // Setup initial state with empty habits
-        when(() => mockHaboModel.initDatabase())
-            .thenAnswer((_) async => null);
-        when(() => mockHaboModel.getAllHabits())
+        when(() => mockHabitRepository.getAllHabits())
             .thenAnswer((_) async => []);
+        when(() => mockHabitRepository.createHabit(any()))
+            .thenAnswer((_) async => 1);
         await habitsManager.initModel();
       });
 
@@ -151,7 +153,7 @@ void main() {
           const testAccountant = 'Test accountant';
           const testTime = TimeOfDay(hour: 9, minute: 0);
           
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
 
           // Act
@@ -176,12 +178,12 @@ void main() {
           expect(habitsManager.allHabits[0].habitData.title, testTitle);
           expect(habitsManager.allHabits[0].habitData.cue, testCue);
           expect(habitsManager.allHabits[0].habitData.routine, testRoutine);
-          verify(() => mockHaboModel.insertHabit(any())).called(1);
+          verify(() => mockHabitRepository.createHabit(any())).called(1);
         });
 
         test('should add habit with correct position', () async {
           // Arrange
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
 
           // Act - Add first habit
@@ -210,7 +212,7 @@ void main() {
       group('Read Operations', () {
         setUp(() async {
           // Add some test habits
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
           
           habitsManager.addHabit('Habit 1', false, '', '', '', false, false, false, 
@@ -263,10 +265,12 @@ void main() {
 
         setUp(() async {
           // Setup a test habit
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
-          when(() => mockHaboModel.editHabit(any()))
+          when(() => mockHabitRepository.updateHabit(any()))
               .thenAnswer((_) async => null);
+          when(() => mockHabitRepository.getAllHabits())
+              .thenAnswer((_) async => [testHabit]);
 
           habitsManager.addHabit('Original Title', false, 'Original cue', 
               'Original routine', 'Original reward', false, false, false, 
@@ -306,7 +310,7 @@ void main() {
           expect(habitsManager.allHabits[0].habitData.title, 'Updated Title');
           expect(habitsManager.allHabits[0].habitData.twoDayRule, true);
           expect(habitsManager.allHabits[0].habitData.cue, 'Updated cue');
-          verify(() => mockHaboModel.editHabit(any())).called(1);
+          verify(() => mockHabitRepository.updateHabit(any())).called(1);
         });
 
         test('should update habit notification settings', () async {
@@ -344,9 +348,9 @@ void main() {
 
         setUp(() async {
           // Setup a test habit
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
-          when(() => mockHaboModel.deleteHabit(any())).thenAnswer((_) async => 1);
+          when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async => null);
 
           habitsManager.addHabit('Test Habit', false, '', '', '', false, false, false, 
               const TimeOfDay(hour: 9, minute: 0), '', false, '');
@@ -387,7 +391,7 @@ void main() {
       group('Utility Methods', () {
         setUp(() async {
           // Add some test habits
-          when(() => mockHaboModel.insertHabit(any()))
+          when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
 
           habitsManager.addHabit('First Habit', false, '', '', '', false, false, false, 

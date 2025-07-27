@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
+import 'package:habo/repositories/habit_repository.dart';
+import 'package:habo/repositories/event_repository.dart';
+
 import 'package:habo/notifications.dart';
 import 'package:habo/statistics/statistics.dart';
 import 'package:habo/services/backup_service.dart';
@@ -12,7 +14,8 @@ import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 
 class HabitsManager extends ChangeNotifier {
-  late final HaboModel _haboModel;
+  final HabitRepository _habitRepository;
+  final EventRepository _eventRepository;
 
   // Service dependencies
   final BackupService? _backupService;
@@ -25,20 +28,30 @@ class HabitsManager extends ChangeNotifier {
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
 
+  /// Creates a new HabitsManager instance with dependency injection.
+  ///
+  /// [habitRepository] Repository for habit data operations (required)
+  /// [eventRepository] Repository for habit event operations (required)
+  /// [backupService] Service for backup/restore operations (optional)
+  /// [notificationService] Service for notification management (optional)
+  /// [uiFeedbackService] Service for UI feedback like SnackBars (optional)
+  ///
+  /// Optional services provide graceful degradation - if not provided,
+  /// related functionality will be disabled or use fallback behavior.
   HabitsManager({
-    HaboModel? haboModel,
+    required HabitRepository habitRepository,
+    required EventRepository eventRepository,
     BackupService? backupService,
     NotificationService? notificationService,
     UIFeedbackService? uiFeedbackService,
-  }) : _backupService = backupService,
+  }) : _habitRepository = habitRepository,
+       _eventRepository = eventRepository,
+       _backupService = backupService,
        _notificationService = notificationService,
-       _uiFeedbackService = uiFeedbackService {
-    _haboModel = haboModel ?? HaboModel();
-  }
+       _uiFeedbackService = uiFeedbackService;
 
-  void initialize() async {
+  Future<void> initialize() async {
     await initModel();
-    await Future.delayed(const Duration(seconds: 5));
     notifyListeners();
   }
 
@@ -47,8 +60,7 @@ class HabitsManager extends ChangeNotifier {
   }
 
   Future<void> initModel() async {
-    await _haboModel.initDatabase();
-    allHabits = await _haboModel.getAllHabits();
+    allHabits = await _habitRepository.getAllHabits();
     _isInitialized = true;
     notifyListeners();
   }
@@ -73,11 +85,24 @@ class HabitsManager extends ChangeNotifier {
 
   Future<bool> loadBackup() async {
     if (_backupService != null) {
-      final result = await _backupService!.loadBackup();
-      if (result.success && result.habits != null) {
-        await _haboModel.useBackup(result.habits!);
+      final backup = await _backupService!.loadBackup();
+      if (backup.success && backup.habits != null) {
+        await _habitRepository.insertHabits(backup.habits!);
+
+        // Process events from each habit
+        for (final habit in backup.habits!) {
+          final events = habit.habitData.events;
+          for (final entry in events.entries) {
+            await _eventRepository.insertEvent(
+              habit.habitData.id ?? 0,
+              entry.key,
+              entry.value,
+            );
+          }
+        }
+
         _notificationService?.removeNotifications(allHabits);
-        allHabits = result.habits!;
+        allHabits = backup.habits!;
         _notificationService?.resetNotifications(allHabits);
         notifyListeners();
         return true;
@@ -117,17 +142,17 @@ class HabitsManager extends ChangeNotifier {
     Habit moved = allHabits.removeAt(oldIndex);
     allHabits.insert(newIndex, moved);
     updateOrder();
-    _haboModel.updateOrder(allHabits);
+    _habitRepository.updateHabitsOrder(allHabits);
     notifyListeners();
   }
 
   void addEvent(int id, DateTime dateTime, List event) {
-    _haboModel.insertEvent(id, dateTime, event);
+    _eventRepository.insertEvent(id, dateTime, event);
     _notificationService?.handleHabitEventAdded(id, dateTime, event);
   }
 
   void deleteEvent(int id, DateTime dateTime) {
-    _haboModel.deleteEvent(id, dateTime);
+    _eventRepository.deleteEvent(id, dateTime);
     _notificationService?.handleHabitEventDeleted(id, dateTime);
   }
 
@@ -162,7 +187,7 @@ class HabitsManager extends ChangeNotifier {
         accountant: accountant,
       ),
     );
-    _haboModel.insertHabit(newHabit).then(
+    _habitRepository.createHabit(newHabit).then(
       (id) {
         newHabit.setId = id;
         allHabits.add(newHabit);
@@ -192,7 +217,7 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.sanction = habitData.sanction;
     hab.habitData.showSanction = habitData.showSanction;
     hab.habitData.accountant = habitData.accountant;
-    _haboModel.editHabit(hab);
+    _habitRepository.updateHabit(hab);
     if (habitData.notification) {
       setHabitNotification(
           habitData.id!, habitData.notTime, 'Habo', habitData.title);
@@ -255,7 +280,7 @@ class HabitsManager extends ChangeNotifier {
   Future<void> deleteFromDB() async {
     if (toDelete.isNotEmpty) {
       disableHabitNotification(toDelete.first.habitData.id!);
-      _haboModel.deleteHabit(toDelete.first.habitData.id!);
+      await _habitRepository.deleteHabit(toDelete.first.habitData.id!);
       toDelete.removeFirst();
     }
     if (toDelete.isNotEmpty) {

@@ -14,7 +14,14 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
   static const _dbVersion = 3;
-  late Database db;
+  Database? _db;
+  
+  Database get db {
+    if (_db == null) {
+      throw StateError('Database has not been initialized. Call initDatabase() first.');
+    }
+    return _db!;
+  }
 
   Future<void> deleteEvent(int id, DateTime dateTime) async {
     try {
@@ -189,14 +196,14 @@ class HaboModel {
 
     if (Platform.isLinux) {
       ffi.sqfliteFfiInit();
-      db = await ffi.databaseFactoryFfi.openDatabase(databaseFilePath,
+      _db = await ffi.databaseFactoryFfi.openDatabase(databaseFilePath,
           options: OpenDatabaseOptions(
             version: _dbVersion,
             onCreate: _onCreate,
             onUpgrade: _onUpgrade,
           ));
     } else {
-      db = await openDatabase(
+      _db = await openDatabase(
         databaseFilePath,
         version: _dbVersion,
         onCreate: _onCreate,

@@ -6,15 +6,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habo/habits/habits_manager.dart';
+import 'package:habo/notifications.dart';
+import 'package:habo/services/service_locator.dart';
+import 'package:habo/model/habo_model.dart';
+
+import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/navigation/app_router.dart';
 import 'package:habo/navigation/app_state_manager.dart';
-import 'package:habo/notifications.dart';
-import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:habo/services/service_locator.dart';
+import 'package:habo/widgets/splash_screen.dart';
+import 'package:habo/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,36 +46,68 @@ class _HaboState extends State<Habo> {
   late HabitsManager _habitManager;
   late AppRouter _appRouter;
   final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  bool _isInitialized = false;
 
   @override
   void initState() {
-    _settingsManager.initialize();
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    await _settingsManager.initialize();
     
-    // Initialize service locator with the scaffold key
-    ServiceLocator.instance.initialize(_scaffoldKey);
+    // Create a shared HaboModel instance
+    final haboModel = HaboModel();
     
-    // Create HabitsManager with services
-    _habitManager = HabitsManager(
+    // Initialize database first and wait for completion
+    await haboModel.initDatabase();
+    
+    // Initialize service locator with the scaffold key and HaboModel
+    ServiceLocator.instance.initialize(_scaffoldKey, haboModel);
+    
+    // Create HabitsManager with repositories and services from ServiceLocator
+    final repositoryFactory = ServiceLocator.instance.repositoryFactory;
+    final habitsManager = HabitsManager(
+      habitRepository: repositoryFactory.habitRepository,
+      eventRepository: repositoryFactory.eventRepository,
       backupService: ServiceLocator.instance.backupService,
       notificationService: ServiceLocator.instance.notificationService,
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
     );
+    await habitsManager.initialize();
     
-    _habitManager.initialize();
     if (platformSupportsNotifications()) {
       initializeNotifications();
     }
+    
     GoogleFonts.config.allowRuntimeFetching = false;
-    _appRouter = AppRouter(
+    
+    // Create AppRouter with initialized habitsManager
+    final appRouter = AppRouter(
       appStateManager: _appStateManager,
       settingsManager: _settingsManager,
-      habitsManager: _habitManager,
+      habitsManager: habitsManager,
     );
-    super.initState();
+    
+    setState(() {
+      _habitManager = habitsManager;
+      _appRouter = appRouter;
+      _isInitialized = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      // Show splash screen with current theme while initializing
+      return SplashScreen(
+        themeMode: _settingsManager.isInitialized 
+            ? _settingsManager.getThemeString 
+            : Themes.device,
+      );
+    }
+
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

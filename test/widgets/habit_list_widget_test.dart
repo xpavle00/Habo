@@ -4,19 +4,42 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
+import 'package:habo/repositories/habit_repository.dart';
+import 'package:habo/repositories/event_repository.dart';
+import 'package:habo/services/backup_service.dart';
+import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/ui_feedback_service.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
-class MockHaboModel extends Mock implements HaboModel {}
+class MockHabitRepository extends Mock implements HabitRepository {}
+class MockEventRepository extends Mock implements EventRepository {}
+class MockBackupService extends Mock implements BackupService {}
+class MockNotificationService extends Mock implements NotificationService {}
+class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
   late HabitsManager habitsManager;
-  late MockHaboModel mockHaboModel;
+  late MockHabitRepository mockHabitRepository;
+  late MockEventRepository mockEventRepository;
+  late MockBackupService mockBackupService;
+  late MockNotificationService mockNotificationService;
+  late MockUIFeedbackService mockUIFeedbackService;
 
   setUp(() {
-    mockHaboModel = MockHaboModel();
-    habitsManager = HabitsManager(haboModel: mockHaboModel);
+    mockHabitRepository = MockHabitRepository();
+    mockEventRepository = MockEventRepository();
+    mockBackupService = MockBackupService();
+    mockNotificationService = MockNotificationService();
+    mockUIFeedbackService = MockUIFeedbackService();
+    
+    habitsManager = HabitsManager(
+      habitRepository: mockHabitRepository,
+      eventRepository: mockEventRepository,
+      backupService: mockBackupService,
+      notificationService: mockNotificationService,
+      uiFeedbackService: mockUIFeedbackService,
+    );
   });
 
   group('HabitListWidget Tests', () {

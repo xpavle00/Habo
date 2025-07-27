@@ -8,6 +8,7 @@ import 'package:habo/habits/habit.dart';
 import 'package:habo/model/backup.dart';
 import 'package:habo/services/backup_result.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/repositories/backup_repository.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
@@ -15,10 +16,39 @@ import 'package:intl/intl.dart';
 /// 
 /// Extracts backup functionality from HabitsManager to provide
 /// a focused, testable service for backup operations.
+/// Now uses BackupRepository for database operations.
 class BackupService {
   final UIFeedbackService _uiFeedbackService;
+  final BackupRepository _backupRepository;
   
-  BackupService(this._uiFeedbackService);
+  BackupService(this._uiFeedbackService, this._backupRepository);
+  
+  /// Creates a backup using data from the database via BackupRepository
+  /// 
+  /// Returns true if backup was successfully created and saved by user,
+  /// false if user cancelled or an error occurred.
+  Future<bool> createDatabaseBackup() async {
+    try {
+      // Get all data from database via repository
+      final backupData = await _backupRepository.exportAllData();
+      
+      // Convert to habits list for file backup
+      final habits = <Habit>[];
+      if (backupData['habits'] != null) {
+        for (var habitJson in backupData['habits']) {
+          habits.add(Habit.fromJson(habitJson));
+        }
+      }
+      
+      return await createBackup(habits);
+    } catch (e) {
+      debugPrint('Error creating database backup: $e');
+      _uiFeedbackService.showError(
+        '${S.current.backupFailed}: ${e.toString()}',
+      );
+      return false;
+    }
+  }
   
   /// Creates a backup of the provided habits
   /// 
@@ -193,6 +223,54 @@ class BackupService {
       
     } catch (e) {
       return BackupResult.failure('JSON parsing error: ${e.toString()}');
+    }
+  }
+  
+  /// Restores habits to database using BackupRepository
+  /// 
+  /// Returns true if restore was successful, false otherwise.
+  Future<bool> restoreToDatabase(List<Habit> habits) async {
+    try {
+      // Prepare backup data for import
+      final backupData = {
+        'habits': habits.map((h) => h.toJson()).toList(),
+        'events': <String, dynamic>{},
+        'version': await _backupRepository.getDatabaseVersion(),
+      };
+      
+      // Import data to database via repository
+      await _backupRepository.importData(backupData);
+      
+      _uiFeedbackService.showSuccess(
+        S.current.restoreCompletedSuccessfully,
+      );
+      return true;
+      
+    } catch (e) {
+      debugPrint('Error restoring to database: $e');
+      _uiFeedbackService.showError(
+        '${S.current.restoreFailed}: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+  
+  /// Gets database statistics for backup information
+  Future<Map<String, int>> getDatabaseStats() async {
+    try {
+      final habitCount = await _backupRepository.getHabitCount();
+      final eventCount = await _backupRepository.getEventCount();
+      
+      return {
+        'habits': habitCount,
+        'events': eventCount,
+      };
+    } catch (e) {
+      debugPrint('Error getting database stats: $e');
+      return {
+        'habits': 0,
+        'events': 0,
+      };
     }
   }
 }

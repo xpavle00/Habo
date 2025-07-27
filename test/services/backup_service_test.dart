@@ -4,6 +4,7 @@ import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/backup_result.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/habits/habit.dart';
+import '../mocks/mock_repositories.dart';
 
 // Mock classes
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
@@ -15,7 +16,9 @@ void main() {
 
     setUp(() {
       mockUIFeedbackService = MockUIFeedbackService();
-      backupService = BackupService(mockUIFeedbackService);
+      // Create a mock BackupRepository for testing
+      final mockBackupRepository = MockBackupRepository();
+      backupService = BackupService(mockUIFeedbackService, mockBackupRepository);
     });
 
     group('BackupResult', () {
