@@ -779,7 +779,7 @@ class S {
     );
   }
 
-  /// `{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} other{Device}}`
+  /// `{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} materialYou {Material You} other{Device}}`
   String themeSelect(String theme) {
     return Intl.select(
       theme,
@@ -788,6 +788,7 @@ class S {
         'light': 'Light',
         'dark': 'Dark',
         'oled': 'OLED black',
+        'materialYou': 'Material You',
         'other': 'Device',
       },
       name: 'themeSelect',

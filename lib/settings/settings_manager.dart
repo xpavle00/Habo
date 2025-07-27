@@ -86,6 +86,8 @@ class SettingsManager extends ChangeNotifier {
         return HaboTheme.darkTheme;
       case Themes.oled:
         return HaboTheme.oledTheme;
+      case Themes.materialYou:
+        return HaboTheme.darkTheme; // Fallback for Material You
       default:
         return HaboTheme.darkTheme;
     }
@@ -101,6 +103,8 @@ class SettingsManager extends ChangeNotifier {
         return HaboTheme.darkTheme;
       case Themes.oled:
         return HaboTheme.oledTheme;
+      case Themes.materialYou:
+        return HaboTheme.lightTheme; // Fallback for Material You
       default:
         return HaboTheme.lightTheme;
     }

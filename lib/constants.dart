@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Themes { device, light, dark, oled }
+enum Themes { device, light, dark, oled, materialYou }
 
 enum DayType { clear, check, fail, skip }
 

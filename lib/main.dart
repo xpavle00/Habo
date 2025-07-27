@@ -128,9 +128,12 @@ class _HaboState extends State<Habo> {
           create: (context) => _habitManager,
         ),
       ],
-      child: Consumer<SettingsManager>(builder: (context, counter, _) {
+      child: Consumer<SettingsManager>(builder: (context, settingsManager, _) {
         return DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+          // Only use dynamic colors if Material You theme is selected
+          final useDynamicColors = settingsManager.getThemeString == Themes.materialYou;
+          
           return MaterialApp(
             title: 'Habo',
             localizationsDelegates: const [
@@ -141,12 +144,12 @@ class _HaboState extends State<Habo> {
             ],
             supportedLocales: S.delegate.supportedLocales,
             scaffoldMessengerKey: _scaffoldKey,
-            theme: lightDynamic != null ? ThemeData(
+            theme: (useDynamicColors && lightDynamic != null) ? ThemeData(
               colorScheme: lightDynamic,
-            ) : Provider.of<SettingsManager>(context).getLight,
-            darkTheme: darkDynamic != null ? ThemeData(
+            ) : settingsManager.getLight,
+            darkTheme: (useDynamicColors && darkDynamic != null) ? ThemeData(
               colorScheme: darkDynamic,
-            ) : Provider.of<SettingsManager>(context).getDark,
+            ) : settingsManager.getDark,
             home: Router(
               routerDelegate: _appRouter,
               backButtonDispatcher: RootBackButtonDispatcher(),

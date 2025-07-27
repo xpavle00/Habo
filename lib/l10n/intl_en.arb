@@ -96,7 +96,7 @@
     "habitNotifications": "Habit notifications",
     "habitNotificationsChannel": "Notification channel for habit notifications",
     "doNotForgetToCheckYourHabits": "Do not forget to check your habits.",
-    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} other{Device}}",
+    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} materialYou {Material You} other{Device}}",
     "@themeSelect": {
       "placeholders": {
         "theme": {
