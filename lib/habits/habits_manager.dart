@@ -1,25 +1,23 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
-import 'package:habo/model/backup.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/notifications.dart';
-import 'package:intl/intl.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:habo/statistics/statistics.dart';
+import 'package:habo/services/backup_service.dart';
+import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/ui_feedback_service.dart';
 
 class HabitsManager extends ChangeNotifier {
   late final HaboModel _haboModel;
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
-      GlobalKey<ScaffoldMessengerState>();
+
+  // Service dependencies
+  final BackupService? _backupService;
+  final NotificationService? _notificationService;
+  final UIFeedbackService? _uiFeedbackService;
 
   late List<Habit> allHabits = [];
   bool _isInitialized = false;
@@ -27,7 +25,14 @@ class HabitsManager extends ChangeNotifier {
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
 
-  HabitsManager({HaboModel? haboModel}) {
+  HabitsManager({
+    HaboModel? haboModel,
+    BackupService? backupService,
+    NotificationService? notificationService,
+    UIFeedbackService? uiFeedbackService,
+  }) : _backupService = backupService,
+       _notificationService = notificationService,
+       _uiFeedbackService = uiFeedbackService {
     _haboModel = haboModel ?? HaboModel();
   }
 
@@ -48,302 +53,53 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  GlobalKey<ScaffoldMessengerState> get getScaffoldKey {
-    return _scaffoldKey;
-  }
+
 
   void hideSnackBar() {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.hideCurrentMessage();
+    }
+    // Note: If UIFeedbackService is null, we can't hide the snackbar
+    // This is acceptable as the snackbar will auto-dismiss
   }
 
   Future<bool> createBackup() async {
-    try {
-      final file = await Backup.writeBackup(allHabits);
-      final timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
-      final fileName = 'habo_backup_$timestamp.json';
-      
-      bool? userSaved = false;
-      
-      if (Platform.isAndroid || Platform.isIOS) {
-        final params = SaveFileDialogParams(
-          sourceFilePath: file.path,
-          fileName: fileName,
-          mimeTypesFilter: ['application/json'],
-        );
-        final savedPath = await FlutterFileDialog.saveFile(params: params);
-        userSaved = savedPath != null;
-      } else {
-        final outputFile = await FilePicker.platform.saveFile(
-          dialogTitle: '',
-          type: FileType.custom,
-          allowedExtensions: ['json'],
-          fileName: fileName,
-        );
-        if (outputFile != null) {
-          await file.copy(outputFile);
-          userSaved = true;
-        } else {
-          // User cancelled - silently return false, no snackbar
-          return false;
-        }
-      }
-      
-      // Show success message if user saved the file
-      if (userSaved == true) {
-        _scaffoldKey.currentState?.showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            content: Text(
-              S.of(_scaffoldKey.currentContext!).backupCreatedSuccessfully,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-            ),
-            backgroundColor: HaboColors.primary,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        return true;
-      }
-      
-      return false;
-      
-    } catch (e) {
-      debugPrint('Error creating backup: $e');
-      _scaffoldKey.currentState?.showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          content: Text(
-            '${S.of(_scaffoldKey.currentContext!).backupFailed}: ${e.toString()}',
-            textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return false;
+    if (_backupService != null) {
+      return await _backupService!.createBackup(allHabits);
     }
+    // Fallback: return false if service not available
+    return false;
   }
 
   Future<bool> loadBackup() async {
-    try {
-      final String? filePath;
-      if (Platform.isAndroid || Platform.isIOS) {
-        const params = OpenFileDialogParams(
-          fileExtensionsFilter: ['json'],
-          mimeTypesFilter: ['application/json'],
-        );
-        filePath = await FlutterFileDialog.pickFile(params: params);
-      } else {
-        filePath = (await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['json'],
-                allowMultiple: false,
-                withReadStream: Platform.isLinux))
-            ?.files
-            .first
-            .path;
+    if (_backupService != null) {
+      final result = await _backupService!.loadBackup();
+      if (result.success && result.habits != null) {
+        await _haboModel.useBackup(result.habits!);
+        _notificationService?.removeNotifications(allHabits);
+        allHabits = result.habits!;
+        _notificationService?.resetNotifications(allHabits);
+        notifyListeners();
+        return true;
       }
-      
-      // User cancelled file picker - silently return false
-      if (filePath == null) {
-        return false;
-      }
-      
-      // Validate file exists and is readable
-      final file = File(filePath);
-      if (!await file.exists()) {
-        _scaffoldKey.currentState?.showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            content: Text(
-              S.of(_scaffoldKey.currentContext!).fileNotFound,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        return false;
-      }
-      
-      // Validate file size (max 10MB)
-      final fileStat = await file.stat();
-      if (fileStat.size > 10 * 1024 * 1024) { // 10MB limit
-        _scaffoldKey.currentState?.showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 2),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            content: Text(
-              S.of(_scaffoldKey.currentContext!).fileTooLarge,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        return false;
-      }
-      
-      final json = await Backup.readBackup(filePath);
-      
-      // Validate JSON structure before attempting to restore
-      try {
-        final decoded = jsonDecode(json);
-        if (decoded is! List) {
-          throw FormatException('Invalid backup format: expected a list of habits');
-        }
-        
-        // Validate each habit has required fields
-        for (var habitJson in decoded) {
-          if (habitJson is! Map<String, dynamic>) {
-            throw FormatException('Invalid habit format: expected object');
-          }
-          
-          // Check for essential fields directly in the habit object
-          final requiredFields = ['id', 'title', 'position', 'events'];
-          for (var field in requiredFields) {
-            if (!habitJson.containsKey(field)) {
-              throw FormatException('Invalid backup: missing required field "$field"');
-            }
-          }
-        }
-        
-      } catch (e) {
-        debugPrint('Backup validation error: $e');
-        _scaffoldKey.currentState?.showSnackBar(
-          SnackBar(
-            duration: const Duration(seconds: 3),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            content: Text(
-              '${S.of(_scaffoldKey.currentContext!).invalidBackupFile}: ${e.toString()}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        return false;
-      }
-      
-      List<Habit> habits = [];
-      jsonDecode(json).forEach((element) {
-        habits.add(Habit.fromJson(element));
-      });
-      
-      await _haboModel.useBackup(habits);
-      removeNotifications(allHabits);
-      allHabits = habits;
-      resetNotifications(allHabits);
-      notifyListeners();
-      
-      // Show success message
-      _scaffoldKey.currentState?.showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          content: Text(
-            S.of(_scaffoldKey.currentContext!).restoreCompletedSuccessfully,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: HaboColors.primary,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return true;
-      
-    } catch (e) {
-      debugPrint('Error loading backup: $e');
-      _scaffoldKey.currentState?.showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          content: Text(
-            '${S.of(_scaffoldKey.currentContext!).restoreFailed}: ${e.toString()}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return false;
     }
+    return false;
   }
 
   void resetNotifications(List<Habit> habits) {
-    if (!platformSupportsNotifications()) return;
-    
-    // Check existing notifications and habit completion status
-    AwesomeNotifications().listScheduledNotifications().then((notifications) {
-      final existingIds = notifications.map((n) => n.content?.id).whereType<int>().toSet();
-      
-      for (var element in habits) {
-        if (element.habitData.notification) {
-          var data = element.habitData;
-          
-          // Check if habit is already completed for today
-          DateTime today = DateTime.now();
-          DateTime todayDate = DateTime(today.year, today.month, today.day);
-          bool isCompletedToday = false;
-          
-          // Check if there's a completed event for today
-          data.events.forEach((date, event) {
-            if (date.year == todayDate.year && 
-                date.month == todayDate.month && 
-                date.day == todayDate.day) {
-              if (event[0] == DayType.check) {
-                isCompletedToday = true;
-              }
-            }
-          });
-          
-          // Only schedule notification if not completed today
-          if (!isCompletedToday && !existingIds.contains(data.id)) {
-            setHabitNotification(data.id!, data.notTime, 'Habo', data.title);
-          }
-        }
-      }
-    });
+    _notificationService?.resetNotifications(habits);
   }
 
   void removeNotifications(List<Habit> habits) {
-    for (var element in habits) {
-      disableHabitNotification(element.habitData.id!);
-    }
+    _notificationService?.removeNotifications(habits);
   }
 
   void showErrorMessage(String message) {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: HaboColors.red,
-      ),
-    );
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showError(message);
+    }
+    // Note: If UIFeedbackService is null, we silently fail
+    // This should not happen in normal operation since services are injected
   }
 
   List<Habit> get getAllHabits {
@@ -367,26 +123,12 @@ class HabitsManager extends ChangeNotifier {
 
   void addEvent(int id, DateTime dateTime, List event) {
     _haboModel.insertEvent(id, dateTime, event);
-    
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final eventDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    
-    if (eventDate == today && event[0] == DayType.check) {
-      rescheduleNotificationForTomorrow(id);
-    }
+    _notificationService?.handleHabitEventAdded(id, dateTime, event);
   }
 
   void deleteEvent(int id, DateTime dateTime) {
     _haboModel.deleteEvent(id, dateTime);
-
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final eventDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    
-    if (eventDate == today) {
-      rescheduleNotificationForToday(id);
-    }
+    _notificationService?.handleHabitEventDeleted(id, dateTime);
   }
 
   void addHabit(
@@ -480,20 +222,18 @@ class HabitsManager extends ChangeNotifier {
     allHabits.remove(deletedHabit);
     toDelete.addLast(deletedHabit!);
     Future.delayed(const Duration(seconds: 4), () => deleteFromDB());
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Text(S.current.habitDeleted),
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: S.current.undo,
-          onPressed: () {
-            undoDeleteHabit(deletedHabit!);
-          },
-        ),
-      ),
-    );
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitDeleted,
+        actionLabel: S.current.undo,
+        onActionPressed: () {
+          undoDeleteHabit(deletedHabit!);
+        },
+        backgroundColor: Colors.grey,
+      );
+    }
+    
     updateOrder();
     notifyListeners();
   }

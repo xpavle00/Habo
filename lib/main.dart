@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:habo/services/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,12 +39,24 @@ class Habo extends StatefulWidget {
 class _HaboState extends State<Habo> {
   final _appStateManager = AppStateManager();
   final _settingsManager = SettingsManager();
-  final _habitManager = HabitsManager();
+  late HabitsManager _habitManager;
   late AppRouter _appRouter;
+  final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
     _settingsManager.initialize();
+    
+    // Initialize service locator with the scaffold key
+    ServiceLocator.instance.initialize(_scaffoldKey);
+    
+    // Create HabitsManager with services
+    _habitManager = HabitsManager(
+      backupService: ServiceLocator.instance.backupService,
+      notificationService: ServiceLocator.instance.notificationService,
+      uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
+    );
+    
     _habitManager.initialize();
     if (platformSupportsNotifications()) {
       initializeNotifications();
@@ -91,8 +104,7 @@ class _HaboState extends State<Habo> {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
-            scaffoldMessengerKey:
-                Provider.of<HabitsManager>(context).getScaffoldKey,
+            scaffoldMessengerKey: _scaffoldKey,
             theme: lightDynamic != null ? ThemeData(
               colorScheme: lightDynamic,
             ) : Provider.of<SettingsManager>(context).getLight,

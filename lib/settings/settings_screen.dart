@@ -6,6 +6,7 @@ import 'package:habo/extensions.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/navigation/app_state_manager.dart';
+import 'package:habo/services/service_locator.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/settings/color_icon.dart';
@@ -85,10 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
-        await Provider.of<HabitsManager>(context, listen: false)
-            .loadBackup();
-        // loadBackup() now handles its own error messages internally
-        // No need for additional error handling here
+        await Provider.of<HabitsManager>(context, listen: false).loadBackup();
       },
     ).show();
   }
@@ -284,10 +282,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () async {
-                              Provider.of<HabitsManager>(context, listen: false)
-                                  .createBackup();
-                              // createBackup() now handles its own error messages internally
-                              // No need for additional error handling here
+                              final habitsManager = Provider.of<HabitsManager>(context, listen: false);
+                              await ServiceLocator.instance.backupService.createBackup(
+                                habitsManager.getAllHabits,
+                              );
                             },
                             child: Text(
                               S.of(context).create,
