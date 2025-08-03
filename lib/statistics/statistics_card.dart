@@ -115,6 +115,9 @@ class StatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -133,6 +136,9 @@ class StatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -150,6 +156,9 @@ class StatisticsCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  width: 10,
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
