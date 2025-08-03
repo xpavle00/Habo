@@ -7,6 +7,7 @@ import 'package:habo/model/habit_data.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/widgets/text_container.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class EditHabitScreen extends StatefulWidget {
@@ -35,12 +36,16 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   TextEditingController reward = TextEditingController();
   TextEditingController sanction = TextEditingController();
   TextEditingController accountant = TextEditingController();
+  TextEditingController targetValue = TextEditingController();
+  TextEditingController partialValue = TextEditingController();
+  TextEditingController unit = TextEditingController();
   TimeOfDay notTime = const TimeOfDay(hour: 12, minute: 0);
   bool twoDayRule = false;
   bool showReward = false;
   bool advanced = false;
   bool notification = false;
   bool showSanction = false;
+  HabitType habitType = HabitType.boolean;
 
   Future<void> setNotificationTime(BuildContext context) async {
     TimeOfDay? selectedTime;
@@ -146,6 +151,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   void initState() {
     super.initState();
     if (widget.habitData != null) {
+      final numberFormatter = NumberFormat('#.##'); // Will remove trailing .0
+
       title.text = widget.habitData!.title;
       cue.text = widget.habitData!.cue;
       routine.text = widget.habitData!.routine;
@@ -158,6 +165,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       sanction.text = widget.habitData!.sanction;
       showSanction = widget.habitData!.showSanction;
       accountant.text = widget.habitData!.accountant;
+      habitType = widget.habitData!.habitType;
+      targetValue.text = numberFormatter.format(widget.habitData!.targetValue);
+      partialValue.text = numberFormatter.format(widget.habitData!.partialValue);
+      unit.text = widget.habitData!.unit;
     }
   }
 
@@ -169,6 +180,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
     reward.dispose();
     sanction.dispose();
     accountant.dispose();
+    targetValue.dispose();
+    partialValue.dispose();
+    unit.dispose();
     super.dispose();
   }
 
@@ -224,6 +238,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     sanction: sanction.text.toString(),
                     showSanction: showSanction,
                     accountant: accountant.text.toString(),
+                    habitType: habitType,
+                    targetValue: double.tryParse(targetValue.text) ?? 1.0,
+                    partialValue: double.tryParse(partialValue.text) ?? 1.0,
+                    unit: unit.text.toString(),
                   ),
                 );
               } else {
@@ -240,6 +258,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   sanction.text.toString(),
                   showSanction,
                   accountant.text.toString(),
+                  habitType: habitType,
+                  targetValue: double.tryParse(targetValue.text) ?? 1.0,
+                  partialValue: double.tryParse(partialValue.text) ?? 1.0,
+                  unit: unit.text.toString(),
                 );
               }
               Navigator.of(context).pop();
@@ -275,9 +297,124 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     hint: S.of(context).exercise,
                     label: S.of(context).habit,
                   ),
+
+                  ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 25),
+                          title: Text(
+                            S.of(context).habitType,
+                          ),
+                          trailing: DropdownButton<HabitType>(
+                            value: habitType,
+                            onChanged: (value) {
+                              setState(() {
+                                habitType = value!;
+                              });
+                            },
+                            icon: const Icon(Icons.expand_more),
+                            iconSize: 24,
+                            elevation: 16,
+                            items: [
+                              DropdownMenuItem(
+                                value: HabitType.boolean,
+                                child: Text(S.of(context).booleanHabit),
+                              ),
+                              DropdownMenuItem(
+                                value: HabitType.numeric,
+                                child: Text(S.of(context).numericHabit),
+                              ),
+                            ],
+                          ),
+                        ),
+                  if (habitType == HabitType.numeric) ...[
+                    Container(
+                      // margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 0),
+                            child: Center(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: [
+                                    TextSpan(
+                                        text: S.of(context).numericHabitDescription),
+                                    WidgetSpan(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showSmallTooltip(context, S.of(context).numericHabit, 
+                                            S.of(context).numericHabitDescription);
+                                          },
+                                          child: const Icon(
+                                            Icons.info,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: TextFormField(
+                                  controller: targetValue,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: S.of(context).targetValue,
+                                    hintText: '100',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                flex: 2,
+                                child: TextFormField(
+                                  controller: unit,
+                                  decoration: InputDecoration(
+                                    labelText: S.of(context).unit,
+                                    hintText: 'push-ups',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          TextFormField(
+                            controller: partialValue,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            decoration: InputDecoration(
+                              labelText: S.of(context).partialValue,
+                              hintText: '10',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              helperText: S.of(context).partialValueDescription,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
+                  ],
                   Container(
                     margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: <Widget>[
                         Checkbox(

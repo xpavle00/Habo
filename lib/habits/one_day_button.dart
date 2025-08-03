@@ -7,6 +7,7 @@ import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/habits/in_button.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/settings/settings_manager.dart';
+import 'package:habo/widgets/progress_input_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -57,6 +58,16 @@ class OneDayButton extends StatelessWidget {
           semanticLabel: S.of(context).check,
         ),
       ),
+      // Add plus icon for numeric habits
+      if (parent.widget.habitData.isNumeric)
+        InButton(
+          key: const Key('Plus'),
+          icon: Icon(
+            Icons.add,
+            color: Provider.of<SettingsManager>(context, listen: false).progressColor,
+            semanticLabel: 'Add Progress',
+          ),
+        ),
       InButton(
         key: const Key('Fail'),
         icon: Icon(
@@ -109,21 +120,21 @@ class OneDayButton extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               child: DropdownButton<InButton>(
-                iconSize: 0,
-                elevation: 3,
-                alignment: Alignment.center,
-                dropdownColor: Theme.of(context).colorScheme.primaryContainer,
-                underline: Container(),
-                items: icons.map(
-                  (InButton value) {
-                    return DropdownMenuItem<InButton>(
-                      key: value.key,
-                      value: value,
-                      child: Center(child: value),
-                    );
-                  },
-                ).toList(),
-                value: icons[index],
+                    iconSize: 0,
+                    elevation: 3,
+                    alignment: Alignment.center,
+                    dropdownColor: Theme.of(context).colorScheme.primaryContainer,
+                    underline: Container(),
+                    items: icons.map(
+                      (InButton value) {
+                        return DropdownMenuItem<InButton>(
+                          key: value.key,
+                          value: value,
+                          child: Center(child: value),
+                        );
+                      },
+                    ).toList(),
+                    value: icons[index],
                 onTap: () {
                   parent.setSelectedDay(date);
                 },
@@ -132,28 +143,35 @@ class OneDayButton extends StatelessWidget {
                     if (value.key == const Key('Check') ||
                         value.key == const Key('Fail') ||
                         value.key == const Key('Skip')) {
-                      Provider.of<HabitsManager>(context, listen: false)
-                          .addEvent(id, date, [
-                        DayType.values[icons
-                            .indexWhere((element) => element.key == value.key)],
-                        comment
-                      ]);
-                      parent.events[date] = [
-                        DayType.values[icons
-                            .indexWhere((element) => element.key == value.key)],
-                        comment
-                      ];
-                      if (value.key == const Key('Check')) {
+                      // For numeric habits, Check means complete the habit fully
+                      if (value.key == const Key('Check') && parent.widget.habitData.isNumeric) {
+                        // Complete the habit with full target value
+                        Provider.of<HabitsManager>(context, listen: false)
+                            .addEvent(id, date, [DayType.check, comment]);
+                        parent.events[date] = [DayType.check, comment];
                         parent.showRewardNotification(date);
                         Provider.of<SettingsManager>(context, listen: false)
                             .playCheckSound();
                       } else {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .playClickSound();
-                        if (value.key == const Key('Fail')) {
-                          parent.showSanctionNotification(date);
+                        final dayType = _getDayTypeFromKey(value.key);
+                        Provider.of<HabitsManager>(context, listen: false)
+                            .addEvent(id, date, [dayType, comment]);
+                        parent.events[date] = [dayType, comment];
+                        if (value.key == const Key('Check')) {
+                          parent.showRewardNotification(date);
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .playCheckSound();
+                        } else {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .playClickSound();
+                          if (value.key == const Key('Fail')) {
+                            parent.showSanctionNotification(date);
+                          }
                         }
                       }
+                    } else if (value.key == const Key('Plus')) {
+                      // Plus icon shows the progress input modal for numeric habits
+                      _showProgressInputModal(context);
                     } else if (value.key == const Key('Comment')) {
                       showCommentDialog(context, index, comment);
                     } else {
@@ -223,5 +241,56 @@ class OneDayButton extends StatelessWidget {
         callback();
       },
     ).show();
+  }
+
+  DayType _getDayTypeFromKey(Key? key) {
+    // Reliable mapping from icon keys to DayType values
+    if (key == const Key('Check')) {
+      return DayType.check;
+    } else if (key == const Key('Fail')) {
+      return DayType.fail;
+    } else if (key == const Key('Skip')) {
+      return DayType.skip;
+    } else if (key == const Key('Plus')) {
+      return DayType.progress;
+    } else {
+      return DayType.clear;
+    }
+  }
+
+  void _showProgressInputModal(BuildContext context) {
+    final habitData = parent.widget.habitData;
+    final currentProgress = habitData.getProgressForDate(date);
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ProgressInputModal(
+          habitTitle: habitData.title,
+          targetValue: habitData.targetValue,
+          partialValue: habitData.partialValue,
+          unit: habitData.unit,
+          currentProgress: currentProgress,
+          onProgressChanged: (double progressValue) {
+            // Add progress event
+            Provider.of<HabitsManager>(context, listen: false)
+                .addEvent(id, date, [DayType.progress, '', progressValue]);
+            parent.events[date] = [DayType.progress, '', progressValue];
+            
+            // Play appropriate sound and show notification
+            if (progressValue >= habitData.targetValue) {
+              parent.showRewardNotification(date);
+              Provider.of<SettingsManager>(context, listen: false)
+                  .playCheckSound();
+            } else {
+              Provider.of<SettingsManager>(context, listen: false)
+                  .playClickSound();
+            }
+            
+            callback();
+          },
+        );
+      },
+    );
   }
 }

@@ -13,7 +13,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
-  static const _dbVersion = 3;
+  static const _dbVersion = 4;
   Database? _db;
   
   Database get db {
@@ -103,10 +103,23 @@ class HaboModel {
         await db.query('events', where: 'id = $id').then(
           (events) {
             for (var event in events) {
-              eventsMap[DateTime.parse(event['dateTime'] as String)] = [
-                DayType.values[event['dayType'] as int],
-                event['comment']
-              ];
+              final dayType = DayType.values[event['dayType'] as int];
+              final comment = event['comment'];
+              final progressValue = event['progressValue'] as double?;
+              
+              // Handle progress data for numeric habits
+              if (dayType == DayType.progress && progressValue != null) {
+                eventsMap[DateTime.parse(event['dateTime'] as String)] = [
+                  dayType,
+                  comment,
+                  progressValue
+                ];
+              } else {
+                eventsMap[DateTime.parse(event['dateTime'] as String)] = [
+                  dayType,
+                  comment
+                ];
+              }
             }
             result.add(
               Habit(
@@ -126,6 +139,10 @@ class HaboModel {
                   sanction: hab['sanction'] ?? '',
                   showSanction: (hab['showSanction'] ?? 0) == 0 ? false : true,
                   accountant: hab['accountant'] ?? '',
+                  habitType: HabitType.values[hab['habitType'] ?? 0],
+                  targetValue: (hab['targetValue'] ?? 1.0).toDouble(),
+                  partialValue: (hab['partialValue'] ?? 1.0).toDouble(),
+                  unit: hab['unit'] ?? '',
                 ),
               ),
             );
@@ -147,19 +164,63 @@ class HaboModel {
     batch.execute('ALTER TABLE habits ADD accountant TEXT DEFAULT "" NOT NULL');
   }
 
-  void _createTableEventsV3(Batch batch) {
+  void _updateTableHabitsV3toV4(Batch batch) {
+    batch.execute('ALTER TABLE habits ADD habitType INTEGER DEFAULT 0 NOT NULL');
+    batch.execute('ALTER TABLE habits ADD targetValue REAL DEFAULT 1.0 NOT NULL');
+    batch.execute('ALTER TABLE habits ADD partialValue REAL DEFAULT 1.0 NOT NULL');
+    batch.execute('ALTER TABLE habits ADD unit TEXT DEFAULT "" NOT NULL');
+  }
+
+  void _updateTableEventsV3toV4(Batch batch) {
+    batch.execute('ALTER TABLE events ADD progressValue REAL DEFAULT 0.0');
+  }
+
+  // void _createTableEventsV3(Batch batch) {
+  //   batch.execute('DROP TABLE IF EXISTS events');
+  //   batch.execute('''CREATE TABLE events (
+  //   id INTEGER,
+  //   dateTime TEXT,
+  //   dayType INTEGER,
+  //   comment TEXT,
+  //   PRIMARY KEY(id, dateTime),
+  //   FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
+  //   )''');
+  // }
+
+  void _createTableEventsV4(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS events');
     batch.execute('''CREATE TABLE events (
     id INTEGER,
     dateTime TEXT,
     dayType INTEGER,
     comment TEXT,
+    progressValue REAL DEFAULT 0.0,
     PRIMARY KEY(id, dateTime),
     FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
     )''');
   }
 
-  void _createTableHabitsV3(Batch batch) {
+  // void _createTableHabitsV3(Batch batch) {
+  //   batch.execute('DROP TABLE IF EXISTS habits');
+  //   batch.execute('''CREATE TABLE habits (
+  //   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  //   position INTEGER,
+  //   title TEXT,
+  //   twoDayRule INTEGER,
+  //   cue TEXT,
+  //   routine TEXT,
+  //   reward TEXT,
+  //   showReward INTEGER,
+  //   advanced INTEGER,
+  //   notification INTEGER,
+  //   notTime TEXT,
+  //   sanction TEXT,
+  //   showSanction INTEGER,
+  //   accountant TEXT
+  //   )''');
+  // }
+
+  void _createTableHabitsV4(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS habits');
     batch.execute('''CREATE TABLE habits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -175,7 +236,11 @@ class HaboModel {
     notTime TEXT,
     sanction TEXT,
     showSanction INTEGER,
-    accountant TEXT
+    accountant TEXT,
+    habitType INTEGER DEFAULT 0,
+    targetValue REAL DEFAULT 1.0,
+    partialValue REAL DEFAULT 1.0,
+    unit TEXT DEFAULT ''
     )''');
   }
 
@@ -214,8 +279,8 @@ class HaboModel {
 
   void _onCreate(db, version) {
     var batch = db.batch();
-    _createTableHabitsV3(batch);
-    _createTableEventsV3(batch);
+    _createTableHabitsV4(batch);
+    _createTableEventsV4(batch);
     batch.commit();
   }
 
@@ -224,24 +289,38 @@ class HaboModel {
     if (oldVersion == 1) {
       _updateTableEventsV1toV2(batch);
       _updateTableHabitsV2toV3(batch);
+      _updateTableHabitsV3toV4(batch);
+      _updateTableEventsV3toV4(batch);
     }
     if (oldVersion == 2) {
       _updateTableHabitsV2toV3(batch);
+      _updateTableHabitsV3toV4(batch);
+      _updateTableEventsV3toV4(batch);
+    }
+    if (oldVersion == 3) {
+      _updateTableHabitsV3toV4(batch);
+      _updateTableEventsV3toV4(batch);
     }
     batch.commit();
   }
 
   Future<void> insertEvent(int id, DateTime date, List event) async {
     try {
-      db.insert(
-          'events',
-          {
-            'id': id,
-            'dateTime': date.toString(),
-            'dayType': event[0].index,
-            'comment': event[1],
-          },
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      final eventData = {
+        'id': id,
+        'dateTime': date.toString(),
+        'dayType': event[0].index,
+        'comment': event[1],
+      };
+      
+      // Add progress value for numeric habits
+      if (event.length > 2 && event[0] == DayType.progress) {
+        eventData['progressValue'] = event[2] as double;
+      } else {
+        eventData['progressValue'] = 0.0;
+      }
+      
+      db.insert('events', eventData, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (_) {
       if (kDebugMode) {
         print(_);

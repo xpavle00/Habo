@@ -94,8 +94,8 @@ class StatisticsCard extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -108,6 +108,24 @@ class StatisticsCard extends StatelessWidget {
                     ),
                     Text(
                       data.checks.toString(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.trending_up,
+                      color:
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .progressColor,
+                    ),
+                    Text(
+                      data.progress.toString(),
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

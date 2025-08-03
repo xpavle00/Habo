@@ -61,8 +61,8 @@ class OverallStatisticsCard extends StatelessWidget {
             const SizedBox(
               height: 22,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -75,6 +75,24 @@ class OverallStatisticsCard extends StatelessWidget {
                     ),
                     Text(
                       total.checks.toString(),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.trending_up,
+                      color:
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .progressColor,
+                    ),
+                    Text(
+                      total.progress.toString(),
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -148,6 +166,20 @@ class OverallStatisticsCard extends StatelessWidget {
           value: total.skips.toDouble(),
           badgeWidget: const Icon(
             Icons.last_page,
+            color: Colors.white,
+          ),
+          title: '',
+          radius: 25.0,
+          titleStyle: const TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+      if (total.progress != 0)
+        PieChartSectionData(
+          color: Provider.of<SettingsManager>(context, listen: false)
+              .progressColor,
+          value: total.progress.toDouble(),
+          badgeWidget: const Icon(
+            Icons.trending_up,
             color: Colors.white,
           ),
           title: '',

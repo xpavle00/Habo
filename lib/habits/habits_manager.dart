@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/model/habit_data.dart';
@@ -168,7 +169,11 @@ class HabitsManager extends ChangeNotifier {
       TimeOfDay notTime,
       String sanction,
       bool showSanction,
-      String accountant) {
+      String accountant,
+      {HabitType habitType = HabitType.boolean,
+      double targetValue = 1.0,
+      double partialValue = 1.0,
+      String unit = ''}) {
     Habit newHabit = Habit(
       habitData: HabitData(
         position: allHabits.length,
@@ -185,6 +190,10 @@ class HabitsManager extends ChangeNotifier {
         sanction: sanction,
         showSanction: showSanction,
         accountant: accountant,
+        habitType: habitType,
+        targetValue: targetValue,
+        partialValue: partialValue,
+        unit: unit,
       ),
     );
     _habitRepository.createHabit(newHabit).then(
@@ -217,6 +226,10 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.sanction = habitData.sanction;
     hab.habitData.showSanction = habitData.showSanction;
     hab.habitData.accountant = habitData.accountant;
+    hab.habitData.habitType = habitData.habitType;
+    hab.habitData.targetValue = habitData.targetValue;
+    hab.habitData.partialValue = habitData.partialValue;
+    hab.habitData.unit = habitData.unit;
     _habitRepository.updateHabit(hab);
     if (habitData.notification) {
       setHabitNotification(

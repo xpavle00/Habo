@@ -926,6 +926,146 @@ class S {
       args: [],
     );
   }
+
+  /// `Progress`
+  String get progress {
+    return Intl.message('Progress', name: 'progress', desc: '', args: []);
+  }
+
+  /// `Enter amount`
+  String get enterAmount {
+    return Intl.message(
+      'Enter amount',
+      name: 'enterAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete`
+  String get complete {
+    return Intl.message('Complete', name: 'complete', desc: '', args: []);
+  }
+
+  /// `Save Progress`
+  String get saveProgress {
+    return Intl.message(
+      'Save Progress',
+      name: 'saveProgress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current: {current} {unit}`
+  String currentProgress(String current, String unit) {
+    return Intl.message(
+      'Current: $current $unit',
+      name: 'currentProgress',
+      desc: '',
+      args: [current, unit],
+    );
+  }
+
+  /// `Target: {target} {unit}`
+  String targetProgress(String target, String unit) {
+    return Intl.message(
+      'Target: $target $unit',
+      name: 'targetProgress',
+      desc: '',
+      args: [target, unit],
+    );
+  }
+
+  /// `{current} / {target} {unit}`
+  String progressOf(String current, String target, String unit) {
+    return Intl.message(
+      '$current / $target $unit',
+      name: 'progressOf',
+      desc: '',
+      args: [current, target, unit],
+    );
+  }
+
+  /// `Numeric habit`
+  String get numericHabit {
+    return Intl.message(
+      'Numeric habit',
+      name: 'numericHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Target value`
+  String get targetValue {
+    return Intl.message(
+      'Target value',
+      name: 'targetValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Partial value`
+  String get partialValue {
+    return Intl.message(
+      'Partial value',
+      name: 'partialValue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unit`
+  String get unit {
+    return Intl.message('Unit', name: 'unit', desc: '', args: []);
+  }
+
+  /// `Habit type`
+  String get habitType {
+    return Intl.message('Habit type', name: 'habitType', desc: '', args: []);
+  }
+
+  /// `Boolean habit`
+  String get booleanHabit {
+    return Intl.message(
+      'Boolean habit',
+      name: 'booleanHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Slider`
+  String get slider {
+    return Intl.message('Slider', name: 'slider', desc: '', args: []);
+  }
+
+  /// `Input`
+  String get input {
+    return Intl.message('Input', name: 'input', desc: '', args: []);
+  }
+
+  /// `Numeric habits let you track progress in increments throughout the day.`
+  String get numericHabitDescription {
+    return Intl.message(
+      'Numeric habits let you track progress in increments throughout the day.',
+      name: 'numericHabitDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To track progress in smaller increments`
+  String get partialValueDescription {
+    return Intl.message(
+      'To track progress in smaller increments',
+      name: 'partialValueDescription',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -117,5 +117,55 @@
     "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page.",
     "fileNotFound": "File not found",
     "fileTooLarge": "File too large (max 10MB)",
-    "invalidBackupFile": "Invalid backup file"
+    "invalidBackupFile": "Invalid backup file",
+    "progress": "Progress",
+    "enterAmount": "Enter amount",
+    "complete": "Complete",
+    "saveProgress": "Save Progress",
+    "currentProgress": "Current: {current} {unit}",
+    "@currentProgress": {
+      "placeholders": {
+        "current": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "targetProgress": "Target: {target} {unit}",
+    "@targetProgress": {
+      "placeholders": {
+        "target": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+      "placeholders": {
+        "current": {
+          "type": "String"
+        },
+        "target": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "numericHabit": "Numeric habit",
+    "targetValue": "Target value",
+    "partialValue": "Partial value",
+    "unit": "Unit",
+    "habitType": "Habit type",
+    "booleanHabit": "Boolean habit",
+    "slider": "Slider",
+    "input": "Input",
+    "numericHabitDescription": "Numeric habits let you track progress in increments throughout the day.",
+    "partialValueDescription": "To track progress in smaller increments"
   }

@@ -20,6 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m1(current, unit) => "Current: ${current} ${unit}";
+
+  static String m2(current, target, unit) => "${current} / ${target} ${unit}";
+
+  static String m3(target, unit) => "Target: ${target} ${unit}";
+
   static String m0(theme) =>
       "${Intl.select(theme, {'device': 'Device', 'light': 'Light', 'dark': 'Dark', 'oled': 'OLED black', 'materialYou': 'Material You', 'other': 'Device'})}";
 
@@ -55,10 +61,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: Creating backup failed.",
     ),
+    "booleanHabit": MessageLookupByLibrary.simpleMessage("Boolean habit"),
     "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Buy me a coffee"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "check": MessageLookupByLibrary.simpleMessage("Check"),
     "close": MessageLookupByLibrary.simpleMessage("Close"),
+    "complete": MessageLookupByLibrary.simpleMessage("Complete"),
     "congratulationsReward": MessageLookupByLibrary.simpleMessage(
       "Congratulations! Your reward:",
     ),
@@ -73,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.",
     ),
     "cueNumbered": MessageLookupByLibrary.simpleMessage("1. Cue"),
+    "currentProgress": m1,
     "currentStreak": MessageLookupByLibrary.simpleMessage("Current streak"),
     "dan": MessageLookupByLibrary.simpleMessage("Dan"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
@@ -94,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "done": MessageLookupByLibrary.simpleMessage("Done"),
     "editHabit": MessageLookupByLibrary.simpleMessage("Edit Habit"),
     "emptyList": MessageLookupByLibrary.simpleMessage("Empty list"),
+    "enterAmount": MessageLookupByLibrary.simpleMessage("Enter amount"),
     "exercise": MessageLookupByLibrary.simpleMessage("Exercise"),
     "fail": MessageLookupByLibrary.simpleMessage("Fail"),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
@@ -125,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "habitTitleEmptyError": MessageLookupByLibrary.simpleMessage(
       "The habit title can not be empty.",
     ),
+    "habitType": MessageLookupByLibrary.simpleMessage("Habit type"),
     "habits": MessageLookupByLibrary.simpleMessage("Habits:"),
     "habo": MessageLookupByLibrary.simpleMessage("Habo"),
     "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
@@ -133,6 +144,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "If you want to support Habo you can:",
     ),
+    "input": MessageLookupByLibrary.simpleMessage("Input"),
     "invalidBackupFile": MessageLookupByLibrary.simpleMessage(
       "Invalid backup file",
     ),
@@ -150,6 +162,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Notification time",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "numericHabit": MessageLookupByLibrary.simpleMessage("Numeric habit"),
+    "numericHabitDescription": MessageLookupByLibrary.simpleMessage(
+      "Numeric habits let you track progress in increments throughout the day.",
+    ),
     "observeYourProgress": MessageLookupByLibrary.simpleMessage(
       "Observe your progress",
     ),
@@ -157,7 +173,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Oh no! Your sanction:",
     ),
     "onboarding": MessageLookupByLibrary.simpleMessage("Onboarding"),
+    "partialValue": MessageLookupByLibrary.simpleMessage("Partial value"),
+    "partialValueDescription": MessageLookupByLibrary.simpleMessage(
+      "To track progress in smaller increments",
+    ),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "progress": MessageLookupByLibrary.simpleMessage("Progress"),
+    "progressOf": m2,
     "remainderOfReward": MessageLookupByLibrary.simpleMessage(
       "The reminder of the reward after a successful routine.",
     ),
@@ -185,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "routineNumbered": MessageLookupByLibrary.simpleMessage("2. Routine"),
     "sanction": MessageLookupByLibrary.simpleMessage("Sanction"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "saveProgress": MessageLookupByLibrary.simpleMessage("Save Progress"),
     "setColors": MessageLookupByLibrary.simpleMessage("Set colors"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "showMonthName": MessageLookupByLibrary.simpleMessage("Show month name"),
@@ -194,10 +217,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "skipDoesNotAffectStreaks": MessageLookupByLibrary.simpleMessage(
       "Skip (does not affect streaks)",
     ),
+    "slider": MessageLookupByLibrary.simpleMessage("Slider"),
     "soundEffects": MessageLookupByLibrary.simpleMessage("Sound effects"),
     "sourceCode": MessageLookupByLibrary.simpleMessage("Source code (GitHub)"),
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "successful": MessageLookupByLibrary.simpleMessage("Successful"),
+    "targetProgress": m3,
+    "targetValue": MessageLookupByLibrary.simpleMessage("Target value"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage(
       "Terms and Conditions",
     ),
@@ -213,6 +239,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
     ),
     "undo": MessageLookupByLibrary.simpleMessage("Undo"),
+    "unit": MessageLookupByLibrary.simpleMessage("Unit"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "useTwoDayRule": MessageLookupByLibrary.simpleMessage("Use Two day rule"),
     "warning": MessageLookupByLibrary.simpleMessage("Warning"),

@@ -40,6 +40,10 @@ class Habit extends StatefulWidget {
       'sanction': habitData.sanction,
       'showSanction': habitData.showSanction ? 1 : 0,
       'accountant': habitData.accountant,
+      'habitType': habitData.habitType.index,
+      'targetValue': habitData.targetValue,
+      'partialValue': habitData.partialValue,
+      'unit': habitData.unit,
     };
   }
 
@@ -57,11 +61,17 @@ class Habit extends StatefulWidget {
       'notification': habitData.notification ? 1 : 0,
       'notTime': '${habitData.notTime.hour}:${habitData.notTime.minute}',
       'events': habitData.events.map((key, value) {
-        return MapEntry(key.toString(), [value[0].toString(), value[1]]);
+        return MapEntry(key.toString(), value.length > 2 
+          ? [value[0].toString(), value[1], value[2]]
+          : [value[0].toString(), value[1]]);
       }),
       'sanction': habitData.sanction,
       'showSanction': habitData.showSanction ? 1 : 0,
       'accountant': habitData.accountant,
+      'habitType': habitData.habitType.index,
+      'targetValue': habitData.targetValue,
+      'partialValue': habitData.partialValue,
+      'unit': habitData.unit,
     };
   }
 
@@ -82,16 +92,26 @@ class Habit extends StatefulWidget {
           sanction: json['sanction'] ?? '',
           showSanction: (json['showSanction'] ?? 0) != 0 ? true : false,
           accountant: json['accountant'] ?? '',
+          habitType: HabitType.values[json['habitType'] ?? 0],
+          targetValue: (json['targetValue'] ?? 1.0).toDouble(),
+          partialValue: (json['partialValue'] ?? 1.0).toDouble(),
+          unit: json['unit'] ?? '',
         );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
     SplayTreeMap<DateTime, List> result = SplayTreeMap<DateTime, List>();
 
     input.forEach((key, value) {
-      result[DateTime.parse(key)] = [
-        DayType.values.firstWhere((e) => e.toString() == reformatOld(value[0])),
-        value[1]
-      ];
+      final dayType = DayType.values.firstWhere((e) => e.toString() == reformatOld(value[0]));
+      final comment = value[1];
+      
+      // Handle progress data for numeric habits
+      if (value.length > 2 && dayType == DayType.progress) {
+        final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
+        result[DateTime.parse(key)] = [dayType, comment, progressValue];
+      } else {
+        result[DateTime.parse(key)] = [dayType, comment];
+      }
     });
     return result;
   }
@@ -328,32 +348,10 @@ class HabitState extends State<Habit> {
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: events[0] == DayType.check
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .checkColor
-                        : events[0] == DayType.fail
-                            ? Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .failColor
-                            : Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .skipColor,
+                    color: _getEventColor(events),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: events[0] == DayType.check
-                      ? const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                        )
-                      : events[0] == DayType.fail
-                          ? const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            )
-                          : const Icon(
-                              Icons.last_page,
-                              color: Colors.white,
-                            ),
+                  child: _getEventIcon(events),
                 )
               : Container(),
           (events[1] != null && events[1] != '')
@@ -376,6 +374,111 @@ class HabitState extends State<Habit> {
               : Container(),
         ]),
       ),
+    );
+  }
+
+  Color _getEventColor(List events) {
+    final eventType = events[0] as DayType;
+    
+    switch (eventType) {
+      case DayType.check:
+        return Provider.of<SettingsManager>(context, listen: false).checkColor;
+      case DayType.fail:
+        return Provider.of<SettingsManager>(context, listen: false).failColor;
+      case DayType.skip:
+        return Provider.of<SettingsManager>(context, listen: false).skipColor;
+      case DayType.progress:
+        // For progress events, check if it's 100% completion
+        if (widget.habitData.isNumeric && events.length > 2) {
+          final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
+          if (progressValue >= widget.habitData.targetValue) {
+            // 100% or more = green check color
+            return Provider.of<SettingsManager>(context, listen: false).checkColor;
+          }
+        }
+        return Provider.of<SettingsManager>(context, listen: false).progressColor;
+      case DayType.clear:
+      default:
+        return Colors.transparent;
+    }
+  }
+
+  Widget _getEventIcon(List events) {
+    final eventType = events[0] as DayType;
+    
+    switch (eventType) {
+      case DayType.check:
+        return const Icon(
+          Icons.check,
+          color: Colors.white,
+        );
+      case DayType.fail:
+        return const Icon(
+          Icons.close,
+          color: Colors.white,
+        );
+      case DayType.skip:
+        return const Icon(
+          Icons.last_page,
+          color: Colors.white,
+        );
+      case DayType.progress:
+        // For progress events, check if it's 100% completion
+        if (widget.habitData.isNumeric && events.length > 2) {
+          final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
+          if (progressValue >= widget.habitData.targetValue) {
+            // 100% or more = green check icon
+            return const Icon(
+              Icons.check,
+              color: Colors.white,
+            );
+          }
+        }
+        return _buildProgressIcon(events);
+      case DayType.clear:
+      default:
+        return Container();
+    }
+  }
+
+  Widget _buildProgressIcon(List events) {
+    // For progress events, show a circular progress indicator
+    if (events.length > 2 && widget.habitData.isNumeric) {
+      final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
+      final percentage = (progressValue / widget.habitData.targetValue).clamp(0.0, 1.0);
+      
+      return Stack(
+        children: [
+          Center(
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                value: percentage,
+                strokeWidth: 3,
+                backgroundColor: Colors.white.withOpacity(0.3),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              '${(percentage * 100).round()}%',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    // Fallback for non-numeric progress events
+    return const Icon(
+      Icons.trending_up,
+      color: Colors.white,
+      size: 20,
     );
   }
 

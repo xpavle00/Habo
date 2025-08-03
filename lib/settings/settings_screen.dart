@@ -251,6 +251,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ColorIcon(
                             color: Provider.of<SettingsManager>(context,
                                     listen: false)
+                                .progressColor,
+                            icon: Icons.trending_up,
+                            defaultColor: HaboColors.progress,
+                            onPicked: (value) {
+                              Provider.of<SettingsManager>(context,
+                                      listen: false)
+                                  .progressColor = value;
+                            },
+                          ),
+                          ColorIcon(
+                            color: Provider.of<SettingsManager>(context,
+                                    listen: false)
                                 .failColor,
                             icon: Icons.close,
                             defaultColor: HaboColors.red,
@@ -271,7 +283,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       listen: false)
                                   .skipColor = value;
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),

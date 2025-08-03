@@ -14,6 +14,7 @@ class SettingsData {
   Color checkColor = HaboColors.primary;
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
+  Color progressColor = HaboColors.progress;
 
   SettingsData();
 
@@ -39,7 +40,10 @@ class SettingsData {
             : HaboColors.red,
         skipColor = (json['skipColor'] != null)
             ? Color(json['skipColor'])
-            : HaboColors.skip;
+            : HaboColors.skip,
+        progressColor = (json['progressColor'] != null)
+            ? Color(json['progressColor'])
+            : HaboColors.progress;
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
@@ -53,5 +57,6 @@ class SettingsData {
         'checkColor': checkColor.value,
         'failColor': failColor.value,
         'skipColor': skipColor.value,
+        'progressColor': progressColor.value,
       };
 }

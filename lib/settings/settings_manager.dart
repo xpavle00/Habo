@@ -150,6 +150,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.skipColor;
   }
 
+  Color get progressColor {
+    return _settingsData.progressColor;
+  }
+
   bool get isInitialized {
     return _isInitialized;
   }
@@ -216,6 +220,12 @@ class SettingsManager extends ChangeNotifier {
 
   set skipColor(Color value) {
     _settingsData.skipColor = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set progressColor(Color value) {
+    _settingsData.progressColor = value;
     saveData();
     notifyListeners();
   }

@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.20.2
   intl_utils: ^2.8.5
   dynamic_color: ^1.7.0
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:
