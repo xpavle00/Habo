@@ -500,11 +500,17 @@ class HabitState extends State<Habit> {
       if (widget.habitData.events[checkDayKey]![0] != DayType.clear) {
         if (widget.habitData.events[lastDayKey]![0] != null &&
             widget.habitData.events[lastDayKey]![0] != DayType.clear &&
-            lastDayKey!.difference(checkDayKey!).inDays > 1) break;
+            lastDayKey!.difference(checkDayKey!).inDays > 1) {
+          break;
+        }
         lastDayKey = checkDayKey;
       }
 
-      if (widget.habitData.events[checkDayKey]![0] == DayType.check) inStreak++;
+      if (widget.habitData.events[checkDayKey]![0] == DayType.check
+          || (widget.habitData.events[checkDayKey]![0] == DayType.progress 
+            && widget.habitData.events[checkDayKey]![2] >= widget.habitData.targetValue)) {
+              inStreak++;
+            }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
     }
 
@@ -513,14 +519,17 @@ class HabitState extends State<Habit> {
     widget.habitData.streak = inStreak;
   }
 
-  _updateLastStreakTwoDay() {
+  void _updateLastStreakTwoDay() {
     int inStreak = 0;
     var trueLastKey = widget.habitData.events.lastKey();
 
+    // Skip clear entries and single incomplete progress (treated as clear)
     while (widget.habitData.events[trueLastKey] != null &&
         widget.habitData.events[trueLastKey]![0] != null &&
-        widget.habitData.events[trueLastKey]![0] == DayType.clear) {
-      trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
+        (widget.habitData.events[trueLastKey]![0] == DayType.clear ||
+        (widget.habitData.events[trueLastKey]![0] == DayType.progress &&
+        widget.habitData.events[trueLastKey]![2] < widget.habitData.targetValue))) {
+          trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
     }
 
     var checkDayKey = trueLastKey;
@@ -529,24 +538,37 @@ class HabitState extends State<Habit> {
 
     while (widget.habitData.events[checkDayKey] != null) {
       if (widget.habitData.events[checkDayKey]![0] != DayType.clear) {
+        // End if fail and next is not check, clear or progress
         if (widget.habitData.events[checkDayKey]![0] == DayType.fail &&
-            (lastDay != DayType.check && lastDay != DayType.clear)) {
+            (lastDay != DayType.check && lastDay != DayType.clear && 
+            (lastDay != DayType.progress))) {
           break;
         }
 
+        // End if gap is more than 1 day
         if (widget.habitData.events[lastDayKey]![0] != null &&
             widget.habitData.events[lastDayKey]![0] != DayType.clear &&
-            lastDayKey!.difference(checkDayKey!).inDays > 1) break;
+            lastDayKey!.difference(checkDayKey!).inDays > 1) {
+          break;
+        }
+
         lastDayKey = checkDayKey;
       }
 
+      // Count streak if check or 100% progress
       lastDay = widget.habitData.events[checkDayKey]![0];
-      if (widget.habitData.events[checkDayKey]![0] == DayType.check) inStreak++;
+      if (widget.habitData.events[checkDayKey]![0] == DayType.check ||
+          (widget.habitData.events[checkDayKey]![0] == DayType.progress &&
+              widget.habitData.events[checkDayKey]![2] >=
+                  widget.habitData.targetValue)) {
+        inStreak++;
+      }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
     }
 
     _streakVisible = (inStreak >= 2);
 
+    // Set orange streak if last event is fail
     widget.habitData.streak = inStreak;
     _orangeStreak = (widget.habitData.events[trueLastKey] != null &&
         widget.habitData.events[trueLastKey]![0] == DayType.fail);
