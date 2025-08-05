@@ -4,14 +4,15 @@ import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/habits/habits_screen.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/navigation/routes.dart';
+import 'package:habo/navigation/route_information_parser.dart';
 import 'package:habo/onboarding/onboarding_screen.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/settings/settings_screen.dart';
 import 'package:habo/splash_screen.dart';
 import 'package:habo/statistics/statistics_screen.dart';
 
-class AppRouter extends RouterDelegate
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
+class AppRouter extends RouterDelegate<HaboRouteConfiguration>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<HaboRouteConfiguration> {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -20,10 +21,10 @@ class AppRouter extends RouterDelegate
   final HabitsManager habitsManager;
 
   AppRouter(
-      {required this.appStateManager,
+      {required this.navigatorKey,
+      required this.appStateManager,
       required this.settingsManager,
-      required this.habitsManager})
-      : navigatorKey = GlobalKey<NavigatorState>() {
+      required this.habitsManager}) {
     appStateManager.addListener(notifyListeners);
     settingsManager.addListener(notifyListeners);
     habitsManager.addListener(notifyListeners);
@@ -42,7 +43,7 @@ class AppRouter extends RouterDelegate
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      onPopPage: _handlePopPage,
+      onDidRemovePage: _handleDidRemovePage,
       pages: [
         if (allInitialized()) HabitsScreen.page(),
         if (appStateManager.getStatistics) StatisticsScreen.page(),
@@ -61,34 +62,96 @@ class AppRouter extends RouterDelegate
     return settingsManager.isInitialized && habitsManager.isInitialized;
   }
 
-  bool _handlePopPage(Route<dynamic> route, result) {
-    if (!route.didPop(result)) {
-      return false;
-    }
-
-    if (route.settings.name == Routes.statisticsPath) {
+  void _handleDidRemovePage(Page<dynamic> page) {
+    if (page.name == Routes.statisticsPath) {
       appStateManager.goStatistics(false);
     }
 
-    if (route.settings.name == Routes.settingsPath) {
+    if (page.name == Routes.settingsPath) {
       appStateManager.goSettings(false);
     }
 
-    if (route.settings.name == Routes.onboardingPath) {
+    if (page.name == Routes.onboardingPath) {
       appStateManager.goOnboarding(false);
     }
 
-    if (route.settings.name == Routes.createHabitPath) {
+    if (page.name == Routes.createHabitPath) {
       appStateManager.goCreateHabit(false);
     }
 
-    if (route.settings.name == Routes.editHabitPath) {
+    if (page.name == Routes.editHabitPath) {
       appStateManager.goEditHabit(null);
     }
-
-    return false;
   }
 
   @override
-  Future<void> setNewRoutePath(configuration) async {}
+  Future<void> setNewRoutePath(HaboRouteConfiguration configuration) async {
+    // Handle deep link navigation
+    _handleDeepLink(configuration.path);
+  }
+  
+  @override
+  HaboRouteConfiguration get currentConfiguration {
+    // Return current route configuration based on app state
+    if (appStateManager.getStatistics) {
+      return const HaboRouteConfiguration(path: '/statistics');
+    }
+    if (appStateManager.getSettings) {
+      return const HaboRouteConfiguration(path: '/settings');
+    }
+    if (appStateManager.getCreateHabit) {
+      return const HaboRouteConfiguration(path: '/create');
+    }
+    if (appStateManager.getEditHabit != null) {
+      return const HaboRouteConfiguration(path: '/edit');
+    }
+    if (appStateManager.getOnboarding) {
+      return const HaboRouteConfiguration(path: '/onboarding');
+    }
+    return const HaboRouteConfiguration(path: '/');
+  }
+  
+  /// Handle deep link navigation by updating app state
+  void _handleDeepLink(String path) {
+    final normalizedPath = path.toLowerCase();
+    
+    // Wait for app to be initialized before navigating
+    if (!allInitialized()) {
+      // Retry after a short delay if not initialized
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (allInitialized()) {
+          _handleDeepLink(path);
+        }
+      });
+      return;
+    }
+    
+    // Reset all navigation states first
+    appStateManager.goStatistics(false);
+    appStateManager.goSettings(false);
+    appStateManager.goCreateHabit(false);
+    appStateManager.goOnboarding(false);
+    appStateManager.goEditHabit(null);
+    
+    // Navigate based on the URL path
+    switch (normalizedPath) {
+      case '/statistics':
+        appStateManager.goStatistics(true);
+        break;
+      case '/settings':
+        appStateManager.goSettings(true);
+        break;
+      case '/create':
+      case '/createhabit':
+      case '/new':
+        appStateManager.goCreateHabit(true);
+        break;
+      case '/':
+      case '/main':
+      case '/habits':
+      default:
+        // Default to main habits screen - no action needed as it's the default
+        break;
+    }
+  }
 }

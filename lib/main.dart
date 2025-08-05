@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,7 @@ import 'package:habo/model/habo_model.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/navigation/app_router.dart';
 import 'package:habo/navigation/app_state_manager.dart';
+import 'package:habo/navigation/route_information_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
@@ -45,6 +47,7 @@ class _HaboState extends State<Habo> {
   final _settingsManager = SettingsManager();
   late HabitsManager _habitManager;
   late AppRouter _appRouter;
+  final _navigatorKey = GlobalKey<NavigatorState>();
   final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   bool _isInitialized = false;
 
@@ -85,6 +88,7 @@ class _HaboState extends State<Habo> {
     
     // Create AppRouter with initialized habitsManager
     final appRouter = AppRouter(
+      navigatorKey: _navigatorKey,
       appStateManager: _appStateManager,
       settingsManager: _settingsManager,
       habitsManager: habitsManager,
@@ -134,7 +138,7 @@ class _HaboState extends State<Habo> {
           // Only use dynamic colors if Material You theme is selected
           final useDynamicColors = settingsManager.getThemeString == Themes.materialYou;
           
-          return MaterialApp(
+          return MaterialApp.router(
             title: 'Habo',
             localizationsDelegates: const [
               S.delegate,
@@ -150,10 +154,9 @@ class _HaboState extends State<Habo> {
             darkTheme: (useDynamicColors && darkDynamic != null) ? ThemeData(
               colorScheme: darkDynamic,
             ) : settingsManager.getDark,
-            home: Router(
-              routerDelegate: _appRouter,
-              backButtonDispatcher: RootBackButtonDispatcher(),
-            ),
+            routerDelegate: _appRouter,
+            routeInformationParser: HaboRouteInformationParser(),
+            backButtonDispatcher: RootBackButtonDispatcher(),
           );
         });
       }),
