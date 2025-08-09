@@ -63,25 +63,27 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
   }
 
   void _handleDidRemovePage(Page<dynamic> page) {
-    if (page.name == Routes.statisticsPath) {
-      appStateManager.goStatistics(false);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (page.name == Routes.statisticsPath) {
+        appStateManager.goStatistics(false);
+      }
 
-    if (page.name == Routes.settingsPath) {
-      appStateManager.goSettings(false);
-    }
+      if (page.name == Routes.settingsPath) {
+        appStateManager.goSettings(false);
+      }
 
-    if (page.name == Routes.onboardingPath) {
-      appStateManager.goOnboarding(false);
-    }
+      if (page.name == Routes.onboardingPath) {
+        appStateManager.goOnboarding(false);
+      }
 
-    if (page.name == Routes.createHabitPath) {
-      appStateManager.goCreateHabit(false);
-    }
+      if (page.name == Routes.createHabitPath) {
+        appStateManager.goCreateHabit(false);
+      }
 
-    if (page.name == Routes.editHabitPath) {
-      appStateManager.goEditHabit(null);
-    }
+      if (page.name == Routes.editHabitPath) {
+        appStateManager.goEditHabit(null);
+      }
+    });
   }
 
   @override
@@ -126,32 +128,35 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       return;
     }
     
-    // Reset all navigation states first
-    appStateManager.goStatistics(false);
-    appStateManager.goSettings(false);
-    appStateManager.goCreateHabit(false);
-    appStateManager.goOnboarding(false);
-    appStateManager.goEditHabit(null);
-    
-    // Navigate based on the URL path
-    switch (normalizedPath) {
-      case '/statistics':
-        appStateManager.goStatistics(true);
-        break;
-      case '/settings':
-        appStateManager.goSettings(true);
-        break;
-      case '/create':
-      case '/createhabit':
-      case '/new':
-        appStateManager.goCreateHabit(true);
-        break;
-      case '/':
-      case '/main':
-      case '/habits':
-      default:
-        // Default to main habits screen - no action needed as it's the default
-        break;
-    }
+    // Defer state updates to avoid calling setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Reset all navigation states first
+      appStateManager.goStatistics(false);
+      appStateManager.goSettings(false);
+      appStateManager.goCreateHabit(false);
+      appStateManager.goOnboarding(false);
+      appStateManager.goEditHabit(null);
+      
+      // Navigate based on the URL path
+      switch (normalizedPath) {
+        case '/statistics':
+          appStateManager.goStatistics(true);
+          break;
+        case '/settings':
+          appStateManager.goSettings(true);
+          break;
+        case '/create':
+        case '/createhabit':
+        case '/new':
+          appStateManager.goCreateHabit(true);
+          break;
+        case '/':
+        case '/main':
+        case '/habits':
+        default:
+          // Default to main habits screen - no action needed as it's the default
+          break;
+      }
+    });
   }
 }

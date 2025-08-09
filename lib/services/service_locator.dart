@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:habo/services/backup_service.dart';
+import 'package:habo/services/background_task_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/repositories/repository_factory.dart';
+import 'package:habo/settings/settings_manager.dart';
 
 /// Service locator for dependency injection
 /// 
@@ -16,19 +18,23 @@ class ServiceLocator {
   ServiceLocator._();
   
   // Service instances
-  BackupService? _backupService;
-  NotificationService? _notificationService;
-  UIFeedbackService? _uiFeedbackService;
-  RepositoryFactory? _repositoryFactory;
-  HaboModel? _haboModel;
+  late final BackupService _backupService;
+  late final NotificationService _notificationService;
+  late final UIFeedbackService _uiFeedbackService;
+  late final BackgroundTaskService _backgroundTaskService;
+  late final RepositoryFactory _repositoryFactory;
+  late final HaboModel _haboModel;
+  late final SettingsManager _settingsManager;
   
   /// Initialize services and repositories with required dependencies
-  void initialize(GlobalKey<ScaffoldMessengerState> scaffoldKey, HaboModel haboModel) {
+  void initialize(GlobalKey<ScaffoldMessengerState> scaffoldKey, HaboModel haboModel, SettingsManager settingsManager) {
     _haboModel = haboModel;
+    _settingsManager = settingsManager;
     _repositoryFactory = RepositoryFactory(haboModel);
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
-    _backupService = BackupService(_uiFeedbackService!, _repositoryFactory!.backupRepository);
+    _backupService = BackupService(_uiFeedbackService, _repositoryFactory.backupRepository);
     _notificationService = NotificationService();
+    _backgroundTaskService = BackgroundTaskService();
   }
   
   /// Ensures ServiceLocator is initialized, throws StateError if not
@@ -41,46 +47,61 @@ class ServiceLocator {
   /// Get BackupService instance
   BackupService get backupService {
     _ensureInitialized();
-    return _backupService!;
+    return _backupService;
   }
   
   /// Get NotificationService instance
   NotificationService get notificationService {
     _ensureInitialized();
-    return _notificationService!;
+    return _notificationService;
   }
   
   /// Get UIFeedbackService instance
   UIFeedbackService get uiFeedbackService {
     _ensureInitialized();
-    return _uiFeedbackService!;
+    return _uiFeedbackService;
+  }
+  
+  /// Get BackgroundTaskService instance
+  BackgroundTaskService get backgroundTaskService {
+    _ensureInitialized();
+    return _backgroundTaskService;
   }
   
   /// Get RepositoryFactory instance
   RepositoryFactory get repositoryFactory {
     _ensureInitialized();
-    return _repositoryFactory!;
+    return _repositoryFactory;
   }
 
   /// Get HaboModel instance
   HaboModel get haboModel {
     _ensureInitialized();
-    return _haboModel!;
+    return _haboModel;
+  }
+  
+  /// Get SettingsManager instance
+  SettingsManager get settingsManager {
+    _ensureInitialized();
+    return _settingsManager;
   }
 
   /// Check if services are initialized
-  bool get isInitialized => 
-      _backupService != null && 
-      _notificationService != null && 
-      _uiFeedbackService != null &&
-      _repositoryFactory != null;
+  bool get isInitialized {
+    // Since we're using late final, we need to check if they've been initialized
+    // We'll use a flag to track initialization state
+    try {
+      // Accessing any late final variable will throw if not initialized
+      _haboModel;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
   
   /// Reset all services (useful for testing)
   void reset() {
-    _backupService = null;
-    _notificationService = null;
-    _uiFeedbackService = null;
-    _repositoryFactory = null;
-    _haboModel = null;
+    // Reset all services by reinitializing the singleton
+    _instance = ServiceLocator._();
   }
 }

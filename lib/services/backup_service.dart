@@ -23,6 +23,9 @@ class BackupService {
   
   BackupService(this._uiFeedbackService, this._backupRepository);
   
+  /// Public getter for backupRepository
+  BackupRepository get backupRepository => _backupRepository;
+  
   /// Creates a backup using data from the database via BackupRepository
   /// 
   /// Returns true if backup was successfully created and saved by user,
