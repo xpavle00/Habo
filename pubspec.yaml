@@ -40,6 +40,7 @@ dependencies:
   intl_utils: ^2.8.5
   dynamic_color: ^1.7.0
   percent_indicator: ^4.2.5
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -76,3 +77,31 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+# Native splash screen configuration
+flutter_native_splash:
+  # Match app's light and dark scaffold background colors
+  color: "#FAFAFA"          # from HaboTheme.lightTheme.scaffoldBackgroundColor (0xFFFAFAFA)
+  color_dark: "#303030"     # from HaboTheme.darkTheme.scaffoldBackgroundColor (0xFF303030)
+
+  # Use existing app icon as splash image
+  image: assets/images/splash_icon.png
+  image_dark: assets/images/splash_icon.png
+
+  # Improve appearance
+  ios_content_mode: center           # make image larger on iOS
+  android_gravity: center            # explicit default
+  fullscreen: false                   # hide status bar during splash
+
+  # Android 12 requires its own config
+  android_12:
+    color: "#FAFAFA"
+    color_dark: "#303030"
+    icon_background_color: "#FAFAFA"      # match background to reduce visible circle
+    icon_background_color_dark: "#303030"
+    image: assets/images/splash_icon.png
+    image_dark: assets/images/splash_icon.png
+
+  android: true
+  ios: true
+  web: false

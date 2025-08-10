@@ -19,11 +19,12 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:habo/widgets/splash_screen.dart';
 import 'package:habo/constants.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   if (Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
     windowManager.setMinimumSize(const Size(320, 320));
@@ -67,7 +68,7 @@ class _HaboState extends State<Habo> {
     await haboModel.initDatabase();
     
     // Initialize service locator with the scaffold key and HaboModel
-    ServiceLocator.instance.initialize(_scaffoldKey, haboModel);
+    ServiceLocator.instance.initialize(_scaffoldKey, haboModel, _settingsManager);
     
     // Create HabitsManager with repositories and services from ServiceLocator
     final repositoryFactory = ServiceLocator.instance.repositoryFactory;
@@ -99,17 +100,15 @@ class _HaboState extends State<Habo> {
       _appRouter = appRouter;
       _isInitialized = true;
     });
+    // Remove native splash once app is fully initialized
+    FlutterNativeSplash.remove();
   }
 
   @override
   Widget build(BuildContext context) {
     if (!_isInitialized) {
-      // Show splash screen with current theme while initializing
-      return SplashScreen(
-        themeMode: _settingsManager.isInitialized 
-            ? _settingsManager.getThemeString 
-            : Themes.device,
-      );
+      // Keep native splash while initializing
+      return const SizedBox.shrink();
     }
 
     SystemChrome.setSystemUIOverlayStyle(
