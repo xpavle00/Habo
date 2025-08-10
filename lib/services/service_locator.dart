@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:habo/services/backup_service.dart';
-import 'package:habo/services/background_task_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/model/habo_model.dart';
@@ -21,7 +20,6 @@ class ServiceLocator {
   late final BackupService _backupService;
   late final NotificationService _notificationService;
   late final UIFeedbackService _uiFeedbackService;
-  late final BackgroundTaskService _backgroundTaskService;
   late final RepositoryFactory _repositoryFactory;
   late final HaboModel _haboModel;
   late final SettingsManager _settingsManager;
@@ -34,7 +32,6 @@ class ServiceLocator {
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
     _backupService = BackupService(_uiFeedbackService, _repositoryFactory.backupRepository);
     _notificationService = NotificationService();
-    _backgroundTaskService = BackgroundTaskService();
   }
   
   /// Ensures ServiceLocator is initialized, throws StateError if not
@@ -60,12 +57,6 @@ class ServiceLocator {
   UIFeedbackService get uiFeedbackService {
     _ensureInitialized();
     return _uiFeedbackService;
-  }
-  
-  /// Get BackgroundTaskService instance
-  BackgroundTaskService get backgroundTaskService {
-    _ensureInitialized();
-    return _backgroundTaskService;
   }
   
   /// Get RepositoryFactory instance
