@@ -45,6 +45,7 @@ class Habit extends StatefulWidget {
       'targetValue': habitData.targetValue,
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
+      'archived': habitData.archived ? 1 : 0,
     };
   }
 
@@ -74,6 +75,7 @@ class Habit extends StatefulWidget {
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
       'categories': habitData.categories.map((category) => category.toJson()).toList(),
+      'archived': habitData.archived ? 1 : 0,
     };
   }
 
@@ -103,6 +105,7 @@ class Habit extends StatefulWidget {
                   .map((categoryJson) => Category.fromJson(categoryJson))
                   .toList()
               : [],
+          archived: (json['archived'] ?? 0) != 0 ? true : false,
         );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {

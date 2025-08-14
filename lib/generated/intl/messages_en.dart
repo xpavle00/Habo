@@ -73,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "appNotificationsChannel": MessageLookupByLibrary.simpleMessage(
       "Notification channel for application notifications",
     ),
+    "archive": MessageLookupByLibrary.simpleMessage("Archive"),
+    "archiveHabit": MessageLookupByLibrary.simpleMessage("Archive habit"),
+    "archivedHabits": MessageLookupByLibrary.simpleMessage("Archived Habits"),
     "at7AM": MessageLookupByLibrary.simpleMessage("At 7:00AM"),
     "backup": MessageLookupByLibrary.simpleMessage("Backup"),
     "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
@@ -158,6 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "First day of the week",
     ),
     "habit": MessageLookupByLibrary.simpleMessage("Habit"),
+    "habitArchived": MessageLookupByLibrary.simpleMessage("Habit archived"),
     "habitContract": MessageLookupByLibrary.simpleMessage("Habit contract"),
     "habitContractDescription": MessageLookupByLibrary.simpleMessage(
       "While positive reinforcement is recommended, some people may opt for a habit contract. A habit contract allows you to specify a sanction that will be imposed if you miss your habit, and may involve an accountability partner who helps supervise your goals.",
@@ -177,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "The habit title can not be empty.",
     ),
     "habitType": MessageLookupByLibrary.simpleMessage("Habit type"),
+    "habitUnarchived": MessageLookupByLibrary.simpleMessage("Habit unarchived"),
     "habits": MessageLookupByLibrary.simpleMessage("Habits:"),
     "habo": MessageLookupByLibrary.simpleMessage("Habo"),
     "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
@@ -192,6 +197,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "logYourDays": MessageLookupByLibrary.simpleMessage("Log your days"),
     "modify": MessageLookupByLibrary.simpleMessage("Modify"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
+    "noArchivedHabits": MessageLookupByLibrary.simpleMessage(
+      "No archived habits",
+    ),
     "noCategoriesYet": MessageLookupByLibrary.simpleMessage(
       "No categories yet",
     ),
@@ -291,10 +299,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "twoDayRuleDescription": MessageLookupByLibrary.simpleMessage(
       "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
     ),
+    "unarchive": MessageLookupByLibrary.simpleMessage("Unarchive"),
+    "unarchiveHabit": MessageLookupByLibrary.simpleMessage("Unarchive habit"),
     "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unit": MessageLookupByLibrary.simpleMessage("Unit"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "useTwoDayRule": MessageLookupByLibrary.simpleMessage("Use Two day rule"),
+    "viewArchivedHabits": MessageLookupByLibrary.simpleMessage(
+      "View archived habits",
+    ),
     "warning": MessageLookupByLibrary.simpleMessage("Warning"),
     "week": MessageLookupByLibrary.simpleMessage("Week"),
     "yourCommentHere": MessageLookupByLibrary.simpleMessage("Your note here"),

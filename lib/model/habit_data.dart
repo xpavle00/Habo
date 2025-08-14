@@ -26,6 +26,7 @@ class HabitData {
     this.partialValue = 1.0,
     this.unit = '',
     this.categories = const [],
+    this.archived = false,
   });
 
   SplayTreeMap<DateTime, List> events;
@@ -53,6 +54,9 @@ class HabitData {
   
   // Categories assigned to this habit
   List<Category> categories;
+  
+  // Archive status
+  bool archived;
   
   // Helper methods for numeric habits
   bool get isNumeric => habitType == HabitType.numeric;

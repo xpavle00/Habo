@@ -1276,6 +1276,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Archive`
+  String get archive {
+    return Intl.message('Archive', name: 'archive', desc: '', args: []);
+  }
+
+  /// `Unarchive`
+  String get unarchive {
+    return Intl.message('Unarchive', name: 'unarchive', desc: '', args: []);
+  }
+
+  /// `Archive habit`
+  String get archiveHabit {
+    return Intl.message(
+      'Archive habit',
+      name: 'archiveHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unarchive habit`
+  String get unarchiveHabit {
+    return Intl.message(
+      'Unarchive habit',
+      name: 'unarchiveHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Archived Habits`
+  String get archivedHabits {
+    return Intl.message(
+      'Archived Habits',
+      name: 'archivedHabits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No archived habits`
+  String get noArchivedHabits {
+    return Intl.message(
+      'No archived habits',
+      name: 'noArchivedHabits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View archived habits`
+  String get viewArchivedHabits {
+    return Intl.message(
+      'View archived habits',
+      name: 'viewArchivedHabits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Habit archived`
+  String get habitArchived {
+    return Intl.message(
+      'Habit archived',
+      name: 'habitArchived',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Habit unarchived`
+  String get habitUnarchived {
+    return Intl.message(
+      'Habit unarchived',
+      name: 'habitUnarchived',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

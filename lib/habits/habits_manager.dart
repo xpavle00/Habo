@@ -126,13 +126,15 @@ class HabitsManager extends ChangeNotifier {
     return allHabits;
   }
 
-  /// Get habits filtered by category
+  /// Get habits filtered by category (excludes archived habits)
   List<Habit> getHabitsByCategory(Category? category) {
+    final activeHabits = allHabits.where((habit) => !habit.habitData.archived).toList();
+    
     if (category == null) {
-      return allHabits;
+      return activeHabits;
     }
     
-    return allHabits.where((habit) {
+    return activeHabits.where((habit) {
       return habit.habitData.categories.any((cat) => cat.id == category.id);
     }).toList();
   }
@@ -244,6 +246,7 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.partialValue = habitData.partialValue;
     hab.habitData.unit = habitData.unit;
     hab.habitData.categories = habitData.categories;
+    hab.habitData.archived = habitData.archived;
     _habitRepository.updateHabit(hab);
     if (habitData.notification) {
       _notificationService?.setHabitNotification(
@@ -267,6 +270,63 @@ class HabitsManager extends ChangeNotifier {
       }
     }
     return result;
+  }
+
+  void archiveHabit(int id) {
+    Habit? habit = findHabitById(id);
+    if (habit == null) return;
+    
+    habit.habitData.archived = true;
+    _habitRepository.updateHabit(habit);
+    
+    // Remove notifications for archived habits
+    _notificationService?.disableHabitNotification(id);
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitArchived,
+        actionLabel: S.current.undo,
+        onActionPressed: () {
+          unarchiveHabit(id);
+        },
+        backgroundColor: Colors.orange,
+      );
+    }
+    
+    notifyListeners();
+  }
+
+  void unarchiveHabit(int id) {
+    Habit? habit = findHabitById(id);
+    if (habit == null) return;
+    
+    habit.habitData.archived = false;
+    _habitRepository.updateHabit(habit);
+    
+    // Restore notifications if enabled
+    if (habit.habitData.notification) {
+      _notificationService?.setHabitNotification(
+          id, habit.habitData.notTime, 'Habo', habit.habitData.title);
+    }
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitUnarchived,
+        actionLabel: '',
+        onActionPressed: () {},
+        backgroundColor: Colors.green,
+      );
+    }
+    
+    notifyListeners();
+  }
+
+  List<Habit> get activeHabits {
+    return allHabits.where((habit) => !habit.habitData.archived).toList();
+  }
+
+  List<Habit> get archivedHabits {
+    return allHabits.where((habit) => habit.habitData.archived).toList();
   }
 
   void deleteHabit(int id) {

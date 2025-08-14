@@ -211,6 +211,26 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
           if (widget.habitData != null)
             IconButton(
               icon: Icon(
+                widget.habitData!.archived ? Icons.unarchive : Icons.archive,
+                semanticLabel: widget.habitData!.archived ? S.of(context).unarchive : S.of(context).archive,
+              ),
+              color: Colors.orange,
+              tooltip: widget.habitData!.archived ? S.of(context).unarchiveHabit : S.of(context).archiveHabit,
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (widget.habitData != null) {
+                  final habitsManager = Provider.of<HabitsManager>(context, listen: false);
+                  if (widget.habitData!.archived) {
+                    habitsManager.unarchiveHabit(widget.habitData!.id!);
+                  } else {
+                    habitsManager.archiveHabit(widget.habitData!.id!);
+                  }
+                }
+              },
+            ),
+          if (widget.habitData != null)
+            IconButton(
+              icon: Icon(
                 Icons.delete,
                 semanticLabel: S.of(context).delete,
               ),

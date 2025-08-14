@@ -252,5 +252,14 @@
       }
     },
     "createHabitForCategory": "Create a habit and assign it to this category",
-    "showCategories": "Show Categories"
+    "showCategories": "Show Categories",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveHabit": "Archive habit",
+    "unarchiveHabit": "Unarchive habit",
+    "archivedHabits": "Archived Habits",
+    "noArchivedHabits": "No archived habits",
+    "viewArchivedHabits": "View archived habits",
+    "habitArchived": "Habit archived",
+    "habitUnarchived": "Habit unarchived"
   }

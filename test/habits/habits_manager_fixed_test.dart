@@ -216,5 +216,166 @@ void main() {
         expect(habitsManager.toDelete.length, 1);
       });
     });
+
+    group('Archive Operations', () {
+      test('should archive habit', () async {
+        // Setup
+        final testHabit = Habit(
+          habitData: HabitData(
+            id: 1,
+            position: 0,
+            title: 'Test Habit',
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            events: SplayTreeMap<DateTime, List>(),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+            archived: false,
+          ),
+        );
+
+        // Add habit to internal state
+        habitsManager.allHabits.add(testHabit);
+        when(() => mockHabitRepository.updateHabit(any()))
+            .thenAnswer((_) async => null);
+        when(() => mockNotificationService.disableHabitNotification(any()))
+            .thenReturn(null);
+        when(() => mockUIFeedbackService.showMessageWithAction(
+          message: any(named: 'message'),
+          actionLabel: any(named: 'actionLabel'),
+          onActionPressed: any(named: 'onActionPressed'),
+          backgroundColor: any(named: 'backgroundColor'),
+        )).thenReturn(null);
+
+        // Act
+        habitsManager.archiveHabit(1);
+
+        // Assert
+        expect(testHabit.habitData.archived, true);
+        verify(() => mockHabitRepository.updateHabit(any())).called(1);
+        verify(() => mockNotificationService.disableHabitNotification(1)).called(1);
+        verify(() => mockUIFeedbackService.showMessageWithAction(
+          message: any(named: 'message'),
+          actionLabel: any(named: 'actionLabel'),
+          onActionPressed: any(named: 'onActionPressed'),
+          backgroundColor: any(named: 'backgroundColor'),
+        )).called(1);
+      });
+
+      test('should unarchive habit', () async {
+        // Setup
+        final testHabit = Habit(
+          habitData: HabitData(
+            id: 1,
+            position: 0,
+            title: 'Test Habit',
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            notification: true,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            events: SplayTreeMap<DateTime, List>(),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+            archived: true,
+          ),
+        );
+
+        // Add habit to internal state
+        habitsManager.allHabits.add(testHabit);
+        when(() => mockHabitRepository.updateHabit(any()))
+            .thenAnswer((_) async => null);
+        when(() => mockNotificationService.setHabitNotification(any(), any(), any(), any()))
+            .thenReturn(null);
+        when(() => mockUIFeedbackService.showMessageWithAction(
+          message: any(named: 'message'),
+          actionLabel: any(named: 'actionLabel'),
+          onActionPressed: any(named: 'onActionPressed'),
+          backgroundColor: any(named: 'backgroundColor'),
+        )).thenReturn(null);
+
+        // Act
+        habitsManager.unarchiveHabit(1);
+
+        // Assert
+        expect(testHabit.habitData.archived, false);
+        verify(() => mockHabitRepository.updateHabit(any())).called(1);
+        verify(() => mockNotificationService.setHabitNotification(1, any(), 'Habo', 'Test Habit')).called(1);
+        verify(() => mockUIFeedbackService.showMessageWithAction(
+          message: any(named: 'message'),
+          actionLabel: any(named: 'actionLabel'),
+          onActionPressed: any(named: 'onActionPressed'),
+          backgroundColor: any(named: 'backgroundColor'),
+        )).called(1);
+      });
+
+      test('should filter active habits correctly', () {
+        // Setup
+        final activeHabit = Habit(
+          habitData: HabitData(
+            id: 1,
+            position: 0,
+            title: 'Active Habit',
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            events: SplayTreeMap<DateTime, List>(),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+            archived: false,
+          ),
+        );
+
+        final archivedHabit = Habit(
+          habitData: HabitData(
+            id: 2,
+            position: 1,
+            title: 'Archived Habit',
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            events: SplayTreeMap<DateTime, List>(),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+            archived: true,
+          ),
+        );
+
+        // Add habits to internal state
+        habitsManager.allHabits.addAll([activeHabit, archivedHabit]);
+
+        // Act & Assert
+        final activeHabits = habitsManager.activeHabits;
+        final archivedHabits = habitsManager.archivedHabits;
+
+        expect(activeHabits.length, 1);
+        expect(activeHabits.first.habitData.title, 'Active Habit');
+        expect(archivedHabits.length, 1);
+        expect(archivedHabits.first.habitData.title, 'Archived Habit');
+      });
+    });
   });
 }

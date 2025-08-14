@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
-  static const _dbVersion = 5;
+  static const _dbVersion = 6;
   Database? _db;
   
   Database get db {
@@ -223,7 +223,8 @@ class HaboModel {
   //   )''');
   // }
 
-  void _createTableHabitsV4(Batch batch) {
+
+  void _createTableHabitsV6(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS habits');
     batch.execute('''CREATE TABLE habits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -243,8 +244,13 @@ class HaboModel {
     habitType INTEGER DEFAULT 0,
     targetValue REAL DEFAULT 1.0,
     partialValue REAL DEFAULT 1.0,
-    unit TEXT DEFAULT ''
+    unit TEXT DEFAULT '',
+    archived INTEGER DEFAULT 0
     )''');
+  }
+
+  void _updateTableHabitsV5toV6(Batch batch) {
+    batch.execute('ALTER TABLE habits ADD COLUMN archived INTEGER DEFAULT 0');
   }
 
   void _createTableCategoriesV5(Batch batch) {
@@ -300,7 +306,7 @@ class HaboModel {
 
   void _onCreate(db, version) {
     var batch = db.batch();
-    _createTableHabitsV4(batch);
+    _createTableHabitsV6(batch);
     _createTableEventsV4(batch);
     _createTableCategoriesV5(batch);
     _createTableHabitCategoriesV5(batch);
@@ -316,6 +322,7 @@ class HaboModel {
       _updateTableEventsV3toV4(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
+      _updateTableHabitsV5toV6(batch);
     }
     if (oldVersion == 2) {
       _updateTableHabitsV2toV3(batch);
@@ -323,16 +330,22 @@ class HaboModel {
       _updateTableEventsV3toV4(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
+      _updateTableHabitsV5toV6(batch);
     }
     if (oldVersion == 3) {
       _updateTableHabitsV3toV4(batch);
       _updateTableEventsV3toV4(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
+      _updateTableHabitsV5toV6(batch);
     }
     if (oldVersion == 4) {
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
+      _updateTableHabitsV5toV6(batch);
+    }
+    if (oldVersion == 5) {
+      _updateTableHabitsV5toV6(batch);
     }
     batch.commit();
   }
