@@ -167,5 +167,90 @@
     "slider": "Slider",
     "input": "Input",
     "numericHabitDescription": "Numeric habits let you track progress in increments throughout the day.",
-    "partialValueDescription": "To track progress in smaller increments"
+    "partialValueDescription": "To track progress in smaller increments",
+    "categories": "Categories",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "category": "Category",
+    "noCategoriesYet": "No categories yet",
+    "createFirstCategory": "Create your first category to organize your habits",
+    "pleaseEnterCategoryTitle": "Please enter a category title",
+    "categoryAlreadyExists": "Category \"{title}\" already exists",
+    "@categoryAlreadyExists": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryCreatedSuccessfully": "Category \"{title}\" created successfully",
+    "@categoryCreatedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryUpdatedSuccessfully": "Category \"{title}\" updated successfully",
+    "@categoryUpdatedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryDeletedSuccessfully": "Category \"{title}\" deleted successfully",
+    "@categoryDeletedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToSaveCategory": "Failed to save category: {error}",
+    "@failedToSaveCategory": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToDeleteCategory": "Failed to delete category: {error}",
+    "@failedToDeleteCategory": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "selectCategories": "Select Categories",
+    "selectedCategories": "Selected Categories ({count})",
+    "@selectedCategories": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "allCategories": "All Categories",
+    "editCategoryTooltip": "Edit category",
+    "deleteCategory": "Delete Category",
+    "deleteCategoryConfirmation": "Are you sure you want to delete \"{title}\"?\n\nThis will remove the category from all habits that use it.",
+    "@deleteCategoryConfirmation": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "noHabitsInCategory": "No habits in \"{title}\"",
+    "@noHabitsInCategory": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "createHabitForCategory": "Create a habit and assign it to this category",
+    "showCategories": "Show Categories"
   }

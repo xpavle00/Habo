@@ -6,6 +6,7 @@ import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/repositories/habit_repository.dart';
 import 'package:habo/repositories/event_repository.dart';
+import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
@@ -14,6 +15,7 @@ import 'package:provider/provider.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
 class MockEventRepository extends Mock implements EventRepository {}
+class MockCategoryRepository extends Mock implements CategoryRepository {}
 class MockBackupService extends Mock implements BackupService {}
 class MockNotificationService extends Mock implements NotificationService {}
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
@@ -96,6 +98,7 @@ void main() {
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
       eventRepository: MockEventRepository(),
+      categoryRepository: MockCategoryRepository(),
       backupService: MockBackupService(),
       notificationService: MockNotificationService(),
       uiFeedbackService: MockUIFeedbackService(),

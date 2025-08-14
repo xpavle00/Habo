@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:habo/habits/habit.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 class Backup {
@@ -14,10 +12,11 @@ class Backup {
 
 
 
-  static Future<File> writeBackup(List<Habit> input) async {
+  static Future<File> writeBackup(dynamic data) async {
     try {
       final file = await _localFile;
-      final jsonData = jsonEncode(input);
+      // Encode either a List<Habit> (legacy) or a full Map backup payload
+      final jsonData = jsonEncode(data);
       
       // Validate JSON before writing
       try {

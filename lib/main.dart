@@ -75,6 +75,7 @@ class _HaboState extends State<Habo> {
     final habitsManager = HabitsManager(
       habitRepository: repositoryFactory.habitRepository,
       eventRepository: repositoryFactory.eventRepository,
+      categoryRepository: repositoryFactory.categoryRepository,
       backupService: ServiceLocator.instance.backupService,
       notificationService: ServiceLocator.instance.notificationService,
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,

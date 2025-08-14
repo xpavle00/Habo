@@ -4,9 +4,12 @@ import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
+import 'package:habo/model/category.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
+import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/widgets/text_container.dart';
+import 'package:habo/screens/category_selection_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +49,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   bool notification = false;
   bool showSanction = false;
   HabitType habitType = HabitType.boolean;
+  List<Category> selectedCategories = [];
 
   Future<void> setNotificationTime(BuildContext context) async {
     TimeOfDay? selectedTime;
@@ -169,7 +173,13 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       targetValue.text = numberFormatter.format(widget.habitData!.targetValue);
       partialValue.text = numberFormatter.format(widget.habitData!.partialValue);
       unit.text = widget.habitData!.unit;
+      selectedCategories = List.from(widget.habitData!.categories);
     }
+    
+    // Load categories when screen initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<HabitsManager>(context, listen: false).loadCategories();
+    });
   }
 
   @override
@@ -221,31 +231,37 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
           onPressed: () {
             if (title.text.isNotEmpty) {
               if (widget.habitData != null) {
-                Provider.of<HabitsManager>(context, listen: false).editHabit(
-                  HabitData(
-                    id: widget.habitData!.id,
-                    title: title.text.toString(),
-                    twoDayRule: twoDayRule,
-                    cue: cue.text.toString(),
-                    routine: routine.text.toString(),
-                    reward: reward.text.toString(),
-                    showReward: showReward,
-                    advanced: advanced,
-                    notification: notification,
-                    notTime: notTime,
-                    position: widget.habitData!.position,
-                    events: widget.habitData!.events,
-                    sanction: sanction.text.toString(),
-                    showSanction: showSanction,
-                    accountant: accountant.text.toString(),
-                    habitType: habitType,
-                    targetValue: double.tryParse(targetValue.text) ?? 1.0,
-                    partialValue: double.tryParse(partialValue.text) ?? 1.0,
-                    unit: unit.text.toString(),
-                  ),
+                final habitData = HabitData(
+                  id: widget.habitData!.id,
+                  title: title.text.toString(),
+                  twoDayRule: twoDayRule,
+                  cue: cue.text.toString(),
+                  routine: routine.text.toString(),
+                  reward: reward.text.toString(),
+                  showReward: showReward,
+                  advanced: advanced,
+                  notification: notification,
+                  notTime: notTime,
+                  position: widget.habitData!.position,
+                  events: widget.habitData!.events,
+                  sanction: sanction.text.toString(),
+                  showSanction: showSanction,
+                  accountant: accountant.text.toString(),
+                  habitType: habitType,
+                  targetValue: double.tryParse(targetValue.text) ?? 1.0,
+                  partialValue: double.tryParse(partialValue.text) ?? 1.0,
+                  unit: unit.text.toString(),
+                  categories: selectedCategories,
                 );
+                final habitsManager = Provider.of<HabitsManager>(context, listen: false);
+                habitsManager.editHabit(habitData);
+                // Update habit-category associations
+                if (widget.habitData!.id != null) {
+                  habitsManager.updateHabitCategories(widget.habitData!.id!, selectedCategories);
+                }
               } else {
-                Provider.of<HabitsManager>(context, listen: false).addHabit(
+                final habitsManager = Provider.of<HabitsManager>(context, listen: false);
+                habitsManager.addHabit(
                   title.text.toString(),
                   twoDayRule,
                   cue.text.toString(),
@@ -262,7 +278,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   targetValue: double.tryParse(targetValue.text) ?? 1.0,
                   partialValue: double.tryParse(partialValue.text) ?? 1.0,
                   unit: unit.text.toString(),
+                  categories: selectedCategories,
                 );
+                // For new habits, we need to get the habit ID and then update categories
+                // This will be handled by updating the addHabit method to accept categories
               }
               Navigator.of(context).pop();
             } else {
@@ -297,6 +316,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     hint: S.of(context).exercise,
                     label: S.of(context).habit,
                   ),
+                  
+
 
                   ListTile(
                           contentPadding:
@@ -439,6 +460,86 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                       ],
                     ),
+                  ),
+
+                  // Categories Section (conditionally shown)
+                  Consumer<SettingsManager>(
+                    builder: (context, settingsManager, child) {
+                      if (!settingsManager.getShowCategories) {
+                        return const SizedBox.shrink();
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Categories ListTile with plus sign
+                          ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 25),
+                            title: Text(S.of(context).categories),
+                            trailing: IconButton(
+                              onPressed: () async {
+                                final result = await Navigator.of(context).push<List<Category>>(
+                                  MaterialPageRoute(
+                                    builder: (context) => CategorySelectionScreen(
+                                      initialSelectedCategories: selectedCategories,
+                                      onCategoriesChanged: (categories) {
+                                        // This callback is called when saving
+                                      },
+                                    ),
+                                  ),
+                                );
+                                if (result != null) {
+                                  setState(() {
+                                    selectedCategories = result;
+                                  });
+                                }
+                              },
+                              icon: const Icon(Icons.add),
+                              iconSize: 24,
+                            ),
+                          ),
+                          
+                          // Categories chips (styled like category_filter_row.dart)
+                          if (selectedCategories.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 4),
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 4.0,
+                                children: selectedCategories.map((category) {
+                                  return FilterChip(
+                                    label: Text(
+                                      category.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    avatar: Icon(
+                                      category.icon,
+                                      size: 18,
+                                      color: Colors.grey,
+                                    ),
+                                    selected: true,
+                                    onSelected: (selected) {
+                                      // Remove category when tapped
+                                      setState(() {
+                                        selectedCategories.remove(category);
+                                      });
+                                    },
+                                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                    selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                                    side: BorderSide(
+                                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                    showCheckmark: false,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                   ExpansionTile(
                     shape: const Border(),

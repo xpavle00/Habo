@@ -138,6 +138,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.seenOnboarding;
   }
 
+  bool get getShowCategories {
+    return _settingsData.showCategories;
+  }
+
   Color get checkColor {
     return _settingsData.checkColor;
   }
@@ -202,6 +206,12 @@ class SettingsManager extends ChangeNotifier {
 
   set setSeenOnboarding(bool value) {
     _settingsData.seenOnboarding = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setShowCategories(bool value) {
+    _settingsData.showCategories = value;
     saveData();
     notifyListeners();
   }

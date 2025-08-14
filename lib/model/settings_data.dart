@@ -11,6 +11,7 @@ class SettingsData {
   bool soundEffects = true;
   bool showMonthName = true;
   bool seenOnboarding = false;
+  bool showCategories = true;
   Color checkColor = HaboColors.primary;
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
@@ -27,11 +28,14 @@ class SettingsData {
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
         showMonthName =
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
+        seenOnboarding =
+            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false,
+        showCategories =
+            (json['showCategories'] != null) ? json['showCategories'] : true,
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
             : const TimeOfDay(hour: 20, minute: 0),
-        seenOnboarding =
-            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false,
+
         checkColor = (json['checkColor'] != null)
             ? Color(json['checkColor'])
             : HaboColors.primary,
@@ -54,6 +58,7 @@ class SettingsData {
         'soundEffects': soundEffects,
         'showMonthName': showMonthName,
         'seenOnboarding': seenOnboarding,
+        'showCategories': showCategories,
         'checkColor': checkColor.value,
         'failColor': failColor.value,
         'skipColor': skipColor.value,

@@ -1066,6 +1066,216 @@ class S {
       args: [],
     );
   }
+
+  /// `Categories`
+  String get categories {
+    return Intl.message('Categories', name: 'categories', desc: '', args: []);
+  }
+
+  /// `Add Category`
+  String get addCategory {
+    return Intl.message(
+      'Add Category',
+      name: 'addCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Category`
+  String get editCategory {
+    return Intl.message(
+      'Edit Category',
+      name: 'editCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message('Category', name: 'category', desc: '', args: []);
+  }
+
+  /// `No categories yet`
+  String get noCategoriesYet {
+    return Intl.message(
+      'No categories yet',
+      name: 'noCategoriesYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create your first category to organize your habits`
+  String get createFirstCategory {
+    return Intl.message(
+      'Create your first category to organize your habits',
+      name: 'createFirstCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a category title`
+  String get pleaseEnterCategoryTitle {
+    return Intl.message(
+      'Please enter a category title',
+      name: 'pleaseEnterCategoryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category "{title}" already exists`
+  String categoryAlreadyExists(String title) {
+    return Intl.message(
+      'Category "$title" already exists',
+      name: 'categoryAlreadyExists',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Category "{title}" created successfully`
+  String categoryCreatedSuccessfully(String title) {
+    return Intl.message(
+      'Category "$title" created successfully',
+      name: 'categoryCreatedSuccessfully',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Category "{title}" updated successfully`
+  String categoryUpdatedSuccessfully(String title) {
+    return Intl.message(
+      'Category "$title" updated successfully',
+      name: 'categoryUpdatedSuccessfully',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Category "{title}" deleted successfully`
+  String categoryDeletedSuccessfully(String title) {
+    return Intl.message(
+      'Category "$title" deleted successfully',
+      name: 'categoryDeletedSuccessfully',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Failed to save category: {error}`
+  String failedToSaveCategory(String error) {
+    return Intl.message(
+      'Failed to save category: $error',
+      name: 'failedToSaveCategory',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Failed to delete category: {error}`
+  String failedToDeleteCategory(String error) {
+    return Intl.message(
+      'Failed to delete category: $error',
+      name: 'failedToDeleteCategory',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Select Categories`
+  String get selectCategories {
+    return Intl.message(
+      'Select Categories',
+      name: 'selectCategories',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selected Categories ({count})`
+  String selectedCategories(int count) {
+    return Intl.message(
+      'Selected Categories ($count)',
+      name: 'selectedCategories',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `All Categories`
+  String get allCategories {
+    return Intl.message(
+      'All Categories',
+      name: 'allCategories',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit category`
+  String get editCategoryTooltip {
+    return Intl.message(
+      'Edit category',
+      name: 'editCategoryTooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Category`
+  String get deleteCategory {
+    return Intl.message(
+      'Delete Category',
+      name: 'deleteCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete "{title}"?\n\nThis will remove the category from all habits that use it.`
+  String deleteCategoryConfirmation(String title) {
+    return Intl.message(
+      'Are you sure you want to delete "$title"?\n\nThis will remove the category from all habits that use it.',
+      name: 'deleteCategoryConfirmation',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `No habits in "{title}"`
+  String noHabitsInCategory(String title) {
+    return Intl.message(
+      'No habits in "$title"',
+      name: 'noHabitsInCategory',
+      desc: '',
+      args: [title],
+    );
+  }
+
+  /// `Create a habit and assign it to this category`
+  String get createHabitForCategory {
+    return Intl.message(
+      'Create a habit and assign it to this category',
+      name: 'createHabitForCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show Categories`
+  String get showCategories {
+    return Intl.message(
+      'Show Categories',
+      name: 'showCategories',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

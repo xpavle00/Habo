@@ -40,7 +40,8 @@ dependencies:
   intl_utils: ^2.8.5
   dynamic_color: ^1.7.0
   percent_indicator: ^4.2.5
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.4
+  flutter_iconpicker: ^4.0.1
 
 dev_dependencies:
   flutter_test:

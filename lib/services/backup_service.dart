@@ -34,16 +34,45 @@ class BackupService {
     try {
       // Get all data from database via repository
       final backupData = await _backupRepository.exportAllData();
-      
-      // Convert to habits list for file backup
-      final habits = <Habit>[];
-      if (backupData['habits'] != null) {
-        for (var habitJson in backupData['habits']) {
-          habits.add(Habit.fromJson(habitJson));
+
+      // Write FULL backup structure to temporary file
+      final file = await Backup.writeBackup(backupData);
+      final timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final fileName = 'habo_backup_$timestamp.json';
+
+      bool? userSaved = false;
+
+      if (Platform.isAndroid || Platform.isIOS) {
+        final params = SaveFileDialogParams(
+          sourceFilePath: file.path,
+          fileName: fileName,
+          mimeTypesFilter: ['application/json'],
+        );
+        final savedPath = await FlutterFileDialog.saveFile(params: params);
+        userSaved = savedPath != null;
+      } else {
+        final outputFile = await FilePicker.platform.saveFile(
+          dialogTitle: '',
+          type: FileType.custom,
+          allowedExtensions: ['json'],
+          fileName: fileName,
+        );
+        if (outputFile != null) {
+          await file.copy(outputFile);
+          userSaved = true;
+        } else {
+          // User cancelled - silently return false, no snackbar
+          return false;
         }
       }
-      
-      return await createBackup(habits);
+
+      if (userSaved == true) {
+        _uiFeedbackService.showSuccess(
+          S.current.backupCreatedSuccessfully,
+        );
+        return true;
+      }
+      return false;
     } catch (e) {
       debugPrint('Error creating database backup: $e');
       _uiFeedbackService.showError(
@@ -226,6 +255,66 @@ class BackupService {
       
     } catch (e) {
       return BackupResult.failure('JSON parsing error: ${e.toString()}');
+    }
+  }
+  
+  /// Restores database from a backup file selected by the user.
+  /// Supports both legacy (List of habits) and full (Map) backup formats.
+  Future<bool> restoreFromBackupFile() async {
+    try {
+      final String? filePath = await _selectBackupFile();
+      if (filePath == null) {
+        return false; // user cancelled silently
+      }
+
+      final validationResult = await _validateBackupFile(filePath);
+      if (!validationResult.success) {
+        _uiFeedbackService.showError(validationResult.errorMessage!);
+        return false;
+      }
+
+      final jsonStr = await Backup.readBackup(filePath);
+      dynamic decoded;
+      try {
+        decoded = jsonDecode(jsonStr);
+      } catch (e) {
+        _uiFeedbackService.showError('JSON parsing error: ${e.toString()}');
+        return false;
+      }
+
+      // Normalize into repository-compatible structure
+      Map<String, dynamic> backupData;
+      if (decoded is List) {
+        // Legacy format: list of habits only
+        backupData = {
+          'habits': decoded,
+          'events': <String, dynamic>{},
+          'categories': <dynamic>[],
+          'habit_categories': <dynamic>[],
+          'metadata': {
+            'imported_from': 'legacy_list',
+            'import_timestamp': DateTime.now().toIso8601String(),
+          },
+        };
+      } else if (decoded is Map<String, dynamic>) {
+        backupData = decoded;
+      } else {
+        _uiFeedbackService.showError('Invalid backup format');
+        return false;
+      }
+
+      await _backupRepository.importData(backupData);
+
+      _uiFeedbackService.showSuccess(
+        S.current.restoreCompletedSuccessfully,
+      );
+      return true;
+    } catch (e) {
+      debugPrint('Error restoring from backup file: $e');
+      _uiFeedbackService.showError(
+        '${S.current.restoreFailed}: ${e.toString()}',
+      );
+      return false;
     }
   }
   

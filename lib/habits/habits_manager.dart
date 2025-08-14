@@ -5,10 +5,10 @@ import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/model/habit_data.dart';
+import 'package:habo/model/category.dart';
 import 'package:habo/repositories/habit_repository.dart';
 import 'package:habo/repositories/event_repository.dart';
-
-import 'package:habo/notifications.dart';
+import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/statistics/statistics.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
@@ -17,6 +17,7 @@ import 'package:habo/services/ui_feedback_service.dart';
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
   final EventRepository _eventRepository;
+  final CategoryRepository _categoryRepository;
 
   // Service dependencies
   final BackupService? _backupService;
@@ -24,6 +25,7 @@ class HabitsManager extends ChangeNotifier {
   final UIFeedbackService? _uiFeedbackService;
 
   late List<Habit> allHabits = [];
+  late List<Category> allCategories = [];
   bool _isInitialized = false;
 
   Habit? deletedHabit;
@@ -33,6 +35,7 @@ class HabitsManager extends ChangeNotifier {
   ///
   /// [habitRepository] Repository for habit data operations (required)
   /// [eventRepository] Repository for habit event operations (required)
+  /// [categoryRepository] Repository for category data operations (required)
   /// [backupService] Service for backup/restore operations (optional)
   /// [notificationService] Service for notification management (optional)
   /// [uiFeedbackService] Service for UI feedback like SnackBars (optional)
@@ -42,17 +45,20 @@ class HabitsManager extends ChangeNotifier {
   HabitsManager({
     required HabitRepository habitRepository,
     required EventRepository eventRepository,
+    required CategoryRepository categoryRepository,
     BackupService? backupService,
     NotificationService? notificationService,
     UIFeedbackService? uiFeedbackService,
   }) : _habitRepository = habitRepository,
        _eventRepository = eventRepository,
+       _categoryRepository = categoryRepository,
        _backupService = backupService,
        _notificationService = notificationService,
        _uiFeedbackService = uiFeedbackService;
 
   Future<void> initialize() async {
     await initModel();
+    await loadCategories();
     notifyListeners();
   }
 
@@ -78,7 +84,7 @@ class HabitsManager extends ChangeNotifier {
 
   Future<bool> createBackup() async {
     if (_backupService != null) {
-      return await _backupService!.createBackup(allHabits);
+      return await _backupService!.createDatabaseBackup();
     }
     // Fallback: return false if service not available
     return false;
@@ -86,24 +92,12 @@ class HabitsManager extends ChangeNotifier {
 
   Future<bool> loadBackup() async {
     if (_backupService != null) {
-      final backup = await _backupService!.loadBackup();
-      if (backup.success && backup.habits != null) {
-        await _habitRepository.insertHabits(backup.habits!);
-
-        // Process events from each habit
-        for (final habit in backup.habits!) {
-          final events = habit.habitData.events;
-          for (final entry in events.entries) {
-            await _eventRepository.insertEvent(
-              habit.habitData.id ?? 0,
-              entry.key,
-              entry.value,
-            );
-          }
-        }
-
+      final ok = await _backupService!.restoreFromBackupFile();
+      if (ok) {
+        // Reload in-memory state from repositories
+        allHabits = await _habitRepository.getAllHabits();
+        await loadCategories();
         _notificationService?.removeNotifications(allHabits);
-        allHabits = backup.habits!;
         _notificationService?.resetNotifications(allHabits);
         notifyListeners();
         return true;
@@ -130,6 +124,17 @@ class HabitsManager extends ChangeNotifier {
 
   List<Habit> get getAllHabits {
     return allHabits;
+  }
+
+  /// Get habits filtered by category
+  List<Habit> getHabitsByCategory(Category? category) {
+    if (category == null) {
+      return allHabits;
+    }
+    
+    return allHabits.where((habit) {
+      return habit.habitData.categories.any((cat) => cat.id == category.id);
+    }).toList();
   }
 
   bool get isInitialized {
@@ -173,7 +178,8 @@ class HabitsManager extends ChangeNotifier {
       {HabitType habitType = HabitType.boolean,
       double targetValue = 1.0,
       double partialValue = 1.0,
-      String unit = ''}) {
+      String unit = '',
+      List<Category> categories = const []}) {
     Habit newHabit = Habit(
       habitData: HabitData(
         position: allHabits.length,
@@ -194,16 +200,23 @@ class HabitsManager extends ChangeNotifier {
         targetValue: targetValue,
         partialValue: partialValue,
         unit: unit,
+        categories: categories,
       ),
     );
     _habitRepository.createHabit(newHabit).then(
       (id) {
         newHabit.setId = id;
         allHabits.add(newHabit);
+        
+        // Associate categories with the new habit
+        if (categories.isNotEmpty) {
+          updateHabitCategories(id, categories);
+        }
+        
         if (notification) {
-          setHabitNotification(id, notTime, 'Habo', title);
+          _notificationService?.setHabitNotification(id, notTime, 'Habo', title);
         } else {
-          disableHabitNotification(id);
+          _notificationService?.disableHabitNotification(id);
         }
         notifyListeners();
       },
@@ -230,12 +243,13 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.targetValue = habitData.targetValue;
     hab.habitData.partialValue = habitData.partialValue;
     hab.habitData.unit = habitData.unit;
+    hab.habitData.categories = habitData.categories;
     _habitRepository.updateHabit(hab);
     if (habitData.notification) {
-      setHabitNotification(
+      _notificationService?.setHabitNotification(
           habitData.id!, habitData.notTime, 'Habo', habitData.title);
     } else {
-      disableHabitNotification(habitData.id!);
+      _notificationService?.disableHabitNotification(habitData.id!);
     }
     notifyListeners();
   }
@@ -292,7 +306,7 @@ class HabitsManager extends ChangeNotifier {
 
   Future<void> deleteFromDB() async {
     if (toDelete.isNotEmpty) {
-      disableHabitNotification(toDelete.first.habitData.id!);
+      _notificationService?.disableHabitNotification(toDelete.first.habitData.id!);
       await _habitRepository.deleteHabit(toDelete.first.habitData.id!);
       toDelete.removeFirst();
     }
@@ -310,5 +324,55 @@ class HabitsManager extends ChangeNotifier {
 
   Future<AllStatistics> getFutureStatsData() async {
     return await Statistics.calculateStatistics(allHabits);
+  }
+
+  // Category management methods
+  Future<void> loadCategories() async {
+    allCategories = await _categoryRepository.getAllCategories();
+    notifyListeners();
+  }
+
+  Future<void> addCategory(String title, int iconCodePoint) async {
+    final category = Category(title: title, iconCodePoint: iconCodePoint);
+    final id = await _categoryRepository.createCategory(category);
+    category.id = id;
+    allCategories.add(category);
+    notifyListeners();
+  }
+
+  Future<void> updateCategory(Category category) async {
+    await _categoryRepository.updateCategory(category);
+    // Update the category in the local list
+    final index = allCategories.indexWhere((cat) => cat.id == category.id);
+    if (index != -1) {
+      allCategories[index] = category;
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteCategory(int categoryId) async {
+    await _categoryRepository.deleteCategory(categoryId);
+    allCategories.removeWhere((cat) => cat.id == categoryId);
+    
+    // Update habits to remove the deleted category
+    for (var habit in allHabits) {
+      habit.habitData.categories.removeWhere((cat) => cat.id == categoryId);
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateHabitCategories(int habitId, List<Category> categories) async {
+    await _categoryRepository.updateHabitCategories(habitId, categories);
+    
+    // Update the habit in memory
+    final habit = findHabitById(habitId);
+    if (habit != null) {
+      habit.habitData.categories = categories;
+      notifyListeners();
+    }
+  }
+
+  Future<List<Category>> getCategoriesForHabit(int habitId) async {
+    return await _categoryRepository.getCategoriesForHabit(habitId);
   }
 }

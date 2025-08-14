@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/model/category.dart';
 
 class HabitData {
   HabitData({
@@ -24,6 +25,7 @@ class HabitData {
     this.targetValue = 1.0,
     this.partialValue = 1.0,
     this.unit = '',
+    this.categories = const [],
   });
 
   SplayTreeMap<DateTime, List> events;
@@ -48,6 +50,9 @@ class HabitData {
   double targetValue;
   double partialValue;
   String unit;
+  
+  // Categories assigned to this habit
+  List<Category> categories;
   
   // Helper methods for numeric habits
   bool get isNumeric => habitType == HabitType.numeric;

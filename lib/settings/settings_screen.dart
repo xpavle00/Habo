@@ -232,6 +232,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     ListTile(
+                      title: Text(S.of(context).showCategories),
+                      trailing: Switch(
+                        value: Provider.of<SettingsManager>(context)
+                            .getShowCategories,
+                        onChanged: (value) {
+                          Provider.of<SettingsManager>(context, listen: false)
+                              .setShowCategories = value;
+                        },
+                      ),
+                    ),
+                    ListTile(
                       title: Text(S.of(context).setColors),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -294,10 +305,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () async {
-                              final habitsManager = Provider.of<HabitsManager>(context, listen: false);
-                              await ServiceLocator.instance.backupService.createBackup(
-                                habitsManager.getAllHabits,
-                              );
+                              await ServiceLocator.instance.backupService.createDatabaseBackup();
                             },
                             child: Text(
                               S.of(context).create,

@@ -1,13 +1,14 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
-import 'package:habo/generated/l10n.dart';
+import 'package:habo/model/category.dart';
+import 'package:habo/model/habit_data.dart';
 import 'package:habo/habits/habit_header.dart';
 import 'package:habo/habits/one_day.dart';
 import 'package:habo/habits/one_day_button.dart';
 import 'package:habo/helpers.dart';
-import 'package:habo/model/habit_data.dart';
+import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:intl/intl.dart';
@@ -72,6 +73,7 @@ class Habit extends StatefulWidget {
       'targetValue': habitData.targetValue,
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
+      'categories': habitData.categories.map((category) => category.toJson()).toList(),
     };
   }
 
@@ -96,6 +98,11 @@ class Habit extends StatefulWidget {
           targetValue: (json['targetValue'] ?? 1.0).toDouble(),
           partialValue: (json['partialValue'] ?? 1.0).toDouble(),
           unit: json['unit'] ?? '',
+          categories: json['categories'] != null
+              ? (json['categories'] as List)
+                  .map((categoryJson) => Category.fromJson(categoryJson))
+                  .toList()
+              : [],
         );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
