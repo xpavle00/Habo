@@ -9,6 +9,7 @@ class SettingsData {
   TimeOfDay dailyNotTime = const TimeOfDay(hour: 20, minute: 0);
   bool showDailyNot = true;
   bool soundEffects = true;
+  double soundVolume = 3.0; // Volume level 0-5
   bool showMonthName = true;
   bool seenOnboarding = false;
   bool showCategories = true;
@@ -26,6 +27,8 @@ class SettingsData {
             (json['showDailyNot'] != null) ? json['showDailyNot'] : true,
         soundEffects =
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
+        soundVolume =
+            (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
         showMonthName =
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
         seenOnboarding =
@@ -56,6 +59,7 @@ class SettingsData {
             '${dailyNotTime.hour.toString().padLeft(2, '0')}:${dailyNotTime.minute.toString().padLeft(2, '0')}',
         'showDailyNot': showDailyNot,
         'soundEffects': soundEffects,
+        'soundVolume': soundVolume,
         'showMonthName': showMonthName,
         'seenOnboarding': seenOnboarding,
         'showCategories': showCategories,

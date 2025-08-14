@@ -25,7 +25,6 @@ dependencies:
   sqflite_common_ffi: ^2.3.0+2
   path: ^1.8.3
   fl_chart: ^1.0.0
-  just_audio: ^0.10.4
   flutter_file_dialog: ^3.0.2
   file_picker: ^10.2.0
   path_provider: ^2.1.0
@@ -42,6 +41,7 @@ dependencies:
   percent_indicator: ^4.2.5
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
+  flutter_soloud: ^3.2.5
 
 dev_dependencies:
   flutter_test:

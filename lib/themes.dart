@@ -64,7 +64,7 @@ class HaboTheme {
       colorScheme: const ColorScheme.dark(
         primaryContainer: Color(0xFF505050),
         secondaryContainer: Color(0xFF353535),
-        onPrimary: HaboColors.primary,
+        onPrimary: Colors.white,
         tertiaryContainer: HaboColors.primary,
         primary: HaboColors.primary,
         outline: Colors.grey,
@@ -110,7 +110,7 @@ class HaboTheme {
         primaryContainer: Color(0xFF282828),
         secondaryContainer: Color(0xFF191919),
         tertiaryContainer: HaboColors.primary,
-        onPrimary: HaboColors.primary,
+        onPrimary: Colors.white,
         primary: HaboColors.primary,
         outline: Colors.grey,
       ),

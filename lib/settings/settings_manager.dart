@@ -6,7 +6,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/model/settings_data.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,48 +15,64 @@ class SettingsManager extends ChangeNotifier {
   SettingsData _settingsData = SettingsData();
   bool _isInitialized = false;
 
-  final _checkPlayer = AudioPlayer(handleAudioSessionActivation: false);
-  final _clickPlayer = AudioPlayer(handleAudioSessionActivation: false);
+  late AudioSource _checkSource;
+  late AudioSource _clickSource;
+  bool _soundsLoaded = false;
 
   Future<void> initialize() async {
     await loadData();
     _isInitialized = true;
     notifyListeners();
-    await _checkPlayer.setAsset('assets/sounds/check.wav');
-    await _clickPlayer.setAsset('assets/sounds/click.wav');
+    await _initializeSounds();
+  }
+
+  Future<void> _initializeSounds() async {
+    try {
+      await SoLoud.instance.init();
+      _checkSource = await SoLoud.instance.loadAsset('assets/sounds/check.wav');
+      _clickSource = await SoLoud.instance.loadAsset('assets/sounds/click.wav');
+      _soundsLoaded = true;
+    } catch (e) {
+      // Handle initialization error gracefully
+      _soundsLoaded = false;
+    }
   }
 
   @override
   void dispose() {
-    _checkPlayer.dispose();
-    _clickPlayer.dispose();
+    if (_soundsLoaded) {
+      SoLoud.instance.disposeSource(_checkSource);
+      SoLoud.instance.disposeSource(_clickSource);
+    }
     super.dispose();
   }
 
-  resetAppNotification() {
+  void resetAppNotification() {
     if (_settingsData.showDailyNot) {
       resetAppNotificationIfMissing(_settingsData.dailyNotTime);
     }
   }
 
-  playCheckSound() {
-    if (_settingsData.soundEffects) {
+  void playCheckSound() {
+    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
       try {
-        _checkPlayer.setClip(
-            start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-        _checkPlayer.play();
+        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        SoLoud.instance.play(_checkSource, volume: volume);
+      } catch (e) {
+        // Handle playback error gracefully
       } finally {
         HapticFeedback.lightImpact();
       }
     }
   }
 
-  playClickSound() {
-    if (_settingsData.soundEffects) {
+  void playClickSound() {
+    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
       try {
-        _clickPlayer.setClip(
-            start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-        _clickPlayer.play();
+        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        SoLoud.instance.play(_clickSource, volume: volume);
+      } catch (e) {
+        // Handle playback error gracefully
       } finally {
         HapticFeedback.lightImpact();
       }
@@ -130,6 +146,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.soundEffects;
   }
 
+  double get getSoundVolume {
+    return _settingsData.soundVolume;
+  }
+
   bool get getShowMonthName {
     return _settingsData.showMonthName;
   }
@@ -194,6 +214,12 @@ class SettingsManager extends ChangeNotifier {
 
   set setSoundEffects(bool value) {
     _settingsData.soundEffects = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setSoundVolume(double value) {
+    _settingsData.soundVolume = value.clamp(0.0, 5.0);
     saveData();
     notifyListeners();
   }

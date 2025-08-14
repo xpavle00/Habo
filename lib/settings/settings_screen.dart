@@ -211,12 +211,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ListTile(
                       title: Text(S.of(context).soundEffects),
-                      trailing: Switch(
-                        value: Provider.of<SettingsManager>(context)
-                            .getSoundEffects,
-                        onChanged: (value) {
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .setSoundEffects = value;
+                      trailing: Consumer<SettingsManager>(
+                        builder: (context, settings, child) {
+                          final volume = settings.getSoundVolume;
+                          return SizedBox(
+                            width: 200,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  volume == 0 ? Icons.volume_off : Icons.volume_up,
+                                  size: 16,
+                                  color: volume == 0 ? Theme.of(context).disabledColor : null,
+                                ),
+                                Expanded(
+                                  child: Slider(
+                                    value: volume,
+                                    min: 0,
+                                    max: 5,
+                                    divisions: 5,
+                                    label: '${volume.round()}',
+                                    onChanged: (value) {
+                                      Provider.of<SettingsManager>(context, listen: false)
+                                          .setSoundVolume = value;
+                                      // Play test sound when adjusting volume
+                                      if (value > 0) {
+                                        Provider.of<SettingsManager>(context, listen: false)
+                                            .playClickSound();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Text(
+                                  volume == 0 ? '0' : '${volume.round()}',
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: volume == 0 ? Theme.of(context).disabledColor : null,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
                     ),
