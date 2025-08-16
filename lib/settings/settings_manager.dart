@@ -23,7 +23,7 @@ class SettingsManager extends ChangeNotifier {
     await loadData();
     _isInitialized = true;
     notifyListeners();
-    await _initializeSounds();
+    _initializeSounds();
   }
 
   Future<void> _initializeSounds() async {
