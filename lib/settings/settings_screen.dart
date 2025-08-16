@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +142,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ListTile(
                       title: Text(S.of(context).theme),
                       trailing: DropdownButton<Themes>(
-                        items: Themes.values.map((Themes value) {
+                        items: (Platform.isIOS
+                                ? Themes.values.where((t) => t != Themes.materialYou)
+                                : Themes.values)
+                            .map((Themes value) {
                           return DropdownMenuItem<Themes>(
                             value: value,
                             child: Text(
@@ -149,8 +154,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         }).toList(),
-                        value: Provider.of<SettingsManager>(context)
-                            .getThemeString,
+                        value: (Platform.isIOS &&
+                                Provider.of<SettingsManager>(context).getThemeString ==
+                                    Themes.materialYou)
+                            ? Themes.device
+                            : Provider.of<SettingsManager>(context)
+                                .getThemeString,
                         onChanged: (value) {
                           Provider.of<SettingsManager>(context, listen: false)
                               .setTheme = value!;
