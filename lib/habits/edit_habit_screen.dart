@@ -549,7 +549,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                     selectedColor: Theme.of(context).colorScheme.primaryContainer,
                                     side: BorderSide(
-                                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                                      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
                                       width: 1,
                                     ),
                                     showCheckmark: false,

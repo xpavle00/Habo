@@ -165,7 +165,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
                 borderRadius: BorderRadius.circular(50),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -195,7 +195,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
             Text(
               S.of(context).buildingBetterHabits,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
+                color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 60),
@@ -220,7 +220,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
                   Icon(
                     Icons.lock_outline,
                     size: 48,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(0.7),
+                    color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.7),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -234,7 +234,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
                     child: Text(
                       S.of(context).authenticationPrompt(_authDescription),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                       ),
                       textAlign: TextAlign.center,
                     ),

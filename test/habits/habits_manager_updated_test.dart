@@ -165,7 +165,7 @@ void main() {
       // Add habit to internal state
       habitsManager.allHabits.add(testHabit);
       when(() => mockHabitRepository.updateHabit(any()))
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async {});
 
       // Act
       habitsManager.editHabit(testHabit.habitData);
@@ -199,7 +199,7 @@ void main() {
       // Add habit to internal state
       habitsManager.allHabits.add(testHabit);
       when(() => mockHabitRepository.deleteHabit(any()))
-          .thenAnswer((_) async => null);
+          .thenAnswer((_) async {});
       // Mock specific localization strings
       when(() => mockUIFeedbackService.showMessageWithAction(
         message: any(named: 'message'),

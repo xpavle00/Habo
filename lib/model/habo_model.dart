@@ -29,9 +29,9 @@ class HaboModel {
       await db.delete('events',
           where: 'id = ? AND dateTime = ?',
           whereArgs: [id, dateTime.toString()]);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -40,9 +40,9 @@ class HaboModel {
     try {
       await db.delete('habits', where: 'id = ?', whereArgs: [id]);
       await db.delete('events', where: 'id = ?', whereArgs: [id]);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -51,9 +51,9 @@ class HaboModel {
     try {
       await db.delete('habits');
       await db.delete('events');
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -69,9 +69,9 @@ class HaboModel {
           },
         );
       }
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -84,9 +84,9 @@ class HaboModel {
         where: 'id = ?',
         whereArgs: [habit.habitData.id],
       );
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -304,7 +304,7 @@ class HaboModel {
     }
   }
 
-  void _onCreate(db, version) {
+  void _onCreate(Database db, int version) {
     var batch = db.batch();
     _createTableHabitsV6(batch);
     _createTableEventsV4(batch);
@@ -313,7 +313,7 @@ class HaboModel {
     batch.commit();
   }
 
-  void _onUpgrade(db, oldVersion, newVersion) {
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
     var batch = db.batch();
     if (oldVersion == 1) {
       _updateTableEventsV1toV2(batch);
@@ -367,9 +367,9 @@ class HaboModel {
       }
       
       db.insert('events', eventData, conflictAlgorithm: ConflictAlgorithm.replace);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -379,9 +379,9 @@ class HaboModel {
       var id = await db.insert('habits', habit.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
       return id;
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
     return 0;
@@ -397,9 +397,9 @@ class HaboModel {
           whereArgs: [habit.habitData.id],
         );
       }
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -410,9 +410,9 @@ class HaboModel {
       var id = await db.insert('categories', category.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
       return id;
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
     return 0;
@@ -426,9 +426,9 @@ class HaboModel {
         where: 'id = ?',
         whereArgs: [category.id],
       );
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -439,9 +439,9 @@ class HaboModel {
       await db.delete('habit_categories', where: 'category_id = ?', whereArgs: [id]);
       // Then delete the category itself
       await db.delete('categories', where: 'id = ?', whereArgs: [id]);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -450,9 +450,9 @@ class HaboModel {
     try {
       final List<Map<String, dynamic>> categories = await db.query('categories', orderBy: 'title');
       return categories.map((cat) => habo_category.Category.fromMap(cat)).toList();
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
     return [];
@@ -465,9 +465,9 @@ class HaboModel {
         'habit_id': habitId,
         'category_id': categoryId,
       }, conflictAlgorithm: ConflictAlgorithm.ignore);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -477,9 +477,9 @@ class HaboModel {
       await db.delete('habit_categories',
           where: 'habit_id = ? AND category_id = ?',
           whereArgs: [habitId, categoryId]);
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }
@@ -493,9 +493,9 @@ class HaboModel {
         ORDER BY c.title
       ''', [habitId]);
       return result.map((cat) => habo_category.Category.fromMap(cat)).toList();
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
     return [];
@@ -512,9 +512,9 @@ class HaboModel {
           await addHabitToCategory(habitId, category.id!);
         }
       }
-    } catch (_) {
+    } catch (e) {
       if (kDebugMode) {
-        print(_);
+        debugPrint(e.toString());
       }
     }
   }

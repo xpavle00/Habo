@@ -105,8 +105,8 @@ void main() {
     );
     
     when(() => mockHabitRepository.createHabit(any())).thenAnswer((_) async => 1);
-    when(() => mockHabitRepository.updateHabit(any())).thenAnswer((_) async => null);
-    when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async => null);
+    when(() => mockHabitRepository.updateHabit(any())).thenAnswer((_) async {});
+    when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
   });
 
   group('Habit CRUD Integration Tests', () {

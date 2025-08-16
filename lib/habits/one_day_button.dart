@@ -196,7 +196,7 @@ class OneDayButton extends StatelessWidget {
     );
   }
 
-  showCommentDialog(BuildContext context, int index, String comment) {
+  void showCommentDialog(BuildContext context, int index, String comment) {
     TextEditingController commentController =
         TextEditingController(text: comment);
     AwesomeDialog(

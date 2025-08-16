@@ -28,7 +28,7 @@ class CategoryFilterRow extends StatelessWidget {
         // Build a key signature derived from current theme to force remount on any theme change
         final theme = Theme.of(context);
         final themeSig =
-            '${theme.brightness.index}-${theme.colorScheme.primary.value}-${theme.scaffoldBackgroundColor.value}-${theme.colorScheme.primaryContainer.value}-${theme.colorScheme.outline.value}';
+            '${theme.brightness.index}-${theme.colorScheme.primary.toARGB32()}-${theme.scaffoldBackgroundColor.toARGB32()}-${theme.colorScheme.primaryContainer.toARGB32()}-${theme.colorScheme.outline.toARGB32()}';
 
         return Container(
           height: 50,
@@ -60,7 +60,7 @@ class CategoryFilterRow extends StatelessWidget {
                   selectedColor: Theme.of(context).colorScheme.primaryContainer,
                   side: BorderSide(
                       color: isSelected
-                          ? Theme.of(context).colorScheme.outline.withOpacity(0.3)
+                          ? Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)
                           : Colors.transparent,
                       width: 1,
                     ),
@@ -100,7 +100,7 @@ class CategoryFilterRow extends StatelessWidget {
                   selectedColor: theme.colorScheme.primaryContainer,
                   side: BorderSide(
                       color: isSelected
-                          ? theme.colorScheme.outline.withOpacity(0.3)
+                          ? theme.colorScheme.outline.withValues(alpha: 0.3)
                           : Colors.transparent,
                       width: 1,
                     ),

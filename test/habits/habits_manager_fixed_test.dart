@@ -166,7 +166,7 @@ void main() {
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
         when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async => null);
+            .thenAnswer((_) async {});
 
         // Act
         habitsManager.editHabit(testHabit.habitData);
@@ -200,7 +200,7 @@ void main() {
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
         when(() => mockHabitRepository.deleteHabit(any()))
-            .thenAnswer((_) async => null);
+            .thenAnswer((_) async {});
         when(() => mockUIFeedbackService.showMessageWithAction(
           message: any(named: 'message'),
           actionLabel: any(named: 'actionLabel'),
@@ -244,7 +244,7 @@ void main() {
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
         when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async => null);
+            .thenAnswer((_) async {});
         when(() => mockNotificationService.disableHabitNotification(any()))
             .thenReturn(null);
         when(() => mockUIFeedbackService.showMessageWithAction(
@@ -295,7 +295,7 @@ void main() {
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
         when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async => null);
+            .thenAnswer((_) async {});
         when(() => mockNotificationService.setHabitNotification(any(), any(), any(), any()))
             .thenReturn(null);
         when(() => mockUIFeedbackService.showMessageWithAction(

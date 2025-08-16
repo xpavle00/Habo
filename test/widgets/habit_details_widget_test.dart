@@ -107,7 +107,7 @@ void main() {
     });
 
     testWidgets('should handle delete button tap', (WidgetTester tester) async {
-      when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async => null);
+      when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
       
       await tester.pumpWidget(
         MaterialApp(

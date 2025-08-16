@@ -30,9 +30,9 @@ class OverallStatisticsCard extends StatelessWidget {
                     PieChartData(
                       sections: showingSections(context),
                     ),
-                    swapAnimationDuration:
+                    duration:
                         const Duration(milliseconds: 150), // Optional
-                    swapAnimationCurve: Curves.linear, // Optional
+                    curve: Curves.linear, // Optional
                   ),
                   Center(
                     child: Column(

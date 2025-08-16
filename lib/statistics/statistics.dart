@@ -123,7 +123,7 @@ class Statistics {
     return stats;
   }
 
-  static generateYearIfNull(StatisticsData stat, int year) {
+  static void generateYearIfNull(StatisticsData stat, int year) {
     if (stat.monthlyCheck[year] == null) {
       stat.monthlyCheck[year] = {
         DayType.check: List.filled(12, 0),

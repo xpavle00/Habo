@@ -273,7 +273,7 @@ void main() {
           when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
           when(() => mockHabitRepository.updateHabit(any()))
-              .thenAnswer((_) async => null);
+              .thenAnswer((_) async {});
           when(() => mockHabitRepository.getAllHabits())
               .thenAnswer((_) async => [testHabit]);
 
@@ -355,7 +355,7 @@ void main() {
           // Setup a test habit
           when(() => mockHabitRepository.createHabit(any()))
               .thenAnswer((_) async => 1);
-          when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async => null);
+          when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
 
           habitsManager.addHabit('Test Habit', false, '', '', '', false, false, false, 
               const TimeOfDay(hour: 9, minute: 0), '', false, '');

@@ -33,6 +33,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
     super.initState();
     if (platformSupportsNotifications()) {
       Future.delayed(const Duration(seconds: 0), () async {
+        if (!mounted) return;
         showNotificationDialog(context);
       });
     }
@@ -172,6 +173,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
   void showNotificationDialog(BuildContext context) {
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
+        if (!context.mounted) return;
         showRestoreDialog(context);
       } else {
         resetNotifications();

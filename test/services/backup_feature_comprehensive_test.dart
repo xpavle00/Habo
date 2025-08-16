@@ -326,7 +326,7 @@ void main() {
         };
 
         when(() => mockBackupRepository.importData(any()))
-            .thenAnswer((_) async => null);
+            .thenAnswer((_) async {});
 
         // Act - Test only the repository call
         await mockBackupRepository.importData(testData);

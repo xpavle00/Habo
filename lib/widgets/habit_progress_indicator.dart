@@ -98,7 +98,7 @@ class HabitProgressIndicator extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: SizedBox(
         width: size,
         height: size,
         child: Stack(
@@ -180,7 +180,7 @@ class HabitProgressSummary extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall,
         children: [
           TextSpan(
-            text: '${progress.toStringAsFixed(progress == progress.roundToDouble() ? 0 : 1)}',
+            text: progress.toStringAsFixed(progress == progress.roundToDouble() ? 0 : 1),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isCompleted ? HaboColors.primary : HaboColors.progress,

@@ -67,10 +67,10 @@ class SettingsData {
         'showMonthName': showMonthName,
         'seenOnboarding': seenOnboarding,
         'showCategories': showCategories,
-        'checkColor': checkColor.value,
-        'failColor': failColor.value,
-        'skipColor': skipColor.value,
-        'progressColor': progressColor.value,
+        'checkColor': checkColor.toARGB32(),
+        'failColor': failColor.toARGB32(),
+        'skipColor': skipColor.toARGB32(),
+        'progressColor': progressColor.toARGB32(),
         'biometricLock': biometricLock,
       };
 }

@@ -132,7 +132,7 @@ class Habit extends StatefulWidget {
     return '${all[0]}.${all[1].toLowerCase()}';
   }
 
-  void navigateToEditPage(context) {
+  void navigateToEditPage(BuildContext context) {
     Provider.of<AppStateManager>(context, listen: false).goEditHabit(habitData);
   }
 
@@ -170,7 +170,7 @@ class HabitState extends State<Habit> {
     return widget.habitData.events;
   }
 
-  showRewardNotification(date) {
+  void showRewardNotification(DateTime date) {
     if (isSameDay(date, DateTime.now()) &&
         widget.habitData.showReward &&
         widget.habitData.reward != '') {
@@ -193,7 +193,7 @@ class HabitState extends State<Habit> {
     }
   }
 
-  showSanctionNotification(date) {
+  void showSanctionNotification(DateTime date) {
     if (isSameDay(date, DateTime.now()) &&
         widget.habitData.showSanction &&
         widget.habitData.sanction != '') {
@@ -225,7 +225,7 @@ class HabitState extends State<Habit> {
     setSelectedDay(selectedDay);
   }
 
-  setSelectedDay(DateTime selectedDay) {
+  void setSelectedDay(DateTime selectedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
@@ -235,14 +235,14 @@ class HabitState extends State<Habit> {
     }
   }
 
-  reloadMonth(DateTime selectedDay) {
+  void reloadMonth(DateTime selectedDay) {
     _showMonth = (_calendarFormat == CalendarFormat.month);
     _actualMonth = DateFormat('yMMMM', Intl.getCurrentLocale())
         .format(selectedDay)
         .capitalize();
   }
 
-  _onFormatChanged(CalendarFormat format) {
+  void _onFormatChanged(CalendarFormat format) {
     if (_calendarFormat != format) {
       setState(() {
         _calendarFormat = format;
@@ -466,7 +466,7 @@ class HabitState extends State<Habit> {
               child: CircularProgressIndicator(
                 value: percentage,
                 strokeWidth: 3,
-                backgroundColor: Colors.white.withOpacity(0.3),
+                backgroundColor: Colors.white.withValues(alpha: 0.3),
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             ),
@@ -492,7 +492,7 @@ class HabitState extends State<Habit> {
     );
   }
 
-  _updateLastStreak() {
+  void _updateLastStreak() {
     if (widget.habitData.twoDayRule == true) {
       _updateLastStreakTwoDay();
     } else {
@@ -500,7 +500,7 @@ class HabitState extends State<Habit> {
     }
   }
 
-  _updateLastStreakNormal() {
+  void _updateLastStreakNormal() {
     int inStreak = 0;
     var checkDayKey = widget.habitData.events.lastKey();
     var lastDayKey = widget.habitData.events.lastKey();

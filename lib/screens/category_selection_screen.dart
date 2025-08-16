@@ -60,7 +60,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   color: Theme.of(context)
                       .colorScheme
                       .primaryContainer
-                      .withOpacity(0.3),
+                      .withValues(alpha: 0.3),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -156,7 +156,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                           isEditing: isEditing,
                           habitsManager: habitsManager,
                         );
-                      }).toList(),
+                      }),
                     ],
                   ],
                 ),
@@ -181,10 +181,10 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -230,7 +230,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         leading: CircleAvatar(
           backgroundColor: isSelected
               ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.surfaceVariant,
+              : Theme.of(context).colorScheme.surfaceContainerHighest,
           child: Icon(
             category.icon,
             color: isSelected
@@ -462,6 +462,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           _editSelectedIcon = Icons.category;
         });
 
+        if (!mounted) return;
         ServiceLocator.instance.uiFeedbackService.showSuccess(S.of(context).categoryCreatedSuccessfully(title));
       } else {
         // Updating existing category

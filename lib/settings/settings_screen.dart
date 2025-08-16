@@ -51,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _biometricAvailable = false;
   String _authDescription = '';
 
-  Future<void> testTime(context) async {
+  Future<void> testTime(BuildContext context) async {
     TimeOfDay? selectedTime;
     TimeOfDay initialTime =
         Provider.of<SettingsManager>(context, listen: false).getDailyNot;
@@ -90,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  showRestoreDialog(BuildContext context) {
+  void showRestoreDialog(BuildContext context) {
     AwesomeDialog(
       context: context,
       dialogBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -119,7 +119,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child,
       ) {
         return LoaderOverlay(
-          useDefaultLoading: false,
           overlayWidgetBuilder: (_) {
             return const Center(
               child: CircularProgressIndicator(

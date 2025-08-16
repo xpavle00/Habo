@@ -51,8 +51,8 @@ class HaboTheme {
       primaryColor: Colors.grey,
       fontFamily: GoogleFonts.nunito().fontFamily,
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith(getSwitchColorThumb),
-        trackColor: MaterialStateProperty.resolveWith(getSwitchTrackColor),
+        thumbColor: WidgetStateProperty.resolveWith(getSwitchColorThumb),
+        trackColor: WidgetStateProperty.resolveWith(getSwitchTrackColor),
       ),
       timePickerTheme: const TimePickerThemeData(
         dayPeriodTextColor: Colors.white,
@@ -96,8 +96,8 @@ class HaboTheme {
       primaryColor: Colors.grey,
       fontFamily: GoogleFonts.nunito().fontFamily,
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith(getSwitchColorThumb),
-        trackColor: MaterialStateProperty.resolveWith(getSwitchTrackColor),
+        thumbColor: WidgetStateProperty.resolveWith(getSwitchColorThumb),
+        trackColor: WidgetStateProperty.resolveWith(getSwitchTrackColor),
       ),
       timePickerTheme: const TimePickerThemeData(
         dayPeriodTextColor: Colors.white,
@@ -131,26 +131,26 @@ class HaboTheme {
   }
 }
 
-Color getSwitchColorThumb(Set<MaterialState> states) {
-  if (states.contains(MaterialState.selected)) {
+Color getSwitchColorThumb(Set<WidgetState> states) {
+  if (states.contains(WidgetState.selected)) {
     return const Color(0xFF303030);
   }
 
   return Colors.grey;
 }
 
-Color getSwitchTrackColor(Set<MaterialState> states) {
-  const Set<MaterialState> interactiveStates = <MaterialState>{
-    MaterialState.pressed,
-    MaterialState.hovered,
-    MaterialState.focused,
+Color getSwitchTrackColor(Set<WidgetState> states) {
+  const Set<WidgetState> interactiveStates = <WidgetState>{
+    WidgetState.pressed,
+    WidgetState.hovered,
+    WidgetState.focused,
   };
 
   if (states.any(interactiveStates.contains)) {
     return const Color(0xFF505050);
   }
 
-  if (states.contains(MaterialState.selected)) {
+  if (states.contains(WidgetState.selected)) {
     return HaboColors.primary;
   }
 
