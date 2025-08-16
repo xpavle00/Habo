@@ -42,6 +42,7 @@ dependencies:
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
   flutter_soloud: ^3.2.5
+  local_auth: ^2.3.0
 
 dev_dependencies:
   flutter_test:

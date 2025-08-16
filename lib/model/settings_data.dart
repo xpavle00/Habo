@@ -17,6 +17,7 @@ class SettingsData {
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
   Color progressColor = HaboColors.progress;
+  bool biometricLock = false;
 
   SettingsData();
 
@@ -50,7 +51,10 @@ class SettingsData {
             : HaboColors.skip,
         progressColor = (json['progressColor'] != null)
             ? Color(json['progressColor'])
-            : HaboColors.progress;
+            : HaboColors.progress,
+        biometricLock = (json['biometricLock'] != null) 
+            ? json['biometricLock'] 
+            : false;
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
@@ -67,5 +71,6 @@ class SettingsData {
         'failColor': failColor.value,
         'skipColor': skipColor.value,
         'progressColor': progressColor.value,
+        'biometricLock': biometricLock,
       };
 }

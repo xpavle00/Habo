@@ -66,5 +66,7 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Use Face ID to authenticate and secure access to your habits</string>
 	</dict>
 </plist>

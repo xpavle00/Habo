@@ -11,6 +11,7 @@ import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/settings/color_icon.dart';
 import 'package:habo/settings/settings_manager.dart';
+import 'package:habo/services/biometric_auth_service.dart';
 import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -43,6 +44,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     buildNumber: 'Unknown',
     buildSignature: 'Unknown',
   );
+  
+  final BiometricAuthService _biometricService = BiometricAuthService();
+  bool _biometricAvailable = false;
+  String _authDescription = '';
 
   Future<void> testTime(context) async {
     TimeOfDay? selectedTime;
@@ -62,12 +67,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _initPackageInfo();
+    _checkBiometricAvailability();
   }
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
     setState(() {
       _packageInfo = info;
+    });
+  }
+
+  Future<void> _checkBiometricAvailability() async {
+    final available = await _biometricService.hasDeviceAuthentication();
+    if (!mounted) return;
+    final description = await _biometricService.getAuthenticationDescription(context);
+    if (!mounted) return;
+    setState(() {
+      _biometricAvailable = available;
+      _authDescription = description;
     });
   }
 
@@ -254,6 +271,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                     ),
+                    if (_biometricAvailable)
+                      ListTile(
+                        title: Text(S.of(context).biometricLock),
+                        subtitle: Text(S.of(context).biometricLockDescription(_authDescription)),
+                        trailing: Switch(
+                          value: Provider.of<SettingsManager>(context)
+                              .getBiometricLock,
+                          onChanged: (value) async {
+                            if (value) {
+                              try {
+                                // Test authentication before enabling
+                                final authenticated = await _biometricService.authenticate(
+                                  context: context,
+                                  localizedReason: S.of(context).authenticateToEnable,
+                                );
+                                if (!mounted) return;
+                                if (authenticated) {
+                                  Provider.of<SettingsManager>(context, listen: false)
+                                      .setBiometricLock = true;
+                                  if (mounted) {
+                                    ServiceLocator.instance.uiFeedbackService
+                                        .showSuccess(S.of(context).biometricLockEnabled);
+                                  }
+                                } else {
+                                  if (mounted) {
+                                    ServiceLocator.instance.uiFeedbackService
+                                        .showError(S.of(context).authenticationFailed);
+                                  }
+                                }
+                              } catch (e) {
+                                if (mounted) {
+                                  ServiceLocator.instance.uiFeedbackService
+                                      .showError('${S.of(context).authenticationError}: $e');
+                                }
+                              }
+                            } else {
+                              Provider.of<SettingsManager>(context, listen: false)
+                                  .setBiometricLock = false;
+                              if (mounted) {
+                                ServiceLocator.instance.uiFeedbackService
+                                    .showSuccess(S.of(context).biometricLockDisabled);
+                              }
+                            }
+                          },
+                        ),
+                      ),
                     ListTile(
                       title: Text(S.of(context).showMonthName),
                       trailing: Switch(

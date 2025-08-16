@@ -20,30 +20,38 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m1(title) => "Category \"${title}\" already exists";
+  static String m1(authMethod) =>
+      "Please authenticate to access Habo using ${authMethod}";
 
-  static String m2(title) => "Category \"${title}\" created successfully";
+  static String m2(authMethod) =>
+      "Please authenticate using ${authMethod} to access your habits";
 
-  static String m3(title) => "Category \"${title}\" deleted successfully";
+  static String m3(authMethod) => "Secure app with ${authMethod}";
 
-  static String m4(title) => "Category \"${title}\" updated successfully";
+  static String m4(title) => "Category \"${title}\" already exists";
 
-  static String m5(current, unit) => "Current: ${current} ${unit}";
+  static String m5(title) => "Category \"${title}\" created successfully";
 
-  static String m6(title) =>
+  static String m6(title) => "Category \"${title}\" deleted successfully";
+
+  static String m7(title) => "Category \"${title}\" updated successfully";
+
+  static String m8(current, unit) => "Current: ${current} ${unit}";
+
+  static String m9(title) =>
       "Are you sure you want to delete \"${title}\"?\n\nThis will remove the category from all habits that use it.";
 
-  static String m7(error) => "Failed to delete category: ${error}";
+  static String m10(error) => "Failed to delete category: ${error}";
 
-  static String m8(error) => "Failed to save category: ${error}";
+  static String m11(error) => "Failed to save category: ${error}";
 
-  static String m9(title) => "No habits in \"${title}\"";
+  static String m12(title) => "No habits in \"${title}\"";
 
-  static String m10(current, target, unit) => "${current} / ${target} ${unit}";
+  static String m13(current, target, unit) => "${current} / ${target} ${unit}";
 
-  static String m11(count) => "Selected Categories (${count})";
+  static String m14(count) => "Selected Categories (${count})";
 
-  static String m12(target, unit) => "Target: ${target} ${unit}";
+  static String m15(target, unit) => "Target: ${target} ${unit}";
 
   static String m0(theme) =>
       "${Intl.select(theme, {'device': 'Device', 'light': 'Light', 'dark': 'Dark', 'oled': 'OLED black', 'materialYou': 'Material You', 'other': 'Device'})}";
@@ -77,6 +85,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "archiveHabit": MessageLookupByLibrary.simpleMessage("Archive habit"),
     "archivedHabits": MessageLookupByLibrary.simpleMessage("Archived Habits"),
     "at7AM": MessageLookupByLibrary.simpleMessage("At 7:00AM"),
+    "authenticate": MessageLookupByLibrary.simpleMessage("Authenticate"),
+    "authenticateToAccess": MessageLookupByLibrary.simpleMessage(
+      "Please authenticate to access Habo",
+    ),
+    "authenticateToEnable": MessageLookupByLibrary.simpleMessage(
+      "Authenticate to enable biometric lock",
+    ),
+    "authenticating": MessageLookupByLibrary.simpleMessage("Authenticating..."),
+    "authenticationError": MessageLookupByLibrary.simpleMessage(
+      "Authentication error",
+    ),
+    "authenticationFailed": MessageLookupByLibrary.simpleMessage(
+      "Authentication Required",
+    ),
+    "authenticationFailedMessage": m1,
+    "authenticationPrompt": m2,
+    "authenticationRequired": MessageLookupByLibrary.simpleMessage(
+      "Authentication Required",
+    ),
     "backup": MessageLookupByLibrary.simpleMessage("Backup"),
     "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Backup created successfully!",
@@ -85,15 +112,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: Creating backup failed.",
     ),
+    "biometric": MessageLookupByLibrary.simpleMessage("Biometric"),
+    "biometricAuthenticationRequired": MessageLookupByLibrary.simpleMessage(
+      "Biometric authentication required",
+    ),
+    "biometricAuthenticationSucceeded": MessageLookupByLibrary.simpleMessage(
+      "Biometric authentication succeeded",
+    ),
+    "biometricLock": MessageLookupByLibrary.simpleMessage("Biometric Lock"),
+    "biometricLockDescription": m3,
+    "biometricLockDisabled": MessageLookupByLibrary.simpleMessage(
+      "Biometric lock disabled",
+    ),
+    "biometricLockEnabled": MessageLookupByLibrary.simpleMessage(
+      "Biometric lock enabled",
+    ),
+    "biometricNotRecognized": MessageLookupByLibrary.simpleMessage(
+      "Biometric not recognized, try again",
+    ),
+    "biometricRequired": MessageLookupByLibrary.simpleMessage(
+      "Biometric required",
+    ),
     "booleanHabit": MessageLookupByLibrary.simpleMessage("Boolean habit"),
+    "buildingBetterHabits": MessageLookupByLibrary.simpleMessage(
+      "Building Better Habits",
+    ),
     "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Buy me a coffee"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "categories": MessageLookupByLibrary.simpleMessage("Categories"),
     "category": MessageLookupByLibrary.simpleMessage("Category"),
-    "categoryAlreadyExists": m1,
-    "categoryCreatedSuccessfully": m2,
-    "categoryDeletedSuccessfully": m3,
-    "categoryUpdatedSuccessfully": m4,
+    "categoryAlreadyExists": m4,
+    "categoryCreatedSuccessfully": m5,
+    "categoryDeletedSuccessfully": m6,
+    "categoryUpdatedSuccessfully": m7,
     "check": MessageLookupByLibrary.simpleMessage("Check"),
     "close": MessageLookupByLibrary.simpleMessage("Close"),
     "complete": MessageLookupByLibrary.simpleMessage("Complete"),
@@ -117,7 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "is the trigger that initiates your habit. It could be a specific time, location, feeling, or an event.",
     ),
     "cueNumbered": MessageLookupByLibrary.simpleMessage("1. Cue"),
-    "currentProgress": m5,
+    "currentProgress": m8,
     "currentStreak": MessageLookupByLibrary.simpleMessage("Current streak"),
     "dan": MessageLookupByLibrary.simpleMessage("Dan"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
@@ -129,7 +180,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteCategory": MessageLookupByLibrary.simpleMessage("Delete Category"),
-    "deleteCategoryConfirmation": m6,
+    "deleteCategoryConfirmation": m9,
+    "deviceCredentialsRequired": MessageLookupByLibrary.simpleMessage(
+      "Device credentials required",
+    ),
+    "devicePinPatternPassword": MessageLookupByLibrary.simpleMessage(
+      "Device PIN, Pattern, or Password",
+    ),
     "disclaimer": MessageLookupByLibrary.simpleMessage("Disclaimer"),
     "do50PushUps": MessageLookupByLibrary.simpleMessage("Do 50 push ups"),
     "doNotForgetToCheckYourHabits": MessageLookupByLibrary.simpleMessage(
@@ -147,9 +204,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyList": MessageLookupByLibrary.simpleMessage("Empty list"),
     "enterAmount": MessageLookupByLibrary.simpleMessage("Enter amount"),
     "exercise": MessageLookupByLibrary.simpleMessage("Exercise"),
+    "faceId": MessageLookupByLibrary.simpleMessage("Face ID"),
     "fail": MessageLookupByLibrary.simpleMessage("Fail"),
-    "failedToDeleteCategory": m7,
-    "failedToSaveCategory": m8,
+    "failedToDeleteCategory": m10,
+    "failedToSaveCategory": m11,
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 min. of video games",
     ),
@@ -157,6 +215,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileTooLarge": MessageLookupByLibrary.simpleMessage(
       "File too large (max 10MB)",
     ),
+    "fingerprint": MessageLookupByLibrary.simpleMessage("Fingerprint"),
     "firstDayOfWeek": MessageLookupByLibrary.simpleMessage(
       "First day of the week",
     ),
@@ -194,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidBackupFile": MessageLookupByLibrary.simpleMessage(
       "Invalid backup file",
     ),
+    "iris": MessageLookupByLibrary.simpleMessage("Iris"),
     "logYourDays": MessageLookupByLibrary.simpleMessage("Log your days"),
     "modify": MessageLookupByLibrary.simpleMessage("Modify"),
     "month": MessageLookupByLibrary.simpleMessage("Month"),
@@ -206,7 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
       "There is no data about habits.",
     ),
-    "noHabitsInCategory": m9,
+    "noHabitsInCategory": m12,
     "notSoSuccessful": MessageLookupByLibrary.simpleMessage(
       "Not so successful",
     ),
@@ -235,7 +295,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "progress": MessageLookupByLibrary.simpleMessage("Progress"),
-    "progressOf": m10,
+    "progressOf": m13,
+    "reenableTouchIdFaceId": MessageLookupByLibrary.simpleMessage(
+      "Please reenable your Touch ID or Face ID",
+    ),
     "remainderOfReward": MessageLookupByLibrary.simpleMessage(
       "The reminder of the reward after a successful routine.",
     ),
@@ -267,9 +330,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectCategories": MessageLookupByLibrary.simpleMessage(
       "Select Categories",
     ),
-    "selectedCategories": m11,
+    "selectedCategories": m14,
     "setColors": MessageLookupByLibrary.simpleMessage("Set colors"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "setupDeviceCredentials": MessageLookupByLibrary.simpleMessage(
+      "Please set up device credentials in settings",
+    ),
+    "setupFingerprintFaceUnlock": MessageLookupByLibrary.simpleMessage(
+      "Please set up your fingerprint or face unlock in device settings",
+    ),
+    "setupTouchIdFaceId": MessageLookupByLibrary.simpleMessage(
+      "Please set up your Touch ID or Face ID in device settings",
+    ),
     "showCategories": MessageLookupByLibrary.simpleMessage("Show Categories"),
     "showMonthName": MessageLookupByLibrary.simpleMessage("Show month name"),
     "showReward": MessageLookupByLibrary.simpleMessage("Show reward"),
@@ -283,7 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sourceCode": MessageLookupByLibrary.simpleMessage("Source code (GitHub)"),
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "successful": MessageLookupByLibrary.simpleMessage("Successful"),
-    "targetProgress": m12,
+    "targetProgress": m15,
     "targetValue": MessageLookupByLibrary.simpleMessage("Target value"),
     "termsAndConditions": MessageLookupByLibrary.simpleMessage(
       "Terms and Conditions",
@@ -292,9 +364,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "themeSelect": m0,
     "topStreak": MessageLookupByLibrary.simpleMessage("Top streak"),
     "total": MessageLookupByLibrary.simpleMessage("Total"),
+    "touchSensor": MessageLookupByLibrary.simpleMessage("Touch sensor"),
     "trackYourProgress": MessageLookupByLibrary.simpleMessage(
       "You can track your progress through the calendar view in every habit or on the statistics page.",
     ),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
     "twoDayRule": MessageLookupByLibrary.simpleMessage("Two day rule"),
     "twoDayRuleDescription": MessageLookupByLibrary.simpleMessage(
       "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",

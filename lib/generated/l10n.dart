@@ -1356,6 +1356,286 @@ class S {
       args: [],
     );
   }
+
+  /// `Biometric`
+  String get biometric {
+    return Intl.message(
+      'Biometric',
+      name: 'biometric',
+      desc: 'Generic biometric authentication method',
+      args: [],
+    );
+  }
+
+  /// `Biometric lock enabled`
+  String get biometricLockEnabled {
+    return Intl.message(
+      'Biometric lock enabled',
+      name: 'biometricLockEnabled',
+      desc: 'Message shown when biometric lock is successfully enabled',
+      args: [],
+    );
+  }
+
+  /// `Biometric lock disabled`
+  String get biometricLockDisabled {
+    return Intl.message(
+      'Biometric lock disabled',
+      name: 'biometricLockDisabled',
+      desc: 'Message shown when biometric lock is disabled',
+      args: [],
+    );
+  }
+
+  /// `Authentication error`
+  String get authenticationError {
+    return Intl.message(
+      'Authentication error',
+      name: 'authenticationError',
+      desc: 'Error message prefix for authentication failures',
+      args: [],
+    );
+  }
+
+  /// `Biometric authentication required`
+  String get biometricAuthenticationRequired {
+    return Intl.message(
+      'Biometric authentication required',
+      name: 'biometricAuthenticationRequired',
+      desc: 'Title for biometric authentication dialog',
+      args: [],
+    );
+  }
+
+  /// `Please set up your fingerprint or face unlock in device settings`
+  String get setupFingerprintFaceUnlock {
+    return Intl.message(
+      'Please set up your fingerprint or face unlock in device settings',
+      name: 'setupFingerprintFaceUnlock',
+      desc: 'Instructions to set up biometric authentication',
+      args: [],
+    );
+  }
+
+  /// `Touch sensor`
+  String get touchSensor {
+    return Intl.message(
+      'Touch sensor',
+      name: 'touchSensor',
+      desc: 'Hint for fingerprint sensor',
+      args: [],
+    );
+  }
+
+  /// `Biometric not recognized, try again`
+  String get biometricNotRecognized {
+    return Intl.message(
+      'Biometric not recognized, try again',
+      name: 'biometricNotRecognized',
+      desc: 'Message when biometric is not recognized',
+      args: [],
+    );
+  }
+
+  /// `Biometric required`
+  String get biometricRequired {
+    return Intl.message(
+      'Biometric required',
+      name: 'biometricRequired',
+      desc: 'Title when biometric is required',
+      args: [],
+    );
+  }
+
+  /// `Biometric authentication succeeded`
+  String get biometricAuthenticationSucceeded {
+    return Intl.message(
+      'Biometric authentication succeeded',
+      name: 'biometricAuthenticationSucceeded',
+      desc: 'Success message for biometric authentication',
+      args: [],
+    );
+  }
+
+  /// `Device credentials required`
+  String get deviceCredentialsRequired {
+    return Intl.message(
+      'Device credentials required',
+      name: 'deviceCredentialsRequired',
+      desc: 'Title when device credentials are required',
+      args: [],
+    );
+  }
+
+  /// `Please set up device credentials in settings`
+  String get setupDeviceCredentials {
+    return Intl.message(
+      'Please set up device credentials in settings',
+      name: 'setupDeviceCredentials',
+      desc: 'Instructions to set up device credentials',
+      args: [],
+    );
+  }
+
+  /// `Please set up your Touch ID or Face ID in device settings`
+  String get setupTouchIdFaceId {
+    return Intl.message(
+      'Please set up your Touch ID or Face ID in device settings',
+      name: 'setupTouchIdFaceId',
+      desc: 'iOS instructions to set up biometric authentication',
+      args: [],
+    );
+  }
+
+  /// `Please reenable your Touch ID or Face ID`
+  String get reenableTouchIdFaceId {
+    return Intl.message(
+      'Please reenable your Touch ID or Face ID',
+      name: 'reenableTouchIdFaceId',
+      desc: 'iOS message to reenable biometric authentication',
+      args: [],
+    );
+  }
+
+  /// `Biometric Lock`
+  String get biometricLock {
+    return Intl.message(
+      'Biometric Lock',
+      name: 'biometricLock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Secure app with {authMethod}`
+  String biometricLockDescription(String authMethod) {
+    return Intl.message(
+      'Secure app with $authMethod',
+      name: 'biometricLockDescription',
+      desc: '',
+      args: [authMethod],
+    );
+  }
+
+  /// `Authenticate to enable biometric lock`
+  String get authenticateToEnable {
+    return Intl.message(
+      'Authenticate to enable biometric lock',
+      name: 'authenticateToEnable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please authenticate to access Habo`
+  String get authenticateToAccess {
+    return Intl.message(
+      'Please authenticate to access Habo',
+      name: 'authenticateToAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Authentication Required`
+  String get authenticationRequired {
+    return Intl.message(
+      'Authentication Required',
+      name: 'authenticationRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Authentication Required`
+  String get authenticationFailed {
+    return Intl.message(
+      'Authentication Required',
+      name: 'authenticationFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please authenticate to access Habo using {authMethod}`
+  String authenticationFailedMessage(String authMethod) {
+    return Intl.message(
+      'Please authenticate to access Habo using $authMethod',
+      name: 'authenticationFailedMessage',
+      desc: '',
+      args: [authMethod],
+    );
+  }
+
+  /// `Try Again`
+  String get tryAgain {
+    return Intl.message('Try Again', name: 'tryAgain', desc: '', args: []);
+  }
+
+  /// `Authenticating...`
+  String get authenticating {
+    return Intl.message(
+      'Authenticating...',
+      name: 'authenticating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Authenticate`
+  String get authenticate {
+    return Intl.message(
+      'Authenticate',
+      name: 'authenticate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building Better Habits`
+  String get buildingBetterHabits {
+    return Intl.message(
+      'Building Better Habits',
+      name: 'buildingBetterHabits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please authenticate using {authMethod} to access your habits`
+  String authenticationPrompt(String authMethod) {
+    return Intl.message(
+      'Please authenticate using $authMethod to access your habits',
+      name: 'authenticationPrompt',
+      desc: '',
+      args: [authMethod],
+    );
+  }
+
+  /// `Device PIN, Pattern, or Password`
+  String get devicePinPatternPassword {
+    return Intl.message(
+      'Device PIN, Pattern, or Password',
+      name: 'devicePinPatternPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Face ID`
+  String get faceId {
+    return Intl.message('Face ID', name: 'faceId', desc: '', args: []);
+  }
+
+  /// `Fingerprint`
+  String get fingerprint {
+    return Intl.message('Fingerprint', name: 'fingerprint', desc: '', args: []);
+  }
+
+  /// `Iris`
+  String get iris {
+    return Intl.message('Iris', name: 'iris', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

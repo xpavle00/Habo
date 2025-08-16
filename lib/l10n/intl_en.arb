@@ -261,5 +261,98 @@
     "noArchivedHabits": "No archived habits",
     "viewArchivedHabits": "View archived habits",
     "habitArchived": "Habit archived",
-    "habitUnarchived": "Habit unarchived"
+    "habitUnarchived": "Habit unarchived",
+    "biometric": "Biometric",
+    "@biometric": {
+      "description": "Generic biometric authentication method"
+    },
+    "biometricLockEnabled": "Biometric lock enabled",
+    "@biometricLockEnabled": {
+      "description": "Message shown when biometric lock is successfully enabled"
+    },
+    "biometricLockDisabled": "Biometric lock disabled",
+    "@biometricLockDisabled": {
+      "description": "Message shown when biometric lock is disabled"
+    },
+    "authenticationError": "Authentication error",
+    "@authenticationError": {
+      "description": "Error message prefix for authentication failures"
+    },
+    "biometricAuthenticationRequired": "Biometric authentication required",
+    "@biometricAuthenticationRequired": {
+      "description": "Title for biometric authentication dialog"
+    },
+    "setupFingerprintFaceUnlock": "Please set up your fingerprint or face unlock in device settings",
+    "@setupFingerprintFaceUnlock": {
+      "description": "Instructions to set up biometric authentication"
+    },
+    "touchSensor": "Touch sensor",
+    "@touchSensor": {
+      "description": "Hint for fingerprint sensor"
+    },
+    "biometricNotRecognized": "Biometric not recognized, try again",
+    "@biometricNotRecognized": {
+      "description": "Message when biometric is not recognized"
+    },
+    "biometricRequired": "Biometric required",
+    "@biometricRequired": {
+      "description": "Title when biometric is required"
+    },
+    "biometricAuthenticationSucceeded": "Biometric authentication succeeded",
+    "@biometricAuthenticationSucceeded": {
+      "description": "Success message for biometric authentication"
+    },
+    "deviceCredentialsRequired": "Device credentials required",
+    "@deviceCredentialsRequired": {
+      "description": "Title when device credentials are required"
+    },
+    "setupDeviceCredentials": "Please set up device credentials in settings",
+    "@setupDeviceCredentials": {
+      "description": "Instructions to set up device credentials"
+    },
+    "setupTouchIdFaceId": "Please set up your Touch ID or Face ID in device settings",
+    "@setupTouchIdFaceId": {
+      "description": "iOS instructions to set up biometric authentication"
+    },
+    "reenableTouchIdFaceId": "Please reenable your Touch ID or Face ID",
+    "@reenableTouchIdFaceId": {
+      "description": "iOS message to reenable biometric authentication"
+    },
+    "biometricLock": "Biometric Lock",
+    "biometricLockDescription": "Secure app with {authMethod}",
+    "@biometricLockDescription": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "authenticateToEnable": "Authenticate to enable biometric lock",
+    "authenticateToAccess": "Please authenticate to access Habo",
+    "authenticationRequired": "Authentication Required",
+    "authenticationFailed": "Authentication Required",
+    "authenticationFailedMessage": "Please authenticate to access Habo using {authMethod}",
+    "@authenticationFailedMessage": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "tryAgain": "Try Again",
+    "authenticating": "Authenticating...",
+    "authenticate": "Authenticate",
+    "buildingBetterHabits": "Building Better Habits",
+    "authenticationPrompt": "Please authenticate using {authMethod} to access your habits",
+    "@authenticationPrompt": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "devicePinPatternPassword": "Device PIN, Pattern, or Password",
+    "faceId": "Face ID",
+    "fingerprint": "Fingerprint",
+    "iris": "Iris"
   }

@@ -10,6 +10,7 @@ import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/model/habo_model.dart';
+import 'package:habo/widgets/biometric_auth_wrapper.dart';
 
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/navigation/app_router.dart';
@@ -157,6 +158,9 @@ class _HaboState extends State<Habo> {
             routerDelegate: _appRouter,
             routeInformationParser: HaboRouteInformationParser(),
             backButtonDispatcher: RootBackButtonDispatcher(),
+            builder: (context, child) {
+              return BiometricAuthWrapper(child: child!);
+            },
           );
         });
       }),

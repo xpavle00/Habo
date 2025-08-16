@@ -178,6 +178,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.progressColor;
   }
 
+  bool get getBiometricLock {
+    return _settingsData.biometricLock;
+  }
+
   bool get isInitialized {
     return _isInitialized;
   }
@@ -262,6 +266,12 @@ class SettingsManager extends ChangeNotifier {
 
   set progressColor(Color value) {
     _settingsData.progressColor = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setBiometricLock(bool value) {
+    _settingsData.biometricLock = value;
     saveData();
     notifyListeners();
   }
