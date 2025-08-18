@@ -354,5 +354,36 @@
     "devicePinPatternPassword": "Device PIN, Pattern, or Password",
     "faceId": "Face ID",
     "fingerprint": "Fingerprint",
-    "iris": "Iris"
+    "iris": "Iris",
+    
+    "whatsNewTitle": "What's New",
+    "whatsNewVersion": "Version {version}",
+    "@whatsNewVersion": {
+      "placeholders": {
+        "version": {
+          "type": "String"
+        }
+      }
+    },
+    
+    "featureNumericTitle": "Numeric values in habits",
+    "featureNumericDesc": "Track counts like glasses of water or pages read",
+    
+    "featureDeepLinksTitle": "URL scheme (deep links)",
+    "featureDeepLinksDesc": "Open Habo directly to screens like settings or create",
+    
+    "featureCategoriesTitle": "Categories",
+    "featureCategoriesDesc": "Organize habits with category filters",
+    
+    "featureArchiveTitle": "Archive",
+    "featureArchiveDesc": "Hide habits you no longer track without deleting",
+    
+    "featureMaterialYouTitle": "Material You theme (Android)",
+    "featureMaterialYouDesc": "Dynamic colors that match your wallpaper",
+    
+    "featureSoundTitle": "New sound engine",
+    "featureSoundDesc": "Adjustable volume",
+    
+    "featureLockTitle": "Lock feature",
+    "featureLockDesc": "Secure the app with Face ID / Touch ID / biometrics"
   }

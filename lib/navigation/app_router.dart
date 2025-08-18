@@ -10,6 +10,7 @@ import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/settings/settings_screen.dart';
 import 'package:habo/splash_screen.dart';
 import 'package:habo/statistics/statistics_screen.dart';
+import 'package:habo/whats_new/whats_new_screen.dart';
 
 class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<HaboRouteConfiguration> {
@@ -48,6 +49,8 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
         if (allInitialized()) HabitsScreen.page(),
         if (appStateManager.getStatistics) StatisticsScreen.page(),
         if (appStateManager.getSettings) SettingsScreen.page(),
+        if (appStateManager.getWhatsNew || _shouldShowWhatsNew())
+          WhatsNewScreen.page(),
         if (appStateManager.getOnboarding || !settingsManager.getSeenOnboarding)
           OnboardingScreen.page(),
         if (appStateManager.getCreateHabit) EditHabitScreen.page(null),
@@ -74,6 +77,14 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
 
       if (page.name == Routes.onboardingPath) {
         appStateManager.goOnboarding(false);
+      }
+
+      if (page.name == Routes.whatsNewPath) {
+        appStateManager.goWhatsNew(false);
+        final current = settingsManager.getCurrentAppVersion;
+        if (current.isNotEmpty) {
+          settingsManager.setLastWhatsNewVersion = current;
+        }
       }
 
       if (page.name == Routes.createHabitPath) {
@@ -107,6 +118,9 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     if (appStateManager.getEditHabit != null) {
       return const HaboRouteConfiguration(path: '/edit');
     }
+    if (appStateManager.getWhatsNew) {
+      return const HaboRouteConfiguration(path: '/whatsnew');
+    }
     if (appStateManager.getOnboarding) {
       return const HaboRouteConfiguration(path: '/onboarding');
     }
@@ -135,6 +149,7 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       appStateManager.goSettings(false);
       appStateManager.goCreateHabit(false);
       appStateManager.goOnboarding(false);
+      appStateManager.goWhatsNew(false);
       appStateManager.goEditHabit(null);
       
       // Navigate based on the URL path
@@ -150,6 +165,9 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
         case '/new':
           appStateManager.goCreateHabit(true);
           break;
+        case '/whatsnew':
+          appStateManager.goWhatsNew(true);
+          break;
         case '/':
         case '/main':
         case '/habits':
@@ -158,5 +176,14 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
           break;
       }
     });
+  }
+
+  bool _shouldShowWhatsNew() {
+    // Only show for users who have completed onboarding.
+    if (!settingsManager.getSeenOnboarding) return false;
+    final current = settingsManager.getCurrentAppVersion;
+    if (current.isEmpty) return false;
+    final last = settingsManager.getLastWhatsNewVersion;
+    return current != last;
   }
 }

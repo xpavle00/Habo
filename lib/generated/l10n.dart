@@ -1636,6 +1636,166 @@ class S {
   String get iris {
     return Intl.message('Iris', name: 'iris', desc: '', args: []);
   }
+
+  /// `What's New`
+  String get whatsNewTitle {
+    return Intl.message(
+      'What\'s New',
+      name: 'whatsNewTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version {version}`
+  String whatsNewVersion(String version) {
+    return Intl.message(
+      'Version $version',
+      name: 'whatsNewVersion',
+      desc: '',
+      args: [version],
+    );
+  }
+
+  /// `Numeric values in habits`
+  String get featureNumericTitle {
+    return Intl.message(
+      'Numeric values in habits',
+      name: 'featureNumericTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Track counts like glasses of water or pages read`
+  String get featureNumericDesc {
+    return Intl.message(
+      'Track counts like glasses of water or pages read',
+      name: 'featureNumericDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `URL scheme (deep links)`
+  String get featureDeepLinksTitle {
+    return Intl.message(
+      'URL scheme (deep links)',
+      name: 'featureDeepLinksTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Habo directly to screens like settings or create`
+  String get featureDeepLinksDesc {
+    return Intl.message(
+      'Open Habo directly to screens like settings or create',
+      name: 'featureDeepLinksDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Categories`
+  String get featureCategoriesTitle {
+    return Intl.message(
+      'Categories',
+      name: 'featureCategoriesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organize habits with category filters`
+  String get featureCategoriesDesc {
+    return Intl.message(
+      'Organize habits with category filters',
+      name: 'featureCategoriesDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Archive`
+  String get featureArchiveTitle {
+    return Intl.message(
+      'Archive',
+      name: 'featureArchiveTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide habits you no longer track without deleting`
+  String get featureArchiveDesc {
+    return Intl.message(
+      'Hide habits you no longer track without deleting',
+      name: 'featureArchiveDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material You theme (Android)`
+  String get featureMaterialYouTitle {
+    return Intl.message(
+      'Material You theme (Android)',
+      name: 'featureMaterialYouTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dynamic colors that match your wallpaper`
+  String get featureMaterialYouDesc {
+    return Intl.message(
+      'Dynamic colors that match your wallpaper',
+      name: 'featureMaterialYouDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New sound engine`
+  String get featureSoundTitle {
+    return Intl.message(
+      'New sound engine',
+      name: 'featureSoundTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Adjustable volume`
+  String get featureSoundDesc {
+    return Intl.message(
+      'Adjustable volume',
+      name: 'featureSoundDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lock feature`
+  String get featureLockTitle {
+    return Intl.message(
+      'Lock feature',
+      name: 'featureLockTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Secure the app with Face ID / Touch ID / biometrics`
+  String get featureLockDesc {
+    return Intl.message(
+      'Secure the app with Face ID / Touch ID / biometrics',
+      name: 'featureLockDesc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

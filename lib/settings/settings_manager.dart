@@ -8,12 +8,14 @@ import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsManager extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SettingsData _settingsData = SettingsData();
   bool _isInitialized = false;
+  String _currentAppVersion = '';
 
   late AudioSource _checkSource;
   late AudioSource _clickSource;
@@ -21,6 +23,12 @@ class SettingsManager extends ChangeNotifier {
 
   Future<void> initialize() async {
     await loadData();
+    try {
+      final info = await PackageInfo.fromPlatform();
+      _currentAppVersion = info.version;
+    } catch (_) {
+      _currentAppVersion = '';
+    }
     _isInitialized = true;
     notifyListeners();
     _initializeSounds();
@@ -184,6 +192,20 @@ class SettingsManager extends ChangeNotifier {
 
   bool get isInitialized {
     return _isInitialized;
+  }
+
+  String get getLastWhatsNewVersion {
+    return _settingsData.lastWhatsNewVersion;
+  }
+
+  set setLastWhatsNewVersion(String value) {
+    _settingsData.lastWhatsNewVersion = value;
+    saveData();
+    notifyListeners();
+  }
+
+  String get getCurrentAppVersion {
+    return _currentAppVersion;
   }
 
   set setTheme(Themes value) {

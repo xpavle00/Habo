@@ -56,6 +56,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(theme) =>
       "${Intl.select(theme, {'device': 'Device', 'light': 'Light', 'dark': 'Dark', 'oled': 'OLED black', 'materialYou': 'Material You', 'other': 'Device'})}";
 
+  static String m16(version) => "Version ${version}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("About"),
@@ -208,6 +210,44 @@ class MessageLookup extends MessageLookupByLibrary {
     "fail": MessageLookupByLibrary.simpleMessage("Fail"),
     "failedToDeleteCategory": m10,
     "failedToSaveCategory": m11,
+    "featureArchiveDesc": MessageLookupByLibrary.simpleMessage(
+      "Hide habits you no longer track without deleting",
+    ),
+    "featureArchiveTitle": MessageLookupByLibrary.simpleMessage("Archive"),
+    "featureCategoriesDesc": MessageLookupByLibrary.simpleMessage(
+      "Organize habits with category filters",
+    ),
+    "featureCategoriesTitle": MessageLookupByLibrary.simpleMessage(
+      "Categories",
+    ),
+    "featureDeepLinksDesc": MessageLookupByLibrary.simpleMessage(
+      "Open Habo directly to screens like settings or create",
+    ),
+    "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
+      "URL scheme (deep links)",
+    ),
+    "featureLockDesc": MessageLookupByLibrary.simpleMessage(
+      "Secure the app with Face ID / Touch ID / biometrics",
+    ),
+    "featureLockTitle": MessageLookupByLibrary.simpleMessage("Lock feature"),
+    "featureMaterialYouDesc": MessageLookupByLibrary.simpleMessage(
+      "Dynamic colors that match your wallpaper",
+    ),
+    "featureMaterialYouTitle": MessageLookupByLibrary.simpleMessage(
+      "Material You theme (Android)",
+    ),
+    "featureNumericDesc": MessageLookupByLibrary.simpleMessage(
+      "Track counts like glasses of water or pages read",
+    ),
+    "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
+      "Numeric values in habits",
+    ),
+    "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
+      "Adjustable volume",
+    ),
+    "featureSoundTitle": MessageLookupByLibrary.simpleMessage(
+      "New sound engine",
+    ),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 min. of video games",
     ),
@@ -384,6 +424,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "warning": MessageLookupByLibrary.simpleMessage("Warning"),
     "week": MessageLookupByLibrary.simpleMessage("Week"),
+    "whatsNewTitle": MessageLookupByLibrary.simpleMessage("What\'s New"),
+    "whatsNewVersion": m16,
     "yourCommentHere": MessageLookupByLibrary.simpleMessage("Your note here"),
   };
 }

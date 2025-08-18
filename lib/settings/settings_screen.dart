@@ -445,6 +445,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       },
                     ),
                     ListTile(
+                      title: Text(S.of(context).whatsNewTitle),
+                      onTap: () {
+                        Provider.of<AppStateManager>(context, listen: false)
+                            .goWhatsNew(true);
+                      },
+                    ),
+                    ListTile(
                       title: Text(S.of(context).about),
                       onTap: () {
                         showAboutDialog(

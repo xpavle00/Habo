@@ -18,6 +18,7 @@ class SettingsData {
   Color skipColor = HaboColors.skip;
   Color progressColor = HaboColors.progress;
   bool biometricLock = false;
+  String lastWhatsNewVersion = '';
 
   SettingsData();
 
@@ -54,7 +55,10 @@ class SettingsData {
             : HaboColors.progress,
         biometricLock = (json['biometricLock'] != null) 
             ? json['biometricLock'] 
-            : false;
+            : false,
+        lastWhatsNewVersion = (json['lastWhatsNewVersion'] != null)
+            ? json['lastWhatsNewVersion']
+            : '';
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
@@ -72,5 +76,6 @@ class SettingsData {
         'skipColor': skipColor.toARGB32(),
         'progressColor': progressColor.toARGB32(),
         'biometricLock': biometricLock,
+        'lastWhatsNewVersion': lastWhatsNewVersion,
       };
 }
