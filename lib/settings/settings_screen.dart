@@ -46,7 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     buildNumber: 'Unknown',
     buildSignature: 'Unknown',
   );
-  
+
   final BiometricAuthService _biometricService = BiometricAuthService();
   bool _biometricAvailable = false;
   String _authDescription = '';
@@ -82,7 +82,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _checkBiometricAvailability() async {
     final available = await _biometricService.hasDeviceAuthentication();
     if (!mounted) return;
-    final description = await _biometricService.getAuthenticationDescription(context);
+    final description =
+        await _biometricService.getAuthenticationDescription(context);
     if (!mounted) return;
     setState(() {
       _biometricAvailable = available;
@@ -142,7 +143,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: Text(S.of(context).theme),
                       trailing: DropdownButton<Themes>(
                         items: (Platform.isIOS
-                                ? Themes.values.where((t) => t != Themes.materialYou)
+                                ? Themes.values
+                                    .where((t) => t != Themes.materialYou)
                                 : Themes.values)
                             .map((Themes value) {
                           return DropdownMenuItem<Themes>(
@@ -154,7 +156,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
                         }).toList(),
                         value: (Platform.isIOS &&
-                                Provider.of<SettingsManager>(context).getThemeString ==
+                                Provider.of<SettingsManager>(context)
+                                        .getThemeString ==
                                     Themes.materialYou)
                             ? Themes.device
                             : Provider.of<SettingsManager>(context)
@@ -245,9 +248,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
-                                  volume == 0 ? Icons.volume_off : Icons.volume_up,
+                                  volume == 0
+                                      ? Icons.volume_off
+                                      : Icons.volume_up,
                                   size: 16,
-                                  color: volume == 0 ? Theme.of(context).disabledColor : null,
+                                  color: volume == 0
+                                      ? Theme.of(context).disabledColor
+                                      : null,
                                 ),
                                 Expanded(
                                   child: Slider(
@@ -257,11 +264,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     divisions: 5,
                                     label: '${volume.round()}',
                                     onChanged: (value) {
-                                      Provider.of<SettingsManager>(context, listen: false)
+                                      Provider.of<SettingsManager>(context,
+                                              listen: false)
                                           .setSoundVolume = value;
                                       // Play test sound when adjusting volume
                                       if (value > 0) {
-                                        Provider.of<SettingsManager>(context, listen: false)
+                                        Provider.of<SettingsManager>(context,
+                                                listen: false)
                                             .playClickSound();
                                       }
                                     },
@@ -269,9 +278,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                                 Text(
                                   volume == 0 ? '0' : '${volume.round()}',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: volume == 0 ? Theme.of(context).disabledColor : null,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: volume == 0
+                                            ? Theme.of(context).disabledColor
+                                            : null,
+                                      ),
                                 ),
                               ],
                             ),
@@ -279,52 +293,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                     ),
-                    if (_biometricAvailable)
-                      ListTile(
-                        title: Text(S.of(context).biometricLock),
-                        subtitle: Text(S.of(context).biometricLockDescription(_authDescription)),
-                        trailing: Switch(
-                          value: Provider.of<SettingsManager>(context)
-                              .getBiometricLock,
-                          onChanged: (value) async {
-                            if (value) {
-                              try {
-                                // Test authentication before enabling
-                                final authenticated = await _biometricService.authenticate(
-                                  context: context,
-                                  localizedReason: S.of(context).authenticateToEnable,
-                                );
-                                if (!mounted) return;
-                                if (authenticated) {
-                                  Provider.of<SettingsManager>(context, listen: false)
-                                      .setBiometricLock = true;
-                                  if (mounted) {
-                                    ServiceLocator.instance.uiFeedbackService
-                                        .showSuccess(S.of(context).biometricLockEnabled);
-                                  }
-                                } else {
-                                  if (mounted) {
-                                    ServiceLocator.instance.uiFeedbackService
-                                        .showError(S.of(context).authenticationFailed);
-                                  }
-                                }
-                              } catch (e) {
+                    ListTile(
+                      title: Text(S.of(context).biometricLock),
+                      enabled: _biometricAvailable,
+                      subtitle: Text(S
+                          .of(context)
+                          .biometricLockDescription(_authDescription)),
+                      trailing: Switch(
+                        value: Provider.of<SettingsManager>(context)
+                            .getBiometricLock,
+                        onChanged: (value) async {
+                          if (value) {
+                            try {
+                              // Test authentication before enabling
+                              final authenticated =
+                                  await _biometricService.authenticate(
+                                context: context,
+                                localizedReason:
+                                    S.of(context).authenticateToEnable,
+                              );
+                              if (!mounted) return;
+                              if (authenticated) {
+                                Provider.of<SettingsManager>(context,
+                                        listen: false)
+                                    .setBiometricLock = true;
                                 if (mounted) {
                                   ServiceLocator.instance.uiFeedbackService
-                                      .showError('${S.of(context).authenticationError}: $e');
+                                      .showSuccess(
+                                          S.of(context).biometricLockEnabled);
+                                }
+                              } else {
+                                if (mounted) {
+                                  ServiceLocator.instance.uiFeedbackService
+                                      .showError(
+                                          S.of(context).authenticationFailed);
                                 }
                               }
-                            } else {
-                              Provider.of<SettingsManager>(context, listen: false)
-                                  .setBiometricLock = false;
+                            } catch (e) {
                               if (mounted) {
-                                ServiceLocator.instance.uiFeedbackService
-                                    .showSuccess(S.of(context).biometricLockDisabled);
+                                ServiceLocator.instance.uiFeedbackService.showError(
+                                    '${S.of(context).authenticationError}: $e');
                               }
                             }
-                          },
-                        ),
+                          } else {
+                            Provider.of<SettingsManager>(context, listen: false)
+                                .setBiometricLock = false;
+                            if (mounted) {
+                              ServiceLocator.instance.uiFeedbackService
+                                  .showSuccess(
+                                      S.of(context).biometricLockDisabled);
+                            }
+                          }
+                        },
                       ),
+                    ),
                     ListTile(
                       title: Text(S.of(context).showMonthName),
                       trailing: Switch(
@@ -410,7 +432,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () async {
-                              await ServiceLocator.instance.backupService.createDatabaseBackup();
+                              await ServiceLocator.instance.backupService
+                                  .createDatabaseBackup();
                             },
                             child: Text(
                               S.of(context).create,
