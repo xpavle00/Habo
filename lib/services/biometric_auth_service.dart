@@ -11,6 +11,10 @@ class BiometricAuthService {
   BiometricAuthService._internal();
 
   final LocalAuthentication _localAuth = LocalAuthentication();
+  
+  // Cache for expensive operations
+  List<BiometricType>? _cachedAvailableBiometrics;
+  String? _cachedAuthDescription;
 
   /// Check if biometric authentication is available on the device
   Future<bool> isBiometricAvailable() async {
@@ -23,13 +27,16 @@ class BiometricAuthService {
     }
   }
 
-  /// Get available biometric types on the device
+  /// Get available biometric types on the device (cached)
   Future<List<BiometricType>> getAvailableBiometrics() async {
-    try {
-      return await _localAuth.getAvailableBiometrics();
-    } catch (e) {
-      return [];
+    if (_cachedAvailableBiometrics == null) {
+      try {
+        _cachedAvailableBiometrics = await _localAuth.getAvailableBiometrics();
+      } catch (e) {
+        _cachedAvailableBiometrics = [];
+      }
     }
+    return _cachedAvailableBiometrics!;
   }
 
   /// Authenticate using biometrics or device credentials
@@ -111,40 +118,43 @@ class BiometricAuthService {
     }
   }
 
-  /// Get a user-friendly description of available authentication methods
+  /// Get a user-friendly description of available authentication methods (cached)
   Future<String> getAuthenticationDescription(BuildContext context) async {
-    final List<BiometricType> availableBiometrics = await getAvailableBiometrics();
-    
-    if (availableBiometrics.isEmpty) {
-      return S.of(context).devicePinPatternPassword;
+    if (_cachedAuthDescription == null) {
+      final List<BiometricType> availableBiometrics = await getAvailableBiometrics();
+      
+      if (availableBiometrics.isEmpty) {
+        _cachedAuthDescription = S.of(context).devicePinPatternPassword;
+      } else {
+        List<String> methods = [];
+        
+        if (availableBiometrics.contains(BiometricType.face)) {
+          methods.add(S.of(context).faceId);
+        }
+        if (availableBiometrics.contains(BiometricType.fingerprint)) {
+          methods.add(S.of(context).fingerprint);
+        }
+        if (availableBiometrics.contains(BiometricType.iris)) {
+          methods.add(S.of(context).iris);
+        }
+        if (availableBiometrics.contains(BiometricType.strong) || 
+            availableBiometrics.contains(BiometricType.weak)) {
+          methods.add(S.of(context).biometric);
+        }
+        
+        // Add device credentials as fallback
+        methods.add(S.of(context).devicePinPatternPassword);
+        
+        if (methods.length == 1) {
+          _cachedAuthDescription = methods.first;
+        } else if (methods.length == 2) {
+          _cachedAuthDescription = '${methods[0]} or ${methods[1]}';
+        } else {
+          _cachedAuthDescription = '${methods.sublist(0, methods.length - 1).join(', ')}, or ${methods.last}';
+        }
+      }
     }
-    
-    List<String> methods = [];
-    
-    if (availableBiometrics.contains(BiometricType.face)) {
-      methods.add(S.of(context).faceId);
-    }
-    if (availableBiometrics.contains(BiometricType.fingerprint)) {
-      methods.add(S.of(context).fingerprint);
-    }
-    if (availableBiometrics.contains(BiometricType.iris)) {
-      methods.add(S.of(context).iris);
-    }
-    if (availableBiometrics.contains(BiometricType.strong) || 
-        availableBiometrics.contains(BiometricType.weak)) {
-      methods.add(S.of(context).biometric);
-    }
-    
-    // Add device credentials as fallback
-    methods.add(S.of(context).devicePinPatternPassword);
-    
-    if (methods.length == 1) {
-      return methods.first;
-    } else if (methods.length == 2) {
-      return '${methods[0]} or ${methods[1]}';
-    } else {
-      return '${methods.sublist(0, methods.length - 1).join(', ')}, or ${methods.last}';
-    }
+    return _cachedAuthDescription!;
   }
 
   /// Check if the device has any form of authentication set up
