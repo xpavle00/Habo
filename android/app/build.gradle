@@ -49,9 +49,9 @@ android {
 
     defaultConfig {
         applicationId "com.pavlenko.Habo"
-        minSdkVersion 23
-        compileSdk 35
-        targetSdkVersion 35
+        minSdkVersion flutter.minSdkVersion
+        compileSdk 36
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
