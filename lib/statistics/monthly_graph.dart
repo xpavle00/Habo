@@ -247,7 +247,6 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
 
   Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color.fromARGB(255, 58, 114, 182),
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );

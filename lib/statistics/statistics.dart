@@ -68,18 +68,14 @@ class Statistics {
                       stat.topStreak = stat.actualStreak;
                     }
                     usingTwoDayRule = false;
-                  } else {
-                    // Partial progress = don't break streak but don't extend it
-                    if (usingTwoDayRule) {
-                      stat.actualStreak = 0;
-                    }
-                  }
+                  } 
                 } else {
                   // Fallback for non-numeric progress events
                   if (usingTwoDayRule) {
                     stat.actualStreak = 0;
                   }
                 }
+                usingTwoDayRule = false;
                 break;
               case DayType.skip:
                 stat.skips++;
