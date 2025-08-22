@@ -127,7 +127,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).authenticationFailed),
+          title: Text(S.of(context).authenticationRequired),
           content: Text(S.of(context).authenticationFailedMessage(_authDescription)),
           actions: [
             TextButton(

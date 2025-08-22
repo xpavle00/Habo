@@ -98,9 +98,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticationError": MessageLookupByLibrary.simpleMessage(
       "Authentication error",
     ),
-    "authenticationFailed": MessageLookupByLibrary.simpleMessage(
-      "Authentication Required",
-    ),
     "authenticationFailedMessage": m1,
     "authenticationPrompt": m2,
     "authenticationRequired": MessageLookupByLibrary.simpleMessage(

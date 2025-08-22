@@ -326,7 +326,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 if (mounted) {
                                   ServiceLocator.instance.uiFeedbackService
                                       .showError(
-                                          S.of(context).authenticationFailed);
+                                          S.of(context).authenticationRequired);
                                 }
                               }
                             } catch (e) {

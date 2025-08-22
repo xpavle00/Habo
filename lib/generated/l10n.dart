@@ -134,46 +134,6 @@ class S {
     return Intl.message('Settings', name: 'settings', desc: '', args: []);
   }
 
-  /// `Backup created successfully!`
-  String get backupCreatedSuccessfully {
-    return Intl.message(
-      'Backup created successfully!',
-      name: 'backupCreatedSuccessfully',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Backup failed!`
-  String get backupFailed {
-    return Intl.message(
-      'Backup failed!',
-      name: 'backupFailed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore completed successfully!`
-  String get restoreCompletedSuccessfully {
-    return Intl.message(
-      'Restore completed successfully!',
-      name: 'restoreCompletedSuccessfully',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Restore failed!`
-  String get restoreFailed {
-    return Intl.message(
-      'Restore failed!',
-      name: 'restoreFailed',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Theme`
   String get theme {
     return Intl.message('Theme', name: 'theme', desc: '', args: []);
@@ -897,6 +857,46 @@ class S {
     );
   }
 
+  /// `Backup created successfully!`
+  String get backupCreatedSuccessfully {
+    return Intl.message(
+      'Backup created successfully!',
+      name: 'backupCreatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backup failed!`
+  String get backupFailed {
+    return Intl.message(
+      'Backup failed!',
+      name: 'backupFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore completed successfully!`
+  String get restoreCompletedSuccessfully {
+    return Intl.message(
+      'Restore completed successfully!',
+      name: 'restoreCompletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore failed!`
+  String get restoreFailed {
+    return Intl.message(
+      'Restore failed!',
+      name: 'restoreFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `File not found`
   String get fileNotFound {
     return Intl.message(
@@ -1359,12 +1359,7 @@ class S {
 
   /// `Biometric`
   String get biometric {
-    return Intl.message(
-      'Biometric',
-      name: 'biometric',
-      desc: 'Generic biometric authentication method',
-      args: [],
-    );
+    return Intl.message('Biometric', name: 'biometric', desc: '', args: []);
   }
 
   /// `Biometric lock enabled`
@@ -1372,7 +1367,7 @@ class S {
     return Intl.message(
       'Biometric lock enabled',
       name: 'biometricLockEnabled',
-      desc: 'Message shown when biometric lock is successfully enabled',
+      desc: '',
       args: [],
     );
   }
@@ -1382,7 +1377,7 @@ class S {
     return Intl.message(
       'Biometric lock disabled',
       name: 'biometricLockDisabled',
-      desc: 'Message shown when biometric lock is disabled',
+      desc: '',
       args: [],
     );
   }
@@ -1392,7 +1387,7 @@ class S {
     return Intl.message(
       'Authentication error',
       name: 'authenticationError',
-      desc: 'Error message prefix for authentication failures',
+      desc: '',
       args: [],
     );
   }
@@ -1402,7 +1397,7 @@ class S {
     return Intl.message(
       'Biometric authentication required',
       name: 'biometricAuthenticationRequired',
-      desc: 'Title for biometric authentication dialog',
+      desc: '',
       args: [],
     );
   }
@@ -1412,7 +1407,7 @@ class S {
     return Intl.message(
       'Please set up your fingerprint or face unlock in device settings',
       name: 'setupFingerprintFaceUnlock',
-      desc: 'Instructions to set up biometric authentication',
+      desc: '',
       args: [],
     );
   }
@@ -1422,7 +1417,7 @@ class S {
     return Intl.message(
       'Touch sensor',
       name: 'touchSensor',
-      desc: 'Hint for fingerprint sensor',
+      desc: '',
       args: [],
     );
   }
@@ -1432,7 +1427,7 @@ class S {
     return Intl.message(
       'Biometric not recognized, try again',
       name: 'biometricNotRecognized',
-      desc: 'Message when biometric is not recognized',
+      desc: '',
       args: [],
     );
   }
@@ -1442,7 +1437,7 @@ class S {
     return Intl.message(
       'Biometric required',
       name: 'biometricRequired',
-      desc: 'Title when biometric is required',
+      desc: '',
       args: [],
     );
   }
@@ -1452,7 +1447,7 @@ class S {
     return Intl.message(
       'Biometric authentication succeeded',
       name: 'biometricAuthenticationSucceeded',
-      desc: 'Success message for biometric authentication',
+      desc: '',
       args: [],
     );
   }
@@ -1462,7 +1457,7 @@ class S {
     return Intl.message(
       'Device credentials required',
       name: 'deviceCredentialsRequired',
-      desc: 'Title when device credentials are required',
+      desc: '',
       args: [],
     );
   }
@@ -1472,7 +1467,7 @@ class S {
     return Intl.message(
       'Please set up device credentials in settings',
       name: 'setupDeviceCredentials',
-      desc: 'Instructions to set up device credentials',
+      desc: '',
       args: [],
     );
   }
@@ -1482,7 +1477,7 @@ class S {
     return Intl.message(
       'Please set up your Touch ID or Face ID in device settings',
       name: 'setupTouchIdFaceId',
-      desc: 'iOS instructions to set up biometric authentication',
+      desc: '',
       args: [],
     );
   }
@@ -1492,7 +1487,7 @@ class S {
     return Intl.message(
       'Please reenable your Touch ID or Face ID',
       name: 'reenableTouchIdFaceId',
-      desc: 'iOS message to reenable biometric authentication',
+      desc: '',
       args: [],
     );
   }
@@ -1542,16 +1537,6 @@ class S {
     return Intl.message(
       'Authentication Required',
       name: 'authenticationRequired',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Authentication Required`
-  String get authenticationFailed {
-    return Intl.message(
-      'Authentication Required',
-      name: 'authenticationFailed',
       desc: '',
       args: [],
     );

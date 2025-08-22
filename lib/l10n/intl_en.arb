@@ -13,10 +13,6 @@
     "restore": "Restore",
     "cancel": "Cancel",
     "settings": "Settings",
-    "backupCreatedSuccessfully": "Backup created successfully!",
-    "backupFailed": "Backup failed!",
-    "restoreCompletedSuccessfully": "Restore completed successfully!",
-    "restoreFailed": "Restore failed!",
     "theme": "Theme",
     "firstDayOfWeek": "First day of the week",
     "notifications": "Notifications",
@@ -115,6 +111,10 @@
     "skipDoesNotAffectStreaks": "Skip (does not affect streaks)",
     "observeYourProgress": "Observe your progress",
     "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page.",
+    "backupCreatedSuccessfully": "Backup created successfully!",
+    "backupFailed": "Backup failed!",
+    "restoreCompletedSuccessfully": "Restore completed successfully!",
+    "restoreFailed": "Restore failed!",
     "fileNotFound": "File not found",
     "fileTooLarge": "File too large (max 10MB)",
     "invalidBackupFile": "Invalid backup file",
@@ -263,61 +263,19 @@
     "habitArchived": "Habit archived",
     "habitUnarchived": "Habit unarchived",
     "biometric": "Biometric",
-    "@biometric": {
-      "description": "Generic biometric authentication method"
-    },
     "biometricLockEnabled": "Biometric lock enabled",
-    "@biometricLockEnabled": {
-      "description": "Message shown when biometric lock is successfully enabled"
-    },
     "biometricLockDisabled": "Biometric lock disabled",
-    "@biometricLockDisabled": {
-      "description": "Message shown when biometric lock is disabled"
-    },
     "authenticationError": "Authentication error",
-    "@authenticationError": {
-      "description": "Error message prefix for authentication failures"
-    },
     "biometricAuthenticationRequired": "Biometric authentication required",
-    "@biometricAuthenticationRequired": {
-      "description": "Title for biometric authentication dialog"
-    },
     "setupFingerprintFaceUnlock": "Please set up your fingerprint or face unlock in device settings",
-    "@setupFingerprintFaceUnlock": {
-      "description": "Instructions to set up biometric authentication"
-    },
     "touchSensor": "Touch sensor",
-    "@touchSensor": {
-      "description": "Hint for fingerprint sensor"
-    },
     "biometricNotRecognized": "Biometric not recognized, try again",
-    "@biometricNotRecognized": {
-      "description": "Message when biometric is not recognized"
-    },
     "biometricRequired": "Biometric required",
-    "@biometricRequired": {
-      "description": "Title when biometric is required"
-    },
     "biometricAuthenticationSucceeded": "Biometric authentication succeeded",
-    "@biometricAuthenticationSucceeded": {
-      "description": "Success message for biometric authentication"
-    },
     "deviceCredentialsRequired": "Device credentials required",
-    "@deviceCredentialsRequired": {
-      "description": "Title when device credentials are required"
-    },
     "setupDeviceCredentials": "Please set up device credentials in settings",
-    "@setupDeviceCredentials": {
-      "description": "Instructions to set up device credentials"
-    },
     "setupTouchIdFaceId": "Please set up your Touch ID or Face ID in device settings",
-    "@setupTouchIdFaceId": {
-      "description": "iOS instructions to set up biometric authentication"
-    },
     "reenableTouchIdFaceId": "Please reenable your Touch ID or Face ID",
-    "@reenableTouchIdFaceId": {
-      "description": "iOS message to reenable biometric authentication"
-    },
     "biometricLock": "Biometric Lock",
     "biometricLockDescription": "Secure app with {authMethod}",
     "@biometricLockDescription": {
@@ -330,7 +288,6 @@
     "authenticateToEnable": "Authenticate to enable biometric lock",
     "authenticateToAccess": "Please authenticate to access Habo",
     "authenticationRequired": "Authentication Required",
-    "authenticationFailed": "Authentication Required",
     "authenticationFailedMessage": "Please authenticate to access Habo using {authMethod}",
     "@authenticationFailedMessage": {
       "placeholders": {
@@ -355,7 +312,7 @@
     "faceId": "Face ID",
     "fingerprint": "Fingerprint",
     "iris": "Iris",
-    
+    "skip": "Skip",
     "whatsNewTitle": "What's New",
     "whatsNewVersion": "Version {version}",
     "@whatsNewVersion": {
@@ -365,28 +322,20 @@
         }
       }
     },
-    
     "featureNumericTitle": "Numeric values in habits",
     "featureNumericDesc": "Track counts like glasses of water or pages read",
-    
     "featureDeepLinksTitle": "URL scheme (deep links)",
     "featureDeepLinksDesc": "Open Habo directly to screens like settings or create",
-    
     "featureCategoriesTitle": "Categories",
     "featureCategoriesDesc": "Organize habits with category filters",
-    
     "featureArchiveTitle": "Archive",
     "featureArchiveDesc": "Hide habits you no longer track without deleting",
-    
     "featureMaterialYouTitle": "Material You theme (Android)",
     "featureMaterialYouDesc": "Dynamic colors that match your wallpaper",
-    
     "featureSoundTitle": "New sound engine",
     "featureSoundDesc": "Adjustable volume",
-    
     "featureLockTitle": "Lock feature",
     "featureLockDesc": "Secure the app with Face ID / Touch ID / biometrics",
-    
     "haboSyncTitle": "Habo Sync",
     "haboSyncComingSoon": "Coming Soon",
     "haboSyncDescription": "Sync your habits across all devices with cloud backup and real-time synchronization.",
