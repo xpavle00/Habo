@@ -268,8 +268,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   showSanction: showSanction,
                   accountant: accountant.text.toString(),
                   habitType: habitType,
-                  targetValue: double.tryParse(targetValue.text) ?? 1.0,
-                  partialValue: double.tryParse(partialValue.text) ?? 1.0,
+                  targetValue: double.tryParse(targetValue.text) ?? 100.0,
+                  partialValue: double.tryParse(partialValue.text) ?? 10.0,
                   unit: unit.text.toString(),
                   categories: selectedCategories,
                 );
@@ -295,8 +295,8 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                   showSanction,
                   accountant.text.toString(),
                   habitType: habitType,
-                  targetValue: double.tryParse(targetValue.text) ?? 1.0,
-                  partialValue: double.tryParse(partialValue.text) ?? 1.0,
+                  targetValue: double.tryParse(targetValue.text) ?? 100.0,
+                  partialValue: double.tryParse(partialValue.text) ?? 10.0,
                   unit: unit.text.toString(),
                   categories: selectedCategories,
                 );
