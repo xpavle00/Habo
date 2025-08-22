@@ -86,7 +86,7 @@ flutter_intl:
 flutter_native_splash:
   # Match app's light and dark scaffold background colors
   color: "#FAFAFA"          # from HaboTheme.lightTheme.scaffoldBackgroundColor (0xFFFAFAFA)
-  color_dark: "#303030"     # from HaboTheme.darkTheme.scaffoldBackgroundColor (0xFF303030)
+  color_dark: "#000000"     # from HaboTheme.darkTheme.scaffoldBackgroundColor (0xFF000000)
 
   # Use existing app icon as splash image
   image: assets/images/splash_icon.png
@@ -100,9 +100,9 @@ flutter_native_splash:
   # Android 12 requires its own config
   android_12:
     color: "#FAFAFA"
-    color_dark: "#303030"
+    color_dark: "#000000"
     icon_background_color: "#FAFAFA"      # match background to reduce visible circle
-    icon_background_color_dark: "#303030"
+    icon_background_color_dark: "#000000"
     image: assets/images/splash_icon.png
     image_dark: assets/images/splash_icon.png
 
