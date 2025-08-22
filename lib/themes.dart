@@ -37,6 +37,8 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       ),
+      canvasColor: Colors.white,
+      focusColor: Colors.white,
     );
   }
 
@@ -82,6 +84,8 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
+      canvasColor: Color(0xFF505050),
+      focusColor: Color(0xFF505050),
     );
   }
 
@@ -127,6 +131,8 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
+      canvasColor: Color(0xFF282828),
+      focusColor: Color(0xFF282828),
     );
   }
 }

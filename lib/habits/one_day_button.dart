@@ -123,7 +123,7 @@ class OneDayButton extends StatelessWidget {
                     iconSize: 0,
                     elevation: 3,
                     alignment: Alignment.center,
-                    dropdownColor: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10.0),
                     underline: Container(),
                     items: icons.map(
                       (InButton value) {
@@ -145,13 +145,13 @@ class OneDayButton extends StatelessWidget {
                         value.key == const Key('Skip')) {
                       // For numeric habits, Check means complete the habit fully
                       if (value.key == const Key('Check') && parent.widget.habitData.isNumeric) {
+                        Provider.of<SettingsManager>(context, listen: false)
+                            .playCheckSound();
                         // Complete the habit with full target value
                         Provider.of<HabitsManager>(context, listen: false)
                             .addEvent(id, date, [DayType.check, comment]);
                         parent.events[date] = [DayType.check, comment];
                         parent.showRewardNotification(date);
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .playCheckSound();
                       } else {
                         final dayType = _getDayTypeFromKey(value.key);
                         Provider.of<HabitsManager>(context, listen: false)
