@@ -286,6 +286,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
       "Habo needs permission to send notifications to work properly.",
     ),
+    "haboSyncComingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon"),
+    "haboSyncDescription": MessageLookupByLibrary.simpleMessage(
+      "Sync your habits across all devices with cloud backup and real-time synchronization.",
+    ),
+    "haboSyncLearnMore": MessageLookupByLibrary.simpleMessage(
+      "Learn more at habo.space/sync",
+    ),
+    "haboSyncTitle": MessageLookupByLibrary.simpleMessage("Habo Sync"),
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "If you want to support Habo you can:",
     ),

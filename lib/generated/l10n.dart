@@ -1796,6 +1796,41 @@ class S {
       args: [],
     );
   }
+
+  /// `Habo Sync`
+  String get haboSyncTitle {
+    return Intl.message('Habo Sync', name: 'haboSyncTitle', desc: '', args: []);
+  }
+
+  /// `Coming Soon`
+  String get haboSyncComingSoon {
+    return Intl.message(
+      'Coming Soon',
+      name: 'haboSyncComingSoon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync your habits across all devices with cloud backup and real-time synchronization.`
+  String get haboSyncDescription {
+    return Intl.message(
+      'Sync your habits across all devices with cloud backup and real-time synchronization.',
+      name: 'haboSyncDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn more at habo.space/sync`
+  String get haboSyncLearnMore {
+    return Intl.message(
+      'Learn more at habo.space/sync',
+      name: 'haboSyncLearnMore',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

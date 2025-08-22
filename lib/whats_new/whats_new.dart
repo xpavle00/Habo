@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WhatsNew extends StatelessWidget {
   const WhatsNew({super.key});
@@ -13,6 +15,13 @@ class WhatsNew extends StatelessWidget {
     final current = settings.getCurrentAppVersion;
     if (current.isNotEmpty) {
       settings.setLastWhatsNewVersion = current;
+    }
+  }
+
+  Future<void> _launchHaboSync() async {
+    final uri = Uri.parse('https://habo.space/sync');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -125,22 +134,25 @@ class WhatsNew extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              Row(children: [
-                const Icon(Icons.palette_outlined, color: HaboColors.primary),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    S.of(context).featureMaterialYouTitle,
-                    style: theme.textTheme.titleMedium,
+              // Material You theme - Android only
+              if (!Platform.isIOS) ...[
+                Row(children: [
+                  const Icon(Icons.palette_outlined, color: HaboColors.primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      S.of(context).featureMaterialYouTitle,
+                      style: theme.textTheme.titleMedium,
+                    ),
                   ),
+                ]),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.only(left: 34.0),
+                  child: Text(S.of(context).featureMaterialYouDesc),
                 ),
-              ]),
-              const SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.only(left: 34.0),
-                child: Text(S.of(context).featureMaterialYouDesc),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
+              ],
 
               Row(children: [
                 const Icon(Icons.volume_up_outlined, color: HaboColors.primary),
@@ -173,6 +185,80 @@ class WhatsNew extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 34.0),
                 child: Text(S.of(context).featureLockDesc),
+              ),
+              const SizedBox(height: 24),
+
+              // Habo Sync Coming Soon
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: HaboColors.primary.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.cloud_sync_outlined, color: HaboColors.primary),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            S.of(context).haboSyncTitle,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: HaboColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            S.of(context).haboSyncComingSoon,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: HaboColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      S.of(context).haboSyncDescription,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: _launchHaboSync,
+                      child: Row(
+                        children: [
+                          Text(
+                            S.of(context).haboSyncLearnMore,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: HaboColors.primary,
+                              decoration: TextDecoration.underline,
+                              decorationColor: HaboColors.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(
+                            Icons.open_in_new,
+                            size: 16,
+                            color: HaboColors.primary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
