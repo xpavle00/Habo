@@ -1797,10 +1797,10 @@ class S {
     );
   }
 
-  /// `Sync your habits across all devices with cloud backup and real-time synchronization.`
+  /// `Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.`
   String get haboSyncDescription {
     return Intl.message(
-      'Sync your habits across all devices with cloud backup and real-time synchronization.',
+      'Sync your habits across all your devices with Habo\'s end-to-end encrypted cloud service.',
       name: 'haboSyncDescription',
       desc: '',
       args: [],

@@ -221,7 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "featureCategoriesTitle": MessageLookupByLibrary.simpleMessage("Kategórie"),
     "featureDeepLinksDesc": MessageLookupByLibrary.simpleMessage(
-      "Otvorte Habo priamo na obrazovky ako nastavenia alebo vytvoriť",
+      "Otvorte Habo priamo na obrazovky nastavenia alebo vytvoriť nový zvyk",
     ),
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "URL schéma (deep links)",
@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Sledujte počty ako poháre vody alebo prečítané stránky",
     ),
     "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
-      "Číselné hodnoty v zvykoch",
+      "Číselné hodnoty vo zvykoch",
     ),
     "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
       "Nastaviteľná hlasitosť",
@@ -290,7 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "haboSyncComingSoon": MessageLookupByLibrary.simpleMessage("Čoskoro"),
     "haboSyncDescription": MessageLookupByLibrary.simpleMessage(
-      "Synchronizujte svoje zvyky naprieč všetkými zariadeniami s cloudovou zálohou a synchronizáciou v reálnom čase.",
+      "Synchronizujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej služby Habo.",
     ),
     "haboSyncLearnMore": MessageLookupByLibrary.simpleMessage(
       "Dozvedieť sa viac na habo.space/sync",
