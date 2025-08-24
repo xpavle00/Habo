@@ -46,6 +46,13 @@
 			<string>es</string>
 			<string>fr</string>
 			<string>tr</string>
+			<string>ca</string>
+			<string>ia</string>
+			<string>pl</string>
+			<string>pt</string>
+			<string>uk</string>
+			<string>zh_Hans</string>
+			<string>zh_Hant</string>
 		</array>
 		<key>CFBundleURLTypes</key>
 		<array>
