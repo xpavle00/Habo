@@ -208,7 +208,7 @@ class WhatsNew extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            S.of(context).haboSyncTitle,
+                            "Habo Sync",
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),

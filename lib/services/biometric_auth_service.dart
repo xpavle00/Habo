@@ -129,7 +129,7 @@ class BiometricAuthService {
         List<String> methods = [];
         
         if (availableBiometrics.contains(BiometricType.face)) {
-          methods.add(S.of(context).faceId);
+          methods.add("Face ID");
         }
         if (availableBiometrics.contains(BiometricType.fingerprint)) {
           methods.add(S.of(context).fingerprint);

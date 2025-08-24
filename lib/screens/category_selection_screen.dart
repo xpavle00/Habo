@@ -251,7 +251,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             IconButton(
               onPressed: () => _startEditingCategory(category),
               icon: const Icon(Icons.edit, size: 20),
-              tooltip: S.of(context).editCategoryTooltip,
+              tooltip: S.of(context).editCategory,
             ),
             Checkbox(
               value: isSelected,

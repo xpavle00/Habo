@@ -1217,16 +1217,6 @@ class S {
     );
   }
 
-  /// `Edit category`
-  String get editCategoryTooltip {
-    return Intl.message(
-      'Edit category',
-      name: 'editCategoryTooltip',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Delete Category`
   String get deleteCategory {
     return Intl.message(
@@ -1557,10 +1547,10 @@ class S {
     return Intl.message('Try Again', name: 'tryAgain', desc: '', args: []);
   }
 
-  /// `Authenticating...`
+  /// `Authenticating…`
   String get authenticating {
     return Intl.message(
-      'Authenticating...',
+      'Authenticating…',
       name: 'authenticating',
       desc: '',
       args: [],
@@ -1605,11 +1595,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Face ID`
-  String get faceId {
-    return Intl.message('Face ID', name: 'faceId', desc: '', args: []);
   }
 
   /// `Fingerprint`
@@ -1780,11 +1765,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Habo Sync`
-  String get haboSyncTitle {
-    return Intl.message('Habo Sync', name: 'haboSyncTitle', desc: '', args: []);
   }
 
   /// `Coming Soon`

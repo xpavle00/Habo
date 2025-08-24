@@ -94,7 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticateToEnable": MessageLookupByLibrary.simpleMessage(
       "Authenticate to enable biometric lock",
     ),
-    "authenticating": MessageLookupByLibrary.simpleMessage("Authenticating..."),
+    "authenticating": MessageLookupByLibrary.simpleMessage("Authenticating…"),
     "authenticationError": MessageLookupByLibrary.simpleMessage(
       "Authentication error",
     ),
@@ -196,14 +196,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "done": MessageLookupByLibrary.simpleMessage("Done"),
     "editCategory": MessageLookupByLibrary.simpleMessage("Edit Category"),
-    "editCategoryTooltip": MessageLookupByLibrary.simpleMessage(
-      "Edit category",
-    ),
     "editHabit": MessageLookupByLibrary.simpleMessage("Edit Habit"),
     "emptyList": MessageLookupByLibrary.simpleMessage("Empty list"),
     "enterAmount": MessageLookupByLibrary.simpleMessage("Enter amount"),
     "exercise": MessageLookupByLibrary.simpleMessage("Exercise"),
-    "faceId": MessageLookupByLibrary.simpleMessage("Face ID"),
     "fail": MessageLookupByLibrary.simpleMessage("Fail"),
     "failedToDeleteCategory": m10,
     "failedToSaveCategory": m11,
@@ -290,7 +286,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "haboSyncLearnMore": MessageLookupByLibrary.simpleMessage(
       "Learn more at habo.space/sync",
     ),
-    "haboSyncTitle": MessageLookupByLibrary.simpleMessage("Habo Sync"),
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "If you want to support Habo you can:",
     ),

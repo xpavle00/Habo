@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticateToEnable": MessageLookupByLibrary.simpleMessage(
       "Autentifikujte sa na povolenie biometrického zámku",
     ),
-    "authenticating": MessageLookupByLibrary.simpleMessage("Autentifikácia..."),
+    "authenticating": MessageLookupByLibrary.simpleMessage("Autentifikácia…"),
     "authenticationError": MessageLookupByLibrary.simpleMessage(
       "Chyba autentifikácie",
     ),
@@ -201,14 +201,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "done": MessageLookupByLibrary.simpleMessage("Hotovo"),
     "editCategory": MessageLookupByLibrary.simpleMessage("Upraviť kategóriu"),
-    "editCategoryTooltip": MessageLookupByLibrary.simpleMessage(
-      "Upraviť kategóriu",
-    ),
     "editHabit": MessageLookupByLibrary.simpleMessage("Upraviť zvyk"),
     "emptyList": MessageLookupByLibrary.simpleMessage("Prázdny zoznam"),
     "enterAmount": MessageLookupByLibrary.simpleMessage("Zadajte množstvo"),
     "exercise": MessageLookupByLibrary.simpleMessage("Cvičenie"),
-    "faceId": MessageLookupByLibrary.simpleMessage("Face ID"),
     "fail": MessageLookupByLibrary.simpleMessage("Zlyhanie"),
     "failedToDeleteCategory": m10,
     "failedToSaveCategory": m11,
@@ -295,7 +291,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "haboSyncLearnMore": MessageLookupByLibrary.simpleMessage(
       "Dozvedieť sa viac na habo.space/sync",
     ),
-    "haboSyncTitle": MessageLookupByLibrary.simpleMessage("Habo Sync"),
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "Ak chcete podporiť Habo, môžete:",
     ),
