@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
-  static const _dbVersion = 6;
+  static const _dbVersion = 7;
   Database? _db;
   
   Database get db {
@@ -253,6 +253,10 @@ class HaboModel {
     batch.execute('ALTER TABLE habits ADD COLUMN archived INTEGER DEFAULT 0');
   }
 
+  void _updateTableCategoriesV6toV7(Batch batch) {
+    batch.execute('ALTER TABLE categories ADD COLUMN fontFamily TEXT');
+  }
+
   void _createTableCategoriesV5(Batch batch) {
     batch.execute('''CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -346,6 +350,10 @@ class HaboModel {
     }
     if (oldVersion == 5) {
       _updateTableHabitsV5toV6(batch);
+      _updateTableCategoriesV6toV7(batch);
+    }
+    if (oldVersion == 6) {
+      _updateTableCategoriesV6toV7(batch);
     }
     batch.commit();
   }

@@ -392,8 +392,8 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addCategory(String title, int iconCodePoint) async {
-    final category = Category(title: title, iconCodePoint: iconCodePoint);
+  Future<void> addCategory(String title, int iconCodePoint, [String? fontFamily]) async {
+    final category = Category(title: title, iconCodePoint: iconCodePoint, fontFamily: fontFamily);
     final id = await _categoryRepository.createCategory(category);
     category.id = id;
     allCategories.add(category);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Models/configuration.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/model/category.dart';
@@ -28,6 +29,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
   Category? _editingCategory;
   final TextEditingController _editTitleController = TextEditingController();
   IconData _editSelectedIcon = Icons.category;
+  String? _editSelectedFontFamily;
   bool _isProcessing = false;
 
   @override
@@ -65,7 +67,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        S.of(context).selectedCategories(_selectedCategories.length),
+                        S
+                            .of(context)
+                            .selectedCategories(_selectedCategories.length),
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
@@ -181,7 +185,10 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
@@ -320,11 +327,12 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   onTap: _isProcessing ? null : _pickIcon,
                   child: Container(
                     height: 56, // Match TextField height
-                    width: 56,  // Square container
+                    width: 56, // Square container
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).colorScheme.outline),
-                      borderRadius: BorderRadius.circular(12), // Match TextField border radius
+                      borderRadius: BorderRadius.circular(
+                          12), // Match TextField border radius
                     ),
                     child: Icon(
                       _editSelectedIcon,
@@ -389,6 +397,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       );
       _editTitleController.text = '';
       _editSelectedIcon = Icons.category;
+      _editSelectedFontFamily = null; // Material Icons don't need explicit font family
     });
   }
 
@@ -397,6 +406,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       _editingCategory = category;
       _editTitleController.text = category.title;
       _editSelectedIcon = category.icon;
+      _editSelectedFontFamily = category.fontFamily;
     });
   }
 
@@ -405,15 +415,22 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       _editingCategory = null;
       _editTitleController.clear();
       _editSelectedIcon = Icons.category;
+      _editSelectedFontFamily = null;
     });
   }
 
   Future<void> _pickIcon() async {
-    IconPickerIcon? icon = await showIconPicker(context);
+    IconPickerIcon? icon = await showIconPicker(
+      context,
+      configuration: SinglePickerConfiguration(
+        iconPackModes: [IconPack.fontAwesomeIcons],
+      ),
+    );
 
     if (icon != null) {
       setState(() {
         _editSelectedIcon = icon.data;
+        _editSelectedFontFamily = icon.data.fontFamily;
       });
     }
   }
@@ -423,7 +440,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     final title = _editTitleController.text.trim();
 
     if (title.isEmpty) {
-      ServiceLocator.instance.uiFeedbackService.showError(S.of(context).pleaseEnterCategoryTitle);
+      ServiceLocator.instance.uiFeedbackService
+          .showError(S.of(context).pleaseEnterCategoryTitle);
       return;
     }
 
@@ -439,14 +457,15 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             .firstOrNull;
 
         if (existingCategory != null) {
-          ServiceLocator.instance.uiFeedbackService.showWarning(S.of(context).categoryAlreadyExists(title));
+          ServiceLocator.instance.uiFeedbackService
+              .showWarning(S.of(context).categoryAlreadyExists(title));
           setState(() {
             _isProcessing = false;
           });
           return;
         }
 
-        await habitsManager.addCategory(title, _editSelectedIcon.codePoint);
+        await habitsManager.addCategory(title, _editSelectedIcon.codePoint, _editSelectedFontFamily);
 
         // Find the newly created category and auto-select it
         final newCategory = habitsManager.allCategories
@@ -460,10 +479,12 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           _editingCategory = null;
           _editTitleController.clear();
           _editSelectedIcon = Icons.category;
+          _editSelectedFontFamily = null;
         });
 
         if (!mounted) return;
-        ServiceLocator.instance.uiFeedbackService.showSuccess(S.of(context).categoryCreatedSuccessfully(title));
+        ServiceLocator.instance.uiFeedbackService
+            .showSuccess(S.of(context).categoryCreatedSuccessfully(title));
       } else {
         // Updating existing category
         final existingCategory = habitsManager.allCategories
@@ -473,7 +494,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             .firstOrNull;
 
         if (existingCategory != null) {
-          ServiceLocator.instance.uiFeedbackService.showWarning(S.of(context).categoryAlreadyExists(title));
+          ServiceLocator.instance.uiFeedbackService
+              .showWarning(S.of(context).categoryAlreadyExists(title));
           setState(() {
             _isProcessing = false;
           });
@@ -483,6 +505,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         final updatedCategory = category.copyWith(
           title: title,
           iconCodePoint: _editSelectedIcon.codePoint,
+          fontFamily: _editSelectedFontFamily,
         );
 
         await habitsManager.updateCategory(updatedCategory);
@@ -497,12 +520,15 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           _editingCategory = null;
           _editTitleController.clear();
           _editSelectedIcon = Icons.category;
+          _editSelectedFontFamily = null;
         });
 
-        ServiceLocator.instance.uiFeedbackService.showSuccess(S.of(context).categoryUpdatedSuccessfully(title));
+        ServiceLocator.instance.uiFeedbackService
+            .showSuccess(S.of(context).categoryUpdatedSuccessfully(title));
       }
     } catch (e) {
-      ServiceLocator.instance.uiFeedbackService.showError(S.of(context).failedToSaveCategory(e.toString()));
+      ServiceLocator.instance.uiFeedbackService
+          .showError(S.of(context).failedToSaveCategory(e.toString()));
     } finally {
       setState(() {
         _isProcessing = false;
@@ -522,7 +548,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child:  Text(S.of(context).cancel),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -549,11 +575,14 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         _editingCategory = null;
         _editTitleController.clear();
         _editSelectedIcon = Icons.category;
+        _editSelectedFontFamily = null;
       });
 
-      ServiceLocator.instance.uiFeedbackService.showSuccess(S.of(context).categoryDeletedSuccessfully(category.title));
+      ServiceLocator.instance.uiFeedbackService.showSuccess(
+          S.of(context).categoryDeletedSuccessfully(category.title));
     } catch (e) {
-      ServiceLocator.instance.uiFeedbackService.showError(S.of(context).failedToDeleteCategory(e.toString()));
+      ServiceLocator.instance.uiFeedbackService
+          .showError(S.of(context).failedToDeleteCategory(e.toString()));
     } finally {
       setState(() {
         _isProcessing = false;
