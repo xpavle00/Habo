@@ -36,7 +36,7 @@ class CategoryFilterRow extends StatelessWidget {
           child: ListView.builder(
             key: ValueKey('cat-row-$themeSig'),
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.only(left: 16, right: 24), // Extra right padding
             itemCount: habitsManager.allCategories.length + 1, // +1 for "All" chip
             itemBuilder: (context, index) {
               if (index == 0) {
