@@ -133,6 +133,7 @@ class SQLiteBackupRepository implements BackupRepository {
           final categoryToInsert = Category(
             title: category.title,
             iconCodePoint: category.iconCodePoint,
+            fontFamily: category.fontFamily,
           );
           
           // Insert category and get the new ID
