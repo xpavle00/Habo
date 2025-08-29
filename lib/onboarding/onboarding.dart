@@ -94,6 +94,23 @@ class Onboarding extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
+                      Icons.add,
+                      color: HaboColors.progress,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      S.of(context).numericHabit,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
                       Icons.close,
                       color: HaboColors.red,
                     ),
