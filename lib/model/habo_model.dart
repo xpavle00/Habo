@@ -148,6 +148,7 @@ class HaboModel {
               partialValue: (hab['partialValue'] ?? 1.0).toDouble(),
               unit: hab['unit'] ?? '',
               categories: categories,
+              archived: hab['archived'] == 0 ? false : true,
             ),
           ),
         );
