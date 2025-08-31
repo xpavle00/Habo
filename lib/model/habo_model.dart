@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
-  static const _dbVersion = 7;
+  static const _dbVersion = 8;
   Database? _db;
   
   Database get db {
@@ -254,8 +254,14 @@ class HaboModel {
     batch.execute('ALTER TABLE habits ADD COLUMN archived INTEGER DEFAULT 0');
   }
 
-  void _updateTableCategoriesV6toV7(Batch batch) {
-    batch.execute('ALTER TABLE categories ADD COLUMN fontFamily TEXT');
+  Future<void> _updateTableCategoriesAddFontFamily(Database db) async {
+    // Check if fontFamily column already exists before adding it
+    final result = await db.rawQuery("PRAGMA table_info(categories)");
+    final hasColumn = result.any((column) => column['name'] == 'fontFamily');
+    
+    if (!hasColumn) {
+      await db.execute('ALTER TABLE categories ADD COLUMN fontFamily TEXT');
+    }
   }
 
   void _createTableCategoriesV5(Batch batch) {
@@ -263,6 +269,15 @@ class HaboModel {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     iconCodePoint INTEGER NOT NULL
+    )''');
+  }
+
+  void _createTableCategoriesV7(Batch batch) {
+    batch.execute('''CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    iconCodePoint INTEGER NOT NULL,
+    fontFamily TEXT
     )''');
   }
 
@@ -313,12 +328,12 @@ class HaboModel {
     var batch = db.batch();
     _createTableHabitsV6(batch);
     _createTableEventsV4(batch);
-    _createTableCategoriesV5(batch);
+    _createTableCategoriesV7(batch);  // Use V7 with fontFamily column
     _createTableHabitCategoriesV5(batch);
     batch.commit();
   }
 
-  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     var batch = db.batch();
     if (oldVersion == 1) {
       _updateTableEventsV1toV2(batch);
@@ -351,12 +366,15 @@ class HaboModel {
     }
     if (oldVersion == 5) {
       _updateTableHabitsV5toV6(batch);
-      _updateTableCategoriesV6toV7(batch);
     }
-    if (oldVersion == 6) {
-      _updateTableCategoriesV6toV7(batch);
+    
+    // Commit batch operations first
+    await batch.commit();
+    
+    // Then handle fontFamily column addition separately (requires async check)
+    if (oldVersion <= 7) {
+      await _updateTableCategoriesAddFontFamily(db);
     }
-    batch.commit();
   }
 
   Future<void> insertEvent(int id, DateTime date, List event) async {
