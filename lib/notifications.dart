@@ -88,3 +88,105 @@ Future<void> _setupDailyNotification(int id, TimeOfDay timeOfDay, String title,
     );
   }
 }
+
+Future<void> rescheduleNotificationForTomorrow(int originalId) async {
+  if (platformSupportsNotifications()) {
+    try {
+      // Get all scheduled notifications
+      final notifications = await AwesomeNotifications().listScheduledNotifications();
+      
+      // Find the notification with the matching ID
+      NotificationModel? existingNotification;
+      for (var notification in notifications) {
+        if (notification.content?.id == originalId) {
+          existingNotification = notification;
+          break;
+        }
+      }
+      
+      if (existingNotification != null && existingNotification.content != null) {
+        final content = existingNotification.content!;
+        final schedule = existingNotification.schedule;
+        
+        if (schedule is NotificationCalendar) {
+          final tomorrow = DateTime.now().add(const Duration(days: 1));
+          
+          await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+              id: originalId,
+              channelKey: content.channelKey ?? 'habit_notifications_habo',
+              title: content.title ?? 'Habo',
+              body: content.body ?? '',
+              wakeUpScreen: content.wakeUpScreen ?? true,
+              criticalAlert: content.criticalAlert ?? true,
+              category: content.category ?? NotificationCategory.Reminder,
+            ),
+            schedule: NotificationCalendar(
+              year: tomorrow.year,
+              month: tomorrow.month,
+              day: tomorrow.day,
+              hour: schedule.hour ?? 0,
+              minute: schedule.minute ?? 0,
+              second: 0,
+              millisecond: 0,
+              repeats: true,
+              preciseAlarm: true,
+              timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error rescheduling notification: $e');
+    }
+  }
+}
+
+
+Future<void> rescheduleNotificationForToday(int originalId) async {
+  if (platformSupportsNotifications()) {
+    try {
+      // Get all scheduled notifications
+      final notifications = await AwesomeNotifications().listScheduledNotifications();
+      
+      // Find the notification with the matching ID
+      NotificationModel? existingNotification;
+      for (var notification in notifications) {
+        if (notification.content?.id == originalId) {
+          existingNotification = notification;
+          break;
+        }
+      }
+      
+      if (existingNotification != null && existingNotification.content != null) {
+        final content = existingNotification.content!;
+        final schedule = existingNotification.schedule;
+        
+        if (schedule is NotificationCalendar) {          
+          await AwesomeNotifications().createNotification(
+            content: NotificationContent(
+              id: originalId,
+              channelKey: content.channelKey ?? 'habit_notifications_habo',
+              title: content.title ?? 'Habo',
+              body: content.body ?? '',
+              wakeUpScreen: content.wakeUpScreen ?? true,
+              criticalAlert: content.criticalAlert ?? true,
+              category: content.category ?? NotificationCategory.Reminder,
+            ),
+            schedule: NotificationCalendar(
+              hour: schedule.hour ?? 0,
+              minute: schedule.minute ?? 0,
+              second: 0,
+              millisecond: 0,
+              repeats: true,
+              preciseAlarm: true,
+              timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error rescheduling notification: $e');
+    }
+  }
+}

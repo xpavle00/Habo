@@ -1,9 +1,7 @@
 PODS:
-  - audio_session (0.0.1):
+  - awesome_notifications (0.10.0):
     - Flutter
-  - awesome_notifications (0.8.1):
-    - Flutter
-    - IosAwnCore (~> 0.8.0)
+    - IosAwnCore (~> 0.10.0)
   - file_picker (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -11,12 +9,14 @@ PODS:
     - Flutter
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
-  - IosAwnCore (0.8.0)
-  - just_audio (0.0.1):
+  - flutter_native_splash (2.4.3):
     - Flutter
+  - flutter_soloud (0.0.1):
+    - Flutter
+  - IosAwnCore (0.10.0)
+  - local_auth_darwin (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -27,35 +27,33 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - sqflite (0.0.3):
+  - sqflite_darwin (0.0.4):
     - Flutter
-    - FMDB (>= 2.7.5)
+    - FlutterMacOS
   - url_launcher_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - awesome_notifications (from `.symlinks/plugins/awesome_notifications/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_file_dialog (from `.symlinks/plugins/flutter_file_dialog/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
-  - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - flutter_soloud (from `.symlinks/plugins/flutter_soloud/ios`)
+  - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
-    - FMDB
     - IosAwnCore
 
 EXTERNAL SOURCES:
-  audio_session:
-    :path: ".symlinks/plugins/audio_session/ios"
   awesome_notifications:
     :path: ".symlinks/plugins/awesome_notifications/ios"
   file_picker:
@@ -66,8 +64,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_file_dialog/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
-  just_audio:
-    :path: ".symlinks/plugins/just_audio/ios"
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
+  flutter_soloud:
+    :path: ".symlinks/plugins/flutter_soloud/ios"
+  local_auth_darwin:
+    :path: ".symlinks/plugins/local_auth_darwin/darwin"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -76,28 +78,28 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/rive_common/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
+  sqflite_darwin:
+    :path: ".symlinks/plugins/sqflite_darwin/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
-  awesome_notifications: db394d2e061e4583ba0f738ddea611e3986cc3fb
-  file_picker: 880e54928ebe4aa405aaf4577f29a76a078341c6
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_file_dialog: 4c014a45b105709a27391e266c277d7e588e9299
-  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  IosAwnCore: ed1b2b6d84962a758354dbacd9ce525c72ce28a9
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  rive_common: 8a159d68033a8b073e5853acc50f03aa486a2888
-  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
-  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
-  url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
+  awesome_notifications: 0f432b28098d193920b11a44cfa9d2d9313a3888
+  file_picker: fb04e739ae6239a76ce1f571863a196a922c87d4
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  flutter_file_dialog: ca8d7fbd1772d4f0c2777b4ab20a7787ef4e7dd8
+  flutter_keyboard_visibility: 4625131e43015dbbe759d9b20daaf77e0e3f6619
+  flutter_native_splash: 6cad9122ea0fad137d23137dd14b937f3e90b145
+  flutter_soloud: b9794594289c65e65d1759abe202dd82527ee4d6
+  IosAwnCore: 653786a911089012092ce831f2945cd339855a89
+  local_auth_darwin: d2e8c53ef0c4f43c646462e3415432c4dab3ae19
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  rive_common: dd421daaf9ae69f0125aa761dd96abd278399952
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
 
-PODFILE CHECKSUM: a3b531ec123805d5b1262fc2fe935cb5b2fba4e2
+PODFILE CHECKSUM: 654602ec2f64675661938154b6b47194b50aed52
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.16.2

@@ -1,13 +1,15 @@
 PODS:
-  - audio_session (0.0.1):
-    - FlutterMacOS
   - awesome_notifications (0.0.1):
     - FlutterMacOS
+  - dynamic_color (0.0.2):
+    - FlutterMacOS
+  - file_picker (0.0.1):
+    - FlutterMacOS
+  - flutter_soloud (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
-  - just_audio (0.0.1):
+  - local_auth_darwin (0.0.1):
+    - Flutter
     - FlutterMacOS
   - package_info_plus (0.0.1):
     - FlutterMacOS
@@ -16,72 +18,81 @@ PODS:
     - FlutterMacOS
   - rive_common (0.0.1):
     - FlutterMacOS
+  - screen_retriever_macos (0.0.1):
+    - FlutterMacOS
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - sqflite (0.0.2):
+  - sqflite_darwin (0.0.4):
+    - Flutter
     - FlutterMacOS
-    - FMDB (>= 2.7.5)
   - url_launcher_macos (0.0.1):
     - FlutterMacOS
-  - window_size (0.0.2):
+  - window_manager (0.5.0):
     - FlutterMacOS
 
 DEPENDENCIES:
-  - audio_session (from `Flutter/ephemeral/.symlinks/plugins/audio_session/macos`)
   - awesome_notifications (from `Flutter/ephemeral/.symlinks/plugins/awesome_notifications/macos`)
+  - dynamic_color (from `Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos`)
+  - file_picker (from `Flutter/ephemeral/.symlinks/plugins/file_picker/macos`)
+  - flutter_soloud (from `Flutter/ephemeral/.symlinks/plugins/flutter_soloud/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - just_audio (from `Flutter/ephemeral/.symlinks/plugins/just_audio/macos`)
+  - local_auth_darwin (from `Flutter/ephemeral/.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - rive_common (from `Flutter/ephemeral/.symlinks/plugins/rive_common/macos`)
+  - screen_retriever_macos (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever_macos/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - sqflite (from `Flutter/ephemeral/.symlinks/plugins/sqflite/macos`)
+  - sqflite_darwin (from `Flutter/ephemeral/.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
-  - window_size (from `Flutter/ephemeral/.symlinks/plugins/window_size/macos`)
-
-SPEC REPOS:
-  trunk:
-    - FMDB
+  - window_manager (from `Flutter/ephemeral/.symlinks/plugins/window_manager/macos`)
 
 EXTERNAL SOURCES:
-  audio_session:
-    :path: Flutter/ephemeral/.symlinks/plugins/audio_session/macos
   awesome_notifications:
     :path: Flutter/ephemeral/.symlinks/plugins/awesome_notifications/macos
+  dynamic_color:
+    :path: Flutter/ephemeral/.symlinks/plugins/dynamic_color/macos
+  file_picker:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_picker/macos
+  flutter_soloud:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_soloud/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  just_audio:
-    :path: Flutter/ephemeral/.symlinks/plugins/just_audio/macos
+  local_auth_darwin:
+    :path: Flutter/ephemeral/.symlinks/plugins/local_auth_darwin/darwin
   package_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   rive_common:
     :path: Flutter/ephemeral/.symlinks/plugins/rive_common/macos
+  screen_retriever_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever_macos/macos
   shared_preferences_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
-  sqflite:
-    :path: Flutter/ephemeral/.symlinks/plugins/sqflite/macos
+  sqflite_darwin:
+    :path: Flutter/ephemeral/.symlinks/plugins/sqflite_darwin/darwin
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
-  window_size:
-    :path: Flutter/ephemeral/.symlinks/plugins/window_size/macos
+  window_manager:
+    :path: Flutter/ephemeral/.symlinks/plugins/window_manager/macos
 
 SPEC CHECKSUMS:
-  audio_session: dea1f41890dbf1718f04a56f1d6150fd50039b72
-  awesome_notifications: 428f5c15a700b117418aed09e29c21c5806fcf69
+  awesome_notifications: 7818a3dbad4836238a68df439c06981d9f0b276c
+  dynamic_color: b820c000cc68df65e7ba7ff177cb98404ce56651
+  file_picker: 7584aae6fa07a041af2b36a2655122d42f578c1a
+  flutter_soloud: cb69d77c6ca89760429201880cf416b72d4d0c6a
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  just_audio: 9b67ca7b97c61cfc9784ea23cd8cc55eb226d489
-  package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
-  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
-  rive_common: fab8476ce8352bf54152a913f393a8696d3dc98c
-  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
-  sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
-  url_launcher_macos: 5335912b679c073563f29d89d33d10d459f95451
-  window_size: 339dafa0b27a95a62a843042038fa6c3c48de195
+  local_auth_darwin: d2e8c53ef0c4f43c646462e3415432c4dab3ae19
+  package_info_plus: f0052d280d17aa382b932f399edf32507174e870
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  rive_common: ea79040f86acf053a2d5a75a2506175ee39796a5
+  screen_retriever_macos: 452e51764a9e1cdb74b3c541238795849f21557f
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  url_launcher_macos: 0fba8ddabfc33ce0a9afe7c5fef5aab3d8d2d673
+  window_manager: b729e31d38fb04905235df9ea896128991cad99e
 
-PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+PODFILE CHECKSUM: eb5c9a9bfb6e54dafe46129279e62c3398ca7b6a
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.16.2

@@ -1,174 +1,170 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
-import 'package:habo/model/backup.dart';
 import 'package:habo/model/habit_data.dart';
-import 'package:habo/model/habo_model.dart';
-import 'package:habo/notifications.dart';
+import 'package:habo/model/category.dart';
+import 'package:habo/repositories/habit_repository.dart';
+import 'package:habo/repositories/event_repository.dart';
+import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/statistics/statistics.dart';
+import 'package:habo/services/backup_service.dart';
+import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/ui_feedback_service.dart';
 
 class HabitsManager extends ChangeNotifier {
-  final HaboModel _haboModel = HaboModel();
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
-      GlobalKey<ScaffoldMessengerState>();
+  final HabitRepository _habitRepository;
+  final EventRepository _eventRepository;
+  final CategoryRepository _categoryRepository;
+
+  // Service dependencies
+  final BackupService? _backupService;
+  final NotificationService? _notificationService;
+  final UIFeedbackService? _uiFeedbackService;
 
   late List<Habit> allHabits = [];
+  late List<Category> allCategories = [];
   bool _isInitialized = false;
 
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
 
-  void initialize() async {
+  /// Creates a new HabitsManager instance with dependency injection.
+  ///
+  /// [habitRepository] Repository for habit data operations (required)
+  /// [eventRepository] Repository for habit event operations (required)
+  /// [categoryRepository] Repository for category data operations (required)
+  /// [backupService] Service for backup/restore operations (optional)
+  /// [notificationService] Service for notification management (optional)
+  /// [uiFeedbackService] Service for UI feedback like SnackBars (optional)
+  ///
+  /// Optional services provide graceful degradation - if not provided,
+  /// related functionality will be disabled or use fallback behavior.
+  HabitsManager({
+    required HabitRepository habitRepository,
+    required EventRepository eventRepository,
+    required CategoryRepository categoryRepository,
+    BackupService? backupService,
+    NotificationService? notificationService,
+    UIFeedbackService? uiFeedbackService,
+  }) : _habitRepository = habitRepository,
+       _eventRepository = eventRepository,
+       _categoryRepository = categoryRepository,
+       _backupService = backupService,
+       _notificationService = notificationService,
+       _uiFeedbackService = uiFeedbackService;
+
+  Future<void> initialize() async {
     await initModel();
-    await Future.delayed(const Duration(seconds: 5));
+    await loadCategories();
     notifyListeners();
   }
 
-  resetHabitsNotifications() {
+  void resetHabitsNotifications() {
     resetNotifications(allHabits);
   }
 
-  initModel() async {
-    await _haboModel.initDatabase();
-    allHabits = await _haboModel.getAllHabits();
+  Future<void> initModel() async {
+    allHabits = await _habitRepository.getAllHabits();
     _isInitialized = true;
     notifyListeners();
   }
 
-  GlobalKey<ScaffoldMessengerState> get getScaffoldKey {
-    return _scaffoldKey;
-  }
+
 
   void hideSnackBar() {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.hideCurrentMessage();
+    }
+    // Note: If UIFeedbackService is null, we can't hide the snackbar
+    // This is acceptable as the snackbar will auto-dismiss
   }
 
   Future<bool> createBackup() async {
-    try {
-      final file = await Backup.writeBackup(allHabits);
-      if (Platform.isAndroid || Platform.isIOS) {
-        final params = SaveFileDialogParams(
-          sourceFilePath: file.path,
-          mimeTypesFilter: ['application/json'],
-        );
-        await FlutterFileDialog.saveFile(params: params);
-      } else {
-        final outputFile = await FilePicker.platform.saveFile(
-          dialogTitle: '',
-          type: FileType.custom,
-          allowedExtensions: ['json'],
-          fileName: file.path.split('/').last,
-        );
-        if (outputFile != null) {
-          await file.copy(outputFile);
-        }
-      }
-    } catch (e) {
-      return false;
+    if (_backupService != null) {
+      return await _backupService!.createDatabaseBackup();
     }
-    return true;
+    // Fallback: return false if service not available
+    return false;
   }
 
   Future<bool> loadBackup() async {
-    try {
-      final String? filePath;
-      if (Platform.isAndroid || Platform.isIOS) {
-        const params = OpenFileDialogParams(
-          fileExtensionsFilter: ['json'],
-          mimeTypesFilter: ['application/json'],
-        );
-        filePath = await FlutterFileDialog.pickFile(params: params);
-      } else {
-        filePath = (await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['json'],
-                allowMultiple: false,
-                withReadStream: Platform.isLinux))
-            ?.files
-            .first
-            .path;
-      }
-      if (filePath == null) {
+    if (_backupService != null) {
+      final ok = await _backupService!.restoreFromBackupFile();
+      if (ok) {
+        // Reload in-memory state from repositories
+        allHabits = await _habitRepository.getAllHabits();
+        await loadCategories();
+        _notificationService?.removeNotifications(allHabits);
+        _notificationService?.resetNotifications(allHabits);
+        notifyListeners();
         return true;
       }
-      final json = await Backup.readBackup(filePath);
-      List<Habit> habits = [];
-      jsonDecode(json).forEach((element) {
-        habits.add(Habit.fromJson(element));
-      });
-      await _haboModel.useBackup(habits);
-      removeNotifications(allHabits);
-      allHabits = habits;
-      resetNotifications(allHabits);
-      notifyListeners();
-    } catch (e) {
-      return false;
     }
-    return true;
+    return false;
   }
 
-  resetNotifications(List<Habit> habits) {
-    for (var element in habits) {
-      if (element.habitData.notification) {
-        var data = element.habitData;
-        setHabitNotification(data.id!, data.notTime, 'Habo', data.title);
-      }
-    }
+  void resetNotifications(List<Habit> habits) {
+    _notificationService?.resetNotifications(habits);
   }
 
-  removeNotifications(List<Habit> habits) {
-    for (var element in habits) {
-      disableHabitNotification(element.habitData.id!);
-    }
+  void removeNotifications(List<Habit> habits) {
+    _notificationService?.removeNotifications(habits);
   }
 
-  showErrorMessage(String message) {
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: HaboColors.red,
-      ),
-    );
+  void showErrorMessage(String message) {
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showError(message);
+    }
+    // Note: If UIFeedbackService is null, we silently fail
+    // This should not happen in normal operation since services are injected
   }
 
   List<Habit> get getAllHabits {
     return allHabits;
   }
 
+  /// Get habits filtered by category (excludes archived habits)
+  List<Habit> getHabitsByCategory(Category? category) {
+    final activeHabits = allHabits.where((habit) => !habit.habitData.archived).toList();
+    
+    if (category == null) {
+      return activeHabits;
+    }
+    
+    return activeHabits.where((habit) {
+      return habit.habitData.categories.any((cat) => cat.id == category.id);
+    }).toList();
+  }
+
   bool get isInitialized {
     return _isInitialized;
   }
 
-  reorderList(oldIndex, newIndex) {
+  void reorderList(int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
     Habit moved = allHabits.removeAt(oldIndex);
     allHabits.insert(newIndex, moved);
     updateOrder();
-    _haboModel.updateOrder(allHabits);
+    _habitRepository.updateHabitsOrder(allHabits);
     notifyListeners();
   }
 
-  addEvent(int id, DateTime dateTime, List event) {
-    _haboModel.insertEvent(id, dateTime, event);
+  void addEvent(int id, DateTime dateTime, List event) {
+    _eventRepository.insertEvent(id, dateTime, event);
+    _notificationService?.handleHabitEventAdded(id, dateTime, event);
   }
 
-  deleteEvent(int id, DateTime dateTime) {
-    _haboModel.deleteEvent(id, dateTime);
+  void deleteEvent(int id, DateTime dateTime) {
+    _eventRepository.deleteEvent(id, dateTime);
+    _notificationService?.handleHabitEventDeleted(id, dateTime);
   }
 
-  addHabit(
+  void addHabit(
       String title,
       bool twoDayRule,
       String cue,
@@ -180,7 +176,12 @@ class HabitsManager extends ChangeNotifier {
       TimeOfDay notTime,
       String sanction,
       bool showSanction,
-      String accountant) {
+      String accountant,
+      {HabitType habitType = HabitType.boolean,
+      double targetValue = 1.0,
+      double partialValue = 1.0,
+      String unit = '',
+      List<Category> categories = const []}) {
     Habit newHabit = Habit(
       habitData: HabitData(
         position: allHabits.length,
@@ -197,16 +198,27 @@ class HabitsManager extends ChangeNotifier {
         sanction: sanction,
         showSanction: showSanction,
         accountant: accountant,
+        habitType: habitType,
+        targetValue: targetValue,
+        partialValue: partialValue,
+        unit: unit,
+        categories: categories,
       ),
     );
-    _haboModel.insertHabit(newHabit).then(
+    _habitRepository.createHabit(newHabit).then(
       (id) {
         newHabit.setId = id;
         allHabits.add(newHabit);
+        
+        // Associate categories with the new habit
+        if (categories.isNotEmpty) {
+          updateHabitCategories(id, categories);
+        }
+        
         if (notification) {
-          setHabitNotification(id, notTime, 'Habo', title);
+          _notificationService?.setHabitNotification(id, notTime, 'Habo', title);
         } else {
-          disableHabitNotification(id);
+          _notificationService?.disableHabitNotification(id);
         }
         notifyListeners();
       },
@@ -214,7 +226,7 @@ class HabitsManager extends ChangeNotifier {
     updateOrder();
   }
 
-  editHabit(HabitData habitData) {
+  void editHabit(HabitData habitData) {
     Habit? hab = findHabitById(habitData.id!);
     if (hab == null) return;
     hab.habitData.title = habitData.title;
@@ -229,12 +241,18 @@ class HabitsManager extends ChangeNotifier {
     hab.habitData.sanction = habitData.sanction;
     hab.habitData.showSanction = habitData.showSanction;
     hab.habitData.accountant = habitData.accountant;
-    _haboModel.editHabit(hab);
+    hab.habitData.habitType = habitData.habitType;
+    hab.habitData.targetValue = habitData.targetValue;
+    hab.habitData.partialValue = habitData.partialValue;
+    hab.habitData.unit = habitData.unit;
+    hab.habitData.categories = habitData.categories;
+    hab.habitData.archived = habitData.archived;
+    _habitRepository.updateHabit(hab);
     if (habitData.notification) {
-      setHabitNotification(
+      _notificationService?.setHabitNotification(
           habitData.id!, habitData.notTime, 'Habo', habitData.title);
     } else {
-      disableHabitNotification(habitData.id!);
+      _notificationService?.disableHabitNotification(habitData.id!);
     }
     notifyListeners();
   }
@@ -254,30 +272,85 @@ class HabitsManager extends ChangeNotifier {
     return result;
   }
 
-  deleteHabit(int id) {
+  void archiveHabit(int id) {
+    Habit? habit = findHabitById(id);
+    if (habit == null) return;
+    
+    habit.habitData.archived = true;
+    _habitRepository.updateHabit(habit);
+    
+    // Remove notifications for archived habits
+    _notificationService?.disableHabitNotification(id);
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitArchived,
+        actionLabel: S.current.undo,
+        onActionPressed: () {
+          unarchiveHabit(id);
+        },
+        backgroundColor: Colors.orange,
+      );
+    }
+    
+    notifyListeners();
+  }
+
+  void unarchiveHabit(int id) {
+    Habit? habit = findHabitById(id);
+    if (habit == null) return;
+    
+    habit.habitData.archived = false;
+    _habitRepository.updateHabit(habit);
+    
+    // Restore notifications if enabled
+    if (habit.habitData.notification) {
+      _notificationService?.setHabitNotification(
+          id, habit.habitData.notTime, 'Habo', habit.habitData.title);
+    }
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitUnarchived,
+        actionLabel: '',
+        onActionPressed: () {},
+        backgroundColor: Colors.green,
+      );
+    }
+    
+    notifyListeners();
+  }
+
+  List<Habit> get activeHabits {
+    return allHabits.where((habit) => !habit.habitData.archived).toList();
+  }
+
+  List<Habit> get archivedHabits {
+    return allHabits.where((habit) => habit.habitData.archived).toList();
+  }
+
+  void deleteHabit(int id) {
     deletedHabit = findHabitById(id);
     allHabits.remove(deletedHabit);
     toDelete.addLast(deletedHabit!);
     Future.delayed(const Duration(seconds: 4), () => deleteFromDB());
-    _scaffoldKey.currentState!.hideCurrentSnackBar();
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Text(S.current.habitDeleted),
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: S.current.undo,
-          onPressed: () {
-            undoDeleteHabit(deletedHabit!);
-          },
-        ),
-      ),
-    );
+    
+    if (_uiFeedbackService != null) {
+      _uiFeedbackService!.showMessageWithAction(
+        message: S.current.habitDeleted,
+        actionLabel: S.current.undo,
+        onActionPressed: () {
+          undoDeleteHabit(deletedHabit!);
+        },
+        backgroundColor: Colors.grey,
+      );
+    }
+    
     updateOrder();
     notifyListeners();
   }
 
-  undoDeleteHabit(Habit del) {
+  void undoDeleteHabit(Habit del) {
     toDelete.remove(del);
     if (deletedHabit != null) {
       if (deletedHabit!.habitData.position < allHabits.length) {
@@ -293,8 +366,8 @@ class HabitsManager extends ChangeNotifier {
 
   Future<void> deleteFromDB() async {
     if (toDelete.isNotEmpty) {
-      disableHabitNotification(toDelete.first.habitData.id!);
-      _haboModel.deleteHabit(toDelete.first.habitData.id!);
+      _notificationService?.disableHabitNotification(toDelete.first.habitData.id!);
+      await _habitRepository.deleteHabit(toDelete.first.habitData.id!);
       toDelete.removeFirst();
     }
     if (toDelete.isNotEmpty) {
@@ -302,7 +375,7 @@ class HabitsManager extends ChangeNotifier {
     }
   }
 
-  updateOrder() {
+  void updateOrder() {
     int iterator = 0;
     for (var habit in allHabits) {
       habit.habitData.position = iterator++;
@@ -311,5 +384,55 @@ class HabitsManager extends ChangeNotifier {
 
   Future<AllStatistics> getFutureStatsData() async {
     return await Statistics.calculateStatistics(allHabits);
+  }
+
+  // Category management methods
+  Future<void> loadCategories() async {
+    allCategories = await _categoryRepository.getAllCategories();
+    notifyListeners();
+  }
+
+  Future<void> addCategory(String title, int iconCodePoint, [String? fontFamily]) async {
+    final category = Category(title: title, iconCodePoint: iconCodePoint, fontFamily: fontFamily);
+    final id = await _categoryRepository.createCategory(category);
+    category.id = id;
+    allCategories.add(category);
+    notifyListeners();
+  }
+
+  Future<void> updateCategory(Category category) async {
+    await _categoryRepository.updateCategory(category);
+    // Update the category in the local list
+    final index = allCategories.indexWhere((cat) => cat.id == category.id);
+    if (index != -1) {
+      allCategories[index] = category;
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteCategory(int categoryId) async {
+    await _categoryRepository.deleteCategory(categoryId);
+    allCategories.removeWhere((cat) => cat.id == categoryId);
+    
+    // Update habits to remove the deleted category
+    for (var habit in allHabits) {
+      habit.habitData.categories.removeWhere((cat) => cat.id == categoryId);
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateHabitCategories(int habitId, List<Category> categories) async {
+    await _categoryRepository.updateHabitCategories(habitId, categories);
+    
+    // Update the habit in memory
+    final habit = findHabitById(habitId);
+    if (habit != null) {
+      habit.habitData.categories = categories;
+      notifyListeners();
+    }
+  }
+
+  Future<List<Category>> getCategoriesForHabit(int habitId) async {
+    return await _categoryRepository.getCategoriesForHabit(habitId);
   }
 }

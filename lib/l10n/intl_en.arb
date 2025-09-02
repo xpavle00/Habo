@@ -92,7 +92,7 @@
     "habitNotifications": "Habit notifications",
     "habitNotificationsChannel": "Notification channel for habit notifications",
     "doNotForgetToCheckYourHabits": "Do not forget to check your habits.",
-    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} other{Device}}",
+    "themeSelect": "{theme, select, device {Device} light {Light} dark {Dark} oled {OLED black} materialYou {Material You} other{Device}}",
     "@themeSelect": {
       "placeholders": {
         "theme": {
@@ -110,5 +110,231 @@
     "notSoSuccessful": "Not so successful",
     "skipDoesNotAffectStreaks": "Skip (does not affect streaks)",
     "observeYourProgress": "Observe your progress",
-    "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page."
+    "trackYourProgress": "You can track your progress through the calendar view in every habit or on the statistics page.",
+    "backupCreatedSuccessfully": "Backup created successfully!",
+    "backupFailed": "Backup failed!",
+    "restoreCompletedSuccessfully": "Restore completed successfully!",
+    "restoreFailed": "Restore failed!",
+    "fileNotFound": "File not found",
+    "fileTooLarge": "File too large (max 10MB)",
+    "invalidBackupFile": "Invalid backup file",
+    "progress": "Progress",
+    "enterAmount": "Enter amount",
+    "complete": "Complete",
+    "saveProgress": "Save Progress",
+    "currentProgress": "Current: {current} {unit}",
+    "@currentProgress": {
+      "placeholders": {
+        "current": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "targetProgress": "Target: {target} {unit}",
+    "@targetProgress": {
+      "placeholders": {
+        "target": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+      "placeholders": {
+        "current": {
+          "type": "String"
+        },
+        "target": {
+          "type": "String"
+        },
+        "unit": {
+          "type": "String"
+        }
+      }
+    },
+    "numericHabit": "Numeric habit",
+    "targetValue": "Target value",
+    "partialValue": "Partial value",
+    "unit": "Unit",
+    "habitType": "Habit type",
+    "booleanHabit": "Boolean habit",
+    "slider": "Slider",
+    "input": "Input",
+    "numericHabitDescription": "Numeric habits let you track progress in increments throughout the day.",
+    "partialValueDescription": "To track progress in smaller increments",
+    "categories": "Categories",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "category": "Category",
+    "noCategoriesYet": "No categories yet",
+    "createFirstCategory": "Create your first category to organize your habits",
+    "pleaseEnterCategoryTitle": "Please enter a category title",
+    "categoryAlreadyExists": "Category \"{title}\" already exists",
+    "@categoryAlreadyExists": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryCreatedSuccessfully": "Category \"{title}\" created successfully",
+    "@categoryCreatedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryUpdatedSuccessfully": "Category \"{title}\" updated successfully",
+    "@categoryUpdatedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "categoryDeletedSuccessfully": "Category \"{title}\" deleted successfully",
+    "@categoryDeletedSuccessfully": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToSaveCategory": "Failed to save category: {error}",
+    "@failedToSaveCategory": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToDeleteCategory": "Failed to delete category: {error}",
+    "@failedToDeleteCategory": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "selectCategories": "Select Categories",
+    "selectedCategories": "Selected Categories ({count})",
+    "@selectedCategories": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "allCategories": "All Categories",
+    "deleteCategory": "Delete Category",
+    "deleteCategoryConfirmation": "Are you sure you want to delete \"{title}\"?\n\nThis will remove the category from all habits that use it.",
+    "@deleteCategoryConfirmation": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "noHabitsInCategory": "No habits in \"{title}\"",
+    "@noHabitsInCategory": {
+      "placeholders": {
+        "title": {
+          "type": "String"
+        }
+      }
+    },
+    "createHabitForCategory": "Create a habit and assign it to this category",
+    "showCategories": "Show Categories",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "archiveHabit": "Archive habit",
+    "unarchiveHabit": "Unarchive habit",
+    "archivedHabits": "Archived Habits",
+    "noArchivedHabits": "No archived habits",
+    "viewArchivedHabits": "View archived habits",
+    "habitArchived": "Habit archived",
+    "habitUnarchived": "Habit unarchived",
+    "biometric": "Biometric",
+    "biometricLockEnabled": "Biometric lock enabled",
+    "biometricLockDisabled": "Biometric lock disabled",
+    "authenticationError": "Authentication error",
+    "biometricAuthenticationRequired": "Biometric authentication required",
+    "setupFingerprintFaceUnlock": "Please set up your fingerprint or face unlock in device settings",
+    "touchSensor": "Touch sensor",
+    "biometricNotRecognized": "Biometric not recognized, try again",
+    "biometricRequired": "Biometric required",
+    "biometricAuthenticationSucceeded": "Biometric authentication succeeded",
+    "deviceCredentialsRequired": "Device credentials required",
+    "setupDeviceCredentials": "Please set up device credentials in settings",
+    "setupTouchIdFaceId": "Please set up your Touch ID or Face ID in device settings",
+    "reenableTouchIdFaceId": "Please reenable your Touch ID or Face ID",
+    "biometricLock": "Biometric Lock",
+    "biometricLockDescription": "Secure app with {authMethod}",
+    "@biometricLockDescription": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "authenticateToEnable": "Authenticate to enable biometric lock",
+    "authenticateToAccess": "Please authenticate to access Habo",
+    "authenticationRequired": "Authentication Required",
+    "authenticationFailedMessage": "Please authenticate to access Habo using {authMethod}",
+    "@authenticationFailedMessage": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "tryAgain": "Try Again",
+    "authenticating": "Authenticating…",
+    "authenticate": "Authenticate",
+    "buildingBetterHabits": "Building Better Habits",
+    "authenticationPrompt": "Please authenticate using {authMethod} to access your habits",
+    "@authenticationPrompt": {
+      "placeholders": {
+        "authMethod": {
+          "type": "String"
+        }
+      }
+    },
+    "devicePinPatternPassword": "Device PIN, Pattern, or Password",
+    "fingerprint": "Fingerprint",
+    "iris": "Iris",
+    "skip": "Skip",
+    "whatsNewTitle": "What's New",
+    "whatsNewVersion": "Version {version}",
+    "@whatsNewVersion": {
+      "placeholders": {
+        "version": {
+          "type": "String"
+        }
+      }
+    },
+    "featureNumericTitle": "Numeric values in habits",
+    "featureNumericDesc": "Track counts like glasses of water or pages read",
+    "featureDeepLinksTitle": "URL scheme (deep links)",
+    "featureDeepLinksDesc": "Open Habo directly to screens like settings or create",
+    "featureCategoriesTitle": "Categories",
+    "featureCategoriesDesc": "Organize habits with category filters",
+    "featureArchiveTitle": "Archive",
+    "featureArchiveDesc": "Hide habits you no longer track without deleting",
+    "featureMaterialYouTitle": "Material You theme (Android)",
+    "featureMaterialYouDesc": "Dynamic colors that match your wallpaper",
+    "featureSoundTitle": "New sound engine",
+    "featureSoundDesc": "Adjustable volume",
+    "featureLockTitle": "Lock feature",
+    "featureLockDesc": "Secure the app with Face ID / Touch ID / biometrics",
+    "haboSyncComingSoon": "Coming Soon",
+    "haboSyncDescription": "Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.",
+    "haboSyncLearnMore": "Learn more at habo.space/sync"
   }

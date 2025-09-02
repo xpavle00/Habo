@@ -8,7 +8,7 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFFFAFAFA),
-      dialogTheme: const DialogTheme(surfaceTintColor: Colors.white),
+      dialogTheme: const DialogThemeData(surfaceTintColor: Colors.white),
       brightness: Brightness.light,
       primaryColor: const Color(0xFF09BF30),
       timePickerTheme: TimePickerThemeData(
@@ -37,6 +37,8 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       ),
+      canvasColor: Colors.white,
+      focusColor: Colors.white,
     );
   }
 
@@ -44,15 +46,15 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFF303030),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Color(0xFF505050),
         surfaceTintColor: Colors.transparent,
       ),
       primaryColor: Colors.grey,
       fontFamily: GoogleFonts.nunito().fontFamily,
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith(getSwitchColorThumb),
-        trackColor: MaterialStateProperty.resolveWith(getSwitchTrackColor),
+        thumbColor: WidgetStateProperty.resolveWith(getSwitchColorThumb),
+        trackColor: WidgetStateProperty.resolveWith(getSwitchTrackColor),
       ),
       timePickerTheme: const TimePickerThemeData(
         dayPeriodTextColor: Colors.white,
@@ -64,7 +66,7 @@ class HaboTheme {
       colorScheme: const ColorScheme.dark(
         primaryContainer: Color(0xFF505050),
         secondaryContainer: Color(0xFF353535),
-        onPrimary: HaboColors.primary,
+        onPrimary: Colors.white,
         tertiaryContainer: HaboColors.primary,
         primary: HaboColors.primary,
         outline: Colors.grey,
@@ -82,6 +84,8 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
+      canvasColor: Color(0xFF505050),
+      focusColor: Color(0xFF505050),
     );
   }
 
@@ -89,15 +93,15 @@ class HaboTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.black,
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Color(0xFF282828),
         surfaceTintColor: Colors.transparent,
       ),
       primaryColor: Colors.grey,
       fontFamily: GoogleFonts.nunito().fontFamily,
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith(getSwitchColorThumb),
-        trackColor: MaterialStateProperty.resolveWith(getSwitchTrackColor),
+        thumbColor: WidgetStateProperty.resolveWith(getSwitchColorThumb),
+        trackColor: WidgetStateProperty.resolveWith(getSwitchTrackColor),
       ),
       timePickerTheme: const TimePickerThemeData(
         dayPeriodTextColor: Colors.white,
@@ -110,7 +114,7 @@ class HaboTheme {
         primaryContainer: Color(0xFF282828),
         secondaryContainer: Color(0xFF191919),
         tertiaryContainer: HaboColors.primary,
-        onPrimary: HaboColors.primary,
+        onPrimary: Colors.white,
         primary: HaboColors.primary,
         outline: Colors.grey,
       ),
@@ -127,30 +131,32 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
+      canvasColor: Color(0xFF282828),
+      focusColor: Color(0xFF282828),
     );
   }
 }
 
-Color getSwitchColorThumb(Set<MaterialState> states) {
-  if (states.contains(MaterialState.selected)) {
+Color getSwitchColorThumb(Set<WidgetState> states) {
+  if (states.contains(WidgetState.selected)) {
     return const Color(0xFF303030);
   }
 
   return Colors.grey;
 }
 
-Color getSwitchTrackColor(Set<MaterialState> states) {
-  const Set<MaterialState> interactiveStates = <MaterialState>{
-    MaterialState.pressed,
-    MaterialState.hovered,
-    MaterialState.focused,
+Color getSwitchTrackColor(Set<WidgetState> states) {
+  const Set<WidgetState> interactiveStates = <WidgetState>{
+    WidgetState.pressed,
+    WidgetState.hovered,
+    WidgetState.focused,
   };
 
   if (states.any(interactiveStates.contains)) {
     return const Color(0xFF505050);
   }
 
-  if (states.contains(MaterialState.selected)) {
+  if (states.contains(WidgetState.selected)) {
     return HaboColors.primary;
   }
 

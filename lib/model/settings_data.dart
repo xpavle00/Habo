@@ -9,11 +9,16 @@ class SettingsData {
   TimeOfDay dailyNotTime = const TimeOfDay(hour: 20, minute: 0);
   bool showDailyNot = true;
   bool soundEffects = true;
+  double soundVolume = 3.0; // Volume level 0-5
   bool showMonthName = true;
   bool seenOnboarding = false;
+  bool showCategories = true;
   Color checkColor = HaboColors.primary;
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
+  Color progressColor = HaboColors.progress;
+  bool biometricLock = false;
+  String lastWhatsNewVersion = '';
 
   SettingsData();
 
@@ -24,13 +29,18 @@ class SettingsData {
             (json['showDailyNot'] != null) ? json['showDailyNot'] : true,
         soundEffects =
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
+        soundVolume =
+            (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
         showMonthName =
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
+        seenOnboarding =
+            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false,
+        showCategories =
+            (json['showCategories'] != null) ? json['showCategories'] : true,
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
             : const TimeOfDay(hour: 20, minute: 0),
-        seenOnboarding =
-            (json['seenOnboarding'] != null) ? json['seenOnboarding'] : false,
+
         checkColor = (json['checkColor'] != null)
             ? Color(json['checkColor'])
             : HaboColors.primary,
@@ -39,7 +49,16 @@ class SettingsData {
             : HaboColors.red,
         skipColor = (json['skipColor'] != null)
             ? Color(json['skipColor'])
-            : HaboColors.skip;
+            : HaboColors.skip,
+        progressColor = (json['progressColor'] != null)
+            ? Color(json['progressColor'])
+            : HaboColors.progress,
+        biometricLock = (json['biometricLock'] != null) 
+            ? json['biometricLock'] 
+            : false,
+        lastWhatsNewVersion = (json['lastWhatsNewVersion'] != null)
+            ? json['lastWhatsNewVersion']
+            : '';
 
   Map<String, dynamic> toJson() => {
         'theme': theme.index,
@@ -48,10 +67,15 @@ class SettingsData {
             '${dailyNotTime.hour.toString().padLeft(2, '0')}:${dailyNotTime.minute.toString().padLeft(2, '0')}',
         'showDailyNot': showDailyNot,
         'soundEffects': soundEffects,
+        'soundVolume': soundVolume,
         'showMonthName': showMonthName,
         'seenOnboarding': seenOnboarding,
-        'checkColor': checkColor.value,
-        'failColor': failColor.value,
-        'skipColor': skipColor.value,
+        'showCategories': showCategories,
+        'checkColor': checkColor.toARGB32(),
+        'failColor': failColor.toARGB32(),
+        'skipColor': skipColor.toARGB32(),
+        'progressColor': progressColor.toARGB32(),
+        'biometricLock': biometricLock,
+        'lastWhatsNewVersion': lastWhatsNewVersion,
       };
 }

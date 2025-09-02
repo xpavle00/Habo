@@ -4,11 +4,15 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
+  dynamic_color
+  rive_common
+  screen_retriever_linux
   url_launcher_linux
-  window_size
+  window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  flutter_soloud
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

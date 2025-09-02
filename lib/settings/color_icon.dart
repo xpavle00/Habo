@@ -26,7 +26,7 @@ class _ColorIconState extends State<ColorIcon> {
   @override
   void initState() {
     super.initState();
-    tempColor = widget.color.withOpacity(1.0);
+    tempColor = widget.color.withValues(alpha: 1.0);
   }
 
   @override
@@ -61,7 +61,7 @@ class _ColorIconState extends State<ColorIcon> {
                               onColorChanged: (Color color) {
                                 setState(
                                   () {
-                                    tempColor = color.withOpacity(1.0);
+                                    tempColor = color.withValues(alpha: 1.0);
                                   },
                                 );
                               },
@@ -70,15 +70,15 @@ class _ColorIconState extends State<ColorIcon> {
                           actions: <Widget>[
                             ElevatedButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
                                   const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                 ),
                                 foregroundColor:
-                                    const MaterialStatePropertyAll<Color>(
+                                    const WidgetStatePropertyAll<Color>(
                                         Colors.white),
                                 backgroundColor:
-                                    const MaterialStatePropertyAll<Color>(
+                                    const WidgetStatePropertyAll<Color>(
                                         Colors.grey),
                               ),
                               child: Text(S.of(context).cancel),
@@ -89,15 +89,15 @@ class _ColorIconState extends State<ColorIcon> {
                             ),
                             ElevatedButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
                                   const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                 ),
                                 foregroundColor:
-                                    const MaterialStatePropertyAll<Color>(
+                                    const WidgetStatePropertyAll<Color>(
                                         Colors.white),
                                 backgroundColor:
-                                    MaterialStatePropertyAll<Color>(
+                                    WidgetStatePropertyAll<Color>(
                                         widget.defaultColor),
                               ),
                               onPressed: () {
@@ -111,15 +111,15 @@ class _ColorIconState extends State<ColorIcon> {
                             ),
                             ElevatedButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                padding: WidgetStateProperty.all<EdgeInsets>(
                                   const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                 ),
                                 foregroundColor:
-                                    const MaterialStatePropertyAll<Color>(
+                                    const WidgetStatePropertyAll<Color>(
                                         Colors.white),
                                 backgroundColor:
-                                    const MaterialStatePropertyAll<Color>(
+                                    const WidgetStatePropertyAll<Color>(
                                         HaboColors.primary),
                               ),
                               child: Text(S.of(context).done),

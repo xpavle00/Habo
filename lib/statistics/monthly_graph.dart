@@ -17,6 +17,7 @@ class MonthlyGraph extends StatefulWidget {
 
 class _MonthlyGraphState extends State<MonthlyGraph> {
   bool showCheck = true;
+  bool showProgress = true;
   bool showSkip = true;
   bool showFail = true;
   int year = DateTime.now().year;
@@ -62,6 +63,36 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                                 .checkColor,
                         onPressed: () {
                           showCheck = !showCheck;
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Material(
+                    color: showProgress
+                        ? Provider.of<SettingsManager>(context, listen: false)
+                            .progressColor
+                        : Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10.0),
+                    elevation: 2,
+                    child: SizedBox(
+                      width: 32,
+                      height: 32,
+                      child: IconButton(
+                        splashColor: Colors.transparent,
+                        icon: const Icon(
+                          Icons.trending_up,
+                          size: 16,
+                        ),
+                        color: showProgress
+                            ? Colors.white
+                            : Provider.of<SettingsManager>(context, listen: false)
+                                .progressColor,
+                        onPressed: () {
+                          showProgress = !showProgress;
                           setState(() {});
                         },
                       ),
@@ -166,9 +197,8 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
               ),
               maxY: 31,
             ),
-            swapAnimationDuration:
-                const Duration(milliseconds: 150), // Optional
-            swapAnimationCurve: Curves.linear, // Optional
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.linear,
           ),
         ),
       ],
@@ -178,7 +208,9 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
   BarTouchData get barTouchData => BarTouchData(
         enabled: false,
         touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.transparent,
+          getTooltipColor: (group) => Colors.transparent,
+          tooltipPadding: EdgeInsets.zero,
+          tooltipMargin: 0,
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -189,6 +221,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
               '',
               const TextStyle(
                 color: Colors.transparent,
+                fontSize: 0,
               ),
             );
           },
@@ -214,7 +247,6 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
 
   Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );
@@ -224,8 +256,8 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
         .NARROWMONTHS[value.toInt()]
         .toUpperCase();
     return SideTitleWidget(
-      axisSide: meta.axisSide,
       space: 4,
+      meta: meta,
       child: Text(text, style: style),
     );
   }
@@ -239,6 +271,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
 
     double width = 10;
     if (showCheck) width -= 2;
+    if (showProgress) width -= 2;
     if (showSkip) width -= 2;
     if (showFail) width -= 2;
 
@@ -258,6 +291,14 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       .checkColor,
                   width: width,
                 ),
+              if (showProgress)
+                BarChartRodData(
+                  toY: widget.data.monthlyCheck[year]![DayType.progress]![i]
+                      .toDouble(),
+                  color: Provider.of<SettingsManager>(context, listen: false)
+                      .progressColor,
+                  width: width,
+                ),
               if (showSkip)
                 BarChartRodData(
                   toY: widget.data.monthlyCheck[year]![DayType.skip]![i]
@@ -274,7 +315,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       .failColor,
                   width: width,
                 ),
-              if (!showCheck && !showSkip && !showFail)
+              if (!showCheck && !showProgress && !showSkip && !showFail)
                 BarChartRodData(
                   toY: 0,
                   color: Colors.transparent,

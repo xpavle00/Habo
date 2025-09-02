@@ -1,56 +1,89 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/model/settings_data.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsManager extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SettingsData _settingsData = SettingsData();
   bool _isInitialized = false;
+  String _currentAppVersion = '';
 
-  final _checkPlayer = AudioPlayer(handleAudioSessionActivation: false);
-  final _clickPlayer = AudioPlayer(handleAudioSessionActivation: false);
+  late AudioSource _checkSource;
+  late AudioSource _clickSource;
+  bool _soundsLoaded = false;
 
-  void initialize() async {
+  Future<void> initialize() async {
     await loadData();
+    try {
+      final info = await PackageInfo.fromPlatform();
+      _currentAppVersion = info.version;
+    } catch (_) {
+      _currentAppVersion = '';
+    }
     _isInitialized = true;
     notifyListeners();
-    _checkPlayer.setAsset('assets/sounds/check.wav');
-    _clickPlayer.setAsset('assets/sounds/click.wav');
+    _initializeSounds();
+  }
+
+  Future<void> _initializeSounds() async {
+    try {
+      await SoLoud.instance.init();
+      _checkSource = await SoLoud.instance.loadAsset('assets/sounds/check.wav');
+      _clickSource = await SoLoud.instance.loadAsset('assets/sounds/click.wav');
+      _soundsLoaded = true;
+    } catch (e) {
+      // Handle initialization error gracefully
+      _soundsLoaded = false;
+    }
   }
 
   @override
   void dispose() {
-    _checkPlayer.dispose();
-    _clickPlayer.dispose();
+    if (_soundsLoaded) {
+      SoLoud.instance.disposeSource(_checkSource);
+      SoLoud.instance.disposeSource(_clickSource);
+    }
     super.dispose();
   }
 
-  resetAppNotification() {
+  void resetAppNotification() {
     if (_settingsData.showDailyNot) {
       resetAppNotificationIfMissing(_settingsData.dailyNotTime);
     }
   }
 
-  playCheckSound() {
-    if (_settingsData.soundEffects) {
-      _checkPlayer.setClip(
-          start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-      _checkPlayer.play();
+  void playCheckSound() {
+    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+      try {
+        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        SoLoud.instance.play(_checkSource, volume: volume);
+      } catch (e) {
+        // Handle playback error gracefully
+      } finally {
+        HapticFeedback.lightImpact();
+      }
     }
   }
 
-  playClickSound() {
-    if (_settingsData.soundEffects) {
-      _clickPlayer.setClip(
-          start: const Duration(seconds: 0), end: const Duration(seconds: 2));
-      _clickPlayer.play();
+  void playClickSound() {
+    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+      try {
+        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        SoLoud.instance.play(_clickSource, volume: volume);
+      } catch (e) {
+        // Handle playback error gracefully
+      } finally {
+        HapticFeedback.lightImpact();
+      }
     }
   }
 
@@ -77,6 +110,8 @@ class SettingsManager extends ChangeNotifier {
         return HaboTheme.darkTheme;
       case Themes.oled:
         return HaboTheme.oledTheme;
+      case Themes.materialYou:
+        return HaboTheme.darkTheme; // Fallback for Material You
       default:
         return HaboTheme.darkTheme;
     }
@@ -92,6 +127,8 @@ class SettingsManager extends ChangeNotifier {
         return HaboTheme.darkTheme;
       case Themes.oled:
         return HaboTheme.oledTheme;
+      case Themes.materialYou:
+        return HaboTheme.lightTheme; // Fallback for Material You
       default:
         return HaboTheme.lightTheme;
     }
@@ -117,12 +154,20 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.soundEffects;
   }
 
+  double get getSoundVolume {
+    return _settingsData.soundVolume;
+  }
+
   bool get getShowMonthName {
     return _settingsData.showMonthName;
   }
 
   bool get getSeenOnboarding {
     return _settingsData.seenOnboarding;
+  }
+
+  bool get getShowCategories {
+    return _settingsData.showCategories;
   }
 
   Color get checkColor {
@@ -137,8 +182,30 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.skipColor;
   }
 
+  Color get progressColor {
+    return _settingsData.progressColor;
+  }
+
+  bool get getBiometricLock {
+    return _settingsData.biometricLock;
+  }
+
   bool get isInitialized {
     return _isInitialized;
+  }
+
+  String get getLastWhatsNewVersion {
+    return _settingsData.lastWhatsNewVersion;
+  }
+
+  set setLastWhatsNewVersion(String value) {
+    _settingsData.lastWhatsNewVersion = value;
+    saveData();
+    notifyListeners();
+  }
+
+  String get getCurrentAppVersion {
+    return _currentAppVersion;
   }
 
   set setTheme(Themes value) {
@@ -177,6 +244,12 @@ class SettingsManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  set setSoundVolume(double value) {
+    _settingsData.soundVolume = value.clamp(0.0, 5.0);
+    saveData();
+    notifyListeners();
+  }
+
   set setShowMonthName(bool value) {
     _settingsData.showMonthName = value;
     saveData();
@@ -185,6 +258,12 @@ class SettingsManager extends ChangeNotifier {
 
   set setSeenOnboarding(bool value) {
     _settingsData.seenOnboarding = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setShowCategories(bool value) {
+    _settingsData.showCategories = value;
     saveData();
     notifyListeners();
   }
@@ -203,6 +282,18 @@ class SettingsManager extends ChangeNotifier {
 
   set skipColor(Color value) {
     _settingsData.skipColor = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set progressColor(Color value) {
+    _settingsData.progressColor = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setBiometricLock(bool value) {
+    _settingsData.biometricLock = value;
     saveData();
     notifyListeners();
   }
