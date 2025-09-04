@@ -116,11 +116,17 @@ class _HaboState extends State<Habo> {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarBrightness: Brightness.light),
+          statusBarBrightness: Brightness.light,
+          // Handle Android 15 edge-to-edge
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarDividerColor: Colors.transparent,
+      ),
     );
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    // Enable edge-to-edge mode explicitly for consistency
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

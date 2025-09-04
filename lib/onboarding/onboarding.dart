@@ -199,6 +199,7 @@ class Onboarding extends StatelessWidget {
       showSkipButton: true,
       dotsDecorator: const DotsDecorator(activeColor: HaboColors.primary),
       skip: Text(S.of(context).skip),
+      safeAreaList: const [false, false, false, true], // Only bottom SafeArea
     );
   }
 }

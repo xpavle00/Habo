@@ -281,6 +281,7 @@ class WhatsNew extends StatelessWidget {
         Navigator.of(context).maybePop();
       },
       dotsDecorator: const DotsDecorator(activeColor: HaboColors.primary),
+      safeAreaList: const [false, false, false, true], // Only bottom SafeArea
     );
   }
 }
