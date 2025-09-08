@@ -36,8 +36,10 @@ class CategoryFilterRow extends StatelessWidget {
           child: ListView.builder(
             key: ValueKey('cat-row-$themeSig'),
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: 16, right: 24), // Extra right padding
-            itemCount: habitsManager.allCategories.length + 1, // +1 for "All" chip
+            padding: const EdgeInsets.only(
+                left: 16, right: 24), // Extra right padding
+            itemCount:
+                habitsManager.allCategories.length + 1, // +1 for "All" chip
             itemBuilder: (context, index) {
               if (index == 0) {
                 // "All" chip to show all habits
@@ -48,7 +50,8 @@ class CategoryFilterRow extends StatelessWidget {
                     key: ValueKey('all-chip-$themeSig'),
                     label: const Text(
                       'All',
-                      style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.grey),
                     ),
                     selected: isSelected,
                     onSelected: (selected) {
@@ -56,15 +59,19 @@ class CategoryFilterRow extends StatelessWidget {
                         onCategorySelected(null);
                       }
                     },
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  selectedColor: Theme.of(context).colorScheme.primaryContainer,
-                  side: BorderSide(
+                    // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    // selectedColor:
+                    //     Theme.of(context).colorScheme.primaryContainer,
+                    side: BorderSide(
                       color: isSelected
-                          ? Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)
+                          ? Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withValues(alpha: 0.3)
                           : Colors.transparent,
                       width: 1,
                     ),
-                  showCheckmark: false,
+                    showCheckmark: false,
                   ),
                 );
               }
@@ -99,11 +106,11 @@ class CategoryFilterRow extends StatelessWidget {
                   backgroundColor: theme.scaffoldBackgroundColor,
                   selectedColor: theme.colorScheme.primaryContainer,
                   side: BorderSide(
-                      color: isSelected
-                          ? theme.colorScheme.outline.withValues(alpha: 0.3)
-                          : Colors.transparent,
-                      width: 1,
-                    ),
+                    color: isSelected
+                        ? theme.colorScheme.outline.withValues(alpha: 0.3)
+                        : Colors.transparent,
+                    width: 1,
+                  ),
                   showCheckmark: false,
                   // pressElevation: 4,
                 ),

@@ -35,7 +35,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           S.of(context).statistics,
         ),
         backgroundColor: Colors.transparent,
-        iconTheme: Theme.of(context).iconTheme,
       ),
       body: FutureBuilder(
           future: Provider.of<HabitsManager>(context).getFutureStatsData(),

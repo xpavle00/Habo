@@ -63,9 +63,11 @@ class Habit extends StatefulWidget {
       'notification': habitData.notification ? 1 : 0,
       'notTime': '${habitData.notTime.hour}:${habitData.notTime.minute}',
       'events': habitData.events.map((key, value) {
-        return MapEntry(key.toString(), value.length > 2 
-          ? [value[0].toString(), value[1], value[2]]
-          : [value[0].toString(), value[1]]);
+        return MapEntry(
+            key.toString(),
+            value.length > 2
+                ? [value[0].toString(), value[1], value[2]]
+                : [value[0].toString(), value[1]]);
       }),
       'sanction': habitData.sanction,
       'showSanction': habitData.showSanction ? 1 : 0,
@@ -74,7 +76,8 @@ class Habit extends StatefulWidget {
       'targetValue': habitData.targetValue,
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
-      'categories': habitData.categories.map((category) => category.toJson()).toList(),
+      'categories':
+          habitData.categories.map((category) => category.toJson()).toList(),
       'archived': habitData.archived ? 1 : 0,
     };
   }
@@ -112,9 +115,10 @@ class Habit extends StatefulWidget {
     SplayTreeMap<DateTime, List> result = SplayTreeMap<DateTime, List>();
 
     input.forEach((key, value) {
-      final dayType = DayType.values.firstWhere((e) => e.toString() == reformatOld(value[0]));
+      final dayType = DayType.values
+          .firstWhere((e) => e.toString() == reformatOld(value[0]));
       final comment = value[1];
-      
+
       // Handle progress data for numeric habits
       if (value.length > 2 && dayType == DayType.progress) {
         final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
@@ -186,7 +190,7 @@ class HabitState extends State<Habit> {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Provider.of<SettingsManager>(context).checkColor,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -209,8 +213,7 @@ class HabitState extends State<Habit> {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
-          backgroundColor:
-              Provider.of<SettingsManager>(context, listen: false).failColor,
+          backgroundColor: Provider.of<SettingsManager>(context).failColor,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -389,24 +392,26 @@ class HabitState extends State<Habit> {
 
   Color _getEventColor(List events) {
     final eventType = events[0] as DayType;
-    
+
     switch (eventType) {
       case DayType.check:
-        return Provider.of<SettingsManager>(context, listen: false).checkColor;
+        return Provider.of<SettingsManager>(context).checkColor;
       case DayType.fail:
-        return Provider.of<SettingsManager>(context, listen: false).failColor;
+        return Provider.of<SettingsManager>(context).failColor;
       case DayType.skip:
-        return Provider.of<SettingsManager>(context, listen: false).skipColor;
+        return Provider.of<SettingsManager>(context).skipColor;
       case DayType.progress:
         // For progress events, check if it's 100% completion
         if (widget.habitData.isNumeric && events.length > 2) {
           final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
           if (progressValue >= widget.habitData.targetValue) {
             // 100% or more = green check color
-            return Provider.of<SettingsManager>(context, listen: false).checkColor;
+            return Provider.of<SettingsManager>(context, listen: false)
+                .checkColor;
           }
         }
-        return Provider.of<SettingsManager>(context, listen: false).progressColor;
+        return Provider.of<SettingsManager>(context, listen: false)
+            .progressColor;
       case DayType.clear:
       default:
         return Colors.transparent;
@@ -415,22 +420,22 @@ class HabitState extends State<Habit> {
 
   Widget _getEventIcon(List events) {
     final eventType = events[0] as DayType;
-    
+
     switch (eventType) {
       case DayType.check:
-        return const Icon(
+        return Icon(
           Icons.check,
-          color: Colors.white,
+          color: Provider.of<SettingsManager>(context).iconColor,
         );
       case DayType.fail:
-        return const Icon(
+        return Icon(
           Icons.close,
-          color: Colors.white,
+          color: Provider.of<SettingsManager>(context).iconColor,
         );
       case DayType.skip:
-        return const Icon(
+        return Icon(
           Icons.last_page,
-          color: Colors.white,
+          color: Provider.of<SettingsManager>(context).iconColor,
         );
       case DayType.progress:
         // For progress events, check if it's 100% completion
@@ -438,9 +443,9 @@ class HabitState extends State<Habit> {
           final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
           if (progressValue >= widget.habitData.targetValue) {
             // 100% or more = green check icon
-            return const Icon(
+            return Icon(
               Icons.check,
-              color: Colors.white,
+              color: Provider.of<SettingsManager>(context).iconColor,
             );
           }
         }
@@ -455,8 +460,9 @@ class HabitState extends State<Habit> {
     // For progress events, show a circular progress indicator
     if (events.length > 2 && widget.habitData.isNumeric) {
       final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
-      final percentage = (progressValue / widget.habitData.targetValue).clamp(0.0, 1.0);
-      
+      final percentage =
+          (progressValue / widget.habitData.targetValue).clamp(0.0, 1.0);
+
       return Stack(
         children: [
           Center(
@@ -516,11 +522,12 @@ class HabitState extends State<Habit> {
         lastDayKey = checkDayKey;
       }
 
-      if (widget.habitData.events[checkDayKey]![0] == DayType.check
-          || (widget.habitData.events[checkDayKey]![0] == DayType.progress 
-            && widget.habitData.events[checkDayKey]![2] >= widget.habitData.targetValue)) {
-              inStreak++;
-            }
+      if (widget.habitData.events[checkDayKey]![0] == DayType.check ||
+          (widget.habitData.events[checkDayKey]![0] == DayType.progress &&
+              widget.habitData.events[checkDayKey]![2] >=
+                  widget.habitData.targetValue)) {
+        inStreak++;
+      }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
     }
 
@@ -537,9 +544,10 @@ class HabitState extends State<Habit> {
     while (widget.habitData.events[trueLastKey] != null &&
         widget.habitData.events[trueLastKey]![0] != null &&
         (widget.habitData.events[trueLastKey]![0] == DayType.clear ||
-        (widget.habitData.events[trueLastKey]![0] == DayType.progress &&
-        widget.habitData.events[trueLastKey]![2] < widget.habitData.targetValue))) {
-          trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
+            (widget.habitData.events[trueLastKey]![0] == DayType.progress &&
+                widget.habitData.events[trueLastKey]![2] <
+                    widget.habitData.targetValue))) {
+      trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
     }
 
     var checkDayKey = trueLastKey;
@@ -550,8 +558,9 @@ class HabitState extends State<Habit> {
       if (widget.habitData.events[checkDayKey]![0] != DayType.clear) {
         // End if fail and next is not check, clear or progress
         if (widget.habitData.events[checkDayKey]![0] == DayType.fail &&
-            (lastDay != DayType.check && lastDay != DayType.clear && 
-            (lastDay != DayType.progress))) {
+            (lastDay != DayType.check &&
+                lastDay != DayType.clear &&
+                (lastDay != DayType.progress))) {
           break;
         }
 

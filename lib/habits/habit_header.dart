@@ -32,7 +32,7 @@ class HabitHeader extends StatelessWidget {
             child: Text(
               Provider.of<HabitsManager>(context)
                   .getNameOfHabit(widget.habitData.id!),
-              style: const TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.titleLarge,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -45,7 +45,6 @@ class HabitHeader extends StatelessWidget {
             Icons.edit_outlined,
             semanticLabel: S.of(context).modify,
           ),
-          color: Colors.grey,
           tooltip: S.of(context).modify,
           onPressed: () {
             widget.navigateToEditPage(context);
