@@ -53,7 +53,8 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Check'),
         icon: Icon(
           Icons.check,
-          color: Provider.of<SettingsManager>(context).checkColor,
+          color:
+              Provider.of<SettingsManager>(context, listen: false).checkColor,
           semanticLabel: S.of(context).check,
         ),
       ),
@@ -63,7 +64,8 @@ class OneDayButton extends StatelessWidget {
           key: const Key('Plus'),
           icon: Icon(
             Icons.add,
-            color: Provider.of<SettingsManager>(context).progressColor,
+            color: Provider.of<SettingsManager>(context, listen: false)
+                .progressColor,
             semanticLabel: 'Add Progress',
           ),
         ),
@@ -71,7 +73,7 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Fail'),
         icon: Icon(
           Icons.close,
-          color: Provider.of<SettingsManager>(context).failColor,
+          color: Provider.of<SettingsManager>(context, listen: false).failColor,
           semanticLabel: S.of(context).fail,
         ),
       ),
@@ -79,7 +81,7 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Skip'),
         icon: Icon(
           Icons.last_page,
-          color: Provider.of<SettingsManager>(context).skipColor,
+          color: Provider.of<SettingsManager>(context, listen: false).skipColor,
           semanticLabel: S.of(context).skip,
         ),
       ),

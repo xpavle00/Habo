@@ -188,9 +188,10 @@ class HabitState extends State<Habit> {
           content: Text(
             '${S.of(context).congratulationsReward}\n${widget.habitData.reward}',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
-          backgroundColor: Provider.of<SettingsManager>(context).checkColor,
+          backgroundColor:
+              Provider.of<SettingsManager>(context, listen: false).checkColor,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -211,9 +212,10 @@ class HabitState extends State<Habit> {
           content: Text(
             '${S.of(context).ohNoSanction}\n${widget.habitData.sanction}',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
-          backgroundColor: Provider.of<SettingsManager>(context).failColor,
+          backgroundColor:
+              Provider.of<SettingsManager>(context, listen: false).failColor,
           behavior: SnackBarBehavior.floating,
         ),
       );

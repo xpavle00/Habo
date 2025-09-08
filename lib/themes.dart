@@ -208,9 +208,9 @@ class HaboTheme {
         primaryContainer: draculaBackground,
         secondaryContainer: Color(0xFF191919),
         tertiaryContainer: draculaGreen,
-        onPrimary: draculaForeground,
+        onPrimary: draculaSelection,
         primary: draculaPink,
-        outline: draculaSelection,
+        outline: draculaForeground,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: draculaPurple,
