@@ -63,9 +63,6 @@ class CategoryFilterRow extends StatelessWidget {
                         onCategorySelected(null);
                       }
                     },
-                    // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    // selectedColor:
-                    //     Theme.of(context).colorScheme.primaryContainer,
                     side: BorderSide(
                       color: isSelected
                           ? Theme.of(context)

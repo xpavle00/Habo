@@ -21,11 +21,15 @@ class HaboTheme {
         hourMinuteColor: Colors.grey[100],
         dialBackgroundColor: Colors.grey[100],
       ),
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.grey.withAlpha(50),
+      ),
       colorScheme: ColorScheme.light(
         primaryContainer: Colors.white,
         secondaryContainer: Colors.grey[100],
         tertiaryContainer: HaboColors.primary,
         onPrimaryContainer: HaboColors.primary,
+        onPrimary: Color(0xFF505050),
         primary: HaboColors.primary,
         outline: const Color(0xFF505050),
       ),
@@ -192,10 +196,7 @@ class HaboTheme {
             foregroundColor: WidgetStatePropertyAll<Color>(Color(0xFFFF79C6))),
       ),
       chipTheme: ChipThemeData(
-        side: BorderSide(color: draculaOrange),
         backgroundColor: draculaSelection,
-        iconTheme: IconThemeData(color: draculaOrange),
-        labelStyle: TextStyle(color: draculaOrange),
       ),
       dialogTheme: const DialogThemeData(
         backgroundColor: Color(0xFF21222C),
