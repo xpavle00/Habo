@@ -197,7 +197,8 @@ class Onboarding extends StatelessWidget {
       },
       next: const Icon(Icons.arrow_forward),
       showSkipButton: true,
-      dotsDecorator: const DotsDecorator(activeColor: HaboColors.primary),
+      dotsDecorator:
+          DotsDecorator(activeColor: Theme.of(context).colorScheme.primary),
       skip: Text(S.of(context).skip),
     );
   }

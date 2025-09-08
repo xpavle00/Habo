@@ -48,10 +48,14 @@ class CategoryFilterRow extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
                     key: ValueKey('all-chip-$themeSig'),
-                    label: const Text(
+                    label: Text(
                       'All',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.grey),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: isSelected
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onPrimary.withAlpha(150),
+                      ),
                     ),
                     selected: isSelected,
                     onSelected: (selected) {
@@ -85,15 +89,19 @@ class CategoryFilterRow extends StatelessWidget {
                   key: ValueKey('cat-${category.id}-$themeSig'),
                   label: Text(
                     category.title,
-                    style: TextStyle(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: Colors.grey,
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onPrimary.withAlpha(150),
                     ),
                   ),
                   avatar: Icon(
                     category.icon,
                     size: 18,
-                    color: Colors.grey,
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onPrimary.withAlpha(150),
                   ),
                   selected: isSelected,
                   onSelected: (selected) {
@@ -103,8 +111,6 @@ class CategoryFilterRow extends StatelessWidget {
                       onCategorySelected(null);
                     }
                   },
-                  backgroundColor: theme.scaffoldBackgroundColor,
-                  selectedColor: theme.colorScheme.primaryContainer,
                   side: BorderSide(
                     color: isSelected
                         ? theme.colorScheme.outline.withValues(alpha: 0.3)

@@ -103,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       btnOkText: S.of(context).restore,
       btnCancelText: S.of(context).cancel,
       btnCancelColor: Colors.grey,
-      btnOkColor: HaboColors.primary,
+      btnOkColor: Theme.of(context).colorScheme.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
         await Provider.of<HabitsManager>(context, listen: false).loadBackup();

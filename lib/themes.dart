@@ -43,6 +43,10 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: ThemeData.light().textTheme.titleMedium,
+        subtitleTextStyle: ThemeData.light().textTheme.bodyMedium,
+      ),
       canvasColor: Colors.white,
       focusColor: Colors.white,
     );
@@ -95,6 +99,10 @@ class HaboTheme {
           systemNavigationBarDividerColor: Color(0xFF303030),
           systemNavigationBarIconBrightness: Brightness.light,
         ),
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: ThemeData.dark().textTheme.titleMedium,
+        subtitleTextStyle: ThemeData.dark().textTheme.bodyMedium,
       ),
       canvasColor: Color(0xFF505050),
       focusColor: Color(0xFF505050),
@@ -149,6 +157,10 @@ class HaboTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: ThemeData.dark().textTheme.titleMedium,
+        subtitleTextStyle: ThemeData.dark().textTheme.bodyMedium,
+      ),
       canvasColor: Color(0xFF282828),
       focusColor: Color(0xFF282828),
     );
@@ -177,9 +189,7 @@ class HaboTheme {
       ),
       iconButtonTheme: const IconButtonThemeData(
         style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll<Color>(
-          Color(0xFFFF79C6),
-        )),
+            foregroundColor: WidgetStatePropertyAll<Color>(Color(0xFFFF79C6))),
       ),
       chipTheme: ChipThemeData(
         side: BorderSide(color: draculaOrange),
@@ -208,9 +218,9 @@ class HaboTheme {
         primaryContainer: draculaBackground,
         secondaryContainer: Color(0xFF191919),
         tertiaryContainer: draculaGreen,
-        onPrimary: draculaSelection,
+        onPrimary: draculaForeground,
         primary: draculaPink,
-        outline: draculaForeground,
+        outline: draculaSelection,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: draculaPurple,
@@ -239,9 +249,13 @@ class HaboTheme {
           ),
         ),
       ),
-      listTileTheme: const ListTileThemeData(
-        titleTextStyle: TextStyle(color: draculaYellow),
-        subtitleTextStyle: TextStyle(color: draculaCyan),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: ThemeData.dark().textTheme.titleMedium?.copyWith(
+              color: draculaYellow,
+            ),
+        subtitleTextStyle: ThemeData.dark().textTheme.bodyMedium?.copyWith(
+              color: draculaCyan,
+            ),
       ),
       canvasColor: Color(0xFF282828),
       focusColor: draculaSelection,

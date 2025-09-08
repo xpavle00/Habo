@@ -265,8 +265,11 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
                     _isCompleted
                         ? S.of(context).complete
                         : S.of(context).saveProgress,
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color:
+                            Provider.of<SettingsManager>(context, listen: false)
+                                .iconColor,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ],

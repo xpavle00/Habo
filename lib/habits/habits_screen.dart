@@ -1,7 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/notifications.dart';
 import 'package:provider/provider.dart';
@@ -192,7 +191,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
       btnOkText: S.of(context).allow,
       btnCancelText: S.of(context).cancel,
       btnCancelColor: Colors.grey,
-      btnOkColor: HaboColors.primary,
+      btnOkColor: Theme.of(context).colorScheme.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
         AwesomeNotifications()

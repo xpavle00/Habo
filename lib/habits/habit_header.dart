@@ -3,6 +3,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
+import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 
 class HabitHeader extends StatelessWidget {
@@ -60,10 +61,13 @@ class HabitHeader extends StatelessWidget {
                   border: Border.all(
                     color: (_orangeStreak)
                         ? HaboColors.orange
-                        : HaboColors.primary,
+                        : Provider.of<SettingsManager>(context, listen: false)
+                            .checkColor,
                   ),
-                  color:
-                      (_orangeStreak) ? HaboColors.orange : HaboColors.primary,
+                  color: (_orangeStreak)
+                      ? HaboColors.orange
+                      : Provider.of<SettingsManager>(context, listen: false)
+                          .checkColor,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(
@@ -75,7 +79,9 @@ class HabitHeader extends StatelessWidget {
               child: Text(
                 '$_streak',
                 textAlign: TextAlign.right,
-                style: const TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Provider.of<SettingsManager>(context).iconColor),
               ),
             ),
           ),

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:introduction_screen/introduction_screen.dart';

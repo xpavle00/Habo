@@ -474,16 +474,19 @@ class HabitState extends State<Habit> {
               child: CircularProgressIndicator(
                 value: percentage,
                 strokeWidth: 3,
-                backgroundColor: Colors.white.withValues(alpha: 0.3),
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                backgroundColor: Provider.of<SettingsManager>(context)
+                    .progressColor
+                    .withValues(alpha: 0.3),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Provider.of<SettingsManager>(context).iconColor),
               ),
             ),
           ),
           Center(
             child: Text(
               '${(percentage * 100).round()}%',
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Provider.of<SettingsManager>(context).iconColor,
                 fontSize: 8,
                 fontWeight: FontWeight.bold,
               ),
