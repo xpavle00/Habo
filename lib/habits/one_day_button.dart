@@ -64,7 +64,8 @@ class OneDayButton extends StatelessWidget {
           key: const Key('Plus'),
           icon: Icon(
             Icons.add,
-            color: Provider.of<SettingsManager>(context, listen: false).progressColor,
+            color: Provider.of<SettingsManager>(context, listen: false)
+                .progressColor,
             semanticLabel: 'Add Progress',
           ),
         ),
@@ -120,21 +121,21 @@ class OneDayButton extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               child: DropdownButton<InButton>(
-                    iconSize: 0,
-                    elevation: 3,
-                    alignment: Alignment.center,
-                    borderRadius: BorderRadius.circular(10.0),
-                    underline: Container(),
-                    items: icons.map(
-                      (InButton value) {
-                        return DropdownMenuItem<InButton>(
-                          key: value.key,
-                          value: value,
-                          child: Center(child: value),
-                        );
-                      },
-                    ).toList(),
-                    value: icons[index],
+                iconSize: 0,
+                elevation: 3,
+                alignment: Alignment.center,
+                borderRadius: BorderRadius.circular(10.0),
+                underline: Container(),
+                items: icons.map(
+                  (InButton value) {
+                    return DropdownMenuItem<InButton>(
+                      key: value.key,
+                      value: value,
+                      child: Center(child: value),
+                    );
+                  },
+                ).toList(),
+                value: icons[index],
                 onTap: () {
                   parent.setSelectedDay(date);
                 },
@@ -144,7 +145,8 @@ class OneDayButton extends StatelessWidget {
                         value.key == const Key('Fail') ||
                         value.key == const Key('Skip')) {
                       // For numeric habits, Check means complete the habit fully
-                      if (value.key == const Key('Check') && parent.widget.habitData.isNumeric) {
+                      if (value.key == const Key('Check') &&
+                          parent.widget.habitData.isNumeric) {
                         Provider.of<SettingsManager>(context, listen: false)
                             .playCheckSound();
                         // Complete the habit with full target value
@@ -232,7 +234,7 @@ class OneDayButton extends StatelessWidget {
       btnOkText: S.of(context).save,
       btnCancelText: S.of(context).close,
       btnCancelColor: Colors.grey,
-      btnOkColor: HaboColors.primary,
+      btnOkColor: Theme.of(context).colorScheme.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
         Provider.of<HabitsManager>(context, listen: false).addEvent(
@@ -261,7 +263,7 @@ class OneDayButton extends StatelessWidget {
   void _showProgressInputModal(BuildContext context) {
     final habitData = parent.widget.habitData;
     final currentProgress = habitData.getProgressForDate(date);
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -276,7 +278,7 @@ class OneDayButton extends StatelessWidget {
             Provider.of<HabitsManager>(context, listen: false)
                 .addEvent(id, date, [DayType.progress, '', progressValue]);
             parent.events[date] = [DayType.progress, '', progressValue];
-            
+
             // Play appropriate sound and show notification
             if (progressValue >= habitData.targetValue) {
               parent.showRewardNotification(date);
@@ -286,7 +288,7 @@ class OneDayButton extends StatelessWidget {
               Provider.of<SettingsManager>(context, listen: false)
                   .playClickSound();
             }
-            
+
             callback();
           },
         );

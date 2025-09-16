@@ -749,6 +749,7 @@ class S {
         'dark': 'Dark',
         'oled': 'OLED black',
         'materialYou': 'Material You',
+        'dracula': 'Dracula',
         'other': 'Device',
       },
       name: 'themeSelect',

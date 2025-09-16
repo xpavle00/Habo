@@ -103,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       btnOkText: S.of(context).restore,
       btnCancelText: S.of(context).cancel,
       btnCancelColor: Colors.grey,
-      btnOkColor: HaboColors.primary,
+      btnOkColor: Theme.of(context).colorScheme.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
         await Provider.of<HabitsManager>(context, listen: false).loadBackup();
@@ -133,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 S.of(context).settings,
               ),
               backgroundColor: Colors.transparent,
-              iconTheme: Theme.of(context).iconTheme,
+              // iconTheme: Theme.of(context).iconTheme,
             ),
             body: SingleChildScrollView(
               child: Center(
@@ -375,10 +375,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ColorIcon(
-                            color: Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .checkColor,
+                            color: Provider.of<SettingsManager>(
+                              context,
+                            ).checkColor,
                             icon: Icons.check,
+                            iconColor:
+                                Provider.of<SettingsManager>(context).iconColor,
                             defaultColor: HaboColors.primary,
                             onPicked: (value) {
                               Provider.of<SettingsManager>(context,
@@ -387,10 +389,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             },
                           ),
                           ColorIcon(
-                            color: Provider.of<SettingsManager>(context,
-                                    listen: false)
+                            color: Provider.of<SettingsManager>(context)
                                 .progressColor,
                             icon: Icons.trending_up,
+                            iconColor:
+                                Provider.of<SettingsManager>(context).iconColor,
                             defaultColor: HaboColors.progress,
                             onPicked: (value) {
                               Provider.of<SettingsManager>(context,
@@ -399,10 +402,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             },
                           ),
                           ColorIcon(
-                            color: Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .failColor,
+                            color:
+                                Provider.of<SettingsManager>(context).failColor,
                             icon: Icons.close,
+                            iconColor:
+                                Provider.of<SettingsManager>(context).iconColor,
                             defaultColor: HaboColors.red,
                             onPicked: (value) {
                               Provider.of<SettingsManager>(context,
@@ -411,10 +415,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             },
                           ),
                           ColorIcon(
-                            color: Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .skipColor,
+                            color:
+                                Provider.of<SettingsManager>(context).skipColor,
                             icon: Icons.last_page,
+                            iconColor:
+                                Provider.of<SettingsManager>(context).iconColor,
                             defaultColor: HaboColors.skip,
                             onPicked: (value) {
                               Provider.of<SettingsManager>(context,

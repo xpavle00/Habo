@@ -84,7 +84,6 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                             avatar: Icon(
                               category.icon,
                               size: 18,
-                              color: Theme.of(context).colorScheme.primary,
                             ),
                             label: Text(category.title),
                             deleteIcon: const Icon(Icons.close, size: 16),
@@ -397,7 +396,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       );
       _editTitleController.text = '';
       _editSelectedIcon = Icons.category;
-      _editSelectedFontFamily = null; // Material Icons don't need explicit font family
+      _editSelectedFontFamily =
+          null; // Material Icons don't need explicit font family
     });
   }
 
@@ -465,7 +465,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           return;
         }
 
-        await habitsManager.addCategory(title, _editSelectedIcon.codePoint, _editSelectedFontFamily);
+        await habitsManager.addCategory(
+            title, _editSelectedIcon.codePoint, _editSelectedFontFamily);
 
         // Find the newly created category and auto-select it
         final newCategory = habitsManager.allCategories
