@@ -62,9 +62,12 @@ class SettingsManager extends ChangeNotifier {
   }
 
   void playCheckSound() {
-    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+    if (_settingsData.soundEffects &&
+        _soundsLoaded &&
+        _settingsData.soundVolume > 0) {
       try {
-        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        final volume =
+            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
         SoLoud.instance.play(_checkSource, volume: volume);
       } catch (e) {
         // Handle playback error gracefully
@@ -75,9 +78,12 @@ class SettingsManager extends ChangeNotifier {
   }
 
   void playClickSound() {
-    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+    if (_settingsData.soundEffects &&
+        _soundsLoaded &&
+        _settingsData.soundVolume > 0) {
       try {
-        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        final volume =
+            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
         SoLoud.instance.play(_clickSource, volume: volume);
       } catch (e) {
         // Handle playback error gracefully
@@ -111,7 +117,9 @@ class SettingsManager extends ChangeNotifier {
       case Themes.oled:
         return HaboTheme.oledTheme;
       case Themes.materialYou:
-        return HaboTheme.darkTheme; // Fallback for Material You
+        return HaboTheme.darkTheme; //
+      case Themes.dracula:
+        return HaboTheme.draculaTheme;
       default:
         return HaboTheme.darkTheme;
     }
@@ -128,7 +136,9 @@ class SettingsManager extends ChangeNotifier {
       case Themes.oled:
         return HaboTheme.oledTheme;
       case Themes.materialYou:
-        return HaboTheme.lightTheme; // Fallback for Material You
+        return HaboTheme.lightTheme; // Fa
+      case Themes.dracula:
+        return HaboTheme.draculaTheme;
       default:
         return HaboTheme.lightTheme;
     }
@@ -186,6 +196,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.progressColor;
   }
 
+  Color get iconColor {
+    return _settingsData.iconColor;
+  }
+
   bool get getBiometricLock {
     return _settingsData.biometricLock;
   }
@@ -210,6 +224,19 @@ class SettingsManager extends ChangeNotifier {
 
   set setTheme(Themes value) {
     _settingsData.theme = value;
+    if (value == Themes.dracula) {
+      _settingsData.checkColor = draculaGreen;
+      _settingsData.failColor = draculaRed;
+      _settingsData.skipColor = draculaYellow;
+      _settingsData.progressColor = draculaCyan;
+      _settingsData.iconColor = draculaSelection;
+    } else {
+      _settingsData.checkColor = HaboColors.primary;
+      _settingsData.failColor = HaboColors.red;
+      _settingsData.skipColor = HaboColors.skip;
+      _settingsData.progressColor = HaboColors.progress;
+      _settingsData.iconColor = Colors.white;
+    }
     saveData();
     notifyListeners();
   }

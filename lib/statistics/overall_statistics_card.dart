@@ -30,8 +30,7 @@ class OverallStatisticsCard extends StatelessWidget {
                     PieChartData(
                       sections: showingSections(context),
                     ),
-                    duration:
-                        const Duration(milliseconds: 150), // Optional
+                    duration: const Duration(milliseconds: 150), // Optional
                     curve: Curves.linear, // Optional
                   ),
                   Center(
@@ -157,12 +156,11 @@ class OverallStatisticsCard extends StatelessWidget {
     return [
       if (total.checks != 0)
         PieChartSectionData(
-          color:
-              Provider.of<SettingsManager>(context, listen: false).checkColor,
+          color: Provider.of<SettingsManager>(context).checkColor,
           value: total.checks.toDouble(),
-          badgeWidget: const Icon(
+          badgeWidget: Icon(
             Icons.check,
-            color: Colors.white,
+            color: Provider.of<SettingsManager>(context).iconColor,
           ),
           title: '',
           radius: 25.0,
@@ -171,11 +169,11 @@ class OverallStatisticsCard extends StatelessWidget {
         ),
       if (total.skips != 0)
         PieChartSectionData(
-          color: Provider.of<SettingsManager>(context, listen: false).skipColor,
+          color: Provider.of<SettingsManager>(context).skipColor,
           value: total.skips.toDouble(),
-          badgeWidget: const Icon(
+          badgeWidget: Icon(
             Icons.last_page,
-            color: Colors.white,
+            color: Provider.of<SettingsManager>(context).iconColor,
           ),
           title: '',
           radius: 25.0,
@@ -184,12 +182,11 @@ class OverallStatisticsCard extends StatelessWidget {
         ),
       if (total.progress != 0)
         PieChartSectionData(
-          color: Provider.of<SettingsManager>(context, listen: false)
-              .progressColor,
+          color: Provider.of<SettingsManager>(context).progressColor,
           value: total.progress.toDouble(),
-          badgeWidget: const Icon(
+          badgeWidget: Icon(
             Icons.trending_up,
-            color: Colors.white,
+            color: Provider.of<SettingsManager>(context).iconColor,
           ),
           title: '',
           radius: 25.0,
@@ -198,11 +195,11 @@ class OverallStatisticsCard extends StatelessWidget {
         ),
       if (total.fails != 0)
         PieChartSectionData(
-          color: Provider.of<SettingsManager>(context, listen: false).failColor,
+          color: Provider.of<SettingsManager>(context).failColor,
           value: total.fails.toDouble(),
-          badgeWidget: const Icon(
+          badgeWidget: Icon(
             Icons.close,
-            color: Colors.white,
+            color: Provider.of<SettingsManager>(context).iconColor,
           ),
           title: '',
           radius: 25.0,

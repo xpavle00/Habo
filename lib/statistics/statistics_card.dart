@@ -31,10 +31,7 @@ class StatisticsCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     data.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -50,16 +47,17 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).topStreak,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       data.topStreak.toString(),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -67,16 +65,17 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).currentStreak,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       data.actualStreak.toString(),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -102,9 +101,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.check,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .checkColor,
+                      color: Provider.of<SettingsManager>(context).checkColor,
                     ),
                     Text(
                       data.checks.toString(),
@@ -124,8 +121,7 @@ class StatisticsCard extends StatelessWidget {
                     Icon(
                       Icons.trending_up,
                       color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .progressColor,
+                          Provider.of<SettingsManager>(context).progressColor,
                     ),
                     Text(
                       data.progress.toString(),
@@ -144,9 +140,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.last_page,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
+                      color: Provider.of<SettingsManager>(context).skipColor,
                     ),
                     Text(
                       data.skips.toString(),
@@ -165,9 +159,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.close,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .failColor,
+                      color: Provider.of<SettingsManager>(context).failColor,
                     ),
                     Text(
                       data.fails.toString(),

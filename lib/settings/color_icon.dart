@@ -9,12 +9,14 @@ class ColorIcon extends StatefulWidget {
       required this.color,
       required this.icon,
       required this.defaultColor,
-      required this.onPicked});
+      required this.onPicked,
+      this.iconColor = Colors.white});
 
   final Color color;
   final IconData icon;
   final Color defaultColor;
   final Function onPicked;
+  final Color iconColor;
 
   @override
   State<ColorIcon> createState() => _ColorIconState();
@@ -26,6 +28,12 @@ class _ColorIconState extends State<ColorIcon> {
   @override
   void initState() {
     super.initState();
+    tempColor = widget.color.withValues(alpha: 1.0);
+  }
+
+  @override
+  void didUpdateWidget(covariant ColorIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
     tempColor = widget.color.withValues(alpha: 1.0);
   }
 
@@ -47,7 +55,7 @@ class _ColorIconState extends State<ColorIcon> {
               widget.icon,
               size: 16,
             ),
-            color: Colors.white,
+            color: widget.iconColor,
             onPressed: () {
               showDialog(
                   context: context,
@@ -74,9 +82,8 @@ class _ColorIconState extends State<ColorIcon> {
                                   const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                 ),
-                                foregroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        Colors.white),
+                                foregroundColor: WidgetStatePropertyAll<Color>(
+                                    widget.iconColor),
                                 backgroundColor:
                                     const WidgetStatePropertyAll<Color>(
                                         Colors.grey),
@@ -96,9 +103,8 @@ class _ColorIconState extends State<ColorIcon> {
                                 foregroundColor:
                                     const WidgetStatePropertyAll<Color>(
                                         Colors.white),
-                                backgroundColor:
-                                    WidgetStatePropertyAll<Color>(
-                                        widget.defaultColor),
+                                backgroundColor: WidgetStatePropertyAll<Color>(
+                                    widget.defaultColor),
                               ),
                               onPressed: () {
                                 setState(
