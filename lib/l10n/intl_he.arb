@@ -212,5 +212,11 @@
     "defineYourHabitsDescription": "כדי לדבוק טוב יותר בהרגלים, אפשר להגדיר:",
     "@defineYourHabitsDescription": {},
     "observeYourProgress": "שמירה על ההתקדמות",
-    "@observeYourProgress": {}
+    "@observeYourProgress": {},
+    "backupCreatedSuccessfully": "הגיבוי נוצר בהצלחה!",
+    "@backupCreatedSuccessfully": {},
+    "backupFailed": "הגיבוי נכשל!",
+    "@backupFailed": {},
+    "restoreCompletedSuccessfully": "השחזור הושלם בהצלחה!",
+    "@restoreCompletedSuccessfully": {}
 }
