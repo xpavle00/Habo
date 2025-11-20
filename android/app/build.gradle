@@ -32,9 +32,9 @@ android {
     namespace "com.pavlenko.Habo"
 
     compileSdk flutter.compileSdkVersion
-    ndkVersion '26.1.10909125'
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -72,6 +72,9 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 flutter {
@@ -79,5 +82,14 @@ flutter {
 }
 
 dependencies {
+    // Force compatible versions of androidx.work
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+}
 
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.work:work-runtime:2.9.0'
+        force 'androidx.work:work-runtime-ktx:2.9.0'
+    }
 }

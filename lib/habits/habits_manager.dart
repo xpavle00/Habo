@@ -13,6 +13,8 @@ import 'package:habo/statistics/statistics.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/home_widget_service.dart';
+import 'package:habo/helpers/widget_update_helper.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
@@ -27,6 +29,9 @@ class HabitsManager extends ChangeNotifier {
   late List<Habit> allHabits = [];
   late List<Category> allCategories = [];
   bool _isInitialized = false;
+  
+  // Store context for widget updates
+  BuildContext? _widgetContext;
 
   Habit? deletedHabit;
   Queue<Habit> toDelete = Queue();
@@ -59,6 +64,7 @@ class HabitsManager extends ChangeNotifier {
   Future<void> initialize() async {
     await initModel();
     await loadCategories();
+    await HomeWidgetService.initialize();
     notifyListeners();
   }
 
@@ -157,11 +163,40 @@ class HabitsManager extends ChangeNotifier {
   void addEvent(int id, DateTime dateTime, List event) {
     _eventRepository.insertEvent(id, dateTime, event);
     _notificationService?.handleHabitEventAdded(id, dateTime, event);
+    // Update home widget after event is added
+    _updateHomeWidgetAsync();
   }
 
   void deleteEvent(int id, DateTime dateTime) {
     _eventRepository.deleteEvent(id, dateTime);
     _notificationService?.handleHabitEventDeleted(id, dateTime);
+    // Update home widget after event is deleted
+    _updateHomeWidgetAsync();
+  }
+  
+  /// Set the context for widget updates.
+  /// Should be called once from the main app widget.
+  void setWidgetContext(BuildContext context) {
+    _widgetContext = context;
+  }
+  
+  /// Updates the home widget with current habit data.
+  /// This is called automatically when habits change.
+  void _updateHomeWidgetAsync() {
+    if (_widgetContext != null && _widgetContext!.mounted) {
+      // Schedule widget update for next frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_widgetContext != null && _widgetContext!.mounted) {
+          WidgetUpdateHelper.updateHomeWidget(_widgetContext!, allHabits);
+        }
+      });
+    }
+  }
+  
+  /// Manually update the home widget.
+  /// Can be called from UI when needed.
+  Future<void> updateHomeWidget(BuildContext context) async {
+    await WidgetUpdateHelper.updateHomeWidget(context, allHabits);
   }
 
   void addHabit(
