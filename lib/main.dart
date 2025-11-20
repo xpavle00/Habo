@@ -102,6 +102,14 @@ class _HaboState extends State<Habo> {
       _appRouter = appRouter;
       _isInitialized = true;
     });
+    
+    // Update home widget on app launch to ensure correct state
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.mounted) {
+        await habitsManager.updateHomeWidget(context);
+      }
+    });
+    
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
   }
@@ -165,6 +173,10 @@ class _HaboState extends State<Habo> {
             routeInformationParser: HaboRouteInformationParser(),
             backButtonDispatcher: RootBackButtonDispatcher(),
             builder: (context, child) {
+              // Set context for automatic widget updates
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _habitManager.setWidgetContext(context);
+              });
               return BiometricAuthWrapper(child: child!);
             },
           );

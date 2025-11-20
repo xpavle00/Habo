@@ -20,7 +20,7 @@ dependencies:
   introduction_screen: ^4.0.0
   flutter_svg: ^2.0.7
   url_launcher: ^6.1.12
-  package_info_plus: ^8.3.0
+  package_info_plus: ^9.0.0
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0+2
   path: ^1.8.3
@@ -45,6 +45,7 @@ dependencies:
   local_auth: ^2.3.0
   local_auth_android: ^1.0.51
   local_auth_darwin: ^1.6.0
+  home_widget: ^0.8.1
 
 dev_dependencies:
   flutter_test:
