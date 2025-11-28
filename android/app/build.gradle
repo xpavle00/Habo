@@ -34,6 +34,7 @@ android {
     compileSdk flutter.compileSdkVersion
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -83,6 +84,7 @@ flutter {
 dependencies {
     // Force compatible versions of androidx.work
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
 
 configurations.all {

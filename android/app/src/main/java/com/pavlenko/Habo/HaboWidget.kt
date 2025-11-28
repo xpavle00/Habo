@@ -8,8 +8,12 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.RemoteViews
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import es.antonborri.home_widget.HomeWidgetPlugin
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 /**
  * Implementation of App Widget functionality.
@@ -24,6 +28,30 @@ class HaboWidget : AppWidgetProvider() {
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
+        scheduleMidnightUpdate(context)
+    }
+
+    override fun onEnabled(context: Context) {
+        super.onEnabled(context)
+        scheduleMidnightUpdate(context)
+    }
+
+    private fun scheduleMidnightUpdate(context: Context) {
+        val now = java.time.LocalDateTime.now()
+        val midnight = now.toLocalDate().plusDays(1).atStartOfDay()
+        val initialDelay = java.time.Duration.between(now, midnight).toMinutes()
+
+        val midnightWork = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(
+            24, TimeUnit.HOURS
+        )
+            .setInitialDelay(initialDelay, TimeUnit.MINUTES)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "midnightUpdate",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            midnightWork
+        )
     }
 }
 
@@ -54,7 +82,7 @@ internal fun updateAppWidget(
             }
             val today = java.time.LocalDate.now()
             shouldShowEmpty = today.isAfter(lastDay)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             // If parsing fails, use current state
             shouldShowEmpty = false
         }
