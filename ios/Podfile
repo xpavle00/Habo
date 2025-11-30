@@ -37,6 +37,12 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
+pre_install do |installer|
+  # Workaround for rive_native build issue
+  puts "Running rive_native setup..."
+  system("dart run rive_native:setup --platform ios")
+end
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
