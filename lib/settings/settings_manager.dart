@@ -7,6 +7,7 @@ import 'package:habo/model/settings_data.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,23 @@ class SettingsManager extends ChangeNotifier {
 
   Future<void> _initializeSounds() async {
     try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration(
+        avAudioSessionCategory: AVAudioSessionCategory.playback,
+        avAudioSessionCategoryOptions:
+            AVAudioSessionCategoryOptions.mixWithOthers,
+        avAudioSessionMode: AVAudioSessionMode.defaultMode,
+        avAudioSessionRouteSharingPolicy:
+            AVAudioSessionRouteSharingPolicy.defaultPolicy,
+        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+        androidAudioAttributes: AndroidAudioAttributes(
+          contentType: AndroidAudioContentType.sonification,
+          flags: AndroidAudioFlags.none,
+          usage: AndroidAudioUsage.assistanceSonification,
+        ),
+        androidWillPauseWhenDucked: false,
+      ));
+
       await SoLoud.instance.init();
       _checkSource = await SoLoud.instance.loadAsset('assets/sounds/check.wav');
       _clickSource = await SoLoud.instance.loadAsset('assets/sounds/click.wav');
@@ -61,11 +79,14 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
-  void playCheckSound() {
-    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+  Future<void> playCheckSound() async {
+    if (_settingsData.soundEffects &&
+        _soundsLoaded &&
+        _settingsData.soundVolume > 0) {
       try {
-        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        SoLoud.instance.play(_checkSource, volume: volume);
+        final volume =
+            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        await SoLoud.instance.play(_checkSource, volume: volume);
       } catch (e) {
         // Handle playback error gracefully
       } finally {
@@ -74,11 +95,14 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
-  void playClickSound() {
-    if (_settingsData.soundEffects && _soundsLoaded && _settingsData.soundVolume > 0) {
+  Future<void> playClickSound() async {
+    if (_settingsData.soundEffects &&
+        _soundsLoaded &&
+        _settingsData.soundVolume > 0) {
       try {
-        final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        SoLoud.instance.play(_clickSource, volume: volume);
+        final volume =
+            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+        await SoLoud.instance.play(_clickSource, volume: volume);
       } catch (e) {
         // Handle playback error gracefully
       } finally {
