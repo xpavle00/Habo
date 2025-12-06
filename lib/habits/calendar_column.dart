@@ -22,7 +22,8 @@ class _CalendarColumnState extends State<CalendarColumn> {
   @override
   Widget build(BuildContext context) {
     final habitsManager = Provider.of<HabitsManager>(context);
-    final List<Habit> calendars = habitsManager.getHabitsByCategory(selectedCategory);
+    final List<Habit> calendars =
+        habitsManager.getHabitsByCategory(selectedCategory);
 
     return Column(
       children: <Widget>[
@@ -48,39 +49,44 @@ class _CalendarColumnState extends State<CalendarColumn> {
         ),
         Expanded(
           child: (calendars.isNotEmpty)
-              ? ReorderableListView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 120),
-                  children: calendars
-                      .map(
-                        (index) => Container(
-                          key: ObjectKey(index),
-                          child: index,
-                        ),
-                      )
-                      .toList(),
-                  onReorder: (oldIndex, newIndex) {
-                    // Need to handle reordering with filtered list
-                    final allHabits = habitsManager.getAllHabits;
-                    final oldHabit = calendars[oldIndex];
-                    
-                    // Find the actual indices in the full list
-                    final actualOldIndex = allHabits.indexOf(oldHabit);
-                    int actualNewIndex;
-                    
-                    // Handle the case where newIndex is out of bounds (moving to last position)
-                    if (newIndex >= calendars.length) {
-                      // Moving to the end of the filtered list means moving to the position
-                      // after the last habit in this category within the full list
-                      actualNewIndex = allHabits.length;
-                    } else {
-                      final newHabit = calendars[newIndex];
-                      actualNewIndex = allHabits.indexOf(newHabit);
-                    }
-                    
-                    Provider.of<HabitsManager>(context, listen: false)
-                        .reorderList(actualOldIndex, actualNewIndex);
+              ? RefreshIndicator(
+                  onRefresh: () async {
+                    await habitsManager.refreshAll();
                   },
+                  child: ReorderableListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 120),
+                    children: calendars
+                        .map(
+                          (index) => Container(
+                            key: ObjectKey(index),
+                            child: index,
+                          ),
+                        )
+                        .toList(),
+                    onReorder: (oldIndex, newIndex) {
+                      // Need to handle reordering with filtered list
+                      final allHabits = habitsManager.getAllHabits;
+                      final oldHabit = calendars[oldIndex];
+
+                      // Find the actual indices in the full list
+                      final actualOldIndex = allHabits.indexOf(oldHabit);
+                      int actualNewIndex;
+
+                      // Handle the case where newIndex is out of bounds (moving to last position)
+                      if (newIndex >= calendars.length) {
+                        // Moving to the end of the filtered list means moving to the position
+                        // after the last habit in this category within the full list
+                        actualNewIndex = allHabits.length;
+                      } else {
+                        final newHabit = calendars[newIndex];
+                        actualNewIndex = allHabits.indexOf(newHabit);
+                      }
+
+                      Provider.of<HabitsManager>(context, listen: false)
+                          .reorderList(actualOldIndex, actualNewIndex);
+                    },
+                  ),
                 )
               : _buildEmptyState(),
         ),
@@ -104,15 +110,15 @@ class _CalendarColumnState extends State<CalendarColumn> {
             Text(
               S.of(context).noHabitsInCategory(selectedCategory!.title),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               S.of(context).createHabitForCategory,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],
