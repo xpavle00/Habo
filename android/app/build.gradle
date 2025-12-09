@@ -69,7 +69,11 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (keystoreProperties['storeFile']) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
     buildFeatures {
