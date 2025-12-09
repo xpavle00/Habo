@@ -30,7 +30,7 @@ jobs:
         run: flutter test
 
       - name: Check formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
   build-android:
     runs-on: ubuntu-latest
