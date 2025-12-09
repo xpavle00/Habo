@@ -23,6 +23,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Generate Icon Packs
+        run: dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
+
       - name: Analyze code
         run: flutter analyze
 
@@ -47,6 +50,9 @@ jobs:
 
       - name: Get dependencies
         run: flutter pub get
+
+      - name: Generate Icon Packs
+        run: dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
 
       - name: Build Android APK
         run: flutter build apk --release --no-tree-shake-icons
