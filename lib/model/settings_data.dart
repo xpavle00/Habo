@@ -29,8 +29,7 @@ class SettingsData {
             (json['showDailyNot'] != null) ? json['showDailyNot'] : true,
         soundEffects =
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
-        soundVolume =
-            (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
+        soundVolume = (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
         showMonthName =
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
         seenOnboarding =
@@ -40,7 +39,6 @@ class SettingsData {
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
             : const TimeOfDay(hour: 20, minute: 0),
-
         checkColor = (json['checkColor'] != null)
             ? Color(json['checkColor'])
             : HaboColors.primary,
@@ -53,9 +51,8 @@ class SettingsData {
         progressColor = (json['progressColor'] != null)
             ? Color(json['progressColor'])
             : HaboColors.progress,
-        biometricLock = (json['biometricLock'] != null) 
-            ? json['biometricLock'] 
-            : false,
+        biometricLock =
+            (json['biometricLock'] != null) ? json['biometricLock'] : false,
         lastWhatsNewVersion = (json['lastWhatsNewVersion'] != null)
             ? json['lastWhatsNewVersion']
             : '';

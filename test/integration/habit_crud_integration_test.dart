@@ -14,10 +14,15 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 class TestHabitScreen extends StatelessWidget {
@@ -103,8 +108,9 @@ void main() {
       notificationService: MockNotificationService(),
       uiFeedbackService: MockUIFeedbackService(),
     );
-    
-    when(() => mockHabitRepository.createHabit(any())).thenAnswer((_) async => 1);
+
+    when(() => mockHabitRepository.createHabit(any()))
+        .thenAnswer((_) async => 1);
     when(() => mockHabitRepository.updateHabit(any())).thenAnswer((_) async {});
     when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
   });
@@ -166,7 +172,7 @@ class _HabitManagementScreenState extends State<HabitManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final habitsManager = context.watch<HabitsManager>();
-    
+
     return Scaffold(
       appBar: AppBar(title: const Text('Habit Tracker')),
       body: ListView.builder(
@@ -189,7 +195,7 @@ class _HabitManagementScreenState extends State<HabitManagementScreen> {
   void _showAddHabitDialog(BuildContext context) {
     final habitsManager = context.read<HabitsManager>();
     final controller = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

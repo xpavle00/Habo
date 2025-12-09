@@ -20,10 +20,15 @@ import 'package:habo/generated/l10n.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockBackupRepository extends Mock implements BackupRepository {}
+
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -74,7 +79,7 @@ void main() {
     mockUIFeedbackService = MockUIFeedbackService();
 
     backupService = BackupService(mockUIFeedbackService, mockBackupRepository);
-    
+
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
       eventRepository: mockEventRepository,
@@ -91,28 +96,32 @@ void main() {
         // Arrange
         when(() => mockBackupRepository.exportAllData())
             .thenAnswer((_) async => {
-              'habits': [
-                {
-                  'id': 1,
-                  'position': 0,
-                  'title': 'Test Habit 1',
-                  'twoDayRule': false,
-                  'cue': 'Morning',
-                  'routine': 'Exercise',
-                  'reward': 'Feel good',
-                  'showReward': true,
-                  'advanced': true,
-                  'notification': true,
-                  'notTime': {'hour': 8, 'minute': 0},
-                  'events': {'2024-01-01': [1], '2024-01-02': [2], '2024-01-03': [3]},
-                  'sanction': 'No coffee',
-                  'showSanction': true,
-                  'accountant': 'John',
-                },
-              ],
-              'categories': [],
-              'habit_categories': [],
-            });
+                  'habits': [
+                    {
+                      'id': 1,
+                      'position': 0,
+                      'title': 'Test Habit 1',
+                      'twoDayRule': false,
+                      'cue': 'Morning',
+                      'routine': 'Exercise',
+                      'reward': 'Feel good',
+                      'showReward': true,
+                      'advanced': true,
+                      'notification': true,
+                      'notTime': {'hour': 8, 'minute': 0},
+                      'events': {
+                        '2024-01-01': [1],
+                        '2024-01-02': [2],
+                        '2024-01-03': [3]
+                      },
+                      'sanction': 'No coffee',
+                      'showSanction': true,
+                      'accountant': 'John',
+                    },
+                  ],
+                  'categories': [],
+                  'habit_categories': [],
+                });
 
         // Act - Test only the repository call, not the full backup service
         final result = await mockBackupRepository.exportAllData();
@@ -130,7 +139,7 @@ void main() {
 
         // Act & Assert - Test that exception is thrown
         expect(() => mockBackupRepository.exportAllData(), throwsException);
-        
+
         // Verify the mock was set up correctly
         try {
           await mockBackupRepository.exportAllData();
@@ -209,7 +218,7 @@ void main() {
         // Act & Assert - Test JSON encoding/decoding of empty data
         final jsonString = jsonEncode(emptyBackupData);
         final decodedData = jsonDecode(jsonString);
-        
+
         expect(decodedData['habits'], isEmpty);
         expect(decodedData['categories'], isEmpty);
         expect(decodedData['habit_categories'], isEmpty);
@@ -266,10 +275,10 @@ void main() {
         // Arrange
         when(() => mockBackupRepository.exportAllData())
             .thenAnswer((_) async => {
-              'habits': [],
-              'categories': [],
-              'habit_categories': [],
-            });
+                  'habits': [],
+                  'categories': [],
+                  'habit_categories': [],
+                });
 
         // Act - Test only the repository call
         final result = await mockBackupRepository.exportAllData();
@@ -301,17 +310,17 @@ void main() {
         // Arrange
         when(() => mockBackupRepository.exportAllData())
             .thenAnswer((_) async => {
-              'habits': [],
-              'categories': [],
-              'habit_categories': [],
-            });
+                  'habits': [],
+                  'categories': [],
+                  'habit_categories': [],
+                });
 
         // Act - Test that HabitsManager has backup service injected
         expect(habitsManager, isNotNull);
-        
+
         // Test the repository directly since HabitsManager.createBackup() has file dependencies
         final result = await mockBackupRepository.exportAllData();
-        
+
         // Assert
         expect(result, isNotNull);
         verify(() => mockBackupRepository.exportAllData()).called(1);
@@ -320,7 +329,9 @@ void main() {
       test('should restore backup through HabitsManager', () async {
         // Arrange
         final testData = {
-          'habits': [{'id': 1, 'title': 'Test'}],
+          'habits': [
+            {'id': 1, 'title': 'Test'}
+          ],
           'categories': [],
           'habit_categories': [],
         };
@@ -451,7 +462,10 @@ void main() {
         // Act & Assert - Test large dataset directly
         expect(habitData.events.length, equals(365));
         expect(habitData.events.keys.first, equals(DateTime(2024, 1, 1)));
-        expect(habitData.events.keys.last, equals(DateTime(2024, 12, 30))); // Fixed: 365 days from Jan 1 is Dec 30
+        expect(
+            habitData.events.keys.last,
+            equals(DateTime(
+                2024, 12, 30))); // Fixed: 365 days from Jan 1 is Dec 30
       });
     });
 
@@ -472,7 +486,7 @@ void main() {
         // Act & Assert - Test JSON validation
         final jsonString = jsonEncode(corruptedBackupData);
         final decodedData = jsonDecode(jsonString);
-        
+
         // Verify the corrupted data structure is preserved
         expect(decodedData['habits'][0]['id'], equals('invalid_id'));
         expect(decodedData['habits'][0]['title'], isNull);
@@ -493,19 +507,20 @@ void main() {
         // Act & Assert - Test JSON encoding/decoding
         final jsonString = jsonEncode(incompleteBackupData);
         final decodedData = jsonDecode(jsonString);
-        
+
         expect(decodedData['habits'][0]['id'], equals(1));
         expect(decodedData['habits'][0]['title'], isNull);
       });
 
-      test('should provide meaningful error messages for backup failures', () async {
+      test('should provide meaningful error messages for backup failures',
+          () async {
         // Arrange
         when(() => mockBackupRepository.exportAllData())
             .thenThrow(Exception('Database connection failed'));
 
         // Act & Assert
         expect(() => mockBackupRepository.exportAllData(), throwsException);
-        
+
         try {
           await mockBackupRepository.exportAllData();
         } catch (e) {
@@ -520,10 +535,10 @@ void main() {
         final startTime = DateTime.now();
         when(() => mockBackupRepository.exportAllData())
             .thenAnswer((_) async => {
-              'habits': [],
-              'categories': [],
-              'habit_categories': [],
-            });
+                  'habits': [],
+                  'categories': [],
+                  'habit_categories': [],
+                });
 
         // Act
         await mockBackupRepository.exportAllData();
@@ -531,20 +546,22 @@ void main() {
 
         // Assert
         final duration = endTime.difference(startTime);
-        expect(duration.inMilliseconds, lessThan(1000)); // Should complete within 1 second for mock
+        expect(duration.inMilliseconds,
+            lessThan(1000)); // Should complete within 1 second for mock
       });
 
       test('should handle concurrent backup operations', () async {
         // Arrange
         when(() => mockBackupRepository.exportAllData())
             .thenAnswer((_) async => {
-              'habits': [],
-              'categories': [],
-              'habit_categories': [],
-            });
+                  'habits': [],
+                  'categories': [],
+                  'habit_categories': [],
+                });
 
         // Act
-        final futures = List.generate(3, (_) => mockBackupRepository.exportAllData());
+        final futures =
+            List.generate(3, (_) => mockBackupRepository.exportAllData());
         final results = await Future.wait(futures);
 
         // Assert

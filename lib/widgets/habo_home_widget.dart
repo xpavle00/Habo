@@ -9,7 +9,7 @@ class HaboHomeWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? primaryColor;
   final Color? textColor;
-  
+
   const HaboHomeWidget({
     super.key,
     required this.data,
@@ -24,8 +24,9 @@ class HaboHomeWidget extends StatelessWidget {
     final primColor = primaryColor ?? HaboColors.primary;
     final txtColor = textColor ?? Colors.black;
 
-    final todaysHabits = data.completedHabits + data.skippedHabits + data.failedHabits;
-    
+    final todaysHabits =
+        data.completedHabits + data.skippedHabits + data.failedHabits;
+
     return Container(
       width: 170,
       height: 170,
@@ -44,36 +45,36 @@ class HaboHomeWidget extends StatelessWidget {
           ),
           SizedBox(height: 8),
           SizedBox(
-          width: 130,
-          height: 130,
-          child: CustomPaint(
-            painter: CircularProgressPainter(
-              total: data.totalHabits,
-              completed: data.completedHabits,
-              skipped: data.skippedHabits,
-              failed: data.failedHabits,
-              completedColor: primColor.withValues(alpha: 0.75),
-              skippedColor: primColor.withValues(alpha: 0.2),
-              failedColor: Colors.red,
-              remainingColor: Colors.grey.withValues(alpha: 0.3),
+            width: 130,
+            height: 130,
+            child: CustomPaint(
+              painter: CircularProgressPainter(
+                total: data.totalHabits,
+                completed: data.completedHabits,
+                skipped: data.skippedHabits,
+                failed: data.failedHabits,
+                completedColor: primColor.withValues(alpha: 0.75),
+                skippedColor: primColor.withValues(alpha: 0.2),
+                failedColor: Colors.red,
+                remainingColor: Colors.grey.withValues(alpha: 0.3),
+              ),
+              child: Center(
+                child: todaysHabits == data.totalHabits && data.totalHabits > 0
+                    ? Icon(
+                        Icons.check_rounded,
+                        size: 80,
+                        color: primColor,
+                      )
+                    : Text(
+                        '$todaysHabits/${data.totalHabits}',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: txtColor,
+                        ),
+                      ),
+              ),
             ),
-            child: Center(
-              child: todaysHabits == data.totalHabits && data.totalHabits > 0
-                ? Icon(
-                    Icons.check_rounded,
-                    size: 80,
-                    color: primColor,
-                  )
-                : Text(
-                    '$todaysHabits/${data.totalHabits}',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: txtColor,
-                    ),
-                  ),
-            ),
-          ),
           ),
         ],
       ),
@@ -91,7 +92,7 @@ class CircularProgressPainter extends CustomPainter {
   final Color skippedColor;
   final Color failedColor;
   final Color remainingColor;
-  
+
   CircularProgressPainter({
     required this.total,
     required this.completed,
@@ -102,7 +103,7 @@ class CircularProgressPainter extends CustomPainter {
     required this.failedColor,
     required this.remainingColor,
   });
-  
+
   // Legacy constructor for backward compatibility
   factory CircularProgressPainter.fromPercentage({
     required double percentage,
@@ -127,24 +128,24 @@ class CircularProgressPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = math.min(size.width, size.height) / 2;
     final strokeWidth = 12.0;
-    
+
     if (total == 0) return;
-    
+
     final startAngle = -math.pi / 2; // Start from top
     final segmentAngle = (2 * math.pi) / total;
-    
+
     // Draw background circle first (full circle, no rounded caps)
     final backgroundPaint = Paint()
       ..color = remainingColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.butt;
-    
+
     canvas.drawCircle(center, radius - strokeWidth / 2, backgroundPaint);
-    
+
     // Draw overlapping arcs from largest to smallest
     // This creates smooth transitions with rounded caps
-    
+
     // 1. Draw skipped arc (failed + completed + skipped)
     if (skipped > 0) {
       final skippedCount = failed + completed + skipped;
@@ -153,7 +154,7 @@ class CircularProgressPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth
         ..strokeCap = StrokeCap.round;
-      
+
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
         startAngle,
@@ -162,7 +163,7 @@ class CircularProgressPainter extends CustomPainter {
         skippedPaint,
       );
     }
-    
+
     // 2. Draw completed arc on top (failed + completed)
     if (completed > 0) {
       final completedCount = failed + completed;
@@ -171,7 +172,7 @@ class CircularProgressPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth
         ..strokeCap = StrokeCap.round;
-      
+
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
         startAngle,
@@ -180,7 +181,7 @@ class CircularProgressPainter extends CustomPainter {
         completedPaint,
       );
     }
-    
+
     // 3. Draw failed arc on top (failed only)
     if (failed > 0) {
       final failedPaint = Paint()
@@ -188,7 +189,7 @@ class CircularProgressPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth
         ..strokeCap = StrokeCap.round;
-      
+
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
         startAngle,
