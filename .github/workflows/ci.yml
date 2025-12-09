@@ -49,4 +49,4 @@ jobs:
         run: flutter pub get
 
       - name: Build Android APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-tree-shake-icons
