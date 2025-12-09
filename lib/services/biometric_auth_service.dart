@@ -6,12 +6,13 @@ import 'package:local_auth_darwin/local_auth_darwin.dart';
 import 'package:habo/generated/l10n.dart';
 
 class BiometricAuthService {
-  static final BiometricAuthService _instance = BiometricAuthService._internal();
+  static final BiometricAuthService _instance =
+      BiometricAuthService._internal();
   factory BiometricAuthService() => _instance;
   BiometricAuthService._internal();
 
   final LocalAuthentication _localAuth = LocalAuthentication();
-  
+
   // Cache for expensive operations
   List<BiometricType>? _cachedAvailableBiometrics;
   String? _cachedAuthDescription;
@@ -56,8 +57,10 @@ class BiometricAuthService {
       }
 
       // Check if device has authentication methods enrolled
-      final List<BiometricType> availableBiometrics = await getAvailableBiometrics();
-      debugPrint('BiometricAuthService: Available biometrics: $availableBiometrics');
+      final List<BiometricType> availableBiometrics =
+          await getAvailableBiometrics();
+      debugPrint(
+          'BiometricAuthService: Available biometrics: $availableBiometrics');
 
       final bool didAuthenticate = await _localAuth.authenticate(
         localizedReason: localizedReason,
@@ -71,8 +74,10 @@ class BiometricAuthService {
             biometricNotRecognized: S.of(context).biometricNotRecognized,
             biometricRequiredTitle: S.of(context).biometricRequired,
             biometricSuccess: S.of(context).biometricAuthenticationSucceeded,
-            deviceCredentialsRequiredTitle: S.of(context).deviceCredentialsRequired,
-            deviceCredentialsSetupDescription: S.of(context).setupDeviceCredentials,
+            deviceCredentialsRequiredTitle:
+                S.of(context).deviceCredentialsRequired,
+            deviceCredentialsSetupDescription:
+                S.of(context).setupDeviceCredentials,
           ),
           IOSAuthMessages(
             cancelButton: S.of(context).cancel,
@@ -87,23 +92,28 @@ class BiometricAuthService {
           sensitiveTransaction: true,
         ),
       );
-      debugPrint('BiometricAuthService: Authentication result: $didAuthenticate');
+      debugPrint(
+          'BiometricAuthService: Authentication result: $didAuthenticate');
       return didAuthenticate;
     } on PlatformException catch (e) {
-      debugPrint('BiometricAuthService: PlatformException - ${e.code}: ${e.message}');
+      debugPrint(
+          'BiometricAuthService: PlatformException - ${e.code}: ${e.message}');
       // Handle specific error cases
       switch (e.code) {
         case 'NotAvailable':
-          debugPrint('BiometricAuthService: Biometric authentication not available');
+          debugPrint(
+              'BiometricAuthService: Biometric authentication not available');
           return false;
         case 'NotEnrolled':
           debugPrint('BiometricAuthService: No biometric credentials enrolled');
           return false;
         case 'LockedOut':
-          debugPrint('BiometricAuthService: Authentication locked out temporarily');
+          debugPrint(
+              'BiometricAuthService: Authentication locked out temporarily');
           return false;
         case 'PermanentlyLockedOut':
-          debugPrint('BiometricAuthService: Authentication permanently locked out');
+          debugPrint(
+              'BiometricAuthService: Authentication permanently locked out');
           return false;
         case 'UserCancel':
           debugPrint('BiometricAuthService: User cancelled authentication');
@@ -121,13 +131,14 @@ class BiometricAuthService {
   /// Get a user-friendly description of available authentication methods (cached)
   Future<String> getAuthenticationDescription(BuildContext context) async {
     if (_cachedAuthDescription == null) {
-      final List<BiometricType> availableBiometrics = await getAvailableBiometrics();
-      
+      final List<BiometricType> availableBiometrics =
+          await getAvailableBiometrics();
+
       if (availableBiometrics.isEmpty) {
         _cachedAuthDescription = S.of(context).devicePinPatternPassword;
       } else {
         List<String> methods = [];
-        
+
         if (availableBiometrics.contains(BiometricType.face)) {
           methods.add("Face ID");
         }
@@ -137,20 +148,21 @@ class BiometricAuthService {
         if (availableBiometrics.contains(BiometricType.iris)) {
           methods.add(S.of(context).iris);
         }
-        if (availableBiometrics.contains(BiometricType.strong) || 
+        if (availableBiometrics.contains(BiometricType.strong) ||
             availableBiometrics.contains(BiometricType.weak)) {
           methods.add(S.of(context).biometric);
         }
-        
+
         // Add device credentials as fallback
         methods.add(S.of(context).devicePinPatternPassword);
-        
+
         if (methods.length == 1) {
           _cachedAuthDescription = methods.first;
         } else if (methods.length == 2) {
           _cachedAuthDescription = '${methods[0]} or ${methods[1]}';
         } else {
-          _cachedAuthDescription = '${methods.sublist(0, methods.length - 1).join(', ')}, or ${methods.last}';
+          _cachedAuthDescription =
+              '${methods.sublist(0, methods.length - 1).join(', ')}, or ${methods.last}';
         }
       }
     }

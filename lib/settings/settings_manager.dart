@@ -135,7 +135,8 @@ class SettingsManager extends ChangeNotifier {
       case Themes.oled:
         return HaboTheme.oledTheme;
       case Themes.materialYou:
-        return HaboTheme.darkTheme; }
+        return HaboTheme.darkTheme;
+    }
   }
 
   ThemeData get getLight {
@@ -149,7 +150,8 @@ class SettingsManager extends ChangeNotifier {
       case Themes.oled:
         return HaboTheme.oledTheme;
       case Themes.materialYou:
-        return HaboTheme.lightTheme; }
+        return HaboTheme.lightTheme;
+    }
   }
 
   Themes get getThemeString {

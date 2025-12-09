@@ -11,7 +11,8 @@ void main() {
   group('Repository Pattern Tests', () {
     setUpAll(() {
       // Register fallback values for mocktail
-      registerFallbackValue(Habit(habitData: HabitData(
+      registerFallbackValue(Habit(
+          habitData: HabitData(
         title: 'Test Habit',
         position: 0,
         twoDayRule: false,
@@ -47,7 +48,8 @@ void main() {
       });
 
       test('mock habit repository should work', () async {
-        final habit = Habit(habitData: HabitData(
+        final habit = Habit(
+            habitData: HabitData(
           title: 'Mock Test Habit',
           position: 0,
           twoDayRule: false,
@@ -73,11 +75,11 @@ void main() {
         // Test mock behavior
         final id = await mockHabitRepository.createHabit(habit);
         final habits = await mockHabitRepository.getAllHabits();
-        
+
         expect(id, equals(1));
         expect(habits.length, equals(1));
         expect(habits.first.habitData.title, equals('Mock Test Habit'));
-        
+
         verify(() => mockHabitRepository.createHabit(habit)).called(1);
         verify(() => mockHabitRepository.getAllHabits()).called(1);
       });
@@ -97,12 +99,14 @@ void main() {
         // Test mock behavior
         await mockEventRepository.insertEvent(habitId, date, [1]);
         final result = await mockEventRepository.getEventsMapForHabit(habitId);
-        
+
         expect(result.isNotEmpty, isTrue);
         expect(result[date], equals([1]));
-        
-        verify(() => mockEventRepository.insertEvent(habitId, date, [1])).called(1);
-        verify(() => mockEventRepository.getEventsMapForHabit(habitId)).called(1);
+
+        verify(() => mockEventRepository.insertEvent(habitId, date, [1]))
+            .called(1);
+        verify(() => mockEventRepository.getEventsMapForHabit(habitId))
+            .called(1);
       });
 
       test('mock backup repository should work', () async {
@@ -124,22 +128,24 @@ void main() {
         final exportedData = await mockBackupRepository.exportAllData();
         final habitCount = await mockBackupRepository.getHabitCount();
         final isValid = await mockBackupRepository.validateDatabaseIntegrity();
-        
+
         expect(exportedData['version'], equals(3));
         expect(habitCount, equals(0));
         expect(isValid, isTrue);
-        
+
         verify(() => mockBackupRepository.exportAllData()).called(1);
         verify(() => mockBackupRepository.getHabitCount()).called(1);
-        verify(() => mockBackupRepository.validateDatabaseIntegrity()).called(1);
+        verify(() => mockBackupRepository.validateDatabaseIntegrity())
+            .called(1);
       });
     });
 
     group('In-Memory Repository Tests', () {
       test('InMemoryHabitRepository should work correctly', () async {
         final inMemoryRepo = InMemoryHabitRepository();
-        
-        final habit = Habit(habitData: HabitData(
+
+        final habit = Habit(
+            habitData: HabitData(
           title: 'In-Memory Test',
           position: 0,
           twoDayRule: false,
@@ -160,13 +166,13 @@ void main() {
         final habits = await inMemoryRepo.getAllHabits();
         expect(habits.length, equals(1));
         expect(habits.first.habitData.title, equals('In-Memory Test'));
-        
+
         // Test update
         habit.habitData.title = 'Updated Title';
         await inMemoryRepo.updateHabit(habit);
         final updatedHabits = await inMemoryRepo.getAllHabits();
         expect(updatedHabits.first.habitData.title, equals('Updated Title'));
-        
+
         // Test delete
         await inMemoryRepo.deleteHabit(habit.habitData.id!);
         final emptyHabits = await inMemoryRepo.getAllHabits();
@@ -175,15 +181,15 @@ void main() {
 
       test('InMemoryEventRepository should work correctly', () async {
         final inMemoryRepo = InMemoryEventRepository();
-        
+
         const habitId = 1;
         final date = DateTime.now();
         await inMemoryRepo.insertEvent(habitId, date, [1]);
-        
+
         final eventsMap = await inMemoryRepo.getEventsMapForHabit(habitId);
         expect(eventsMap.isNotEmpty, isTrue);
         expect(eventsMap[date], equals([1]));
-        
+
         // Test remove event
         await inMemoryRepo.deleteEvent(habitId, date);
         final emptyEventsMap = await inMemoryRepo.getEventsMapForHabit(habitId);

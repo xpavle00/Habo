@@ -41,7 +41,7 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    
+
     // Only re-authenticate when app comes back to foreground after being paused
     if (state == AppLifecycleState.paused) {
       // Mark as needing re-authentication when app is paused
@@ -54,16 +54,18 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
   }
 
   bool _shouldRequireAuthentication() {
-    final settingsManager = Provider.of<SettingsManager>(context, listen: false);
+    final settingsManager =
+        Provider.of<SettingsManager>(context, listen: false);
     return settingsManager.getBiometricLock && _hasAuthenticationMethods;
   }
 
   Future<void> _initializeAuth() async {
     final available = await _biometricService.hasDeviceAuthentication();
     if (!mounted) return;
-    final description = await _biometricService.getAuthenticationDescription(context);
+    final description =
+        await _biometricService.getAuthenticationDescription(context);
     if (!mounted) return;
-    
+
     setState(() {
       _hasAuthenticationMethods = available;
       _authDescription = description;
@@ -105,10 +107,12 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
       });
 
       if (!authenticated) {
-        debugPrint('BiometricAuthWrapper: Authentication failed, showing retry dialog');
+        debugPrint(
+            'BiometricAuthWrapper: Authentication failed, showing retry dialog');
         _showAuthenticationFailedDialog();
       } else {
-        debugPrint('BiometricAuthWrapper: Authentication successful, user authenticated');
+        debugPrint(
+            'BiometricAuthWrapper: Authentication successful, user authenticated');
       }
     } catch (e) {
       if (!mounted) return;
@@ -128,7 +132,8 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(S.of(context).authenticationRequired),
-          content: Text(S.of(context).authenticationFailedMessage(_authDescription)),
+          content:
+              Text(S.of(context).authenticationFailedMessage(_authDescription)),
           actions: [
             TextButton(
               onPressed: () {
@@ -145,8 +150,9 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('BiometricAuthWrapper: build() called - shouldRequire: ${_shouldRequireAuthentication()}, isAuthenticated: $_isAuthenticated, isAuthenticating: $_isAuthenticating');
-    
+    debugPrint(
+        'BiometricAuthWrapper: build() called - shouldRequire: ${_shouldRequireAuthentication()}, isAuthenticated: $_isAuthenticated, isAuthenticating: $_isAuthenticating');
+
     if (!_shouldRequireAuthentication() || _isAuthenticated) {
       return widget.child;
     }
@@ -180,26 +186,30 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
               ),
             ),
             const SizedBox(height: 40),
-            
+
             // App name
             Text(
               S.of(context).habo,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: HaboColors.primary,
-              ),
+                    fontWeight: FontWeight.bold,
+                    color: HaboColors.primary,
+                  ),
             ),
             const SizedBox(height: 8),
-            
+
             // Subtitle
             Text(
               S.of(context).buildingBetterHabits,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.7),
-              ),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withValues(alpha: 0.7),
+                  ),
             ),
             const SizedBox(height: 60),
-            
+
             // Authentication prompt
             if (_isAuthenticating)
               Column(
@@ -220,7 +230,10 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
                   Icon(
                     Icons.lock_outline,
                     size: 48,
-                    color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.7),
+                    color: Theme.of(context)
+                        .iconTheme
+                        .color
+                        ?.withValues(alpha: 0.7),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -234,13 +247,17 @@ class _BiometricAuthWrapperState extends State<BiometricAuthWrapper>
                     child: Text(
                       S.of(context).authenticationPrompt(_authDescription),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
-                      ),
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.color
+                                ?.withValues(alpha: 0.7),
+                          ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(height: 30),
-                  
+
                   // Authenticate button
                   ElevatedButton.icon(
                     onPressed: _authenticate,

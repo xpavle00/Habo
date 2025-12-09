@@ -8,10 +8,11 @@ import 'package:habo/settings/settings_manager.dart';
 void main() {
   // Initialize Flutter binding for tests
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   // Set up mock shared preferences for testing
   setUp(() {
-    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
       const MethodChannel('plugins.flutter.io/shared_preferences'),
       (MethodCall methodCall) async {
         if (methodCall.method == 'getAll') {
@@ -26,15 +27,16 @@ void main() {
     test('service locator initializes correctly', () async {
       // Reset service locator to ensure clean state
       ServiceLocator.instance.reset();
-      
+
       // Create test dependencies
       final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
-      
+
       // Initialize service locator
-      ServiceLocator.instance.initialize(scaffoldKey, haboModel, settingsManager);
-      
+      ServiceLocator.instance
+          .initialize(scaffoldKey, haboModel, settingsManager);
+
       // Verify services are accessible
       expect(ServiceLocator.instance.backupService, isNotNull);
       expect(ServiceLocator.instance.notificationService, isNotNull);
@@ -50,28 +52,34 @@ void main() {
     test('service locator provides repository factory', () async {
       // Reset service locator to ensure clean state
       ServiceLocator.instance.reset();
-      
+
       final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
-      
-      ServiceLocator.instance.initialize(scaffoldKey, haboModel, settingsManager);
-      
+
+      ServiceLocator.instance
+          .initialize(scaffoldKey, haboModel, settingsManager);
+
       // Verify repository factory provides repositories
-      expect(ServiceLocator.instance.repositoryFactory.habitRepository, isNotNull);
-      expect(ServiceLocator.instance.repositoryFactory.eventRepository, isNotNull);
+      expect(
+          ServiceLocator.instance.repositoryFactory.habitRepository, isNotNull);
+      expect(
+          ServiceLocator.instance.repositoryFactory.eventRepository, isNotNull);
     });
 
     test('service locator can be reinitialized', () async {
       // Reset service locator to ensure clean state
       ServiceLocator.instance.reset();
-      
+
       // Verify service locator can handle reinitialization
       final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
-      
-      expect(() => ServiceLocator.instance.initialize(scaffoldKey, haboModel, settingsManager), returnsNormally);
+
+      expect(
+          () => ServiceLocator.instance
+              .initialize(scaffoldKey, haboModel, settingsManager),
+          returnsNormally);
     });
   });
 }
