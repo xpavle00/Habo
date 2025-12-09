@@ -13,7 +13,9 @@ import 'package:habo/statistics/statistics_screen.dart';
 import 'package:habo/whats_new/whats_new_screen.dart';
 
 class AppRouter extends RouterDelegate<HaboRouteConfiguration>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<HaboRouteConfiguration> {
+    with
+        ChangeNotifier,
+        PopNavigatorRouterDelegateMixin<HaboRouteConfiguration> {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -102,7 +104,7 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     // Handle deep link navigation
     _handleDeepLink(configuration.path);
   }
-  
+
   @override
   HaboRouteConfiguration get currentConfiguration {
     // Return current route configuration based on app state
@@ -126,11 +128,11 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     }
     return const HaboRouteConfiguration(path: '/');
   }
-  
+
   /// Handle deep link navigation by updating app state
   void _handleDeepLink(String path) {
     final normalizedPath = path.toLowerCase();
-    
+
     // Wait for app to be initialized before navigating
     if (!allInitialized()) {
       // Retry after a short delay if not initialized
@@ -141,7 +143,7 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       });
       return;
     }
-    
+
     // Defer state updates to avoid calling setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Reset all navigation states first
@@ -151,7 +153,7 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       appStateManager.goOnboarding(false);
       appStateManager.goWhatsNew(false);
       appStateManager.goEditHabit(null);
-      
+
       // Navigate based on the URL path
       switch (normalizedPath) {
         case '/statistics':

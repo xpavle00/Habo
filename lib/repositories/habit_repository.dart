@@ -4,7 +4,7 @@ import 'package:habo/habits/habit.dart';
 /// This interface defines the contract for all habit data access operations.
 abstract class HabitRepository {
   /// Retrieves all habits from the database, ordered by position.
-  /// 
+  ///
   /// Returns a [Future] containing a [List] of [Habit] objects.
   /// Habits include their complete data including events and metadata.
   Future<List<Habit>> getAllHabits();

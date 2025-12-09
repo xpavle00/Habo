@@ -15,10 +15,15 @@ import 'package:habo/model/habit_data.dart';
 import 'package:habo/constants.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -115,9 +120,10 @@ void main() {
           accountant: '',
         ),
       );
-      
-      when(() => mockHabitRepository.getAllHabits()).thenAnswer((_) async => [testHabit]);
-      
+
+      when(() => mockHabitRepository.getAllHabits())
+          .thenAnswer((_) async => [testHabit]);
+
       // Act
       habitsManager.resetNotifications([testHabit]);
 
@@ -129,10 +135,10 @@ void main() {
       // Arrange
       final today = DateTime.now();
       final event = [DayType.check];
-      
+
       // Act
       habitsManager.addEvent(1, today, event);
-      
+
       // Assert
       verify(() => mockEventRepository.insertEvent(1, today, event)).called(1);
     });
@@ -140,10 +146,10 @@ void main() {
     test('should handle habit event deletion', () async {
       // Arrange
       final today = DateTime.now();
-      
+
       // Act
       habitsManager.deleteEvent(1, today);
-      
+
       // Assert
       verify(() => mockEventRepository.deleteEvent(1, today)).called(1);
     });

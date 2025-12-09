@@ -13,13 +13,11 @@ class Category {
   String title;
   int iconCodePoint;
   String? fontFamily;
-  
+
   /// Get the IconData from the stored codePoint
-  IconData get icon => IconData(
-    iconCodePoint, 
-    fontFamily: fontFamily ?? 'MaterialIcons',
-    fontPackage: "font_awesome_flutter"
-  );
+  IconData get icon => IconData(iconCodePoint,
+      fontFamily: fontFamily ?? 'MaterialIcons',
+      fontPackage: "font_awesome_flutter");
 
   /// Convert category to map for database storage
   Map<String, dynamic> toMap() {

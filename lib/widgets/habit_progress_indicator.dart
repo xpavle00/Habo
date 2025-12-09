@@ -83,9 +83,10 @@ class HabitProgressIndicator extends StatelessWidget {
 
     Color progressColor;
     Color backgroundColor = HaboColors.progressBackground;
-    
-    final settingsManager = Provider.of<SettingsManager>(context, listen: false);
-    
+
+    final settingsManager =
+        Provider.of<SettingsManager>(context, listen: false);
+
     if (isExceeded) {
       progressColor = settingsManager.checkColor;
     } else if (isCompleted) {
@@ -170,8 +171,8 @@ class HabitProgressSummary extends StatelessWidget {
       return Text(
         '0 / ${habitData.targetValue.toStringAsFixed(habitData.targetValue == habitData.targetValue.roundToDouble() ? 0 : 1)} ${habitData.unit}',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Colors.grey.shade600,
-        ),
+              color: Colors.grey.shade600,
+            ),
       );
     }
 
@@ -180,14 +181,16 @@ class HabitProgressSummary extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall,
         children: [
           TextSpan(
-            text: progress.toStringAsFixed(progress == progress.roundToDouble() ? 0 : 1),
+            text: progress
+                .toStringAsFixed(progress == progress.roundToDouble() ? 0 : 1),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isCompleted ? HaboColors.primary : HaboColors.progress,
             ),
           ),
           TextSpan(
-            text: ' / ${habitData.targetValue.toStringAsFixed(habitData.targetValue == habitData.targetValue.roundToDouble() ? 0 : 1)} ${habitData.unit}',
+            text:
+                ' / ${habitData.targetValue.toStringAsFixed(habitData.targetValue == habitData.targetValue.roundToDouble() ? 0 : 1)} ${habitData.unit}',
             style: TextStyle(color: Colors.grey.shade600),
           ),
           if (isCompleted)

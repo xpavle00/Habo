@@ -17,15 +17,15 @@ class SQLiteEventRepository implements EventRepository {
   Future<List<List>> getEventsForHabit(int habitId) async {
     final habits = await _haboModel.getAllHabits();
     final habit = habits.firstWhere((h) => h.habitData.id == habitId);
-    
+
     // Convert events map to List format
     final eventsMap = habit.habitData.events;
     final events = <List>[];
-    
+
     eventsMap.forEach((dateTime, data) {
       events.add([dateTime, data[0], data[1]]);
     });
-    
+
     return events;
   }
 
@@ -51,14 +51,15 @@ class SQLiteEventRepository implements EventRepository {
     // Get the habit and clear its events
     final habits = await _haboModel.getAllHabits();
     final habit = habits.firstWhere((h) => h.habitData.id == habitId);
-    
+
     // Clear events by clearing the events map
     habit.habitData.events.clear();
     await _haboModel.editHabit(habit);
   }
 
   @override
-  Future<void> insertEventsForHabit(int habitId, Map<DateTime, List> events) async {
+  Future<void> insertEventsForHabit(
+      int habitId, Map<DateTime, List> events) async {
     for (final entry in events.entries) {
       await insertEvent(habitId, entry.key, entry.value);
     }
@@ -68,7 +69,7 @@ class SQLiteEventRepository implements EventRepository {
   Future<void> deleteAllEvents() async {
     // Clear events from all habits
     final habits = await _haboModel.getAllHabits();
-    
+
     for (final habit in habits) {
       habit.habitData.events.clear();
       await _haboModel.editHabit(habit);

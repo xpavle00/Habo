@@ -96,9 +96,8 @@ class _ColorIconState extends State<ColorIcon> {
                                 foregroundColor:
                                     const WidgetStatePropertyAll<Color>(
                                         Colors.white),
-                                backgroundColor:
-                                    WidgetStatePropertyAll<Color>(
-                                        widget.defaultColor),
+                                backgroundColor: WidgetStatePropertyAll<Color>(
+                                    widget.defaultColor),
                               ),
                               onPressed: () {
                                 setState(

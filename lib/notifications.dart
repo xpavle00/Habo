@@ -93,8 +93,9 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
   if (platformSupportsNotifications()) {
     try {
       // Get all scheduled notifications
-      final notifications = await AwesomeNotifications().listScheduledNotifications();
-      
+      final notifications =
+          await AwesomeNotifications().listScheduledNotifications();
+
       // Find the notification with the matching ID
       NotificationModel? existingNotification;
       for (var notification in notifications) {
@@ -103,14 +104,15 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
           break;
         }
       }
-      
-      if (existingNotification != null && existingNotification.content != null) {
+
+      if (existingNotification != null &&
+          existingNotification.content != null) {
         final content = existingNotification.content!;
         final schedule = existingNotification.schedule;
-        
+
         if (schedule is NotificationCalendar) {
           final tomorrow = DateTime.now().add(const Duration(days: 1));
-          
+
           await AwesomeNotifications().createNotification(
             content: NotificationContent(
               id: originalId,
@@ -131,7 +133,8 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
               millisecond: 0,
               repeats: true,
               preciseAlarm: true,
-              timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+              timeZone:
+                  await AwesomeNotifications().getLocalTimeZoneIdentifier(),
             ),
           );
         }
@@ -142,13 +145,13 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
   }
 }
 
-
 Future<void> rescheduleNotificationForToday(int originalId) async {
   if (platformSupportsNotifications()) {
     try {
       // Get all scheduled notifications
-      final notifications = await AwesomeNotifications().listScheduledNotifications();
-      
+      final notifications =
+          await AwesomeNotifications().listScheduledNotifications();
+
       // Find the notification with the matching ID
       NotificationModel? existingNotification;
       for (var notification in notifications) {
@@ -157,12 +160,13 @@ Future<void> rescheduleNotificationForToday(int originalId) async {
           break;
         }
       }
-      
-      if (existingNotification != null && existingNotification.content != null) {
+
+      if (existingNotification != null &&
+          existingNotification.content != null) {
         final content = existingNotification.content!;
         final schedule = existingNotification.schedule;
-        
-        if (schedule is NotificationCalendar) {          
+
+        if (schedule is NotificationCalendar) {
           await AwesomeNotifications().createNotification(
             content: NotificationContent(
               id: originalId,
@@ -180,7 +184,8 @@ Future<void> rescheduleNotificationForToday(int originalId) async {
               millisecond: 0,
               repeats: true,
               preciseAlarm: true,
-              timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+              timeZone:
+                  await AwesomeNotifications().getLocalTimeZoneIdentifier(),
             ),
           );
         }

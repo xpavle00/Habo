@@ -15,10 +15,15 @@ import 'package:habo/generated/l10n.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -70,7 +75,7 @@ void main() {
     ));
     registerFallbackValue(TimeOfDay.now());
     registerFallbackValue(Colors.grey);
-    
+
     // Initialize localization for tests
     S.load(const Locale('en'));
   });
@@ -202,15 +207,15 @@ void main() {
           .thenAnswer((_) async {});
       // Mock specific localization strings
       when(() => mockUIFeedbackService.showMessageWithAction(
-        message: any(named: 'message'),
-        actionLabel: any(named: 'actionLabel'),
-        onActionPressed: any(named: 'onActionPressed'),
-        backgroundColor: any(named: 'backgroundColor'),
-      )).thenReturn(null);
-      
+            message: any(named: 'message'),
+            actionLabel: any(named: 'actionLabel'),
+            onActionPressed: any(named: 'onActionPressed'),
+            backgroundColor: any(named: 'backgroundColor'),
+          )).thenReturn(null);
+
       // Act
       habitsManager.deleteHabit(1);
-      
+
       // Assert - verify internal state changes immediately
       expect(habitsManager.allHabits.length, 0);
       expect(habitsManager.toDelete.length, 1);

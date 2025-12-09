@@ -45,7 +45,8 @@ class SQLiteCategoryRepository implements CategoryRepository {
   }
 
   @override
-  Future<void> updateHabitCategories(int habitId, List<Category> categories) async {
+  Future<void> updateHabitCategories(
+      int habitId, List<Category> categories) async {
     await _haboModel.updateHabitCategories(habitId, categories);
   }
 

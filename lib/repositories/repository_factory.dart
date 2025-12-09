@@ -12,7 +12,7 @@ import 'sqlite_category_repository.dart';
 /// Provides centralized repository creation and dependency injection.
 class RepositoryFactory {
   final HaboModel _haboModel;
-  
+
   late final HabitRepository _habitRepository;
   late final EventRepository _eventRepository;
   late final BackupRepository _backupRepository;

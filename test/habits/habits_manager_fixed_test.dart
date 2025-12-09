@@ -16,10 +16,15 @@ import 'package:habo/generated/l10n.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -103,7 +108,7 @@ void main() {
           ),
         ),
       ];
-      
+
       when(() => mockHabitRepository.getAllHabits())
           .thenAnswer((_) async => mockHabits);
 
@@ -117,7 +122,7 @@ void main() {
     group('CRUD Operations', () {
       test('should add habit', () async {
         // Arrange
-        
+
         when(() => mockHabitRepository.createHabit(any()))
             .thenAnswer((_) async => 1);
 
@@ -202,15 +207,15 @@ void main() {
         when(() => mockHabitRepository.deleteHabit(any()))
             .thenAnswer((_) async {});
         when(() => mockUIFeedbackService.showMessageWithAction(
-          message: any(named: 'message'),
-          actionLabel: any(named: 'actionLabel'),
-          onActionPressed: any(named: 'onActionPressed'),
-          backgroundColor: any(named: 'backgroundColor'),
-        )).thenReturn(null);
-        
+              message: any(named: 'message'),
+              actionLabel: any(named: 'actionLabel'),
+              onActionPressed: any(named: 'onActionPressed'),
+              backgroundColor: any(named: 'backgroundColor'),
+            )).thenReturn(null);
+
         // Act
         habitsManager.deleteHabit(1);
-        
+
         // Assert - verify internal state changes immediately
         expect(habitsManager.allHabits.length, 0);
         expect(habitsManager.toDelete.length, 1);
@@ -248,11 +253,11 @@ void main() {
         when(() => mockNotificationService.disableHabitNotification(any()))
             .thenReturn(null);
         when(() => mockUIFeedbackService.showMessageWithAction(
-          message: any(named: 'message'),
-          actionLabel: any(named: 'actionLabel'),
-          onActionPressed: any(named: 'onActionPressed'),
-          backgroundColor: any(named: 'backgroundColor'),
-        )).thenReturn(null);
+              message: any(named: 'message'),
+              actionLabel: any(named: 'actionLabel'),
+              onActionPressed: any(named: 'onActionPressed'),
+              backgroundColor: any(named: 'backgroundColor'),
+            )).thenReturn(null);
 
         // Act
         habitsManager.archiveHabit(1);
@@ -260,13 +265,14 @@ void main() {
         // Assert
         expect(testHabit.habitData.archived, true);
         verify(() => mockHabitRepository.updateHabit(any())).called(1);
-        verify(() => mockNotificationService.disableHabitNotification(1)).called(1);
+        verify(() => mockNotificationService.disableHabitNotification(1))
+            .called(1);
         verify(() => mockUIFeedbackService.showMessageWithAction(
-          message: any(named: 'message'),
-          actionLabel: any(named: 'actionLabel'),
-          onActionPressed: any(named: 'onActionPressed'),
-          backgroundColor: any(named: 'backgroundColor'),
-        )).called(1);
+              message: any(named: 'message'),
+              actionLabel: any(named: 'actionLabel'),
+              onActionPressed: any(named: 'onActionPressed'),
+              backgroundColor: any(named: 'backgroundColor'),
+            )).called(1);
       });
 
       test('should unarchive habit', () async {
@@ -296,14 +302,14 @@ void main() {
         habitsManager.allHabits.add(testHabit);
         when(() => mockHabitRepository.updateHabit(any()))
             .thenAnswer((_) async {});
-        when(() => mockNotificationService.setHabitNotification(any(), any(), any(), any()))
-            .thenReturn(null);
+        when(() => mockNotificationService.setHabitNotification(
+            any(), any(), any(), any())).thenReturn(null);
         when(() => mockUIFeedbackService.showMessageWithAction(
-          message: any(named: 'message'),
-          actionLabel: any(named: 'actionLabel'),
-          onActionPressed: any(named: 'onActionPressed'),
-          backgroundColor: any(named: 'backgroundColor'),
-        )).thenReturn(null);
+              message: any(named: 'message'),
+              actionLabel: any(named: 'actionLabel'),
+              onActionPressed: any(named: 'onActionPressed'),
+              backgroundColor: any(named: 'backgroundColor'),
+            )).thenReturn(null);
 
         // Act
         habitsManager.unarchiveHabit(1);
@@ -311,13 +317,14 @@ void main() {
         // Assert
         expect(testHabit.habitData.archived, false);
         verify(() => mockHabitRepository.updateHabit(any())).called(1);
-        verify(() => mockNotificationService.setHabitNotification(1, any(), 'Habo', 'Test Habit')).called(1);
+        verify(() => mockNotificationService.setHabitNotification(
+            1, any(), 'Habo', 'Test Habit')).called(1);
         verify(() => mockUIFeedbackService.showMessageWithAction(
-          message: any(named: 'message'),
-          actionLabel: any(named: 'actionLabel'),
-          onActionPressed: any(named: 'onActionPressed'),
-          backgroundColor: any(named: 'backgroundColor'),
-        )).called(1);
+              message: any(named: 'message'),
+              actionLabel: any(named: 'actionLabel'),
+              onActionPressed: any(named: 'onActionPressed'),
+              backgroundColor: any(named: 'backgroundColor'),
+            )).called(1);
       });
 
       test('should filter active habits correctly', () {

@@ -24,19 +24,20 @@ class HomeWidgetService {
         key: _widgetImageKey,
         logicalSize: const Size(170, 170),
       );
-      
+
       // Render empty state (for next day)
       final emptyResult = await HomeWidget.renderFlutterWidget(
         emptyWidget,
         key: '${_widgetImageKey}_empty',
         logicalSize: const Size(170, 170),
       );
-      
+
       // Save both filenames and the last update date
       await HomeWidget.saveWidgetData<String>('filename', currentResult);
       await HomeWidget.saveWidgetData<String>('filename_empty', emptyResult);
-      await HomeWidget.saveWidgetData<String>('lastUpdateDate', DateTime.now().toIso8601String());
-      
+      await HomeWidget.saveWidgetData<String>(
+          'lastUpdateDate', DateTime.now().toIso8601String());
+
       // Update the widget
       await HomeWidget.updateWidget(
         iOSName: _iosWidgetName,
@@ -48,5 +49,4 @@ class HomeWidgetService {
       rethrow;
     }
   }
-
 }

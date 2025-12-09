@@ -45,13 +45,13 @@ void main() {
             ),
           )
         ];
-        
+
         // Test JSON serialization directly
         final jsonData = jsonEncode(testHabits);
         expect(jsonData, isNotEmpty);
         expect(jsonData, contains('Test Habit'));
         expect(jsonData, contains('pushups'));
-        
+
         final restoredHabits = jsonDecode(jsonData);
         expect(restoredHabits, isList);
         expect(restoredHabits.length, 1);
@@ -59,7 +59,7 @@ void main() {
 
       test('should handle empty habits list', () async {
         final emptyHabits = <Habit>[];
-        
+
         // Test JSON serialization directly
         final jsonData = jsonEncode(emptyHabits);
         expect(jsonData, isNotEmpty);

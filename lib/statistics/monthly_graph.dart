@@ -89,7 +89,8 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                         ),
                         color: showProgress
                             ? Colors.white
-                            : Provider.of<SettingsManager>(context, listen: false)
+                            : Provider.of<SettingsManager>(context,
+                                    listen: false)
                                 .progressColor,
                         onPressed: () {
                           showProgress = !showProgress;

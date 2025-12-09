@@ -45,40 +45,40 @@ class HabitData {
   String sanction;
   bool showSanction;
   String accountant;
-  
+
   // Numeric habit fields
   HabitType habitType;
   double targetValue;
   double partialValue;
   String unit;
-  
+
   // Categories assigned to this habit
   List<Category> categories;
-  
+
   // Archive status
   bool archived;
-  
+
   // Helper methods for numeric habits
   bool get isNumeric => habitType == HabitType.numeric;
   bool get isBoolean => habitType == HabitType.boolean;
-  
+
   double getProgressForDate(DateTime date) {
     final event = events[date];
     if (event == null) return 0.0;
-    
+
     if (event[0] == DayType.check) return targetValue;
     if (event[0] == DayType.progress && event.length > 2) {
       return (event[2] as double?) ?? 0.0;
     }
     return 0.0;
   }
-  
+
   double getProgressPercentage(DateTime date) {
     if (!isNumeric || targetValue <= 0) return 0.0;
     final progress = getProgressForDate(date);
     return (progress / targetValue).clamp(0.0, 1.0);
   }
-  
+
   bool isCompletedForDate(DateTime date) {
     if (isBoolean) {
       final event = events[date];

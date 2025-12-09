@@ -18,14 +18,15 @@ void main() {
       mockUIFeedbackService = MockUIFeedbackService();
       // Create a mock BackupRepository for testing
       final mockBackupRepository = MockBackupRepository();
-      backupService = BackupService(mockUIFeedbackService, mockBackupRepository);
+      backupService =
+          BackupService(mockUIFeedbackService, mockBackupRepository);
     });
 
     group('BackupResult', () {
       test('should create success result', () {
         final habits = <Habit>[];
         final result = BackupResult.success(habits);
-        
+
         expect(result.success, isTrue);
         expect(result.habits, equals(habits));
         expect(result.errorMessage, isNull);
@@ -35,7 +36,7 @@ void main() {
       test('should create failure result', () {
         const errorMessage = 'Test error';
         final result = BackupResult.failure(errorMessage);
-        
+
         expect(result.success, isFalse);
         expect(result.habits, isNull);
         expect(result.errorMessage, equals(errorMessage));
@@ -44,7 +45,7 @@ void main() {
 
       test('should create cancelled result', () {
         final result = BackupResult.cancelled();
-        
+
         expect(result.success, isFalse);
         expect(result.habits, isNull);
         expect(result.errorMessage, isNull);
@@ -56,7 +57,7 @@ void main() {
         final successResult = BackupResult.success(habits);
         final failureResult = BackupResult.failure('Error');
         final cancelledResult = BackupResult.cancelled();
-        
+
         expect(successResult.toString(), contains('BackupResult.success'));
         expect(failureResult.toString(), contains('BackupResult.failure'));
         expect(cancelledResult.toString(), contains('BackupResult.cancelled'));
@@ -75,7 +76,7 @@ void main() {
           }
         ]
         ''';
-        
+
         // This tests the internal JSON validation logic
         // Note: We can't directly test private methods, but we can test
         // the overall behavior through public methods
@@ -84,7 +85,7 @@ void main() {
 
       test('should reject invalid JSON structure', () {
         const invalidJson = '{"invalid": "structure"}';
-        
+
         // This would be caught by the JSON validation in _parseBackupJson
         expect(invalidJson, isNotEmpty);
       });
@@ -94,7 +95,7 @@ void main() {
       test('should handle UI feedback service calls', () {
         // Verify that the service is properly injected
         expect(backupService, isNotNull);
-        
+
         // Verify mock setup
         verifyZeroInteractions(mockUIFeedbackService);
       });

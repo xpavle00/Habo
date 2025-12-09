@@ -68,7 +68,7 @@ class Statistics {
                       stat.topStreak = stat.actualStreak;
                     }
                     usingTwoDayRule = false;
-                  } 
+                  }
                 } else {
                   // Fallback for non-numeric progress events
                   if (usingTwoDayRule) {

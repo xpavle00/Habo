@@ -4,7 +4,7 @@ import 'package:habo/model/category.dart';
 /// This interface defines the contract for all category data access operations.
 abstract class CategoryRepository {
   /// Retrieves all categories from the database, ordered by title.
-  /// 
+  ///
   /// Returns a [Future] containing a [List] of [Category] objects.
   Future<List<Category>> getAllCategories();
 

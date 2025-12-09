@@ -14,10 +14,15 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -35,7 +40,7 @@ void main() {
       notificationService: MockNotificationService(),
       uiFeedbackService: MockUIFeedbackService(),
     );
-    
+
     testHabit = Habit(
       habitData: HabitData(
         position: 0,
@@ -58,7 +63,8 @@ void main() {
   });
 
   group('HabitDetailsWidget Tests', () {
-    testWidgets('should display habit details correctly', (WidgetTester tester) async {
+    testWidgets('should display habit details correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider.value(
@@ -72,16 +78,16 @@ void main() {
 
       // Verify habit title is displayed
       expect(find.text('Test Habit'), findsOneWidget);
-      
+
       // Verify cue is displayed
       expect(find.text('Morning alarm'), findsOneWidget);
-      
+
       // Verify routine is displayed
       expect(find.text('10 push-ups'), findsOneWidget);
-      
+
       // Verify reward is displayed
       expect(find.text('Feel energized'), findsOneWidget);
-      
+
       // Verify two-day rule indicator
       expect(find.byIcon(Icons.calendar_today), findsOneWidget);
     });
@@ -107,8 +113,9 @@ void main() {
     });
 
     testWidgets('should handle delete button tap', (WidgetTester tester) async {
-      when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
-      
+      when(() => mockHabitRepository.deleteHabit(any()))
+          .thenAnswer((_) async {});
+
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider.value(
@@ -132,7 +139,7 @@ void main() {
 
 class HabitDetailsWidget extends StatelessWidget {
   final Habit habit;
-  
+
   const HabitDetailsWidget({super.key, required this.habit});
 
   @override

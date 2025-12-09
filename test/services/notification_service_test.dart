@@ -23,54 +23,66 @@ void main() {
     });
 
     test('removeNotifications should handle empty habits list', () {
-      expect(() => notificationService.removeNotifications([]), returnsNormally);
+      expect(
+          () => notificationService.removeNotifications([]), returnsNormally);
     });
 
     test('setHabitNotification should delegate to global function', () {
       // This test verifies the method exists and can be called
-      expect(() => notificationService.setHabitNotification(
-        1, 
-        const TimeOfDay(hour: 9, minute: 0), 
-        'Test Title', 
-        'Test Description'
-      ), returnsNormally);
+      expect(
+          () => notificationService.setHabitNotification(
+              1,
+              const TimeOfDay(hour: 9, minute: 0),
+              'Test Title',
+              'Test Description'),
+          returnsNormally);
     });
 
     test('disableHabitNotification should delegate to global function', () {
       // This test verifies the method exists and can be called
-      expect(() => notificationService.disableHabitNotification(1), returnsNormally);
+      expect(() => notificationService.disableHabitNotification(1),
+          returnsNormally);
     });
 
     test('handleHabitEventAdded should handle habit completion today', () {
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
       final event = [DayType.check];
-      
+
       // This test verifies the method exists and can be called
-      expect(() => notificationService.handleHabitEventAdded(1, today, event), returnsNormally);
+      expect(() => notificationService.handleHabitEventAdded(1, today, event),
+          returnsNormally);
     });
 
-    test('handleHabitEventAdded should handle habit completion on different day', () {
+    test(
+        'handleHabitEventAdded should handle habit completion on different day',
+        () {
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
       final event = [DayType.check];
-      
+
       // This test verifies the method exists and can be called
-      expect(() => notificationService.handleHabitEventAdded(1, yesterday, event), returnsNormally);
+      expect(
+          () => notificationService.handleHabitEventAdded(1, yesterday, event),
+          returnsNormally);
     });
 
     test('handleHabitEventDeleted should handle event deletion today', () {
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
-      
+
       // This test verifies the method exists and can be called
-      expect(() => notificationService.handleHabitEventDeleted(1, today), returnsNormally);
+      expect(() => notificationService.handleHabitEventDeleted(1, today),
+          returnsNormally);
     });
 
-    test('handleHabitEventDeleted should handle event deletion on different day', () {
+    test(
+        'handleHabitEventDeleted should handle event deletion on different day',
+        () {
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      
+
       // This test verifies the method exists and can be called
-      expect(() => notificationService.handleHabitEventDeleted(1, yesterday), returnsNormally);
+      expect(() => notificationService.handleHabitEventDeleted(1, yesterday),
+          returnsNormally);
     });
 
     group('with sample habits', () {
@@ -119,12 +131,15 @@ void main() {
         ];
       });
 
-      test('resetNotifications should handle habits with notifications enabled', () {
-        expect(() => notificationService.resetNotifications(sampleHabits), returnsNormally);
+      test('resetNotifications should handle habits with notifications enabled',
+          () {
+        expect(() => notificationService.resetNotifications(sampleHabits),
+            returnsNormally);
       });
 
       test('removeNotifications should handle multiple habits', () {
-        expect(() => notificationService.removeNotifications(sampleHabits), returnsNormally);
+        expect(() => notificationService.removeNotifications(sampleHabits),
+            returnsNormally);
       });
     });
   });
