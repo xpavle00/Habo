@@ -299,6 +299,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "Archivácia zvyku zrušená",
         ),
         "habits": MessageLookupByLibrary.simpleMessage("Zvyky:"),
+        "habitsToday": MessageLookupByLibrary.simpleMessage("Dnešné zvyky"),
         "habo": MessageLookupByLibrary.simpleMessage("Habo"),
         "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
           "Habo potrebuje povolenie na odosielanie oznámení na správne fungovanie.",

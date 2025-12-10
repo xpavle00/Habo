@@ -9,6 +9,8 @@ class HaboHomeWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? primaryColor;
   final Color? textColor;
+  final DateTime? date;
+  final String? title;
 
   const HaboHomeWidget({
     super.key,
@@ -16,6 +18,8 @@ class HaboHomeWidget extends StatelessWidget {
     this.backgroundColor,
     this.primaryColor,
     this.textColor,
+    this.date,
+    this.title,
   });
 
   @override
@@ -37,7 +41,7 @@ class HaboHomeWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Today\'s habits',
+            title ?? 'Habits today',
             style: TextStyle(
               fontSize: 16,
               color: txtColor,

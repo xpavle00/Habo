@@ -1796,6 +1796,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Habits today`
+  String get habitsToday {
+    return Intl.message(
+      'Habits today',
+      name: 'habitsToday',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

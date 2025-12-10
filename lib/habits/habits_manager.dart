@@ -257,6 +257,7 @@ class HabitsManager extends ChangeNotifier {
           _notificationService?.disableHabitNotification(id);
         }
         notifyListeners();
+        _updateHomeWidgetAsync();
       },
     );
     updateOrder();
@@ -330,6 +331,7 @@ class HabitsManager extends ChangeNotifier {
     }
 
     notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   void unarchiveHabit(int id) {
@@ -355,6 +357,7 @@ class HabitsManager extends ChangeNotifier {
     }
 
     notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   List<Habit> get activeHabits {
@@ -384,6 +387,7 @@ class HabitsManager extends ChangeNotifier {
 
     updateOrder();
     notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   void undoDeleteHabit(Habit del) {
@@ -484,6 +488,7 @@ class HabitsManager extends ChangeNotifier {
       _lastUpdateDate = now;
       _reloadHabits();
       notifyListeners();
+      _updateHomeWidgetAsync();
     }
   }
 
