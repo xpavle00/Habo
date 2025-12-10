@@ -336,5 +336,6 @@
     "featureLockDesc": "Secure the app with Face ID / Touch ID / biometrics",
     "haboSyncComingSoon": "Coming Soon",
     "haboSyncDescription": "Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.",
-    "haboSyncLearnMore": "Learn more at habo.space/sync"
+    "haboSyncLearnMore": "Learn more at habo.space/sync",
+    "habitsToday": "Habits today"
   }

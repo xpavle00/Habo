@@ -288,6 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "habitUnarchived":
             MessageLookupByLibrary.simpleMessage("Habit unarchived"),
         "habits": MessageLookupByLibrary.simpleMessage("Habits:"),
+        "habitsToday": MessageLookupByLibrary.simpleMessage("Habits today"),
         "habo": MessageLookupByLibrary.simpleMessage("Habo"),
         "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
           "Habo needs permission to send notifications to work properly.",

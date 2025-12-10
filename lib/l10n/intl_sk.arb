@@ -523,5 +523,7 @@
   "haboSyncDescription": "Synchronizujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej služby Habo.",
   "@haboSyncDescription": {},
   "haboSyncLearnMore": "Dozvedieť sa viac na habo.space/sync",
-  "@haboSyncLearnMore": {}
+  "@haboSyncLearnMore": {},
+  "habitsToday": "Dnešné zvyky",
+  "@habitsToday": {}
 }

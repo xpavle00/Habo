@@ -3,6 +3,7 @@ import 'package:habo/habits/habit.dart';
 import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/widgets/habo_home_widget.dart';
 import 'package:habo/widgets/home_widget_data.dart';
+import 'package:habo/generated/l10n.dart';
 
 /// Helper class to update the home widget
 class WidgetUpdateHelper {
@@ -31,12 +32,16 @@ class WidgetUpdateHelper {
       final currentWidget = HaboHomeWidget(
         data: currentData,
         textColor: textColor,
+        date: DateTime.now(),
+        title: S.of(context).habitsToday,
       );
 
       // Create empty state widget for next day
       final emptyWidget = HaboHomeWidget(
         data: emptyData,
         textColor: textColor,
+        date: DateTime.now().add(const Duration(days: 1)),
+        title: S.of(context).habitsToday,
       );
 
       // Update the home widget with both states
