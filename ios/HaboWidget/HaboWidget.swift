@@ -10,58 +10,68 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), filename: "No screenshot available")
+        SimpleEntry(date: Date(), displayFilename: "No screenshot available")
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let userDefaults = UserDefaults(suiteName: "group.com.pavlenko.Habo")
-        let filename = userDefaults?.string(forKey: "filename") ?? "No screenshot available"
-        let entry = SimpleEntry(date: Date(), filename: filename)
+        let entry = createEntry(for: Date())
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        getSnapshot(in: context) { (entry) in
-            // Schedule next update at midnight to show empty state
+        let now = Date()
+        let calendar = Calendar.current
+        
+        // Create entry for now
+        let currentEntry = createEntry(for: now)
+        
+        // Create entry for next midnight (empty state)
+        let startOfToday = calendar.startOfDay(for: now)
+        let midnight = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+        let midnightEntry = createEntry(for: midnight)
+        
+        // Schedule refresh after midnight
+        let timeline = Timeline(entries: [currentEntry, midnightEntry], policy: .after(midnight))
+        completion(timeline)
+    }
+    
+    private func createEntry(for date: Date) -> SimpleEntry {
+        let userDefaults = UserDefaults(suiteName: "group.com.pavlenko.Habo")
+        let filename = userDefaults?.string(forKey: "filename") ?? "No screenshot available"
+        let filenameEmpty = userDefaults?.string(forKey: "filename_empty") ?? ""
+        let lastUpdateDateString = userDefaults?.string(forKey: "lastUpdateDate") ?? ""
+        
+        // Parse date safely handling fractional seconds
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        // Fallback formatter without fractional seconds
+        let fallbackFormatter = ISO8601DateFormatter()
+        
+        var shouldShowEmpty = false
+        if let lastUpdateDate = formatter.date(from: lastUpdateDateString) ?? fallbackFormatter.date(from: lastUpdateDateString) {
             let calendar = Calendar.current
-            let now = Date()
-            let startOfToday = calendar.startOfDay(for: now)
-            let midnight = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
-            
-            let timeline = Timeline(entries: [entry], policy: .after(midnight))
-            completion(timeline)
+            let lastDay = calendar.startOfDay(for: lastUpdateDate)
+            let checkDay = calendar.startOfDay(for: date)
+            shouldShowEmpty = checkDay > lastDay
         }
+        
+        // Determine which filename to use based on the target date
+        let displayFilename = shouldShowEmpty ? filenameEmpty : filename
+        
+        return SimpleEntry(date: date, displayFilename: displayFilename)
     }
 }
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let filename: String
+    let displayFilename: String
 }
 
 struct HaboWidgetEntryView : View {
     var entry: Provider.Entry
     
     var CustomImage: some View {
-        // Determine which image to show based on date
-        let userDefaults = UserDefaults(suiteName: "group.com.pavlenko.Habo")
-        let lastUpdateDateString = userDefaults?.string(forKey: "lastUpdateDate") ?? ""
-        let filenameEmpty = userDefaults?.string(forKey: "filename_empty") ?? ""
-        
-        // Check if we should show empty state (new day)
-        var shouldShowEmpty = false
-        if let lastUpdateDate = ISO8601DateFormatter().date(from: lastUpdateDateString) {
-            let calendar = Calendar.current
-            let lastDay = calendar.startOfDay(for: lastUpdateDate)
-            let today = calendar.startOfDay(for: Date())
-            shouldShowEmpty = today > lastDay
-        }
-        
-        
-        // Choose the appropriate filename
-        let imageFilename = shouldShowEmpty ? filenameEmpty : entry.filename
-
-        if let uiImage = UIImage(contentsOfFile: imageFilename) {
+        if let uiImage = UIImage(contentsOfFile: entry.displayFilename) {
             let image = Image(uiImage: uiImage)
                 .resizable()
                 .scaledToFill()
@@ -125,5 +135,5 @@ struct HaboWidget: Widget {
 #Preview(as: .systemSmall) {
     HaboWidget()
 } timeline: {
-    SimpleEntry(date: .now, filename: "preview")
+    SimpleEntry(date: .now, displayFilename: "preview")
 }

@@ -484,6 +484,7 @@ class HabitsManager extends ChangeNotifier {
       _lastUpdateDate = now;
       _reloadHabits();
       notifyListeners();
+      _updateHomeWidgetAsync();
     }
   }
 
