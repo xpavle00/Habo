@@ -19,19 +19,18 @@ struct Provider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let now = Date()
-        let calendar = Calendar.current
+        let currentDate = Date()
+        var entries: [SimpleEntry] = []
         
-        // Create entry for now
-        let currentEntry = createEntry(for: now)
-        
-        // Create entry for next midnight (empty state)
-        let startOfToday = calendar.startOfDay(for: now)
-        let midnight = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
-        let midnightEntry = createEntry(for: midnight)
-        
-        // Schedule refresh after midnight
-        let timeline = Timeline(entries: [currentEntry, midnightEntry], policy: .after(midnight))
+        // Generate entries for the next 48 hours, every hour
+        for hourOffset in 0..<48 {
+            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+            let entry = createEntry(for: entryDate)
+            entries.append(entry)
+        }
+
+        // Use .atEnd policy to request a new timeline when these entries run out
+        let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
     
