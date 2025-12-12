@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/widgets/home_widget_data.dart';
 import 'dart:math' as math;
+import 'package:intl/intl.dart';
 
 /// A 170x170 home widget that displays today's habit completion progress
 class HaboHomeWidget extends StatelessWidget {
@@ -9,6 +10,7 @@ class HaboHomeWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? primaryColor;
   final Color? textColor;
+  final DateTime? date;
 
   const HaboHomeWidget({
     super.key,
@@ -16,6 +18,7 @@ class HaboHomeWidget extends StatelessWidget {
     this.backgroundColor,
     this.primaryColor,
     this.textColor,
+    this.date,
   });
 
   @override
@@ -37,7 +40,7 @@ class HaboHomeWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Today\'s habits',
+            date != null ? DateFormat.MMMEd().format(date!) : 'Today\'s habits',
             style: TextStyle(
               fontSize: 16,
               color: txtColor,

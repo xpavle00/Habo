@@ -31,12 +31,14 @@ class WidgetUpdateHelper {
       final currentWidget = HaboHomeWidget(
         data: currentData,
         textColor: textColor,
+        date: DateTime.now(),
       );
 
       // Create empty state widget for next day
       final emptyWidget = HaboHomeWidget(
         data: emptyData,
         textColor: textColor,
+        date: DateTime.now().add(const Duration(days: 1)),
       );
 
       // Update the home widget with both states
