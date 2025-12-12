@@ -18,6 +18,7 @@ class SettingsData {
   Color skipColor = HaboColors.skip;
   Color progressColor = HaboColors.progress;
   bool biometricLock = false;
+  bool oneTapCheck = false;
   String lastWhatsNewVersion = '';
 
   SettingsData();
@@ -53,6 +54,8 @@ class SettingsData {
             : HaboColors.progress,
         biometricLock =
             (json['biometricLock'] != null) ? json['biometricLock'] : false,
+        oneTapCheck =
+            (json['oneTapCheck'] != null) ? json['oneTapCheck'] : false,
         lastWhatsNewVersion = (json['lastWhatsNewVersion'] != null)
             ? json['lastWhatsNewVersion']
             : '';
@@ -73,6 +76,7 @@ class SettingsData {
         'skipColor': skipColor.toARGB32(),
         'progressColor': progressColor.toARGB32(),
         'biometricLock': biometricLock,
+        'oneTapCheck': oneTapCheck,
         'lastWhatsNewVersion': lastWhatsNewVersion,
       };
 }
