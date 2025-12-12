@@ -317,4 +317,14 @@ class SettingsManager extends ChangeNotifier {
     saveData();
     notifyListeners();
   }
+
+  bool get getOneTapCheck {
+    return _settingsData.oneTapCheck;
+  }
+
+  set setOneTapCheck(bool value) {
+    _settingsData.oneTapCheck = value;
+    saveData();
+    notifyListeners();
+  }
 }
