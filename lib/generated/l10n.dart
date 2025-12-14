@@ -1767,6 +1767,66 @@ class S {
     );
   }
 
+  /// `Fixed sound mixing`
+  String get featureIosSoundMixingTitle {
+    return Intl.message(
+      'Fixed sound mixing',
+      name: 'featureIosSoundMixingTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Habo sounds no longer interrupt your music or podcasts`
+  String get featureIosSoundMixingDesc {
+    return Intl.message(
+      'Habo sounds no longer interrupt your music or podcasts',
+      name: 'featureIosSoundMixingDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Homescreen widget`
+  String get featureHomescreenWidgetTitle {
+    return Intl.message(
+      'Homescreen widget',
+      name: 'featureHomescreenWidgetTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View your habit progress at a glance from your home screen (experimental)`
+  String get featureHomescreenWidgetDesc {
+    return Intl.message(
+      'View your habit progress at a glance from your home screen (experimental)',
+      name: 'featureHomescreenWidgetDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Longpress check`
+  String get featureLongpressCheckTitle {
+    return Intl.message(
+      'Longpress check',
+      name: 'featureLongpressCheckTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Longpress on habit buttons to quickly change status`
+  String get featureLongpressCheckDesc {
+    return Intl.message(
+      'Longpress on habit buttons to quickly change status',
+      name: 'featureLongpressCheckDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Coming Soon`
   String get haboSyncComingSoon {
     return Intl.message(
