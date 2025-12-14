@@ -237,11 +237,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
           "URL schéma (deep links)",
         ),
+        "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
+          "Zobrazte svoj postup z domovskej obrazovky (experimentálne)",
+        ),
+        "featureHomescreenWidgetTitle": MessageLookupByLibrary.simpleMessage(
+          "Widget na domovskej obrazovke",
+        ),
+        "featureIosSoundMixingDesc": MessageLookupByLibrary.simpleMessage(
+          "Zvuky Habo už neprerušujú vašu hudbu alebo podcasty",
+        ),
+        "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
+          "Opravené mixovanie zvuku",
+        ),
         "featureLockDesc": MessageLookupByLibrary.simpleMessage(
           "Zabezpečte aplikáciu pomocou Face ID / Touch ID / biometrických údajov",
         ),
         "featureLockTitle":
             MessageLookupByLibrary.simpleMessage("Funkcia zámku"),
+        "featureLongpressCheckDesc": MessageLookupByLibrary.simpleMessage(
+          "Dlhým stlačením tlačidiel zvykov rýchlo zmeníte stav",
+        ),
+        "featureLongpressCheckTitle": MessageLookupByLibrary.simpleMessage(
+          "Dlhé stlačenie na označenie",
+        ),
         "featureMaterialYouDesc": MessageLookupByLibrary.simpleMessage(
           "Dynamické farby, ktoré sa prispôsobia vašej tapete",
         ),

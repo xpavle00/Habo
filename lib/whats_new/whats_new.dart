@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
@@ -68,13 +67,14 @@ class WhatsNew extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Version 3.1.0 features
                 Row(children: [
-                  const Icon(Icons.push_pin_outlined,
+                  const Icon(Icons.music_note_outlined,
                       color: HaboColors.primary),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      S.of(context).featureNumericTitle,
+                      S.of(context).featureIosSoundMixingTitle,
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
@@ -82,16 +82,16 @@ class WhatsNew extends StatelessWidget {
                 const SizedBox(height: 6),
                 Padding(
                   padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureNumericDesc),
+                  child: Text(S.of(context).featureIosSoundMixingDesc),
                 ),
                 const SizedBox(height: 16),
 
                 Row(children: [
-                  const Icon(Icons.link, color: HaboColors.primary),
+                  const Icon(Icons.widgets_outlined, color: HaboColors.primary),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      S.of(context).featureDeepLinksTitle,
+                      S.of(context).featureHomescreenWidgetTitle,
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
@@ -99,34 +99,17 @@ class WhatsNew extends StatelessWidget {
                 const SizedBox(height: 6),
                 Padding(
                   padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureDeepLinksDesc),
+                  child: Text(S.of(context).featureHomescreenWidgetDesc),
                 ),
                 const SizedBox(height: 16),
 
                 Row(children: [
-                  const Icon(Icons.category, color: HaboColors.primary),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      S.of(context).featureCategoriesTitle,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 6),
-                Padding(
-                  padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureCategoriesDesc),
-                ),
-                const SizedBox(height: 16),
-
-                Row(children: [
-                  const Icon(Icons.inventory_2_outlined,
+                  const Icon(Icons.touch_app_outlined,
                       color: HaboColors.primary),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      S.of(context).featureArchiveTitle,
+                      S.of(context).featureLongpressCheckTitle,
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
@@ -134,65 +117,9 @@ class WhatsNew extends StatelessWidget {
                 const SizedBox(height: 6),
                 Padding(
                   padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureArchiveDesc),
+                  child: Text(S.of(context).featureLongpressCheckDesc),
                 ),
                 const SizedBox(height: 16),
-
-                // Material You theme - Android only
-                if (!Platform.isIOS) ...[
-                  Row(children: [
-                    const Icon(Icons.palette_outlined,
-                        color: HaboColors.primary),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        S.of(context).featureMaterialYouTitle,
-                        style: theme.textTheme.titleMedium,
-                      ),
-                    ),
-                  ]),
-                  const SizedBox(height: 6),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 34.0),
-                    child: Text(S.of(context).featureMaterialYouDesc),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-
-                Row(children: [
-                  const Icon(Icons.volume_up_outlined,
-                      color: HaboColors.primary),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      S.of(context).featureSoundTitle,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 6),
-                Padding(
-                  padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureSoundDesc),
-                ),
-                const SizedBox(height: 16),
-
-                Row(children: [
-                  const Icon(Icons.lock_outline, color: HaboColors.primary),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      S.of(context).featureLockTitle,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 6),
-                Padding(
-                  padding: const EdgeInsets.only(left: 34.0),
-                  child: Text(S.of(context).featureLockDesc),
-                ),
-                const SizedBox(height: 24),
 
                 // Habo Sync Coming Soon
                 Container(

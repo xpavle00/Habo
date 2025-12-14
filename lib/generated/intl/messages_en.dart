@@ -230,11 +230,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
           "URL scheme (deep links)",
         ),
+        "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
+          "View your habit progress at a glance from your home screen (experimental)",
+        ),
+        "featureHomescreenWidgetTitle": MessageLookupByLibrary.simpleMessage(
+          "Homescreen widget",
+        ),
+        "featureIosSoundMixingDesc": MessageLookupByLibrary.simpleMessage(
+          "Habo sounds no longer interrupt your music or podcasts",
+        ),
+        "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
+          "Fixed sound mixing",
+        ),
         "featureLockDesc": MessageLookupByLibrary.simpleMessage(
           "Secure the app with Face ID / Touch ID / biometrics",
         ),
         "featureLockTitle":
             MessageLookupByLibrary.simpleMessage("Lock feature"),
+        "featureLongpressCheckDesc": MessageLookupByLibrary.simpleMessage(
+          "Longpress on habit buttons to quickly change status",
+        ),
+        "featureLongpressCheckTitle": MessageLookupByLibrary.simpleMessage(
+          "Longpress check",
+        ),
         "featureMaterialYouDesc": MessageLookupByLibrary.simpleMessage(
           "Dynamic colors that match your wallpaper",
         ),
