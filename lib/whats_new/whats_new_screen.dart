@@ -28,7 +28,14 @@ class _WhatsNewScreenState extends State<WhatsNewScreen> {
         appStateManager,
         child,
       ) {
-        return const WhatsNew();
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+            appStateManager.goWhatsNew(false);
+          },
+          child: const WhatsNew(),
+        );
       },
     );
   }

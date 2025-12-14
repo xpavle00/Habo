@@ -30,7 +30,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         appStateManager,
         child,
       ) {
-        return const Onboarding();
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+            appStateManager.goOnboarding(false);
+          },
+          child: const Onboarding(),
+        );
       },
     );
   }
