@@ -30,7 +30,10 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       required this.habitsManager}) {
     appStateManager.addListener(notifyListeners);
     settingsManager.addListener(notifyListeners);
-    habitsManager.addListener(notifyListeners);
+    // Note: We intentionally do NOT listen to habitsManager here.
+    // AppRouter only uses habitsManager.isInitialized, and listening to it
+    // causes unnecessary rebuilds on every habit change, leading to
+    // navigation glitches (blink on back navigation).
     settingsManager.getSeenOnboarding;
   }
 
@@ -38,7 +41,6 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
   void dispose() {
     appStateManager.removeListener(notifyListeners);
     settingsManager.removeListener(notifyListeners);
-    habitsManager.removeListener(notifyListeners);
     super.dispose();
   }
 
