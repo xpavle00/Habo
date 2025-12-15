@@ -3,6 +3,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
+import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 
 class HabitHeader extends StatelessWidget {
@@ -32,7 +33,7 @@ class HabitHeader extends StatelessWidget {
             child: Text(
               Provider.of<HabitsManager>(context)
                   .getNameOfHabit(widget.habitData.id!),
-              style: const TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.titleLarge,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -45,7 +46,6 @@ class HabitHeader extends StatelessWidget {
             Icons.edit_outlined,
             semanticLabel: S.of(context).modify,
           ),
-          color: Colors.grey,
           tooltip: S.of(context).modify,
           onPressed: () {
             widget.navigateToEditPage(context);
@@ -61,10 +61,13 @@ class HabitHeader extends StatelessWidget {
                   border: Border.all(
                     color: (_orangeStreak)
                         ? HaboColors.orange
-                        : HaboColors.primary,
+                        : Provider.of<SettingsManager>(context, listen: false)
+                            .checkColor,
                   ),
-                  color:
-                      (_orangeStreak) ? HaboColors.orange : HaboColors.primary,
+                  color: (_orangeStreak)
+                      ? HaboColors.orange
+                      : Provider.of<SettingsManager>(context, listen: false)
+                          .checkColor,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   boxShadow: [
                     BoxShadow(
@@ -76,7 +79,9 @@ class HabitHeader extends StatelessWidget {
               child: Text(
                 '$_streak',
                 textAlign: TextAlign.right,
-                style: const TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Provider.of<SettingsManager>(context).iconColor),
               ),
             ),
           ),

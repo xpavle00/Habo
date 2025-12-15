@@ -17,6 +17,7 @@ class SettingsData {
   Color failColor = HaboColors.red;
   Color skipColor = HaboColors.skip;
   Color progressColor = HaboColors.progress;
+  Color iconColor = Colors.white;
   bool biometricLock = false;
   String lastWhatsNewVersion = '';
 
@@ -29,8 +30,7 @@ class SettingsData {
             (json['showDailyNot'] != null) ? json['showDailyNot'] : true,
         soundEffects =
             (json['soundEffects'] != null) ? json['soundEffects'] : true,
-        soundVolume =
-            (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
+        soundVolume = (json['soundVolume'] != null) ? json['soundVolume'] : 3.0,
         showMonthName =
             (json['showMonthName'] != null) ? json['showMonthName'] : true,
         seenOnboarding =
@@ -40,7 +40,6 @@ class SettingsData {
         dailyNotTime = (json['notTime'] != null)
             ? parseTimeOfDay(json['notTime'])
             : const TimeOfDay(hour: 20, minute: 0),
-
         checkColor = (json['checkColor'] != null)
             ? Color(json['checkColor'])
             : HaboColors.primary,
@@ -50,12 +49,14 @@ class SettingsData {
         skipColor = (json['skipColor'] != null)
             ? Color(json['skipColor'])
             : HaboColors.skip,
+        iconColor = (json['iconColor'] != null)
+            ? Color(json['iconColor'])
+            : Colors.white,
         progressColor = (json['progressColor'] != null)
             ? Color(json['progressColor'])
             : HaboColors.progress,
-        biometricLock = (json['biometricLock'] != null) 
-            ? json['biometricLock'] 
-            : false,
+        biometricLock =
+            (json['biometricLock'] != null) ? json['biometricLock'] : false,
         lastWhatsNewVersion = (json['lastWhatsNewVersion'] != null)
             ? json['lastWhatsNewVersion']
             : '';
@@ -74,6 +75,7 @@ class SettingsData {
         'checkColor': checkColor.toARGB32(),
         'failColor': failColor.toARGB32(),
         'skipColor': skipColor.toARGB32(),
+        'iconColor': iconColor.toARGB32(),
         'progressColor': progressColor.toARGB32(),
         'biometricLock': biometricLock,
         'lastWhatsNewVersion': lastWhatsNewVersion,

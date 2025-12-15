@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Themes { device, light, dark, oled, materialYou }
+enum Themes { device, light, dark, oled, materialYou, dracula }
 
 enum HabitType { boolean, numeric }
 

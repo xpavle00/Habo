@@ -82,7 +82,7 @@ SPEC CHECKSUMS:
   dynamic_color: b820c000cc68df65e7ba7ff177cb98404ce56651
   file_picker: 7584aae6fa07a041af2b36a2655122d42f578c1a
   flutter_soloud: cb69d77c6ca89760429201880cf416b72d4d0c6a
-  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
   local_auth_darwin: d2e8c53ef0c4f43c646462e3415432c4dab3ae19
   package_info_plus: f0052d280d17aa382b932f399edf32507174e870
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564

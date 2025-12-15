@@ -42,8 +42,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                   padding: const EdgeInsets.all(4.0),
                   child: Material(
                     color: showCheck
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .checkColor
+                        ? Provider.of<SettingsManager>(context).checkColor
                         : Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(10.0),
                     elevation: 2,
@@ -52,15 +51,19 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       height: 32,
                       child: IconButton(
                         splashColor: Colors.transparent,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.check,
+                          color: showCheck
+                              ? Provider.of<SettingsManager>(context).iconColor
+                              : Provider.of<SettingsManager>(context)
+                                  .checkColor,
                           size: 16,
                         ),
                         color: showCheck
                             ? Colors.white
-                            : Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .checkColor,
+                            : Provider.of<SettingsManager>(
+                                context,
+                              ).checkColor,
                         onPressed: () {
                           showCheck = !showCheck;
                           setState(() {});
@@ -73,8 +76,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                   padding: const EdgeInsets.all(4.0),
                   child: Material(
                     color: showProgress
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .progressColor
+                        ? Provider.of<SettingsManager>(context).progressColor
                         : Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(10.0),
                     elevation: 2,
@@ -83,13 +85,17 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       height: 32,
                       child: IconButton(
                         splashColor: Colors.transparent,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.trending_up,
+                          color: showProgress
+                              ? Provider.of<SettingsManager>(context).iconColor
+                              : Provider.of<SettingsManager>(context)
+                                  .progressColor,
                           size: 16,
                         ),
                         color: showProgress
                             ? Colors.white
-                            : Provider.of<SettingsManager>(context, listen: false)
+                            : Provider.of<SettingsManager>(context)
                                 .progressColor,
                         onPressed: () {
                           showProgress = !showProgress;
@@ -103,8 +109,7 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                   padding: const EdgeInsets.all(4.0),
                   child: Material(
                     color: showSkip
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .skipColor
+                        ? Provider.of<SettingsManager>(context).skipColor
                         : Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(10.0),
                     elevation: 2,
@@ -113,15 +118,18 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       height: 32,
                       child: IconButton(
                         splashColor: Colors.transparent,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.last_page,
+                          color: showSkip
+                              ? Provider.of<SettingsManager>(context).iconColor
+                              : Provider.of<SettingsManager>(context).skipColor,
                           size: 16,
                         ),
                         color: showSkip
                             ? Colors.white
-                            : Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .skipColor,
+                            : Provider.of<SettingsManager>(
+                                context,
+                              ).skipColor,
                         onPressed: () {
                           showSkip = !showSkip;
                           setState(() {});
@@ -134,8 +142,9 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                   padding: const EdgeInsets.all(4.0),
                   child: Material(
                     color: showFail
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .failColor
+                        ? Provider.of<SettingsManager>(
+                            context,
+                          ).failColor
                         : Theme.of(context).colorScheme.primaryContainer,
                     borderRadius: BorderRadius.circular(10.0),
                     elevation: 2,
@@ -144,15 +153,18 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                       height: 32,
                       child: IconButton(
                         splashColor: Colors.transparent,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
+                          color: showFail
+                              ? Provider.of<SettingsManager>(context).iconColor
+                              : Provider.of<SettingsManager>(context).failColor,
                           size: 16,
                         ),
                         color: showFail
                             ? Colors.white
-                            : Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .failColor,
+                            : Provider.of<SettingsManager>(
+                                context,
+                              ).failColor,
                         onPressed: () {
                           showFail = !showFail;
                           setState(() {});
@@ -287,32 +299,36 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
                 BarChartRodData(
                   toY: widget.data.monthlyCheck[year]![DayType.check]![i]
                       .toDouble(),
-                  color: Provider.of<SettingsManager>(context, listen: false)
-                      .checkColor,
+                  color: Provider.of<SettingsManager>(
+                    context,
+                  ).checkColor,
                   width: width,
                 ),
               if (showProgress)
                 BarChartRodData(
                   toY: widget.data.monthlyCheck[year]![DayType.progress]![i]
                       .toDouble(),
-                  color: Provider.of<SettingsManager>(context, listen: false)
-                      .progressColor,
+                  color: Provider.of<SettingsManager>(
+                    context,
+                  ).progressColor,
                   width: width,
                 ),
               if (showSkip)
                 BarChartRodData(
                   toY: widget.data.monthlyCheck[year]![DayType.skip]![i]
                       .toDouble(),
-                  color: Provider.of<SettingsManager>(context, listen: false)
-                      .skipColor,
+                  color: Provider.of<SettingsManager>(
+                    context,
+                  ).skipColor,
                   width: width,
                 ),
               if (showFail)
                 BarChartRodData(
                   toY: widget.data.monthlyCheck[year]![DayType.fail]![i]
                       .toDouble(),
-                  color: Provider.of<SettingsManager>(context, listen: false)
-                      .failColor,
+                  color: Provider.of<SettingsManager>(
+                    context,
+                  ).failColor,
                   width: width,
                 ),
               if (!showCheck && !showProgress && !showSkip && !showFail)
