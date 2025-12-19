@@ -1,46 +1,68 @@
-# Contributing to Habo
-We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
+# Contributing to Habo  
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
-- Becoming a maintainer
+We’re excited that you’re interested in contributing to **Habo**! 🎉  
+Our goal is to make the contribution process clear, productive, and respectful for everyone.  
 
-## We Develop with Github
-We use github to host code, to track issues and feature requests, as well as accept pull requests.
+Whether you’re reporting a bug, suggesting an enhancement, or submitting a pull request (PR), please follow these guidelines.  
 
-## We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
-Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
+---
 
-1. Fork the repo and create your branch from `master`.
-2. If you've added code that should be tested, add tests.
-3. Ensure the change is working on Android and IOS.
-4. Make sure your code lints.
-5. Issue that pull request!
+## 📝 How to Contribute  
 
-## Any contributions you make will be under the GNU General Public License v3.0
-In short, when you submit code changes, your submissions are understood to be under the same [GNU GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
+### 1. Start with an Issue  
+- **Before writing any code**, please [create an issue](https://github.com/xpavle00/Habo/issues/new) to:  
+  - Report a bug  
+  - Request a new feature  
+  - Propose an improvement  
 
-## Report bugs using Github's [issues](https://github.com/xpavle00/Habo/issues)
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/xpavle00/Habo/issues/new); it's that easy!
+This gives the community and maintainers a chance to discuss the change before work begins.  
 
-Before you create a bug report please search both open and closed issues to make sure your bug report is not a duplicate.
+### 2. Fork & Branch  
+- Fork the repo and create a new branch from `main`.  
+  - Use a descriptive branch name, e.g. `fix/login-bug` or `feature/dark-mode`.  
 
-## Write bug reports with detail, background, and sample code
+### 3. Keep Pull Requests Focused  
+- Each PR should relate **only to the issue or feature it addresses**.  
+- Do **not** include unrelated changes such as formatting, whitespace cleanup, or refactors.  
+- If you want to make formatting or refactoring changes, open a separate PR for that.  
 
-**Great Bug Reports** tend to have:
+### 4. Development Checklist  
+Before submitting a PR, please ensure:  
+- ✅ The change is tested and works on **Android and iOS**.  
+- ✅ Code passes linting and formatting checks.  
+- ✅ Any new functionality has appropriate tests (if applicable).  
+- ✅ Commit messages are clear and descriptive.  
 
-- A quick summary and/or background
-- Steps to reproduce
-  - Be specific!
-  - Give sample code if you can.
-- What you expected would happen
-- What actually happens
-- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
+---
 
-## License
-By contributing, you agree that your contributions will be licensed under its GNU General Public License v3.0.
+## 🔄 Pull Request Process  
 
-## References
-This document was adapted from the [Contributing template](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62#file-contributing-md)
+1. Link the PR to the related issue using [GitHub’s “Linked Issues” feature](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).  
+2. Add a clear description of **what the change does** and **why it’s needed**.  
+3. Request a review from a maintainer.  
+4. Address review comments (if any) and update your branch before merging.  
+
+---
+
+## 🐞 Reporting Bugs  
+
+We use [GitHub Issues](https://github.com/xpavle00/Habo/issues) to track bugs. When filing a bug report, please include:  
+
+- A clear summary of the problem.  
+- Steps to reproduce (with code snippets if possible).  
+- What you expected to happen vs. what actually happened.  
+- Environment details (OS, device, dependencies, etc.).  
+
+The more detail, the faster we can help.  
+
+---
+
+## 📜 License  
+
+By contributing, you agree that your contributions will be licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/).  
+
+---
+
+## 🙌 Acknowledgments  
+
+This guide was adapted and modernized from the [briandk contributing template](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62).  

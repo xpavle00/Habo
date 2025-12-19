@@ -7,15 +7,15 @@ import 'package:habo/repositories/repository_factory.dart';
 import 'package:habo/settings/settings_manager.dart';
 
 /// Service locator for dependency injection
-/// 
+///
 /// Provides centralized access to service and repository instances throughout the app.
 /// Services and repositories are initialized once and reused across the application.
 class ServiceLocator {
   static ServiceLocator? _instance;
   static ServiceLocator get instance => _instance ??= ServiceLocator._();
-  
+
   ServiceLocator._();
-  
+
   // Service instances
   late final BackupService _backupService;
   late final NotificationService _notificationService;
@@ -23,21 +23,24 @@ class ServiceLocator {
   late final RepositoryFactory _repositoryFactory;
   late final HaboModel _haboModel;
   late final SettingsManager _settingsManager;
-  
+
   /// Initialize services and repositories with required dependencies
-  void initialize(GlobalKey<ScaffoldMessengerState> scaffoldKey, HaboModel haboModel, SettingsManager settingsManager) {
+  void initialize(GlobalKey<ScaffoldMessengerState> scaffoldKey,
+      HaboModel haboModel, SettingsManager settingsManager) {
     _haboModel = haboModel;
     _settingsManager = settingsManager;
     _repositoryFactory = RepositoryFactory(haboModel);
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
-    _backupService = BackupService(_uiFeedbackService, _repositoryFactory.backupRepository);
+    _backupService =
+        BackupService(_uiFeedbackService, _repositoryFactory.backupRepository);
     _notificationService = NotificationService();
   }
-  
+
   /// Ensures ServiceLocator is initialized, throws StateError if not
   void _ensureInitialized() {
     if (!isInitialized) {
-      throw StateError('ServiceLocator not initialized. Call ServiceLocator.instance.initialize() first.');
+      throw StateError(
+          'ServiceLocator not initialized. Call ServiceLocator.instance.initialize() first.');
     }
   }
 
@@ -46,19 +49,19 @@ class ServiceLocator {
     _ensureInitialized();
     return _backupService;
   }
-  
+
   /// Get NotificationService instance
   NotificationService get notificationService {
     _ensureInitialized();
     return _notificationService;
   }
-  
+
   /// Get UIFeedbackService instance
   UIFeedbackService get uiFeedbackService {
     _ensureInitialized();
     return _uiFeedbackService;
   }
-  
+
   /// Get RepositoryFactory instance
   RepositoryFactory get repositoryFactory {
     _ensureInitialized();
@@ -70,7 +73,7 @@ class ServiceLocator {
     _ensureInitialized();
     return _haboModel;
   }
-  
+
   /// Get SettingsManager instance
   SettingsManager get settingsManager {
     _ensureInitialized();
@@ -89,7 +92,7 @@ class ServiceLocator {
       return false;
     }
   }
-  
+
   /// Reset all services (useful for testing)
   void reset() {
     // Reset all services by reinitializing the singleton

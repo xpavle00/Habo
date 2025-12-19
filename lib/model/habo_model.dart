@@ -16,10 +16,11 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 class HaboModel {
   static const _dbVersion = 8;
   Database? _db;
-  
+
   Database get db {
     if (_db == null) {
-      throw StateError('Database has not been initialized. Call initDatabase() first.');
+      throw StateError(
+          'Database has not been initialized. Call initDatabase() first.');
     }
     return _db!;
   }
@@ -106,7 +107,7 @@ class HaboModel {
           final dayType = DayType.values[event['dayType'] as int];
           final comment = event['comment'];
           final progressValue = event['progressValue'] as double?;
-          
+
           // Handle progress data for numeric habits
           if (dayType == DayType.progress && progressValue != null) {
             eventsMap[DateTime.parse(event['dateTime'] as String)] = [
@@ -121,10 +122,10 @@ class HaboModel {
             ];
           }
         }
-        
+
         // Load categories for this habit
         final categories = await getCategoriesForHabit(id);
-        
+
         result.add(
           Habit(
             habitData: HabitData(
@@ -169,9 +170,12 @@ class HaboModel {
   }
 
   void _updateTableHabitsV3toV4(Batch batch) {
-    batch.execute('ALTER TABLE habits ADD habitType INTEGER DEFAULT 0 NOT NULL');
-    batch.execute('ALTER TABLE habits ADD targetValue REAL DEFAULT 1.0 NOT NULL');
-    batch.execute('ALTER TABLE habits ADD partialValue REAL DEFAULT 1.0 NOT NULL');
+    batch
+        .execute('ALTER TABLE habits ADD habitType INTEGER DEFAULT 0 NOT NULL');
+    batch.execute(
+        'ALTER TABLE habits ADD targetValue REAL DEFAULT 1.0 NOT NULL');
+    batch.execute(
+        'ALTER TABLE habits ADD partialValue REAL DEFAULT 1.0 NOT NULL');
     batch.execute('ALTER TABLE habits ADD unit TEXT DEFAULT "" NOT NULL');
   }
 
@@ -224,7 +228,6 @@ class HaboModel {
   //   )''');
   // }
 
-
   void _createTableHabitsV6(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS habits');
     batch.execute('''CREATE TABLE habits (
@@ -258,7 +261,7 @@ class HaboModel {
     // Check if fontFamily column already exists before adding it
     final result = await db.rawQuery("PRAGMA table_info(categories)");
     final hasColumn = result.any((column) => column['name'] == 'fontFamily');
-    
+
     if (!hasColumn) {
       await db.execute('ALTER TABLE categories ADD COLUMN fontFamily TEXT');
     }
@@ -328,7 +331,7 @@ class HaboModel {
     var batch = db.batch();
     _createTableHabitsV6(batch);
     _createTableEventsV4(batch);
-    _createTableCategoriesV7(batch);  // Use V7 with fontFamily column
+    _createTableCategoriesV7(batch); // Use V7 with fontFamily column
     _createTableHabitCategoriesV5(batch);
     batch.commit();
   }
@@ -367,10 +370,10 @@ class HaboModel {
     if (oldVersion == 5) {
       _updateTableHabitsV5toV6(batch);
     }
-    
+
     // Commit batch operations first
     await batch.commit();
-    
+
     // Then handle fontFamily column addition separately (requires async check)
     if (oldVersion <= 7) {
       await _updateTableCategoriesAddFontFamily(db);
@@ -385,15 +388,16 @@ class HaboModel {
         'dayType': event[0].index,
         'comment': event[1],
       };
-      
+
       // Add progress value for numeric habits
       if (event.length > 2 && event[0] == DayType.progress) {
         eventData['progressValue'] = event[2] as double;
       } else {
         eventData['progressValue'] = 0.0;
       }
-      
-      db.insert('events', eventData, conflictAlgorithm: ConflictAlgorithm.replace);
+
+      db.insert('events', eventData,
+          conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -463,7 +467,8 @@ class HaboModel {
   Future<void> deleteCategory(int id) async {
     try {
       // Delete category-habit associations first
-      await db.delete('habit_categories', where: 'category_id = ?', whereArgs: [id]);
+      await db.delete('habit_categories',
+          where: 'category_id = ?', whereArgs: [id]);
       // Then delete the category itself
       await db.delete('categories', where: 'id = ?', whereArgs: [id]);
     } catch (e) {
@@ -475,8 +480,11 @@ class HaboModel {
 
   Future<List<habo_category.Category>> getAllCategories() async {
     try {
-      final List<Map<String, dynamic>> categories = await db.query('categories', orderBy: 'title');
-      return categories.map((cat) => habo_category.Category.fromMap(cat)).toList();
+      final List<Map<String, dynamic>> categories =
+          await db.query('categories', orderBy: 'title');
+      return categories
+          .map((cat) => habo_category.Category.fromMap(cat))
+          .toList();
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -488,10 +496,13 @@ class HaboModel {
   // Habit-Category relationship methods
   Future<void> addHabitToCategory(int habitId, int categoryId) async {
     try {
-      await db.insert('habit_categories', {
-        'habit_id': habitId,
-        'category_id': categoryId,
-      }, conflictAlgorithm: ConflictAlgorithm.ignore);
+      await db.insert(
+          'habit_categories',
+          {
+            'habit_id': habitId,
+            'category_id': categoryId,
+          },
+          conflictAlgorithm: ConflictAlgorithm.ignore);
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -511,7 +522,8 @@ class HaboModel {
     }
   }
 
-  Future<List<habo_category.Category>> getCategoriesForHabit(int habitId) async {
+  Future<List<habo_category.Category>> getCategoriesForHabit(
+      int habitId) async {
     try {
       final List<Map<String, dynamic>> result = await db.rawQuery('''
         SELECT c.* FROM categories c
@@ -528,11 +540,13 @@ class HaboModel {
     return [];
   }
 
-  Future<void> updateHabitCategories(int habitId, List<habo_category.Category> categories) async {
+  Future<void> updateHabitCategories(
+      int habitId, List<habo_category.Category> categories) async {
     try {
       // Remove all existing category associations for this habit
-      await db.delete('habit_categories', where: 'habit_id = ?', whereArgs: [habitId]);
-      
+      await db.delete('habit_categories',
+          where: 'habit_id = ?', whereArgs: [habitId]);
+
       // Add new category associations
       for (var category in categories) {
         if (category.id != null) {

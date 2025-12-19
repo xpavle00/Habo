@@ -14,10 +14,15 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
+
 class MockEventRepository extends Mock implements EventRepository {}
+
 class MockCategoryRepository extends Mock implements CategoryRepository {}
+
 class MockBackupService extends Mock implements BackupService {}
+
 class MockNotificationService extends Mock implements NotificationService {}
+
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
 void main() {
@@ -36,7 +41,7 @@ void main() {
     mockBackupService = MockBackupService();
     mockNotificationService = MockNotificationService();
     mockUIFeedbackService = MockUIFeedbackService();
-    
+
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
       eventRepository: mockEventRepository,
@@ -48,7 +53,8 @@ void main() {
   });
 
   group('HabitListWidget Tests', () {
-    testWidgets('should display empty state when no habits', (WidgetTester tester) async {
+    testWidgets('should display empty state when no habits',
+        (WidgetTester tester) async {
       // Build our app and trigger a frame
       await tester.pumpWidget(
         MaterialApp(
@@ -66,7 +72,8 @@ void main() {
       expect(find.byType(HabitCard), findsNothing);
     });
 
-    testWidgets('should display habits when available', (WidgetTester tester) async {
+    testWidgets('should display habits when available',
+        (WidgetTester tester) async {
       // Add test habits
       final testHabit1 = Habit(
         habitData: HabitData(
@@ -115,11 +122,11 @@ class HabitListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final habitsManager = context.watch<HabitsManager>();
-    
+
     if (habitsManager.allHabits.isEmpty) {
       return const Center(child: Text('No habits yet'));
     }
-    
+
     return ListView.builder(
       itemCount: habitsManager.allHabits.length,
       itemBuilder: (context, index) {
@@ -132,7 +139,7 @@ class HabitListWidget extends StatelessWidget {
 
 class HabitCard extends StatelessWidget {
   final Habit habit;
-  
+
   const HabitCard({super.key, required this.habit});
 
   @override

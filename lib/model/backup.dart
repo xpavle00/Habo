@@ -10,21 +10,19 @@ class Backup {
     return File('$path/backup.json');
   }
 
-
-
   static Future<File> writeBackup(dynamic data) async {
     try {
       final file = await _localFile;
       // Encode either a List<Habit> (legacy) or a full Map backup payload
       final jsonData = jsonEncode(data);
-      
+
       // Validate JSON before writing
       try {
         jsonDecode(jsonData);
       } catch (e) {
         throw Exception('Invalid JSON data: $e');
       }
-      
+
       return file.writeAsString(jsonData);
     } catch (e) {
       throw Exception('Failed to create backup: $e');
@@ -45,7 +43,7 @@ class Backup {
     try {
       final file = File(path);
       final stat = await file.stat();
-      
+
       return {
         'size': stat.size,
         'modified': stat.modified,
