@@ -52,6 +52,10 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "at7AM": MessageLookupByLibrary.simpleMessage("בשעה 7:00"),
         "backup": MessageLookupByLibrary.simpleMessage("גיבוי"),
+        "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+          "הגיבוי נוצר בהצלחה!",
+        ),
+        "backupFailed": MessageLookupByLibrary.simpleMessage("הגיבוי נכשל!"),
         "backupFailedError": MessageLookupByLibrary.simpleMessage(
           "שגיאה: הגיבוי נכשל.",
         ),
@@ -154,6 +158,9 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "reset": MessageLookupByLibrary.simpleMessage("איפוס"),
         "restore": MessageLookupByLibrary.simpleMessage("שחזור"),
+        "restoreCompletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+          "השחזור הושלם בהצלחה!",
+        ),
         "restoreFailedError": MessageLookupByLibrary.simpleMessage(
           "שגיאה: השחזור מגיבוי נכשל.",
         ),
