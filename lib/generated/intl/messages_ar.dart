@@ -53,6 +53,12 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "at7AM": MessageLookupByLibrary.simpleMessage("في الساعة 7:00 صباحًا"),
         "backup": MessageLookupByLibrary.simpleMessage("نسخ احتياطي"),
+        "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+          "تم إنشاء النسخة الاحتياطية",
+        ),
+        "backupFailed": MessageLookupByLibrary.simpleMessage(
+          "فشل حفظ نسخة احتياطية",
+        ),
         "backupFailedError": MessageLookupByLibrary.simpleMessage(
           "خطأ: فشل إنشاء النسخة الاحتياطية.",
         ),
@@ -60,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "check": MessageLookupByLibrary.simpleMessage("تحقق"),
         "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
+        "complete": MessageLookupByLibrary.simpleMessage("مكتمل"),
         "congratulationsReward": MessageLookupByLibrary.simpleMessage(
           "تهانينا! مكافأتك:",
         ),
@@ -95,10 +102,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "done": MessageLookupByLibrary.simpleMessage("تم"),
         "editHabit": MessageLookupByLibrary.simpleMessage("تعديل العادة"),
         "emptyList": MessageLookupByLibrary.simpleMessage("قائمة فارغة"),
+        "enterAmount": MessageLookupByLibrary.simpleMessage("أدخل الكمية"),
         "exercise": MessageLookupByLibrary.simpleMessage("تمرين"),
         "fail": MessageLookupByLibrary.simpleMessage("فشل"),
         "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
           "15 دقيقة من ألعاب الفيديو",
+        ),
+        "fileNotFound": MessageLookupByLibrary.simpleMessage("الملف غير موجود"),
+        "fileTooLarge": MessageLookupByLibrary.simpleMessage(
+          "الملف كبير جداً (أكبر من 10 مب)",
         ),
         "firstDayOfWeek": MessageLookupByLibrary.simpleMessage(
           "أول يوم في الأسبوع",
@@ -130,6 +142,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
           "إذا كنت ترغب في دعم هابو يمكنك:",
         ),
+        "invalidBackupFile":
+            MessageLookupByLibrary.simpleMessage("ملف غير صالح"),
         "logYourDays": MessageLookupByLibrary.simpleMessage("سجل أيامك"),
         "modify": MessageLookupByLibrary.simpleMessage("تعديل"),
         "month": MessageLookupByLibrary.simpleMessage("الشهر"),
@@ -146,6 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ohNoSanction": MessageLookupByLibrary.simpleMessage("أوه لا! عقوبتك:"),
         "onboarding": MessageLookupByLibrary.simpleMessage("الإعداد الأولي"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("سياسة الخصوصية"),
+        "progress": MessageLookupByLibrary.simpleMessage("جار المعالجة"),
         "remainderOfReward": MessageLookupByLibrary.simpleMessage(
           "تذكير بالمكافأة بعد روتين ناجح.",
         ),
@@ -154,6 +169,10 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "reset": MessageLookupByLibrary.simpleMessage("إعادة تعيين"),
         "restore": MessageLookupByLibrary.simpleMessage("استعادة"),
+        "restoreCompletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+          "تم استعادة النسخة الاحتياطية",
+        ),
+        "restoreFailed": MessageLookupByLibrary.simpleMessage("فشلت الاستعادة"),
         "restoreFailedError": MessageLookupByLibrary.simpleMessage(
           "خطأ: فشل استعادة النسخة الاحتياطية.",
         ),
@@ -169,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "routineNumbered": MessageLookupByLibrary.simpleMessage("2. المعتاد"),
         "sanction": MessageLookupByLibrary.simpleMessage("عقوبة"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+        "saveProgress": MessageLookupByLibrary.simpleMessage("حفظ التقدم"),
         "setColors": MessageLookupByLibrary.simpleMessage("تعيين الألوان"),
         "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "showMonthName":
