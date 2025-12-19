@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'other': 'Dispositivo'
           })}";
 
+  static String m16(version) => "Versión ${version}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about": MessageLookupByLibrary.simpleMessage("Acerca de"),
