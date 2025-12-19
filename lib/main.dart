@@ -44,7 +44,7 @@ class Habo extends StatefulWidget {
   State<Habo> createState() => _HaboState();
 }
 
-class _HaboState extends State<Habo> {
+class _HaboState extends State<Habo> with WidgetsBindingObserver {
   final _appStateManager = AppStateManager();
   final _settingsManager = SettingsManager();
   late HabitsManager _habitManager;
@@ -52,25 +52,73 @@ class _HaboState extends State<Habo> {
   final _navigatorKey = GlobalKey<NavigatorState>();
   final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   bool _isInitialized = false;
+  Timer? _dayChangeTimer;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initializeApp();
+    _startDayChangeTimer();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _stopDayChangeTimer();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _startDayChangeTimer();
+      if (_isInitialized) {
+        _habitManager.checkDayChange();
+      }
+    } else if (state == AppLifecycleState.paused) {
+      _stopDayChangeTimer();
+    }
+  }
+
+  void _startDayChangeTimer() {
+    _stopDayChangeTimer();
+
+    final now = DateTime.now();
+    // Calculate time until next midnight
+    final nextMidnight = DateTime(now.year, now.month, now.day + 1);
+    final timeUntilMidnight = nextMidnight.difference(now);
+
+    // Add a small buffer (e.g., 1 second) to ensure we are past midnight
+    final duration = timeUntilMidnight + const Duration(seconds: 1);
+
+    _dayChangeTimer = Timer(duration, () {
+      if (_isInitialized) {
+        _habitManager.checkDayChange();
+        // Schedule next midnight timer
+        _startDayChangeTimer();
+      }
+    });
+  }
+
+  void _stopDayChangeTimer() {
+    _dayChangeTimer?.cancel();
+    _dayChangeTimer = null;
   }
 
   Future<void> _initializeApp() async {
     await _settingsManager.initialize();
-    
+
     // Create a shared HaboModel instance
     final haboModel = HaboModel();
-    
+
     // Initialize database first and wait for completion
     await haboModel.initDatabase();
-    
+
     // Initialize service locator with the scaffold key and HaboModel
-    ServiceLocator.instance.initialize(_scaffoldKey, haboModel, _settingsManager);
-    
+    ServiceLocator.instance
+        .initialize(_scaffoldKey, haboModel, _settingsManager);
+
     // Create HabitsManager with repositories and services from ServiceLocator
     final repositoryFactory = ServiceLocator.instance.repositoryFactory;
     final habitsManager = HabitsManager(
@@ -82,13 +130,13 @@ class _HaboState extends State<Habo> {
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
     );
     await habitsManager.initialize();
-    
+
     if (platformSupportsNotifications()) {
       initializeNotifications();
     }
-    
+
     GoogleFonts.config.allowRuntimeFetching = false;
-    
+
     // Create AppRouter with initialized habitsManager
     final appRouter = AppRouter(
       navigatorKey: _navigatorKey,
@@ -96,12 +144,20 @@ class _HaboState extends State<Habo> {
       settingsManager: _settingsManager,
       habitsManager: habitsManager,
     );
-    
+
     setState(() {
       _habitManager = habitsManager;
       _appRouter = appRouter;
       _isInitialized = true;
     });
+
+    // Update home widget on app launch to ensure correct state
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.mounted) {
+        await habitsManager.updateHomeWidget(context);
+      }
+    });
+
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
   }
@@ -115,12 +171,18 @@ class _HaboState extends State<Habo> {
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarBrightness: Brightness.light),
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
+        // Handle Android 15 edge-to-edge
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+      ),
     );
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    // Enable edge-to-edge mode explicitly for consistency
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -137,8 +199,9 @@ class _HaboState extends State<Habo> {
         return DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
           // Only use dynamic colors if Material You theme is selected
-          final useDynamicColors = settingsManager.getThemeString == Themes.materialYou;
-          
+          final useDynamicColors =
+              settingsManager.getThemeString == Themes.materialYou;
+
           return MaterialApp.router(
             title: 'Habo',
             localizationsDelegates: const [
@@ -149,16 +212,24 @@ class _HaboState extends State<Habo> {
             ],
             supportedLocales: S.delegate.supportedLocales,
             scaffoldMessengerKey: _scaffoldKey,
-            theme: (useDynamicColors && lightDynamic != null) ? ThemeData(
-              colorScheme: lightDynamic,
-            ) : settingsManager.getLight,
-            darkTheme: (useDynamicColors && darkDynamic != null) ? ThemeData(
-              colorScheme: darkDynamic,
-            ) : settingsManager.getDark,
+            theme: (useDynamicColors && lightDynamic != null)
+                ? ThemeData(
+                    colorScheme: lightDynamic,
+                  )
+                : settingsManager.getLight,
+            darkTheme: (useDynamicColors && darkDynamic != null)
+                ? ThemeData(
+                    colorScheme: darkDynamic,
+                  )
+                : settingsManager.getDark,
             routerDelegate: _appRouter,
             routeInformationParser: HaboRouteInformationParser(),
             backButtonDispatcher: RootBackButtonDispatcher(),
             builder: (context, child) {
+              // Set context for automatic widget updates
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _habitManager.setWidgetContext(context);
+              });
               return BiometricAuthWrapper(child: child!);
             },
           );

@@ -334,7 +334,14 @@
     "featureSoundDesc": "Adjustable volume",
     "featureLockTitle": "Lock feature",
     "featureLockDesc": "Secure the app with Face ID / Touch ID / biometrics",
+    "featureIosSoundMixingTitle": "Fixed sound mixing",
+    "featureIosSoundMixingDesc": "Habo sounds no longer interrupt your music or podcasts",
+    "featureHomescreenWidgetTitle": "Homescreen widget",
+    "featureHomescreenWidgetDesc": "View your habit progress at a glance from your home screen (experimental)",
+    "featureLongpressCheckTitle": "Longpress check",
+    "featureLongpressCheckDesc": "Longpress on habit buttons to quickly change status",
     "haboSyncComingSoon": "Coming Soon",
     "haboSyncDescription": "Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.",
-    "haboSyncLearnMore": "Learn more at habo.space/sync"
+    "haboSyncLearnMore": "Learn more at habo.space/sync",
+    "habitsToday": "Habits today"
   }

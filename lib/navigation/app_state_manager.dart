@@ -41,8 +41,8 @@ class AppStateManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goEditHabit(HabitData? state) {
-    _editHabit = state;
+  void goEditHabit(HabitData? habitData) {
+    _editHabit = habitData;
     notifyListeners();
   }
 }

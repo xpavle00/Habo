@@ -17,7 +17,7 @@ class SQLiteBackupRepository implements BackupRepository {
     try {
       final habits = await _haboModel.getAllHabits();
       final categories = await _haboModel.getAllCategories();
-      
+
       final data = <String, dynamic>{
         'habits': <dynamic>[],
         'events': <String, dynamic>{},
@@ -37,7 +37,8 @@ class SQLiteBackupRepository implements BackupRepository {
           // Use the habit's toJson method which includes events
           (data['habits'] as List).add(habit.toJson());
         } catch (e) {
-          debugPrint('Warning: Failed to export habit ${habit.habitData.id}: $e');
+          debugPrint(
+              'Warning: Failed to export habit ${habit.habitData.id}: $e');
         }
       }
 
@@ -56,7 +57,8 @@ class SQLiteBackupRepository implements BackupRepository {
         if (habit.habitData.id != null) {
           try {
             // Get categories directly from database to ensure we have all associations
-            final habitCategories = await _haboModel.getCategoriesForHabit(habit.habitData.id!);
+            final habitCategories =
+                await _haboModel.getCategoriesForHabit(habit.habitData.id!);
             for (final category in habitCategories) {
               if (category.id != null) {
                 (data['habit_categories'] as List).add({
@@ -67,15 +69,18 @@ class SQLiteBackupRepository implements BackupRepository {
               }
             }
           } catch (e) {
-            debugPrint('Warning: Failed to export categories for habit ${habit.habitData.id}: $e');
+            debugPrint(
+                'Warning: Failed to export categories for habit ${habit.habitData.id}: $e');
           }
         }
       }
 
       // Update metadata with actual counts
-      (data['metadata'] as Map<String, dynamic>)['total_associations'] = associationCount;
+      (data['metadata'] as Map<String, dynamic>)['total_associations'] =
+          associationCount;
 
-      debugPrint('Backup export completed: ${habits.length} habits, ${categories.length} categories, $associationCount associations');
+      debugPrint(
+          'Backup export completed: ${habits.length} habits, ${categories.length} categories, $associationCount associations');
       return data;
     } catch (e) {
       debugPrint('Error during backup export: $e');
@@ -87,7 +92,7 @@ class SQLiteBackupRepository implements BackupRepository {
   Future<void> importData(Map<String, dynamic> data) async {
     try {
       debugPrint('Starting backup import...');
-      
+
       // Validate backup data structure
       if (!data.containsKey('habits') || !data.containsKey('categories')) {
         throw Exception('Invalid backup format: missing required sections');
@@ -96,7 +101,8 @@ class SQLiteBackupRepository implements BackupRepository {
       // Log metadata if available
       if (data.containsKey('metadata')) {
         final metadata = data['metadata'] as Map<String, dynamic>;
-        debugPrint('Importing backup from ${metadata['export_timestamp']} with ${metadata['total_habits']} habits and ${metadata['total_categories']} categories');
+        debugPrint(
+            'Importing backup from ${metadata['export_timestamp']} with ${metadata['total_habits']} habits and ${metadata['total_categories']} categories');
       }
 
       // Clear existing data
@@ -107,7 +113,7 @@ class SQLiteBackupRepository implements BackupRepository {
           await _haboModel.deleteHabit(habit.habitData.id!);
         }
       }
-      
+
       // Clear existing categories
       final categories = await _haboModel.getAllCategories();
       for (final category in categories) {
@@ -123,33 +129,33 @@ class SQLiteBackupRepository implements BackupRepository {
       debugPrint('Importing categories...');
       final categoriesData = data['categories'] as List;
       int importedCategories = 0;
-      
+
       for (final categoryJson in categoriesData) {
         try {
           final category = Category.fromJson(categoryJson);
           final oldId = category.id;
-          
+
           // Create category without ID so database assigns new one
           final categoryToInsert = Category(
             title: category.title,
             iconCodePoint: category.iconCodePoint,
             fontFamily: category.fontFamily,
           );
-          
+
           // Insert category and get the new ID
           final newId = await _haboModel.insertCategory(categoryToInsert);
-          
+
           // Map old ID to new ID if old ID existed
           if (oldId != null) {
             categoryIdMapping[oldId] = newId;
           }
-          
+
           importedCategories++;
         } catch (e) {
           debugPrint('Warning: Failed to import category: $e');
         }
       }
-      
+
       debugPrint('Imported $importedCategories categories');
 
       // Map to track old habit ID -> new habit ID
@@ -160,39 +166,41 @@ class SQLiteBackupRepository implements BackupRepository {
       final habitsData = data['habits'] as List;
       int importedHabits = 0;
       int importedEvents = 0;
-      
+
       for (final habitJson in habitsData) {
         try {
           // Create habit from JSON
           final habit = Habit.fromJson(habitJson);
           final oldHabitId = habit.habitData.id;
-          
+
           // Insert habit and get the new ID
           final newHabitId = await _haboModel.insertHabit(habit);
-          
+
           // Map old habit ID to new habit ID if old ID existed
           if (oldHabitId != null) {
             habitIdMapping[oldHabitId] = newHabitId;
           }
-          
+
           // Insert events for this habit using the NEW habit ID
           if (habit.habitData.events.isNotEmpty) {
             for (final entry in habit.habitData.events.entries) {
               try {
-                await _haboModel.insertEvent(newHabitId, entry.key, entry.value);
+                await _haboModel.insertEvent(
+                    newHabitId, entry.key, entry.value);
                 importedEvents++;
               } catch (e) {
-                debugPrint('Warning: Failed to import event for habit $newHabitId at ${entry.key}: $e');
+                debugPrint(
+                    'Warning: Failed to import event for habit $newHabitId at ${entry.key}: $e');
               }
             }
           }
-          
+
           importedHabits++;
         } catch (e) {
           debugPrint('Warning: Failed to import habit: $e');
         }
       }
-      
+
       debugPrint('Imported $importedHabits habits and $importedEvents events');
 
       // Import habit-category associations using the ID mappings
@@ -200,29 +208,32 @@ class SQLiteBackupRepository implements BackupRepository {
         debugPrint('Importing habit-category associations...');
         final habitCategoriesData = data['habit_categories'] as List;
         int importedAssociations = 0;
-        
+
         for (final association in habitCategoriesData) {
           try {
             final oldHabitId = association['habit_id'] as int;
             final oldCategoryId = association['category_id'] as int;
-            
+
             // Get the new IDs from our mappings
             final newHabitId = habitIdMapping[oldHabitId];
             final newCategoryId = categoryIdMapping[oldCategoryId];
-            
+
             // Only add association if both IDs were successfully mapped
             if (newHabitId != null && newCategoryId != null) {
               await _haboModel.addHabitToCategory(newHabitId, newCategoryId);
               importedAssociations++;
             } else {
-              debugPrint('Warning: Skipping association - habit ID $oldHabitId -> $newHabitId, category ID $oldCategoryId -> $newCategoryId');
+              debugPrint(
+                  'Warning: Skipping association - habit ID $oldHabitId -> $newHabitId, category ID $oldCategoryId -> $newCategoryId');
             }
           } catch (e) {
-            debugPrint('Warning: Failed to import habit-category association: $e');
+            debugPrint(
+                'Warning: Failed to import habit-category association: $e');
           }
         }
-        
-        debugPrint('Imported $importedAssociations habit-category associations');
+
+        debugPrint(
+            'Imported $importedAssociations habit-category associations');
       }
 
       debugPrint('Backup import completed successfully!');
@@ -282,7 +293,8 @@ class SQLiteBackupRepository implements BackupRepository {
     int associationCount = 0;
     for (final habit in habits) {
       if (habit.habitData.id != null) {
-        final habitCategories = await _haboModel.getCategoriesForHabit(habit.habitData.id!);
+        final habitCategories =
+            await _haboModel.getCategoriesForHabit(habit.habitData.id!);
         associationCount += habitCategories.length;
       }
     }

@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
@@ -64,7 +65,8 @@ class OneDayButton extends StatelessWidget {
           key: const Key('Plus'),
           icon: Icon(
             Icons.add,
-            color: Provider.of<SettingsManager>(context, listen: false).progressColor,
+            color: Provider.of<SettingsManager>(context, listen: false)
+                .progressColor,
             semanticLabel: 'Add Progress',
           ),
         ),
@@ -98,14 +100,90 @@ class OneDayButton extends StatelessWidget {
     String comment = '';
 
     if (event != null) {
-      if (event![0] != 0) {
-        index = (event![0].index);
+      // Find the index in the icons list that matches the event DayType
+      final dayType = event![0];
+      if (dayType != DayType.clear) {
+        Key targetKey;
+        switch (dayType) {
+          case DayType.check:
+            targetKey = const Key('Check');
+            break;
+          case DayType.fail:
+            targetKey = const Key('Fail');
+            break;
+          case DayType.skip:
+            targetKey = const Key('Skip');
+            break;
+          case DayType.progress:
+            targetKey = const Key('Plus');
+            break;
+          default:
+            targetKey = const Key('Date');
+        }
+
+        // Find index in the possibly dynamic icons list
+        final foundIndex = icons.indexWhere((icon) => icon.key == targetKey);
+        if (foundIndex != -1) {
+          index = foundIndex;
+        }
       }
 
       if (event!.length > 1 && event![1] != null && event![1] != '') {
         comment = (event![1]);
       }
     }
+
+    // Helper method to handle selection
+    void handleSelection(InButton value) {
+      if (value.key == const Key('Check') ||
+          value.key == const Key('Fail') ||
+          value.key == const Key('Skip')) {
+        // For numeric habits, Check means complete the habit fully
+        if (value.key == const Key('Check') &&
+            parent.widget.habitData.isNumeric) {
+          Provider.of<SettingsManager>(context, listen: false).playCheckSound();
+          // Complete the habit with full target value
+          Provider.of<HabitsManager>(context, listen: false)
+              .addEvent(id, date, [DayType.check, comment]);
+          parent.events[date] = [DayType.check, comment];
+          parent.showRewardNotification(date);
+        } else {
+          final dayType = _getDayTypeFromKey(value.key);
+          Provider.of<HabitsManager>(context, listen: false)
+              .addEvent(id, date, [dayType, comment]);
+          parent.events[date] = [dayType, comment];
+          if (value.key == const Key('Check')) {
+            parent.showRewardNotification(date);
+            Provider.of<SettingsManager>(context, listen: false)
+                .playCheckSound();
+          } else {
+            Provider.of<SettingsManager>(context, listen: false)
+                .playClickSound();
+            if (value.key == const Key('Fail')) {
+              parent.showSanctionNotification(date);
+            }
+          }
+        }
+      } else if (value.key == const Key('Plus')) {
+        // Plus icon shows the progress input modal for numeric habits
+        _showProgressInputModal(context);
+      } else if (value.key == const Key('Comment')) {
+        showCommentDialog(context, index, comment);
+      } else {
+        if (comment != '') {
+          Provider.of<HabitsManager>(context, listen: false)
+              .addEvent(id, date, [DayType.clear, comment]);
+          parent.events[date] = [DayType.clear, comment];
+        } else {
+          Provider.of<HabitsManager>(context, listen: false)
+              .deleteEvent(id, date);
+          parent.events.remove(date);
+        }
+      }
+      callback();
+    }
+
+    final oneTapCheck = Provider.of<SettingsManager>(context).getOneTapCheck;
 
     return AspectRatio(
       aspectRatio: 1,
@@ -117,76 +195,69 @@ class OneDayButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             elevation: 2,
             shadowColor: Theme.of(context).shadowColor,
-            child: Container(
-              alignment: Alignment.center,
-              child: DropdownButton<InButton>(
-                    iconSize: 0,
-                    elevation: 3,
-                    alignment: Alignment.center,
-                    borderRadius: BorderRadius.circular(10.0),
-                    underline: Container(),
-                    items: icons.map(
-                      (InButton value) {
-                        return DropdownMenuItem<InButton>(
-                          key: value.key,
-                          value: value,
-                          child: Center(child: value),
-                        );
-                      },
-                    ).toList(),
-                    value: icons[index],
-                onTap: () {
-                  parent.setSelectedDay(date);
-                },
-                onChanged: (value) {
-                  if (value != null) {
-                    if (value.key == const Key('Check') ||
-                        value.key == const Key('Fail') ||
-                        value.key == const Key('Skip')) {
-                      // For numeric habits, Check means complete the habit fully
-                      if (value.key == const Key('Check') && parent.widget.habitData.isNumeric) {
-                        Provider.of<SettingsManager>(context, listen: false)
-                            .playCheckSound();
-                        // Complete the habit with full target value
-                        Provider.of<HabitsManager>(context, listen: false)
-                            .addEvent(id, date, [DayType.check, comment]);
-                        parent.events[date] = [DayType.check, comment];
-                        parent.showRewardNotification(date);
-                      } else {
-                        final dayType = _getDayTypeFromKey(value.key);
-                        Provider.of<HabitsManager>(context, listen: false)
-                            .addEvent(id, date, [dayType, comment]);
-                        parent.events[date] = [dayType, comment];
-                        if (value.key == const Key('Check')) {
-                          parent.showRewardNotification(date);
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .playCheckSound();
-                        } else {
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .playClickSound();
-                          if (value.key == const Key('Fail')) {
-                            parent.showSanctionNotification(date);
-                          }
-                        }
-                      }
-                    } else if (value.key == const Key('Plus')) {
-                      // Plus icon shows the progress input modal for numeric habits
-                      _showProgressInputModal(context);
-                    } else if (value.key == const Key('Comment')) {
-                      showCommentDialog(context, index, comment);
-                    } else {
-                      if (comment != '') {
-                        Provider.of<HabitsManager>(context, listen: false)
-                            .addEvent(id, date, [DayType.clear, comment]);
-                        parent.events[date] = [DayType.clear, comment];
-                      } else {
-                        Provider.of<HabitsManager>(context, listen: false)
-                            .deleteEvent(id, date);
-                        parent.events.remove(date);
-                      }
-                    }
-                    callback();
-                  }
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+              ),
+              child: Builder(
+                builder: (BuildContext context) {
+                  return RawGestureDetector(
+                    gestures: <Type, GestureRecognizerFactory>{
+                      TapGestureRecognizer:
+                          GestureRecognizerFactoryWithHandlers<
+                              TapGestureRecognizer>(
+                        () => TapGestureRecognizer(),
+                        (TapGestureRecognizer instance) {
+                          instance.onTap = () {
+                            parent.setSelectedDay(date);
+                            if (oneTapCheck) {
+                              // Perform Check action
+                              final checkItem = icons.firstWhere(
+                                (element) => element.key == const Key('Check'),
+                                orElse: () => icons[1],
+                              );
+                              handleSelection(checkItem);
+                            } else {
+                              // Show menu
+                              _showMenu(context, icons, index, color,
+                                  handleSelection);
+                            }
+                          };
+                        },
+                      ),
+                      LongPressGestureRecognizer:
+                          GestureRecognizerFactoryWithHandlers<
+                              LongPressGestureRecognizer>(
+                        () => LongPressGestureRecognizer(
+                            duration: const Duration(milliseconds: 400)),
+                        (LongPressGestureRecognizer instance) {
+                          instance.onLongPress = () {
+                            if (oneTapCheck) {
+                              // Show menu
+                              _showMenu(context, icons, index, color,
+                                  handleSelection);
+                            } else {
+                              // Perform Check action
+                              final checkItem = icons.firstWhere(
+                                (element) => element.key == const Key('Check'),
+                                orElse: () => icons[1],
+                              );
+                              handleSelection(checkItem);
+                            }
+                          };
+                        },
+                      ),
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: icons[index], // Render the current state icon/text
+                    ),
+                  );
                 },
               ),
             ),
@@ -194,6 +265,66 @@ class OneDayButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _showMenu(BuildContext context, List<InButton> icons, int selectedIndex,
+      Color? color, Function(InButton) onSelected) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final overlay =
+        Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
+
+    const double menuWidth = 60.0; // Fixed width for consistent centering
+    const double itemHeight = 45.0; // Must match PopupMenuItem height
+
+    // Calculate global position of the button
+    final buttonTopLeft =
+        renderBox.localToGlobal(Offset.zero, ancestor: overlay);
+    final buttonBottomRight = renderBox.localToGlobal(
+        renderBox.size.bottomRight(Offset.zero),
+        ancestor: overlay);
+    final buttonRect = Rect.fromPoints(buttonTopLeft, buttonBottomRight);
+
+    // Calculate vertical offset to align the selected item with the button
+    // The menu starts at 'top', so we shift 'top' up by (index * height)
+    final double verticalOffset = selectedIndex * itemHeight;
+
+    // Calculate centered position for the menu
+    final centeredRect = Rect.fromLTWH(
+      buttonRect.left + (buttonRect.width - menuWidth) / 2,
+      buttonRect.top - verticalOffset,
+      menuWidth,
+      buttonRect.height +
+          verticalOffset, // Height doesn't strictly matter for RelativeRect position anchor, but this is safe
+    );
+
+    showMenu<InButton>(
+      context: context,
+      color: color,
+      constraints: const BoxConstraints(
+        minWidth: menuWidth,
+        maxWidth: menuWidth,
+      ),
+      position: RelativeRect.fromRect(
+        centeredRect,
+        Offset.zero & overlay.size,
+      ),
+      items: icons.map((InButton value) {
+        return PopupMenuItem<InButton>(
+          value: value,
+          height: itemHeight, // Increased height for better spacing
+          padding: EdgeInsets.zero, // Remove default padding
+          child: Center(child: value),
+        );
+      }).toList(),
+      elevation: 4.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    ).then((InButton? value) {
+      if (value != null) {
+        onSelected(value);
+      }
+    });
   }
 
   void showCommentDialog(BuildContext context, int index, String comment) {
@@ -261,7 +392,7 @@ class OneDayButton extends StatelessWidget {
   void _showProgressInputModal(BuildContext context) {
     final habitData = parent.widget.habitData;
     final currentProgress = habitData.getProgressForDate(date);
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -276,7 +407,7 @@ class OneDayButton extends StatelessWidget {
             Provider.of<HabitsManager>(context, listen: false)
                 .addEvent(id, date, [DayType.progress, '', progressValue]);
             parent.events[date] = [DayType.progress, '', progressValue];
-            
+
             // Play appropriate sound and show notification
             if (progressValue >= habitData.targetValue) {
               parent.showRewardNotification(date);
@@ -286,7 +417,7 @@ class OneDayButton extends StatelessWidget {
               Provider.of<SettingsManager>(context, listen: false)
                   .playClickSound();
             }
-            
+
             callback();
           },
         );

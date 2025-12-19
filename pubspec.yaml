@@ -3,10 +3,11 @@ description: Minimalistic habit tracker.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.1+1
+version: 3.1.0+1
 
 environment:
-  sdk: ">=2.18.1 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: "^3.38.4"
 
 dependencies:
   flutter:
@@ -17,10 +18,10 @@ dependencies:
   table_calendar: ^3.2.0
   awesome_dialog: ^3.1.0
   loader_overlay: ^5.0.0
-  introduction_screen: ^3.1.11
+  introduction_screen: ^4.0.0
   flutter_svg: ^2.0.7
   url_launcher: ^6.1.12
-  package_info_plus: ^8.3.0
+  package_info_plus: ^9.0.0
   sqflite: ^2.3.0
   sqflite_common_ffi: ^2.3.0+2
   path: ^1.8.3
@@ -42,9 +43,11 @@ dependencies:
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
   flutter_soloud: ^3.2.5
+  audio_session: ^0.1.21
   local_auth: ^2.3.0
   local_auth_android: ^1.0.51
   local_auth_darwin: ^1.6.0
+  home_widget: ^0.8.1
 
 dev_dependencies:
   flutter_test:
@@ -85,23 +88,23 @@ flutter_intl:
 # Native splash screen configuration
 flutter_native_splash:
   # Match app's light and dark scaffold background colors
-  color: "#FAFAFA"          # from HaboTheme.lightTheme.scaffoldBackgroundColor (0xFFFAFAFA)
-  color_dark: "#000000"     # from HaboTheme.darkTheme.scaffoldBackgroundColor (0xFF000000)
+  color: "#FAFAFA" # from HaboTheme.lightTheme.scaffoldBackgroundColor (0xFFFAFAFA)
+  color_dark: "#000000" # from HaboTheme.darkTheme.scaffoldBackgroundColor (0xFF000000)
 
   # Use existing app icon as splash image
   image: assets/images/splash_icon.png
   image_dark: assets/images/splash_icon.png
 
   # Improve appearance
-  ios_content_mode: center           # make image larger on iOS
-  android_gravity: center            # explicit default
-  fullscreen: false                   # hide status bar during splash
+  ios_content_mode: center # make image larger on iOS
+  android_gravity: center # explicit default
+  fullscreen: false # hide status bar during splash
 
   # Android 12 requires its own config
   android_12:
     color: "#FAFAFA"
     color_dark: "#000000"
-    icon_background_color: "#FAFAFA"      # match background to reduce visible circle
+    icon_background_color: "#FAFAFA" # match background to reduce visible circle
     icon_background_color_dark: "#000000"
     image: assets/images/splash_icon.png
     image_dark: assets/images/splash_icon.png

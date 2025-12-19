@@ -8,14 +8,14 @@ import 'package:habo/repositories/backup_repository.dart';
 /// Mock implementation of HabitRepository for testing
 class MockHabitRepository extends Mock implements HabitRepository {}
 
-/// Mock implementation of EventRepository for testing  
+/// Mock implementation of EventRepository for testing
 class MockEventRepository extends Mock implements EventRepository {}
 
 /// Mock implementation of BackupRepository for testing
 class MockBackupRepository extends Mock implements BackupRepository {}
 
 /// In-memory implementation of HabitRepository for testing
-/// 
+///
 /// Provides a real implementation that stores data in memory
 /// instead of a database, useful for integration testing.
 class InMemoryHabitRepository implements HabitRepository {
@@ -37,7 +37,8 @@ class InMemoryHabitRepository implements HabitRepository {
 
   @override
   Future<void> updateHabit(Habit habit) async {
-    final index = _habits.indexWhere((h) => h.habitData.id == habit.habitData.id);
+    final index =
+        _habits.indexWhere((h) => h.habitData.id == habit.habitData.id);
     if (index != -1) {
       _habits[index] = habit;
     }
@@ -101,11 +102,11 @@ class InMemoryEventRepository implements EventRepository {
   Future<List<List>> getEventsForHabit(int habitId) async {
     final eventsMap = _events[habitId] ?? SplayTreeMap<DateTime, List>();
     final events = <List>[];
-    
+
     eventsMap.forEach((dateTime, data) {
       events.add([dateTime, data[0], data[1]]);
     });
-    
+
     return events;
   }
 
@@ -131,7 +132,8 @@ class InMemoryEventRepository implements EventRepository {
   }
 
   @override
-  Future<void> insertEventsForHabit(int habitId, Map<DateTime, List> events) async {
+  Future<void> insertEventsForHabit(
+      int habitId, Map<DateTime, List> events) async {
     _events[habitId] ??= SplayTreeMap<DateTime, List>();
     _events[habitId]!.addAll(events);
   }
@@ -171,13 +173,13 @@ class InMemoryBackupRepository implements BackupRepository {
   Future<void> importData(Map<String, dynamic> data) async {
     _backupHabits.clear();
     _backupEvents.clear();
-    
+
     if (data['habits'] != null) {
       for (var habitJson in data['habits']) {
         _backupHabits.add(Habit.fromJson(habitJson));
       }
     }
-    
+
     if (data['events'] != null) {
       _backupEvents.addAll(Map<int, Map<DateTime, List>>.from(data['events']));
     }
