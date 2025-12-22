@@ -11,7 +11,7 @@
     "@appNotifications": {},
     "accountabilityPartner": "责任伙伴",
     "@accountabilityPartner": {},
-    "themeSelect": "{theme, select, device {跟随系统} light {浅色模式} dark {深色模式} oled {OLED 黑色} other{跟随系统}}",
+    "themeSelect": "{theme, select,device {Device} 浅色{Light} 深色{Dark} oled{OLED black} materialYou {Material You} 跟随设备{Device}}",
     "@themeSelect": {
         "placeholders": {
             "theme": {
@@ -35,7 +35,7 @@
     "@statistics": {},
     "noDataAboutHabits": "没有关于习惯的数据。",
     "@noDataAboutHabits": {},
-    "total": "统计",
+    "total": "合计",
     "@total": {},
     "unknown": "未知",
     "@unknown": {},
@@ -212,5 +212,313 @@
     "note": "备注",
     "@note": {},
     "createYourFirstHabit": "培养你的第一个习惯。",
-    "@createYourFirstHabit": {}
+    "@createYourFirstHabit": {},
+    "backupCreatedSuccessfully": "成功地创建备份！",
+    "@backupCreatedSuccessfully": {},
+    "backupFailed": "备份失败！",
+    "@backupFailed": {},
+    "restoreCompletedSuccessfully": "成功完成恢复！",
+    "@restoreCompletedSuccessfully": {},
+    "restoreFailed": "恢复失败！",
+    "@restoreFailed": {},
+    "fileNotFound": "文件没找到",
+    "@fileNotFound": {},
+    "fileTooLarge": "文件太大（最大10MB）",
+    "@fileTooLarge": {},
+    "invalidBackupFile": "不合法的备份文件",
+    "@invalidBackupFile": {},
+    "progress": "进度",
+    "@progress": {},
+    "enterAmount": "输入数量",
+    "@enterAmount": {},
+    "complete": "完成",
+    "@complete": {},
+    "saveProgress": "保存进度",
+    "@saveProgress": {},
+    "currentProgress": "当前进度：{current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "目标进度： {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "计数型习惯",
+    "@numericHabit": {},
+    "targetValue": "目标值",
+    "@targetValue": {},
+    "unit": "单位",
+    "@unit": {},
+    "habitType": "习惯类型",
+    "@habitType": {},
+    "booleanHabit": "布尔型习惯",
+    "@booleanHabit": {},
+    "input": "输入",
+    "@input": {},
+    "numericHabitDescription": "计数型习惯使你可以通过增量的方式整天跟踪进度。",
+    "@numericHabitDescription": {},
+    "partialValueDescription": "以更小的增量跟踪进度",
+    "@partialValueDescription": {},
+    "categories": "分类",
+    "@categories": {},
+    "addCategory": "添加分类",
+    "@addCategory": {},
+    "editCategory": "编辑分类",
+    "@editCategory": {},
+    "category": "分类",
+    "@category": {},
+    "noCategoriesYet": "还没有创建分类",
+    "@noCategoriesYet": {},
+    "createFirstCategory": "创建你的第一个分类来组织你的习惯",
+    "@createFirstCategory": {},
+    "pleaseEnterCategoryTitle": "请输入分类标题",
+    "@pleaseEnterCategoryTitle": {},
+    "categoryAlreadyExists": "分类\"{title}\" 已经存在",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "分类\"{title}\"创建成功",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "分类 \"{title}\"更新成功",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "分类 \"{title}\"删除成功",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "保存分类失败： {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "删除分类失败： {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "选择分类",
+    "@selectCategories": {},
+    "selectedCategories": "已选中的分类({count})",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "所有分类",
+    "@allCategories": {},
+    "deleteCategory": "删除分类",
+    "@deleteCategory": {},
+    "deleteCategoryConfirmation": "你确定想要删除 \"{title}\"?\n\n这将从所有使用该分类的习惯中移除该分类",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "没有习惯在 \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "fingerprint": "指纹",
+    "@fingerprint": {},
+    "whatsNewTitle": "更新了什么",
+    "@whatsNewTitle": {},
+    "whatsNewVersion": "版本 {version}",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureNumericDesc": "跟踪的数目如几杯水或者阅读页数",
+    "@featureNumericDesc": {},
+    "featureCategoriesTitle": "分类",
+    "@featureCategoriesTitle": {},
+    "featureCategoriesDesc": "使用分类过滤器组织习惯",
+    "@featureCategoriesDesc": {},
+    "featureArchiveTitle": "归档",
+    "@featureArchiveTitle": {},
+    "featureArchiveDesc": "隐藏不在跟踪的习惯且不删除",
+    "@featureArchiveDesc": {},
+    "featureMaterialYouTitle": "Material You 主题(Android)",
+    "@featureMaterialYouTitle": {},
+    "featureMaterialYouDesc": "动态匹配你的壁纸的颜色",
+    "@featureMaterialYouDesc": {},
+    "featureSoundDesc": "可调节音量",
+    "@featureSoundDesc": {},
+    "featureLockTitle": "锁定功能",
+    "@featureLockTitle": {},
+    "featureLockDesc": "使用Face ID / Touch ID / biometrics保护应用",
+    "@featureLockDesc": {},
+    "featureHomescreenWidgetTitle": "首屏挂件",
+    "@featureHomescreenWidgetTitle": {},
+    "featureHomescreenWidgetDesc": "在首页屏幕瞥一眼你的习惯进度（实验性的）",
+    "@featureHomescreenWidgetDesc": {},
+    "featureLongpressCheckTitle": "长按切换",
+    "@featureLongpressCheckTitle": {},
+    "featureLongpressCheckDesc": "在习惯按钮上长按快速切换状态",
+    "@featureLongpressCheckDesc": {},
+    "haboSyncComingSoon": "即将到来",
+    "@haboSyncComingSoon": {},
+    "haboSyncDescription": "使用 Habo 端到端加密云服务在你所有的设备之间同步习惯。",
+    "@haboSyncDescription": {},
+    "haboSyncLearnMore": "在habo.space/sync上了解更多",
+    "@haboSyncLearnMore": {},
+    "habitsToday": "今日习惯",
+    "@habitsToday": {},
+    "partialValue": "部分值",
+    "@partialValue": {},
+    "habitArchived": "习惯已归档",
+    "@habitArchived": {},
+    "habitUnarchived": "习惯未归档",
+    "@habitUnarchived": {},
+    "authenticationError": "身份验证错误",
+    "@authenticationError": {},
+    "biometricAuthenticationRequired": "需要生物身份验证",
+    "@biometricAuthenticationRequired": {},
+    "setupFingerprintFaceUnlock": "请在设备设置中设置指纹或面部解锁",
+    "@setupFingerprintFaceUnlock": {},
+    "touchSensor": "触控传感器",
+    "@touchSensor": {},
+    "biometricNotRecognized": "生物识别未被识别，请重试",
+    "@biometricNotRecognized": {},
+    "biometricRequired": "需要生物识别",
+    "@biometricRequired": {},
+    "biometricAuthenticationSucceeded": "生物识别身份验证已成功",
+    "@biometricAuthenticationSucceeded": {},
+    "setupDeviceCredentials": "请在设置中设定设备凭证",
+    "@setupDeviceCredentials": {},
+    "setupTouchIdFaceId": "请在设置中设置 Touch ID 或 Face ID",
+    "@setupTouchIdFaceId": {},
+    "reenableTouchIdFaceId": "请重启用 Touch ID 或 Face ID",
+    "@reenableTouchIdFaceId": {},
+    "biometricLock": "生物识别锁定",
+    "@biometricLock": {},
+    "biometricLockDescription": "使用 {authMethod} 方法保护 应用",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToAccess": "请证实身份访问 Habo",
+    "@authenticateToAccess": {},
+    "authenticationRequired": "需要身份验证",
+    "@authenticationRequired": {},
+    "authenticationFailedMessage": "请通过 {authMethod}授权访问 Habo",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "tryAgain": "请重试",
+    "@tryAgain": {},
+    "authenticating": "授权中…",
+    "@authenticating": {},
+    "authenticate": "授权",
+    "@authenticate": {},
+    "buildingBetterHabits": "构建更好的习惯",
+    "@buildingBetterHabits": {},
+    "authenticationPrompt": "请使用{authMethod} 授权访问你的习惯",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "archive": "归档",
+    "@archive": {},
+    "unarchive": "未归档",
+    "@unarchive": {},
+    "archiveHabit": "归档习惯",
+    "@archiveHabit": {},
+    "unarchiveHabit": "未归档习惯",
+    "@unarchiveHabit": {},
+    "archivedHabits": "归档的习惯",
+    "@archivedHabits": {},
+    "noArchivedHabits": "未归档的习惯",
+    "@noArchivedHabits": {},
+    "viewArchivedHabits": "查看归档的习惯",
+    "@viewArchivedHabits": {},
+    "biometric": "生物特征识别",
+    "@biometric": {},
+    "biometricLockEnabled": "生物特征锁定启用",
+    "@biometricLockEnabled": {},
+    "biometricLockDisabled": "生物特征锁定禁用",
+    "@biometricLockDisabled": {},
+    "authenticateToEnable": "授权以启用生物特征识别锁定",
+    "@authenticateToEnable": {},
+    "devicePinPatternPassword": "设备 PIN, Pattern, 或者 密码",
+    "@devicePinPatternPassword": {},
+    "showCategories": "显示所有分类",
+    "@showCategories": {},
+    "createHabitForCategory": "创建习惯并分给这个分类",
+    "@createHabitForCategory": {},
+    "deviceCredentialsRequired": "需要设备凭证",
+    "@deviceCredentialsRequired": {}
 }
