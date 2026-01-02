@@ -213,12 +213,18 @@ class OneDayButton extends StatelessWidget {
                           instance.onTap = () {
                             parent.setSelectedDay(date);
                             if (oneTapCheck) {
-                              // Perform Check action
-                              final checkItem = icons.firstWhere(
-                                (element) => element.key == const Key('Check'),
-                                orElse: () => icons[1],
-                              );
-                              handleSelection(checkItem);
+                              // For numeric habits, add increment instead of full check
+                              if (parent.widget.habitData.isNumeric) {
+                                _addIncrement(context);
+                              } else {
+                                // Perform Check action for non-numeric habits
+                                final checkItem = icons.firstWhere(
+                                  (element) =>
+                                      element.key == const Key('Check'),
+                                  orElse: () => icons[1],
+                                );
+                                handleSelection(checkItem);
+                              }
                             } else {
                               // Show menu
                               _showMenu(context, icons, index, color,
@@ -239,12 +245,18 @@ class OneDayButton extends StatelessWidget {
                               _showMenu(context, icons, index, color,
                                   handleSelection);
                             } else {
-                              // Perform Check action
-                              final checkItem = icons.firstWhere(
-                                (element) => element.key == const Key('Check'),
-                                orElse: () => icons[1],
-                              );
-                              handleSelection(checkItem);
+                              // For numeric habits, add increment instead of full check
+                              if (parent.widget.habitData.isNumeric) {
+                                _addIncrement(context);
+                              } else {
+                                // Perform Check action for non-numeric habits
+                                final checkItem = icons.firstWhere(
+                                  (element) =>
+                                      element.key == const Key('Check'),
+                                  orElse: () => icons[1],
+                                );
+                                handleSelection(checkItem);
+                              }
                             }
                           };
                         },
@@ -423,5 +435,27 @@ class OneDayButton extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _addIncrement(BuildContext context) {
+    final habitData = parent.widget.habitData;
+    final currentProgress = habitData.getProgressForDate(date);
+    final increment = habitData.partialValue;
+    final newProgress = currentProgress + increment;
+
+    // Add progress event with the incremented value
+    Provider.of<HabitsManager>(context, listen: false)
+        .addEvent(id, date, [DayType.progress, '', newProgress]);
+    parent.events[date] = [DayType.progress, '', newProgress];
+
+    // Play appropriate sound and show notification
+    if (newProgress >= habitData.targetValue) {
+      parent.showRewardNotification(date);
+      Provider.of<SettingsManager>(context, listen: false).playCheckSound();
+    } else {
+      Provider.of<SettingsManager>(context, listen: false).playClickSound();
+    }
+
+    callback();
   }
 }
