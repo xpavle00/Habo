@@ -51,6 +51,8 @@ class UIFeedbackService {
         ),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
+        showCloseIcon: true,
+        closeIconColor: Colors.white,
         action: SnackBarAction(
           label: actionLabel,
           textColor: Colors.white,
