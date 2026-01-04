@@ -348,12 +348,7 @@ class HabitsManager extends ChangeNotifier {
     }
 
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.showMessageWithAction(
-        message: S.current.habitUnarchived,
-        actionLabel: '',
-        onActionPressed: () {},
-        backgroundColor: Colors.green,
-      );
+      _uiFeedbackService!.showSuccess(S.current.habitUnarchived);
     }
 
     notifyListeners();
