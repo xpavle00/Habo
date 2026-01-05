@@ -77,11 +77,11 @@
     "@week": {},
     "habitLoop": "O Ciclo do Hábito",
     "@habitLoop": {},
-    "habitLoopDescription": "O Ciclo do Hábito é um modelo psicológico que descreve o processo de formação de hábitos. Consiste em três elementos: Deixa, Rotina e Recompensa. A Deixa desencadeia a Rotina (uma ação habitual), que é reforçada pela Recompensa, criando um ciclo que torna o hábito mais enraizado e provável de ser repetido.",
+    "habitLoopDescription": "O Ciclo do Hábito é um modelo psicológico que descreve o processo de formação de hábitos. Consiste em três elementos: Gatilho, Rotina e Recompensa. A Deixa desencadeia a Rotina (uma ação habitual), que é reforçada pela Recompensa, criando um ciclo que torna o hábito mais enraizado e provável de ser repetido.",
     "@habitLoopDescription": {},
-    "cue": "Deixa",
+    "cue": "Gatilho",
     "@cue": {},
-    "cueDescription": "é o gatilho que desencadeia o seu hábito. Pode ser uma hora específica, um local, um sentimento ou um evento.",
+    "cueDescription": "é o que desencadeia o seu hábito. Pode ser uma hora específica, um local, um sentimento ou um evento.",
     "@cueDescription": {},
     "routine": "Rotina",
     "@routine": {},
@@ -122,5 +122,233 @@
     "fifteenMinOfVideoGames": "15 min. jogando",
     "@fifteenMinOfVideoGames": {},
     "showReward": "Mostrar recompensa",
-    "@showReward": {}
+    "@showReward": {},
+    "remainderOfReward": "Um lembrete da recompensa após uma rotina concluida com sucesso.",
+    "@remainderOfReward": {},
+    "habitContract": "Contrato de hábito",
+    "@habitContract": {},
+    "habitContractDescription": "Embora o reforço positivo seja recomendado, algumas pessoas podem optar por um contrato de hábito. Um contrato de hábito permite que você especifique uma penalidade que será imposta caso você não consiga cumprir o hábito, e pode envolver um parceiro de responsabilidade que ajude a supervisionar seus objetivos.",
+    "@habitContractDescription": {},
+    "donateToCharity": "Doar R$10 para caridade",
+    "@donateToCharity": {},
+    "sanction": "Penalidade",
+    "@sanction": {},
+    "showSanction": "Mostrar penalidade",
+    "@showSanction": {},
+    "remainderOfSanction": "O lembrete da penalidade após uma rotina malsucedida.",
+    "@remainderOfSanction": {},
+    "add": "Add",
+    "@add": {},
+    "haboNeedsPermission": "Para funcionar corretamente, o Habo precisa de permissão para enviar notificações.",
+    "@haboNeedsPermission": {},
+    "allow": "Permitir",
+    "@allow": {},
+    "date": "Data",
+    "@date": {},
+    "skip": "Pular",
+    "@skip": {},
+    "note": "Notas",
+    "@note": {},
+    "yourCommentHere": "Seu texto",
+    "@yourCommentHere": {},
+    "close": "Fechar",
+    "@close": {},
+    "createYourFirstHabit": "Crie seu primeiro hábito.",
+    "@createYourFirstHabit": {},
+    "modify": "Modificar",
+    "@modify": {},
+    "backupFailedError": "ERRO: Falha ao criar o backup.",
+    "@backupFailedError": {},
+    "restoreFailedError": "ERRO: Falha ao restaurar o backup.",
+    "@restoreFailedError": {},
+    "habitDeleted": "Hábito excluído.",
+    "@habitDeleted": {},
+    "undo": "Desfazer",
+    "@undo": {},
+    "appNotifications": "Notificações do aplicativo",
+    "@appNotifications": {},
+    "appNotificationsChannel": "Canal de notificações de aplicativo",
+    "@appNotificationsChannel": {},
+    "habitNotifications": "Notificações de aplicativo",
+    "@habitNotifications": {},
+    "habitNotificationsChannel": "Canal de notificações de hábito",
+    "@habitNotificationsChannel": {},
+    "defineYourHabits": "Defina seus hábitos",
+    "@defineYourHabits": {},
+    "defineYourHabitsDescription": "Para desenvolver melhor seus hábitos, você pode definir:",
+    "@defineYourHabitsDescription": {},
+    "cueNumbered": "1. Gatilho",
+    "@cueNumbered": {},
+    "routineNumbered": "2. Rotina",
+    "@routineNumbered": {},
+    "rewardNumbered": "3. Recompensa",
+    "@rewardNumbered": {},
+    "logYourDays": "Registre seus dias",
+    "@logYourDays": {},
+    "successful": "Bem-sucedido",
+    "@successful": {},
+    "notSoSuccessful": "Malsucedido",
+    "@notSoSuccessful": {},
+    "skipDoesNotAffectStreaks": "Pular (não afeta o ofensiva)",
+    "@skipDoesNotAffectStreaks": {},
+    "observeYourProgress": "Observe seu progresso",
+    "@observeYourProgress": {},
+    "trackYourProgress": "Você pode acompanhar seu progresso através do calendário em cada hábito ou na página de estatísticas.",
+    "@trackYourProgress": {},
+    "backupCreatedSuccessfully": "Backup criado com sucesso!",
+    "@backupCreatedSuccessfully": {},
+    "backupFailed": "Backup malsucedido!",
+    "@backupFailed": {},
+    "restoreCompletedSuccessfully": "Restauração concluída com sucesso!",
+    "@restoreCompletedSuccessfully": {},
+    "restoreFailed": "Falha na restauração!",
+    "@restoreFailed": {},
+    "fileNotFound": "Arquivo não encontrado",
+    "@fileNotFound": {},
+    "fileTooLarge": "Arquivo muito grande (max 10MB)",
+    "@fileTooLarge": {},
+    "invalidBackupFile": "Arquivo de backup inválido",
+    "@invalidBackupFile": {},
+    "progress": "Progresso",
+    "@progress": {},
+    "enterAmount": "Adicionar quantidade",
+    "@enterAmount": {},
+    "complete": "Completo",
+    "@complete": {},
+    "saveProgress": "Salvar progresso",
+    "@saveProgress": {},
+    "currentProgress": "Atual: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "Objetivo: {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Hábito numérico",
+    "@numericHabit": {},
+    "partialValue": "Valor parcial",
+    "@partialValue": {},
+    "unit": "Unidade",
+    "@unit": {},
+    "habitType": "Tipo de hábito",
+    "@habitType": {},
+    "booleanHabit": "Hábito binário",
+    "@booleanHabit": {},
+    "input": "Entrada",
+    "@input": {},
+    "numericHabitDescription": "Os hábitos numéricos permitem que você acompanhe o progresso em incrementos ao longo do dia.",
+    "@numericHabitDescription": {},
+    "partialValueDescription": "Para acompanhar o progresso em incrementos menores",
+    "@partialValueDescription": {},
+    "categories": "Categorias",
+    "@categories": {},
+    "addCategory": "Adicionar Categoria",
+    "@addCategory": {},
+    "editCategory": "Editar categoria",
+    "@editCategory": {},
+    "category": "Categoria",
+    "@category": {},
+    "noCategoriesYet": "Ainda não há categorias",
+    "@noCategoriesYet": {},
+    "createFirstCategory": "Crie sua primeira categoria para organizar seus hábitos",
+    "@createFirstCategory": {},
+    "pleaseEnterCategoryTitle": "Por favor, insira um título de categoria",
+    "@pleaseEnterCategoryTitle": {},
+    "categoryAlreadyExists": "A categoria \"{title}\" já existe",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "Categoria \"{title}\" criada com sucesso",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "Categoria \"{title}\" atualizada com sucesso",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "Categoria \"{title}\" deletada com sucesso",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "Falha ao salvar a categoria: {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "Falha ao deletar a categoria: {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "Selecionar categorias",
+    "@selectCategories": {},
+    "selectedCategories": "Categorias selecionadas ({count})",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "Todas categorias",
+    "@allCategories": {},
+    "deleteCategory": "Deletar categoria",
+    "@deleteCategory": {},
+    "deleteCategoryConfirmation": "Tem certeza de que deseja excluir \"{title}\"?\n\nIsso removerá a categoria de todos os hábitos que a utilizam.",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "Sem hábitos em \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "createHabitForCategory": "Crie um hábito e atribua-o a esta categoria",
+    "@createHabitForCategory": {},
+    "showCategories": "Mostrar categorias",
+    "@showCategories": {}
 }
