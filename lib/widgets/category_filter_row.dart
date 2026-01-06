@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/model/category.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
@@ -48,8 +49,8 @@ class CategoryFilterRow extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
                     key: ValueKey('all-chip-$themeSig'),
-                    label: const Text(
-                      'All',
+                    label: Text(
+                      S.of(context).all,
                       style: TextStyle(
                           fontWeight: FontWeight.w600, color: Colors.grey),
                     ),

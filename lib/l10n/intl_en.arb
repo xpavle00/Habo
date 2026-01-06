@@ -158,12 +158,12 @@
         }
       }
     },
-    "numericHabit": "Numeric habit",
+    "numericHabit": "Progressive",
     "targetValue": "Target value",
     "partialValue": "Partial value",
     "unit": "Unit",
     "habitType": "Habit type",
-    "booleanHabit": "Boolean habit",
+    "booleanHabit": "Checkable (Yes/No)",
     "slider": "Slider",
     "input": "Input",
     "numericHabitDescription": "Numeric habits let you track progress in increments throughout the day.",
@@ -310,7 +310,6 @@
     "devicePinPatternPassword": "Device PIN, Pattern, or Password",
     "fingerprint": "Fingerprint",
     "iris": "Iris",
-    "skip": "Skip",
     "whatsNewTitle": "What's New",
     "whatsNewVersion": "Version {version}",
     "@whatsNewVersion": {
@@ -343,5 +342,13 @@
     "haboSyncComingSoon": "Coming Soon",
     "haboSyncDescription": "Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.",
     "haboSyncLearnMore": "Learn more at habo.space/sync",
-    "habitsToday": "Habits today"
+    "habitsToday": "Habits today",
+    "or": "or",
+    "oneTapCheck": "Single tap to check",
+    "tapCheckLongPressMenu": "Tap to check, long press for menu",
+    "categoryName": "Category name",
+    "createCategory": "Create category",
+    "all": "All",
+    "selectIcon": "Pick an icon",
+    "searchIcons": "Search"
   }

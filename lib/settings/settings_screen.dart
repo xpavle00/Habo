@@ -359,9 +359,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ListTile(
-                        title: const Text('Single Tap Check'),
+                        title: Text(S.of(context).oneTapCheck),
                         subtitle:
-                            const Text('Tap to check, long press for menu'),
+                            Text(S.of(context).tapCheckLongPressMenu),
                         trailing: Switch(
                           value: Provider.of<SettingsManager>(context)
                               .getOneTapCheck,
