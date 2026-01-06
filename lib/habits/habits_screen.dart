@@ -84,7 +84,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text(S.of(context).close),
             ),
           ],
         );

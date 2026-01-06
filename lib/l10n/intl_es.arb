@@ -212,5 +212,47 @@
     "rewardDescription": "es el beneficio o la sensación positiva que experimentas después de realizar la rutina. Refuerza el hábito.",
     "@rewardDescription": {},
     "observeYourProgress": "Observa tus progresos",
-    "@observeYourProgress": {}
+    "@observeYourProgress": {},
+    "archivedHabits": "Hábitos archivados",
+    "noArchivedHabits": "No hay hábitos archivados",
+    "biometricLock": "Bloqueo biométrico",
+    "biometricLockDescription": "Utiliza la autenticación {authMethod}",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "biometric": "Biométrica",
+    "devicePinPatternPassword": "PIN, patrón o contraseña del dispositivo",
+    "or": "o",
+    "showCategories": "Mostrar categorías",
+    "oneTapCheck": "Toca una vez para marcar",
+    "tapCheckLongPressMenu": "Toca para marcar, mantén pulsado para el menú",
+    "whatsNewTitle": "Novedades",
+    "habitType": "Tipo de hábito",
+    "booleanHabit": "Marcable (Sí/No)",
+    "numericHabit": "Progresivo",
+    "categories": "Categorías",
+    "selectCategories": "Seleccionar categorías",
+    "allCategories": "Todas las categorías",
+    "addCategory": "Añadir categoría",
+    "noCategoriesYet": "Aún no hay categorías",
+    "createFirstCategory": "Crea tu primera categoría para organizar tus hábitos",
+    "editCategory": "Editar categoría",
+    "categoryName": "Nombre de la categoría",
+    "createCategory": "Crear categoría",
+    "createHabitForCategory": "Crea un hábito y asígnalo a esta categoría",
+    "noHabitsInCategory": "No hay hábitos en la categoría  \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }    
+    },
+    "all": "Todas",
+    "selectIcon": "Seleccione un icono",
+    "searchIcons": "Buscar"
 }

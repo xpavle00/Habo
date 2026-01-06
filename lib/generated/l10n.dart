@@ -987,10 +987,10 @@ class S {
     );
   }
 
-  /// `Numeric habit`
+  /// `Progressive`
   String get numericHabit {
     return Intl.message(
-      'Numeric habit',
+      'Progressive',
       name: 'numericHabit',
       desc: '',
       args: [],
@@ -1027,10 +1027,10 @@ class S {
     return Intl.message('Habit type', name: 'habitType', desc: '', args: []);
   }
 
-  /// `Boolean habit`
+  /// `Checkable (Yes/No)`
   String get booleanHabit {
     return Intl.message(
-      'Boolean habit',
+      'Checkable (Yes/No)',
       name: 'booleanHabit',
       desc: '',
       args: [],
@@ -1865,6 +1865,66 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `or`
+  String get or {
+    return Intl.message('or', name: 'or', desc: '', args: []);
+  }
+
+  /// `Single tap to check`
+  String get oneTapCheck {
+    return Intl.message(
+      'Single tap to check',
+      name: 'oneTapCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap to check, long press for menu`
+  String get tapCheckLongPressMenu {
+    return Intl.message(
+      'Tap to check, long press for menu',
+      name: 'tapCheckLongPressMenu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category name`
+  String get categoryName {
+    return Intl.message(
+      'Category name',
+      name: 'categoryName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create category`
+  String get createCategory {
+    return Intl.message(
+      'Create category',
+      name: 'createCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message('All', name: 'all', desc: '', args: []);
+  }
+
+  /// `Pick an icon`
+  String get selectIcon {
+    return Intl.message('Pick an icon', name: 'selectIcon', desc: '', args: []);
+  }
+
+  /// `Search`
+  String get searchIcons {
+    return Intl.message('Search', name: 'searchIcons', desc: '', args: []);
   }
 }
 
