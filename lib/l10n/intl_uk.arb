@@ -522,5 +522,19 @@
     "haboSyncDescription": "Синхронізуйте свої звички на всіх пристроях за допомогою хмарного сервісу Habo з наскрізним шифруванням.",
     "@haboSyncDescription": {},
     "haboSyncLearnMore": "Дізнайтеся більше на habo.space/sync",
-    "@haboSyncLearnMore": {}
+    "@haboSyncLearnMore": {},
+    "featureIosSoundMixingTitle": "Виправлено мікшування звуку",
+    "@featureIosSoundMixingTitle": {},
+    "featureIosSoundMixingDesc": "Звуки Habo більше не переривають вашу музику чи подкасти",
+    "@featureIosSoundMixingDesc": {},
+    "featureHomescreenWidgetTitle": "Віджет головного екрана",
+    "@featureHomescreenWidgetTitle": {},
+    "featureHomescreenWidgetDesc": "Переглядайте прогрес у виконанні своїх звичок одним поглядом з головного екрана (експериментально)",
+    "@featureHomescreenWidgetDesc": {},
+    "featureLongpressCheckTitle": "Перевірка тривалого натискання",
+    "@featureLongpressCheckTitle": {},
+    "featureLongpressCheckDesc": "Тривале натискання на звичні кнопки для швидкої зміни статусу",
+    "@featureLongpressCheckDesc": {},
+    "habitsToday": "Звички сьогодні",
+    "@habitsToday": {}
 }
