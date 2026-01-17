@@ -10,9 +10,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -26,21 +31,23 @@ jobs:
       - name: Generate Icon Packs
         run: dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
 
-      - name: Analyze code
-        run: flutter analyze
-
-      - name: Run tests
-        run: flutter test
-
-      - name: Check formatting
-        run: dart format --set-exit-if-changed .
+      - name: Analyze and Test
+        run: |
+          flutter analyze
+          flutter test
+          dart format --set-exit-if-changed .
 
   build-android:
     runs-on: ubuntu-latest
     needs: test
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -54,5 +61,13 @@ jobs:
       - name: Generate Icon Packs
         run: dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
 
-      - name: Build Android APK
-        run: flutter build apk --release --no-tree-shake-icons
+      - name: Build Unsigned APK
+        run: |
+          flutter build apk --release --split-per-abi --no-tree-shake-icons \
+            --build-number=$((5100 + ${{ github.run_number }}))
+
+      - name: Upload Unsigned APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-apks
+          path: build/app/outputs/flutter-apk/*-release.apk
