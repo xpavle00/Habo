@@ -698,7 +698,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                 }
                               },
                               child: Text(
-                                '${notTime.hour.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')}',
+                                '${notTime.hourOfPeriod.toString().padLeft(2, '0')}:${notTime.minute.toString().padLeft(2, '0')} ${notTime.period.name.toUpperCase()}',
                                 style: TextStyle(
                                     color: (notification)
                                         ? null
