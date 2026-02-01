@@ -234,10 +234,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               }
                             },
                             child: Text(
-                              '${Provider.of<SettingsManager>(context).getDailyNot.hourOfPeriod.toString().padLeft(2, '0')}'
-                              ':'
-                              '${Provider.of<SettingsManager>(context).getDailyNot.minute.toString().padLeft(2, '0')} '
-                              '${Provider.of<SettingsManager>(context).getDailyNot.period.name.toUpperCase()}',
+                              MaterialLocalizations.of(context).formatTimeOfDay(
+                                  Provider.of<SettingsManager>(context)
+                                      .getDailyNot),
                               style: TextStyle(
                                   color: (Provider.of<SettingsManager>(context)
                                           .getShowDailyNot)
