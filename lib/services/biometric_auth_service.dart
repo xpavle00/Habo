@@ -159,10 +159,10 @@ class BiometricAuthService {
         if (methods.length == 1) {
           _cachedAuthDescription = methods.first;
         } else if (methods.length == 2) {
-          _cachedAuthDescription = '${methods[0]} or ${methods[1]}';
+          _cachedAuthDescription = '${methods[0]} ${S.of(context).or} ${methods[1]}';
         } else {
           _cachedAuthDescription =
-              '${methods.sublist(0, methods.length - 1).join(', ')}, or ${methods.last}';
+              '${methods.sublist(0, methods.length - 1).join(', ')}, ${S.of(context).or} ${methods.last}';
         }
       }
     }

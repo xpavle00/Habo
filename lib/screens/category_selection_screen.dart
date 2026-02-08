@@ -299,7 +299,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             Row(
               children: [
                 Text(
-                  S.of(context).editCategory,
+                  category.id == null
+                      ? S.of(context).createCategory
+                      : S.of(context).editCategory,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -347,7 +349,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   child: TextField(
                     controller: _editTitleController,
                     decoration: InputDecoration(
-                      hintText: S.of(context).category,
+                      hintText: S.of(context).categoryName,
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
@@ -424,8 +426,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     IconPickerIcon? icon = await showIconPicker(
       context,
       configuration: SinglePickerConfiguration(
-        iconPackModes: [IconPack.fontAwesomeIcons],
-      ),
+          iconPackModes: [IconPack.fontAwesomeIcons],
+          title: Text(S.of(context).selectIcon),
+          searchHintText: S.of(context).searchIcons),
     );
 
     if (icon != null) {

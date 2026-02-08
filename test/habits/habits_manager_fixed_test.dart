@@ -2,17 +2,16 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/model/habit_data.dart';
-import 'package:habo/repositories/habit_repository.dart';
-import 'package:habo/repositories/event_repository.dart';
 import 'package:habo/repositories/category_repository.dart';
+import 'package:habo/repositories/event_repository.dart';
+import 'package:habo/repositories/habit_repository.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
-import 'package:habo/generated/l10n.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
@@ -304,12 +303,7 @@ void main() {
             .thenAnswer((_) async {});
         when(() => mockNotificationService.setHabitNotification(
             any(), any(), any(), any())).thenReturn(null);
-        when(() => mockUIFeedbackService.showMessageWithAction(
-              message: any(named: 'message'),
-              actionLabel: any(named: 'actionLabel'),
-              onActionPressed: any(named: 'onActionPressed'),
-              backgroundColor: any(named: 'backgroundColor'),
-            )).thenReturn(null);
+        when(() => mockUIFeedbackService.showSuccess(any())).thenReturn(null);
 
         // Act
         habitsManager.unarchiveHabit(1);
@@ -319,12 +313,7 @@ void main() {
         verify(() => mockHabitRepository.updateHabit(any())).called(1);
         verify(() => mockNotificationService.setHabitNotification(
             1, any(), 'Habo', 'Test Habit')).called(1);
-        verify(() => mockUIFeedbackService.showMessageWithAction(
-              message: any(named: 'message'),
-              actionLabel: any(named: 'actionLabel'),
-              onActionPressed: any(named: 'onActionPressed'),
-              backgroundColor: any(named: 'backgroundColor'),
-            )).called(1);
+        verify(() => mockUIFeedbackService.showSuccess(any())).called(1);
       });
 
       test('should filter active habits correctly', () {
