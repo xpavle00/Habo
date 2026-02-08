@@ -1,541 +1,346 @@
 {
-  "@@locale": "sk",
-  "habits": "Zvyky:",
-  "@habits": {},
-  "statistics": "Štatistiky",
-  "@statistics": {},
-  "emptyList": "Prázdny zoznam",
-  "@emptyList": {},
-  "noDataAboutHabits": "Nie sú žiadne údaje o zvykoch.",
-  "@noDataAboutHabits": {},
-  "topStreak": "Najdlhšia séria",
-  "@topStreak": {},
-  "currentStreak": "Aktuálna séria",
-  "@currentStreak": {},
-  "total": "Celkom",
-  "@total": {},
-  "unknown": "Neznáme",
-  "@unknown": {},
-  "warning": "Varovanie",
-  "@warning": {},
-  "allHabitsWillBeReplaced": "Všetky zvyky budú nahradené zálohovanými zvykmi.",
-  "@allHabitsWillBeReplaced": {},
-  "restore": "Obnoviť",
-  "@restore": {},
-  "cancel": "Zrušiť",
-  "@cancel": {},
-  "settings": "Nastavenia",
-  "@settings": {},
-  "theme": "Téma",
-  "@theme": {},
-  "firstDayOfWeek": "Prvý deň týždňa",
-  "@firstDayOfWeek": {},
-  "notifications": "Oznámenia",
-  "@notifications": {},
-  "notificationTime": "Čas oznámenia",
-  "@notificationTime": {},
-  "soundEffects": "Zvukové efekty",
-  "@soundEffects": {},
-  "showMonthName": "Zobraziť názov mesiaca",
-  "@showMonthName": {},
-  "setColors": "Nastaviť farby",
-  "@setColors": {},
-  "backup": "Záloha",
-  "@backup": {},
-  "create": "Vytvoriť",
-  "@create": {},
-  "onboarding": "Úvod",
-  "@onboarding": {},
-  "about": "O aplikácii",
-  "@about": {},
-  "habo": "Habo",
-  "@habo": {},
-  "copyright": "©2023 Habo",
-  "@copyright": {},
-  "termsAndConditions": "Obchodné podmienky",
-  "@termsAndConditions": {},
-  "privacyPolicy": "Ochrana osobných údajov",
-  "@privacyPolicy": {},
-  "disclaimer": "Vylúčenie zodpovednosti",
-  "@disclaimer": {},
-  "sourceCode": "Zdrojový kód (GitHub)",
-  "@sourceCode": {},
-  "ifYouWantToSupport": "Ak chcete podporiť Habo, môžete:",
-  "@ifYouWantToSupport": {},
-  "buyMeACoffee": "Kúpiť mi kávu",
-  "@buyMeACoffee": {},
-  "reset": "Resetovať",
-  "@reset": {},
-  "done": "Hotovo",
-  "@done": {},
-  "congratulationsReward": "Gratulujem! Vaša odmena:",
-  "@congratulationsReward": {},
-  "ohNoSanction": "Ó nie! Vaša sankcia:",
-  "@ohNoSanction": {},
-  "month": "Mesiac",
-  "@month": {},
-  "week": "Týždeň",
-  "@week": {},
-  "habitLoop": "Cyklus zvyku",
-  "@habitLoop": {},
-  "habitLoopDescription": "Cyklus zvyku je psychologický model popisujúci proces tvorby zvyku. Skladá sa z troch komponentov: Signál, Rutina a Odmena. Signál spustí Rutinu (zvykovú činnosť), ktorá je potom posilnená Odmenou, čím vytvára slučku, ktorá zvyk zabezpečí a pravdepodobne sa bude opakovať.",
-  "@habitLoopDescription": {},
-  "cue": "Signál",
-  "@cue": {},
-  "cueDescription": "je spúšťač, ktorý inicializuje váš zvyk. Môže to byť konkrétny čas, miesto, pocit alebo udalosť.",
-  "@cueDescription": {},
-  "routine": "Rutina",
-  "@routine": {},
-  "routineDescription": "je činnosť, ktorú vykonávate ako reakciu na signál. Ide o samotný zvyk.",
-  "@routineDescription": {},
-  "reward": "Odmena",
-  "@reward": {},
-  "rewardDescription": "je výhoda alebo pozitívny pocit, ktorý zažívate po vykonaní rutiny. Posilňuje zvyk.",
-  "@rewardDescription": {},
-  "editHabit": "Upraviť zvyk",
-  "@editHabit": {},
-  "createHabit": "Vytvoriť zvyk",
-  "@createHabit": {},
-  "delete": "Vymazať",
-  "@delete": {},
-  "habitTitleEmptyError": "Názov zvyku nemôže byť prázdny.",
-  "@habitTitleEmptyError": {},
-  "save": "Uložiť",
-  "@save": {},
-  "exercise": "Cvičenie",
-  "@exercise": {},
-  "habit": "Zvyk",
-  "@habit": {},
-  "useTwoDayRule": "Použiť pravidlo dvoch dní",
-  "@useTwoDayRule": {},
-  "twoDayRule": "Pravidlo dvoch dní",
-  "@twoDayRule": {},
-  "twoDayRuleDescription": "S pravidlom dvoch dní môžete vynechať jeden deň a nestratiť sériu, ak je nasledujúci deň úspešný.",
-  "@twoDayRuleDescription": {},
-  "advancedHabitBuilding": "Pokročilá tvorba zvykov",
-  "@advancedHabitBuilding": {},
-  "advancedHabitBuildingDescription": "Táto sekcia vám pomôže lepšie definovať vaše zvyky pomocou Cyklu zvyku. Mali by ste definovať signály, rutiny a odmeny pre každý zvyk.",
-  "@advancedHabitBuildingDescription": {},
-  "at7AM": "O 7:00",
-  "@at7AM": {},
-  "do50PushUps": "Spraviť 50 klikov",
-  "@do50PushUps": {},
-  "fifteenMinOfVideoGames": "15 min. hrania videohier",
-  "@fifteenMinOfVideoGames": {},
-  "showReward": "Zobraziť odmenu",
-  "@showReward": {},
-  "remainderOfReward": "Pripomenutie odmeny po úspešnej rutine.",
-  "@remainderOfReward": {},
-  "habitContract": "Zmluva o zvyku",
-  "@habitContract": {},
-  "habitContractDescription": "Hoci sa odporúča pozitívne posilnenie, niektorí ľudia môžu uprednostniť zmluvu o zvyku. Zmluva o zvyku vám umožňuje špecifikovať sankciu, ktorá bude uložená, ak zvyk nesplníte, a môže zahŕňať partnera, ktorý dohliada na vaše ciele.",
-  "@habitContractDescription": {},
-  "donateToCharity": "Prispejte 10$ na charitu",
-  "@donateToCharity": {},
-  "sanction": "Sankcia",
-  "@sanction": {},
-  "showSanction": "Zobraziť sankciu",
-  "@showSanction": {},
-  "remainderOfSanction": "Pripomenutie sankcie po neúspešnej rutine.",
-  "@remainderOfSanction": {},
-  "dan": "Dan",
-  "@dan": {},
-  "accountabilityPartner": "Partner dohľadu",
-  "@accountabilityPartner": {},
-  "add": "Pridať",
-  "@add": {},
-  "haboNeedsPermission": "Habo potrebuje povolenie na odosielanie oznámení na správne fungovanie.",
-  "@haboNeedsPermission": {},
-  "allow": "Povoliť",
-  "@allow": {},
-  "date": "Dátum",
-  "@date": {},
-  "check": "Skontrolovať",
-  "@check": {},
-  "fail": "Zlyhanie",
-  "@fail": {},
-  "skip": "Preskočiť",
-  "@skip": {},
-  "note": "Poznámka",
-  "@note": {},
-  "yourCommentHere": "Vaša poznámka sem",
-  "@yourCommentHere": {},
-  "close": "Zavrieť",
-  "@close": {},
-  "createYourFirstHabit": "Vytvorte svoj prvý zvyk.",
-  "@createYourFirstHabit": {},
-  "modify": "Upraviť",
-  "@modify": {},
-  "backupFailedError": "CHYBA: Vytvorenie zálohy zlyhalo.",
-  "@backupFailedError": {},
-  "restoreFailedError": "CHYBA: Obnovenie zálohy zlyhalo.",
-  "@restoreFailedError": {},
-  "habitDeleted": "Zvyk bol odstránený.",
-  "@habitDeleted": {},
-  "undo": "Vrátiť späť",
-  "@undo": {},
-  "appNotifications": "Oznámenia aplikácie",
-  "@appNotifications": {},
-  "appNotificationsChannel": "Kanál oznámení pre aplikáciu",
-  "@appNotificationsChannel": {},
-  "habitNotifications": "Oznámenia o zvykoch",
-  "@habitNotifications": {},
-  "habitNotificationsChannel": "Kanál oznámení pre zvyky",
-  "@habitNotificationsChannel": {},
-  "doNotForgetToCheckYourHabits": "Nezabudnite skontrolovať svoje zvyky.",
-  "@doNotForgetToCheckYourHabits": {},
-  "themeSelect": "{theme, select, device {Zariadenie} light {Svetlá} dark {Tmavá} oled {OLED čierna} materialYou {Material You} other{Zariadenie}}",
-  "@themeSelect": {
-    "placeholders": {
-      "theme": {
-        "type": "String"
-      }
-    }
-  },
-  "defineYourHabits": "Definujte svoje zvyky",
-  "@defineYourHabits": {},
-  "defineYourHabitsDescription": "Aby ste sa lepšie držali svojich zvykov, môžete definovať:",
-  "@defineYourHabitsDescription": {},
-  "cueNumbered": "1. Signál",
-  "@cueNumbered": {},
-  "routineNumbered": "2. Rutina",
-  "@routineNumbered": {},
-  "rewardNumbered": "3. Odmena",
-  "@rewardNumbered": {},
-  "logYourDays": "Zaznamenávajte svoje dni",
-  "@logYourDays": {},
-  "successful": "Úspešný",
-  "@successful": {},
-  "notSoSuccessful": "Nie tak úspešný",
-  "@notSoSuccessful": {},
-  "skipDoesNotAffectStreaks": "Preskočiť (neovplyvňuje sériu)",
-  "@skipDoesNotAffectStreaks": {},
-  "observeYourProgress": "Sledujte svoj pokrok",
-  "@observeYourProgress": {},
-  "trackYourProgress": "Môžete sledovať svoj pokrok prostredníctvom kalendárneho zobrazenia v každom zvyku alebo na stránke so štatistikami.",
-  "@trackYourProgress": {},
-  "backupCreatedSuccessfully": "Záloha bola úspešne vytvorená!",
-  "@backupCreatedSuccessfully": {},
-  "backupFailed": "Záloha zlyhala!",
-  "@backupFailed": {},
-  "restoreCompletedSuccessfully": "Obnovenie bolo úspešne dokončené!",
-  "@restoreCompletedSuccessfully": {},
-  "restoreFailed": "Obnovenie zlyhalo!",
-  "@restoreFailed": {},
-  "fileNotFound": "Súbor sa nenašiel",
-  "@fileNotFound": {},
-  "fileTooLarge": "Súbor je príliš veľký (max 10MB)",
-  "@fileTooLarge": {},
-  "invalidBackupFile": "Neplatný záložný súbor",
-  "@invalidBackupFile": {},
-  "progress": "Pokrok",
-  "@progress": {},
-  "enterAmount": "Zadajte množstvo",
-  "@enterAmount": {},
-  "complete": "Dokončiť",
-  "@complete": {},
-  "saveProgress": "Uložiť pokrok",
-  "@saveProgress": {},
-  "currentProgress": "Aktuálne: {current} {unit}",
-  "@currentProgress": {
-    "placeholders": {
-      "current": {
-        "type": "String"
-      },
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
-  "targetProgress": "Cieľ: {target} {unit}",
-  "@targetProgress": {
-    "placeholders": {
-      "target": {
-        "type": "String"
-      },
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
-  "progressOf": "{current} / {target} {unit}",
-  "@progressOf": {
-    "placeholders": {
-      "current": {
-        "type": "String"
-      },
-      "target": {
-        "type": "String"
-      },
-      "unit": {
-        "type": "String"
-      }
-    }
-  },
-  "numericHabit": "Číselný zvyk",
-  "@numericHabit": {},
-  "targetValue": "Cieľová hodnota",
-  "@targetValue": {},
-  "partialValue": "Čiastočná hodnota",
-  "@partialValue": {},
-  "unit": "Jednotka",
-  "@unit": {},
-  "habitType": "Typ zvyku",
-  "@habitType": {},
-  "booleanHabit": "Áno/nie zvyk",
-  "@booleanHabit": {},
-  "slider": "Posuvník",
-  "@slider": {},
-  "input": "Vstup",
-  "@input": {},
-  "numericHabitDescription": "Číselné zvyky vám umožňujú sledovať pokrok v prírastkoch počas dňa.",
-  "@numericHabitDescription": {},
-  "partialValueDescription": "Na sledovanie pokroku v menších prírastkoch",
-  "@partialValueDescription": {},
-  "categories": "Kategórie",
-  "@categories": {},
-  "addCategory": "Pridať kategóriu",
-  "@addCategory": {},
-  "editCategory": "Upraviť kategóriu",
-  "@editCategory": {},
-  "category": "Kategória",
-  "@category": {},
-  "noCategoriesYet": "Zatiaľ žiadne kategórie",
-  "@noCategoriesYet": {},
-  "createFirstCategory": "Vytvorte svoju prvú kategóriu na organizovanie zvykov",
-  "@createFirstCategory": {},
-  "pleaseEnterCategoryTitle": "Prosím zadajte názov kategórie",
-  "@pleaseEnterCategoryTitle": {},
-  "categoryAlreadyExists": "Kategória \"{title}\" už existuje",
-  "@categoryAlreadyExists": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "categoryCreatedSuccessfully": "Kategória \"{title}\" bola úspešne vytvorená",
-  "@categoryCreatedSuccessfully": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "categoryUpdatedSuccessfully": "Kategória \"{title}\" bola úspešne aktualizovaná",
-  "@categoryUpdatedSuccessfully": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "categoryDeletedSuccessfully": "Kategória \"{title}\" bola úspešne odstránená",
-  "@categoryDeletedSuccessfully": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "failedToSaveCategory": "Nepodarilo sa uložiť kategóriu: {error}",
-  "@failedToSaveCategory": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "failedToDeleteCategory": "Nepodarilo sa odstrániť kategóriu: {error}",
-  "@failedToDeleteCategory": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "selectCategories": "Vybrať kategórie",
-  "@selectCategories": {},
-  "selectedCategories": "Vybrané kategórie ({count})",
-  "@selectedCategories": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "allCategories": "Všetky kategórie",
-  "@allCategories": {},
-  "deleteCategory": "Odstrániť kategóriu",
-  "@deleteCategory": {},
-  "deleteCategoryConfirmation": "Ste si istí, že chcete odstrániť \"{title}\"?\n\nToto odstráni kategóriu zo všetkých zvykov, ktoré ju používajú.",
-  "@deleteCategoryConfirmation": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "noHabitsInCategory": "Žiadne zvyky v \"{title}\"",
-  "@noHabitsInCategory": {
-    "placeholders": {
-      "title": {
-        "type": "String"
-      }
-    }
-  },
-  "createHabitForCategory": "Vytvorte zvyk a priraďte ho k tejto kategórii",
-  "@createHabitForCategory": {},
-  "showCategories": "Zobraziť kategórie",
-  "@showCategories": {},
-  "archive": "Archivovať",
-  "@archive": {},
-  "unarchive": "Zrušiť archiváciu",
-  "@unarchive": {},
-  "archiveHabit": "Archivovať zvyk",
-  "@archiveHabit": {},
-  "unarchiveHabit": "Zrušiť archiváciu zvyku",
-  "@unarchiveHabit": {},
-  "archivedHabits": "Archivované zvyky",
-  "@archivedHabits": {},
-  "noArchivedHabits": "Žiadne archivované zvyky",
-  "@noArchivedHabits": {},
-  "viewArchivedHabits": "Zobraziť archivované zvyky",
-  "@viewArchivedHabits": {},
-  "habitArchived": "Zvyk archivovaný",
-  "@habitArchived": {},
-  "habitUnarchived": "Archivácia zvyku zrušená",
-  "@habitUnarchived": {},
-  "biometric": "Biometrické",
-  "@biometric": {},
-  "biometricLockEnabled": "Biometrický zámok povolený",
-  "@biometricLockEnabled": {},
-  "biometricLockDisabled": "Biometrický zámok zakázaný",
-  "@biometricLockDisabled": {},
-  "authenticationError": "Chyba autentifikácie",
-  "@authenticationError": {},
-  "biometricAuthenticationRequired": "Vyžaduje sa biometrická autentifikácia",
-  "@biometricAuthenticationRequired": {},
-  "setupFingerprintFaceUnlock": "Prosím nastavte odtlačok prsta alebo odomknutie tvárou v nastaveniach zariadenia",
-  "@setupFingerprintFaceUnlock": {},
-  "touchSensor": "Dotknite sa senzora",
-  "@touchSensor": {},
-  "biometricNotRecognized": "Biometrické údaje neboli rozpoznané, skúste znova",
-  "@biometricNotRecognized": {},
-  "biometricRequired": "Vyžadujú sa biometrické údaje",
-  "@biometricRequired": {},
-  "biometricAuthenticationSucceeded": "Biometrická autentifikácia úspešná",
-  "@biometricAuthenticationSucceeded": {},
-  "deviceCredentialsRequired": "Vyžadujú sa prihlasovacie údaje zariadenia",
-  "@deviceCredentialsRequired": {},
-  "setupDeviceCredentials": "Prosím nastavte prihlasovacie údaje zariadenia v nastaveniach",
-  "@setupDeviceCredentials": {},
-  "setupTouchIdFaceId": "Prosím nastavte Touch ID alebo Face ID v nastaveniach zariadenia",
-  "@setupTouchIdFaceId": {},
-  "reenableTouchIdFaceId": "Prosím znovu povoľte Touch ID alebo Face ID",
-  "@reenableTouchIdFaceId": {},
-  "biometricLock": "Biometrický zámok",
-  "@biometricLock": {},
-  "biometricLockDescription": "Zabezpečiť aplikáciu pomocou {authMethod}",
-  "@biometricLockDescription": {
-    "placeholders": {
-      "authMethod": {
-        "type": "String"
-      }
-    }
-  },
-  "authenticateToEnable": "Autentifikujte sa na povolenie biometrického zámku",
-  "@authenticateToEnable": {},
-  "authenticateToAccess": "Prosím autentifikujte sa na prístup do Habo",
-  "@authenticateToAccess": {},
-  "authenticationRequired": "Vyžaduje sa autentifikácia",
-  "@authenticationRequired": {},
-  "authenticationFailedMessage": "Prosím autentifikujte sa na prístup do Habo pomocou {authMethod}",
-  "@authenticationFailedMessage": {
-    "placeholders": {
-      "authMethod": {
-        "type": "String"
-      }
-    }
-  },
-  "tryAgain": "Skúsiť znova",
-  "@tryAgain": {},
-  "authenticating": "Autentifikácia…",
-  "@authenticating": {},
-  "authenticate": "Autentifikovať",
-  "@authenticate": {},
-  "buildingBetterHabits": "Budovanie lepších zvykov",
-  "@buildingBetterHabits": {},
-  "authenticationPrompt": "Prosím autentifikujte sa pomocou {authMethod} na prístup k vašim zvykom",
-  "@authenticationPrompt": {
-    "placeholders": {
-      "authMethod": {
-        "type": "String"
-      }
-    }
-  },
-  "devicePinPatternPassword": "PIN, vzor alebo heslo zariadenia",
-  "@devicePinPatternPassword": {},
-  "fingerprint": "Odtlačok prsta",
-  "@fingerprint": {},
-  "iris": "Dúhovka",
-  "@iris": {},
-  "whatsNewTitle": "Čo je nové",
-  "@whatsNewTitle": {},
-  "whatsNewVersion": "Verzia {version}",
-  "@whatsNewVersion": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "featureNumericTitle": "Číselné hodnoty vo zvykoch",
-  "@featureNumericTitle": {},
-  "featureNumericDesc": "Sledujte počty ako poháre vody alebo prečítané stránky",
-  "@featureNumericDesc": {},
-  "featureDeepLinksTitle": "URL schéma (deep links)",
-  "@featureDeepLinksTitle": {},
-  "featureDeepLinksDesc": "Otvorte Habo priamo na obrazovky nastavenia alebo vytvoriť nový zvyk",
-  "@featureDeepLinksDesc": {},
-  "featureCategoriesTitle": "Kategórie",
-  "@featureCategoriesTitle": {},
-  "featureCategoriesDesc": "Organizujte zvyky pomocou filtrov kategórií",
-  "@featureCategoriesDesc": {},
-  "featureArchiveTitle": "Archív",
-  "@featureArchiveTitle": {},
-  "featureArchiveDesc": "Skryte zvyky, ktoré už nesledujete bez ich odstránenia",
-  "@featureArchiveDesc": {},
-  "featureMaterialYouTitle": "Material You téma (Android)",
-  "@featureMaterialYouTitle": {},
-  "featureMaterialYouDesc": "Dynamické farby, ktoré sa prispôsobia vašej tapete",
-  "@featureMaterialYouDesc": {},
-  "featureSoundTitle": "Nový zvukový engine",
-  "@featureSoundTitle": {},
-  "featureSoundDesc": "Nastaviteľná hlasitosť",
-  "@featureSoundDesc": {},
-  "featureLockTitle": "Funkcia zámku",
-  "@featureLockTitle": {},
-  "featureLockDesc": "Zabezpečte aplikáciu pomocou Face ID / Touch ID / biometrických údajov",
-  "@featureLockDesc": {},
-  "featureIosSoundMixingTitle": "Opravené mixovanie zvuku",
-  "@featureIosSoundMixingTitle": {},
-  "featureIosSoundMixingDesc": "Zvuky Habo už neprerušujú vašu hudbu alebo podcasty",
-  "@featureIosSoundMixingDesc": {},
-  "featureHomescreenWidgetTitle": "Widget na domovskej obrazovke",
-  "@featureHomescreenWidgetTitle": {},
-  "featureHomescreenWidgetDesc": "Zobrazte svoj postup z domovskej obrazovky (experimentálne)",
-  "@featureHomescreenWidgetDesc": {},
-  "featureLongpressCheckTitle": "Dlhé stlačenie na označenie",
-  "@featureLongpressCheckTitle": {},
-  "featureLongpressCheckDesc": "Dlhým stlačením tlačidiel zvykov rýchlo zmeníte stav",
-  "@featureLongpressCheckDesc": {},
-  "haboSyncComingSoon": "Čoskoro",
-  "@haboSyncComingSoon": {},
-  "haboSyncDescription": "Synchronizujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej služby Habo.",
-  "@haboSyncDescription": {},
-  "haboSyncLearnMore": "Dozvedieť sa viac na habo.space/sync",
-  "@haboSyncLearnMore": {},
-  "habitsToday": "Dnešné zvyky",
-  "@habitsToday": {}
+    "@@locale": "sk",
+    "habits": "Zvyky:",
+    "statistics": "Štatistiky",
+    "emptyList": "Prázdny zoznam",
+    "noDataAboutHabits": "Nie sú žiadne údaje o zvykoch.",
+    "topStreak": "Najdlhšia séria",
+    "currentStreak": "Aktuálna séria",
+    "total": "Celkom",
+    "unknown": "Neznáme",
+    "warning": "Varovanie",
+    "allHabitsWillBeReplaced": "Všetky zvyky budú nahradené zálohovanými zvykmi.",
+    "restore": "Obnoviť",
+    "cancel": "Zrušiť",
+    "settings": "Nastavenia",
+    "theme": "Téma",
+    "firstDayOfWeek": "Prvý deň týždňa",
+    "notifications": "Oznámenia",
+    "notificationTime": "Čas oznámenia",
+    "soundEffects": "Zvukové efekty",
+    "showMonthName": "Zobraziť názov mesiaca",
+    "setColors": "Nastaviť farby",
+    "backup": "Záloha",
+    "create": "Vytvoriť",
+    "onboarding": "Úvod",
+    "about": "O aplikácii",
+    "habo": "Habo",
+    "copyright": "©2023 Habo",
+    "termsAndConditions": "Obchodné podmienky",
+    "privacyPolicy": "Ochrana osobných údajov",
+    "disclaimer": "Vylúčenie zodpovednosti",
+    "sourceCode": "Zdrojový kód (GitHub)",
+    "ifYouWantToSupport": "Ak chcete podporiť Habo, môžete:",
+    "buyMeACoffee": "Kúpiť mi kávu",
+    "reset": "Resetovať",
+    "done": "Hotovo",
+    "congratulationsReward": "Gratulujem! Vaša odmena:",
+    "ohNoSanction": "Ó nie! Vaša sankcia:",
+    "month": "Mesiac",
+    "week": "Týždeň",
+    "habitLoop": "Cyklus zvyku",
+    "habitLoopDescription": "Cyklus zvyku je psychologický model popisujúci proces tvorby zvyku. Skladá sa z troch komponentov: Signál, Rutina a Odmena. Signál spustí Rutinu (zvykovú činnosť), ktorá je potom posilnená Odmenou, čím vytvára slučku, ktorá zvyk zabezpečí a pravdepodobne sa bude opakovať.",
+    "cue": "Signál",
+    "cueDescription": "je spúšťač, ktorý inicializuje váš zvyk. Môže to byť konkrétny čas, miesto, pocit alebo udalosť.",
+    "routine": "Rutina",
+    "routineDescription": "je činnosť, ktorú vykonávate ako reakciu na signál. Ide o samotný zvyk.",
+    "reward": "Odmena",
+    "rewardDescription": "je výhoda alebo pozitívny pocit, ktorý zažívate po vykonaní rutiny. Posilňuje zvyk.",
+    "editHabit": "Upraviť zvyk",
+    "createHabit": "Vytvoriť zvyk",
+    "delete": "Vymazať",
+    "habitTitleEmptyError": "Názov zvyku nemôže byť prázdny.",
+    "save": "Uložiť",
+    "exercise": "Cvičenie",
+    "habit": "Zvyk",
+    "useTwoDayRule": "Použiť pravidlo dvoch dní",
+    "twoDayRule": "Pravidlo dvoch dní",
+    "twoDayRuleDescription": "S pravidlom dvoch dní môžete vynechať jeden deň a nestratiť sériu, ak je nasledujúci deň úspešný.",
+    "advancedHabitBuilding": "Pokročilá tvorba zvykov",
+    "advancedHabitBuildingDescription": "Táto sekcia vám pomôže lepšie definovať vaše zvyky pomocou Cyklu zvyku. Mali by ste definovať signály, rutiny a odmeny pre každý zvyk.",
+    "at7AM": "O 7:00",
+    "do50PushUps": "Spraviť 50 klikov",
+    "fifteenMinOfVideoGames": "15 min. hrania videohier",
+    "showReward": "Zobraziť odmenu",
+    "remainderOfReward": "Pripomenutie odmeny po úspešnej rutine.",
+    "habitContract": "Zmluva o zvyku",
+    "habitContractDescription": "Hoci sa odporúča pozitívne posilnenie, niektorí ľudia môžu uprednostniť zmluvu o zvyku. Zmluva o zvyku vám umožňuje špecifikovať sankciu, ktorá bude uložená, ak zvyk nesplníte, a môže zahŕňať partnera, ktorý dohliada na vaše ciele.",
+    "donateToCharity": "Prispejte 10$ na charitu",
+    "sanction": "Sankcia",
+    "showSanction": "Zobraziť sankciu",
+    "remainderOfSanction": "Pripomenutie sankcie po neúspešnej rutine.",
+    "dan": "Dan",
+    "accountabilityPartner": "Partner dohľadu",
+    "add": "Pridať",
+    "haboNeedsPermission": "Habo potrebuje povolenie na odosielanie oznámení na správne fungovanie.",
+    "allow": "Povoliť",
+    "date": "Dátum",
+    "check": "Skontrolovať",
+    "fail": "Zlyhanie",
+    "skip": "Preskočiť",
+    "note": "Poznámka",
+    "yourCommentHere": "Vaša poznámka sem",
+    "close": "Zavrieť",
+    "createYourFirstHabit": "Vytvorte svoj prvý zvyk.",
+    "modify": "Upraviť",
+    "backupFailedError": "CHYBA: Vytvorenie zálohy zlyhalo.",
+    "restoreFailedError": "CHYBA: Obnovenie zálohy zlyhalo.",
+    "habitDeleted": "Zvyk bol odstránený.",
+    "undo": "Vrátiť späť",
+    "appNotifications": "Oznámenia aplikácie",
+    "appNotificationsChannel": "Kanál oznámení pre aplikáciu",
+    "habitNotifications": "Oznámenia o zvykoch",
+    "habitNotificationsChannel": "Kanál oznámení pre zvyky",
+    "doNotForgetToCheckYourHabits": "Nezabudnite skontrolovať svoje zvyky.",
+    "themeSelect": "{theme, select, device {Zariadenie} light {Svetlá} dark {Tmavá} oled {OLED čierna} materialYou {Material You} other{Zariadenie}}",
+    "@themeSelect": {
+        "placeholders": {
+            "theme": {
+                "type": "String"
+            }
+        }
+    },
+    "defineYourHabits": "Definujte svoje zvyky",
+    "defineYourHabitsDescription": "Aby ste sa lepšie držali svojich zvykov, môžete definovať:",
+    "cueNumbered": "1. Signál",
+    "routineNumbered": "2. Rutina",
+    "rewardNumbered": "3. Odmena",
+    "logYourDays": "Zaznamenávajte svoje dni",
+    "successful": "Úspešný",
+    "notSoSuccessful": "Nie tak úspešný",
+    "skipDoesNotAffectStreaks": "Preskočiť (neovplyvňuje sériu)",
+    "observeYourProgress": "Sledujte svoj pokrok",
+    "trackYourProgress": "Môžete sledovať svoj pokrok prostredníctvom kalendárneho zobrazenia v každom zvyku alebo na stránke so štatistikami.",
+    "backupCreatedSuccessfully": "Záloha bola úspešne vytvorená!",
+    "backupFailed": "Záloha zlyhala!",
+    "restoreCompletedSuccessfully": "Obnovenie bolo úspešne dokončené!",
+    "restoreFailed": "Obnovenie zlyhalo!",
+    "fileNotFound": "Súbor sa nenašiel",
+    "fileTooLarge": "Súbor je príliš veľký (max 10MB)",
+    "invalidBackupFile": "Neplatný záložný súbor",
+    "progress": "Pokrok",
+    "enterAmount": "Zadajte množstvo",
+    "complete": "Dokončiť",
+    "saveProgress": "Uložiť pokrok",
+    "currentProgress": "Aktuálne: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "Cieľ: {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Číselný zvyk",
+    "targetValue": "Cieľová hodnota",
+    "partialValue": "Čiastočná hodnota",
+    "unit": "Jednotka",
+    "habitType": "Typ zvyku",
+    "booleanHabit": "Áno/nie zvyk",
+    "slider": "Posuvník",
+    "input": "Vstup",
+    "numericHabitDescription": "Číselné zvyky vám umožňujú sledovať pokrok v prírastkoch počas dňa.",
+    "partialValueDescription": "Na sledovanie pokroku v menších prírastkoch",
+    "categories": "Kategórie",
+    "addCategory": "Pridať kategóriu",
+    "editCategory": "Upraviť kategóriu",
+    "category": "Kategória",
+    "noCategoriesYet": "Zatiaľ žiadne kategórie",
+    "createFirstCategory": "Vytvorte svoju prvú kategóriu na organizovanie zvykov",
+    "pleaseEnterCategoryTitle": "Prosím zadajte názov kategórie",
+    "categoryAlreadyExists": "Kategória \"{title}\" už existuje",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "Kategória \"{title}\" bola úspešne vytvorená",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "Kategória \"{title}\" bola úspešne aktualizovaná",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "Kategória \"{title}\" bola úspešne odstránená",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "Nepodarilo sa uložiť kategóriu: {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "Nepodarilo sa odstrániť kategóriu: {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "Vybrať kategórie",
+    "selectedCategories": "Vybrané kategórie ({count})",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "Všetky kategórie",
+    "deleteCategory": "Odstrániť kategóriu",
+    "deleteCategoryConfirmation": "Ste si istí, že chcete odstrániť \"{title}\"?\n\nToto odstráni kategóriu zo všetkých zvykov, ktoré ju používajú.",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "Žiadne zvyky v \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "createHabitForCategory": "Vytvorte zvyk a priraďte ho k tejto kategórii",
+    "showCategories": "Zobraziť kategórie",
+    "archive": "Archivovať",
+    "unarchive": "Zrušiť archiváciu",
+    "archiveHabit": "Archivovať zvyk",
+    "unarchiveHabit": "Zrušiť archiváciu zvyku",
+    "archivedHabits": "Archivované zvyky",
+    "noArchivedHabits": "Žiadne archivované zvyky",
+    "viewArchivedHabits": "Zobraziť archivované zvyky",
+    "habitArchived": "Zvyk archivovaný",
+    "habitUnarchived": "Archivácia zvyku zrušená",
+    "biometric": "Biometrické",
+    "biometricLockEnabled": "Biometrický zámok povolený",
+    "biometricLockDisabled": "Biometrický zámok zakázaný",
+    "authenticationError": "Chyba autentifikácie",
+    "biometricAuthenticationRequired": "Vyžaduje sa biometrická autentifikácia",
+    "setupFingerprintFaceUnlock": "Prosím nastavte odtlačok prsta alebo odomknutie tvárou v nastaveniach zariadenia",
+    "touchSensor": "Dotknite sa senzora",
+    "biometricNotRecognized": "Biometrické údaje neboli rozpoznané, skúste znova",
+    "biometricRequired": "Vyžadujú sa biometrické údaje",
+    "biometricAuthenticationSucceeded": "Biometrická autentifikácia úspešná",
+    "deviceCredentialsRequired": "Vyžadujú sa prihlasovacie údaje zariadenia",
+    "setupDeviceCredentials": "Prosím nastavte prihlasovacie údaje zariadenia v nastaveniach",
+    "setupTouchIdFaceId": "Prosím nastavte Touch ID alebo Face ID v nastaveniach zariadenia",
+    "reenableTouchIdFaceId": "Prosím znovu povoľte Touch ID alebo Face ID",
+    "biometricLock": "Biometrický zámok",
+    "biometricLockDescription": "Zabezpečiť aplikáciu pomocou {authMethod}",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToEnable": "Autentifikujte sa na povolenie biometrického zámku",
+    "authenticateToAccess": "Prosím autentifikujte sa na prístup do Habo",
+    "authenticationRequired": "Vyžaduje sa autentifikácia",
+    "authenticationFailedMessage": "Prosím autentifikujte sa na prístup do Habo pomocou {authMethod}",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "tryAgain": "Skúsiť znova",
+    "authenticating": "Autentifikácia…",
+    "authenticate": "Autentifikovať",
+    "buildingBetterHabits": "Budovanie lepších zvykov",
+    "authenticationPrompt": "Prosím autentifikujte sa pomocou {authMethod} na prístup k vašim zvykom",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "devicePinPatternPassword": "PIN, vzor alebo heslo zariadenia",
+    "fingerprint": "Odtlačok prsta",
+    "iris": "Dúhovka",
+    "whatsNewTitle": "Čo je nové",
+    "whatsNewVersion": "Verzia {version}",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureNumericTitle": "Číselné hodnoty vo zvykoch",
+    "featureNumericDesc": "Sledujte počty ako poháre vody alebo prečítané stránky",
+    "featureDeepLinksTitle": "URL schéma (deep links)",
+    "featureDeepLinksDesc": "Otvorte Habo priamo na obrazovky nastavenia alebo vytvoriť nový zvyk",
+    "featureCategoriesTitle": "Kategórie",
+    "featureCategoriesDesc": "Organizujte zvyky pomocou filtrov kategórií",
+    "featureArchiveTitle": "Archív",
+    "featureArchiveDesc": "Skryte zvyky, ktoré už nesledujete bez ich odstránenia",
+    "featureMaterialYouTitle": "Material You téma (Android)",
+    "featureMaterialYouDesc": "Dynamické farby, ktoré sa prispôsobia vašej tapete",
+    "featureSoundTitle": "Nový zvukový engine",
+    "featureSoundDesc": "Nastaviteľná hlasitosť",
+    "featureLockTitle": "Funkcia zámku",
+    "featureLockDesc": "Zabezpečte aplikáciu pomocou Face ID / Touch ID / biometrických údajov",
+    "featureIosSoundMixingTitle": "Opravené mixovanie zvuku",
+    "featureIosSoundMixingDesc": "Zvuky Habo už neprerušujú vašu hudbu alebo podcasty",
+    "featureHomescreenWidgetTitle": "Widget na domovskej obrazovke",
+    "featureHomescreenWidgetDesc": "Zobrazte svoj postup z domovskej obrazovky (experimentálne)",
+    "featureLongpressCheckTitle": "Dlhé stlačenie na označenie",
+    "featureLongpressCheckDesc": "Dlhým stlačením tlačidiel zvykov rýchlo zmeníte stav",
+    "haboSyncComingSoon": "Čoskoro",
+    "haboSyncDescription": "Synchronizujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej služby Habo.",
+    "haboSyncLearnMore": "Dozvedieť sa viac na habo.space/sync",
+    "habitsToday": "Dnešné zvyky"
 }
