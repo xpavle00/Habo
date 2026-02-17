@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habo/extensions.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +33,7 @@ class CalendarHeader extends StatelessWidget {
               child: Text(
                   DateFormat('E', Intl.getCurrentLocale())
                       .dateSymbols
-                      .WEEKDAYS[(day + 1) % 7]
-                      .substring(0, 2)
-                      .capitalize(),
+                      .SHORTWEEKDAYS[(day + 1) % 7],
                   style: tex),
             ),
           );
