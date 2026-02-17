@@ -66,7 +66,12 @@ class HabitData {
     final event = events[date];
     if (event == null) return 0.0;
 
-    if (event[0] == DayType.check) return targetValue;
+    if (event[0] == DayType.check) {
+      // Use stored target value if available, fallback to current
+      return event.length > 3
+          ? (event[3] as double?) ?? targetValue
+          : targetValue;
+    }
     if (event[0] == DayType.progress && event.length > 2) {
       return (event[2] as double?) ?? 0.0;
     }
@@ -74,9 +79,14 @@ class HabitData {
   }
 
   double getProgressPercentage(DateTime date) {
-    if (!isNumeric || targetValue <= 0) return 0.0;
+    final event = events[date];
+    // Use stored target value if available, fallback to current
+    final targetAtTime = (event != null && event.length > 3)
+        ? (event[3] as double?) ?? targetValue
+        : targetValue;
+    if (!isNumeric || targetAtTime <= 0) return 0.0;
     final progress = getProgressForDate(date);
-    return (progress / targetValue).clamp(0.0, 1.0);
+    return (progress / targetAtTime).clamp(0.0, 1.0);
   }
 
   bool isCompletedForDate(DateTime date) {
@@ -84,7 +94,13 @@ class HabitData {
       final event = events[date];
       return event != null && event[0] == DayType.check;
     } else {
-      return getProgressForDate(date) >= targetValue;
+      // Use stored target value for completion check
+      final event = events[date];
+      final targetAtTime = (event != null && event.length > 3)
+          ? (event[3] as double?) ?? targetValue
+          : targetValue;
+      final progress = getProgressForDate(date);
+      return progress >= targetAtTime;
     }
   }
 }
