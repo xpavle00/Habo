@@ -61,7 +61,12 @@ class Statistics {
                 stat.progress++;
                 if (habit.habitData.isNumeric && value.length > 2) {
                   final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
-                  if (progressValue >= habit.habitData.targetValue) {
+                  // Use stored target value for completion check
+                  final targetAtTime = (value.length > 3)
+                      ? (value[3] as num?)?.toDouble() ??
+                          habit.habitData.targetValue
+                      : habit.habitData.targetValue;
+                  if (progressValue >= targetAtTime) {
                     // 100% or more = maintain streak
                     stat.actualStreak++;
                     if (stat.actualStreak > stat.topStreak) {
