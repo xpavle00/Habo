@@ -223,20 +223,30 @@ class OneDayButton extends StatelessWidget {
                           instance.onTap = () {
                             parent.setSelectedDay(date);
                             if (oneTapCheck) {
-                              // For numeric habits, add increment instead of full check
                               if (parent.widget.habitData.isNumeric) {
                                 _addIncrement(context);
                               } else {
-                                // Perform Check action for non-numeric habits
-                                final checkItem = icons.firstWhere(
-                                  (element) =>
-                                      element.key == const Key('Check'),
-                                  orElse: () => icons[1],
-                                );
+                                final isCurrentlyChecked = event != null &&
+                                    event!.isNotEmpty &&
+                                    event![0] == DayType.check;
+                                InButton checkItem;
+                                if (isCurrentlyChecked) {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Date'),
+                                    orElse: () => icons[0],
+                                  );
+                                } else {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Check'),
+                                    orElse: () => icons[1],
+                                  );
+                                }
                                 handleSelection(checkItem);
                               }
                             } else {
-                              // Show menu
+                              // Show menu when one-tap is OFF
                               _showMenu(context, icons, index, color,
                                   handleSelection);
                             }
@@ -251,20 +261,30 @@ class OneDayButton extends StatelessWidget {
                         (LongPressGestureRecognizer instance) {
                           instance.onLongPress = () {
                             if (oneTapCheck) {
-                              // Show menu
+                              // Show menu when one-tap is OFF
                               _showMenu(context, icons, index, color,
                                   handleSelection);
                             } else {
-                              // For numeric habits, add increment instead of full check
                               if (parent.widget.habitData.isNumeric) {
                                 _addIncrement(context);
                               } else {
-                                // Perform Check action for non-numeric habits
-                                final checkItem = icons.firstWhere(
-                                  (element) =>
-                                      element.key == const Key('Check'),
-                                  orElse: () => icons[1],
-                                );
+                                final isCurrentlyChecked = event != null &&
+                                    event!.isNotEmpty &&
+                                    event![0] == DayType.check;
+                                InButton checkItem;
+                                if (isCurrentlyChecked) {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Date'),
+                                    orElse: () => icons[0],
+                                  );
+                                } else {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Check'),
+                                    orElse: () => icons[1],
+                                  );
+                                }
                                 handleSelection(checkItem);
                               }
                             }
