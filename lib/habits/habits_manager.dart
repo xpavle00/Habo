@@ -81,7 +81,7 @@ class HabitsManager extends ChangeNotifier {
 
   void hideSnackBar() {
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.hideCurrentMessage();
+      _uiFeedbackService.hideCurrentMessage();
     }
     // Note: If UIFeedbackService is null, we can't hide the snackbar
     // This is acceptable as the snackbar will auto-dismiss
@@ -89,7 +89,7 @@ class HabitsManager extends ChangeNotifier {
 
   Future<bool> createBackup() async {
     if (_backupService != null) {
-      return await _backupService!.createDatabaseBackup();
+      return await _backupService.createDatabaseBackup();
     }
     // Fallback: return false if service not available
     return false;
@@ -97,7 +97,7 @@ class HabitsManager extends ChangeNotifier {
 
   Future<bool> loadBackup() async {
     if (_backupService != null) {
-      final ok = await _backupService!.restoreFromBackupFile();
+      final ok = await _backupService.restoreFromBackupFile();
       if (ok) {
         // Reload in-memory state from repositories
         allHabits = await _habitRepository.getAllHabits();
@@ -121,7 +121,7 @@ class HabitsManager extends ChangeNotifier {
 
   void showErrorMessage(String message) {
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.showError(message);
+      _uiFeedbackService.showError(message);
     }
     // Note: If UIFeedbackService is null, we silently fail
     // This should not happen in normal operation since services are injected
@@ -320,7 +320,7 @@ class HabitsManager extends ChangeNotifier {
     _notificationService?.disableHabitNotification(id);
 
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.showMessageWithAction(
+      _uiFeedbackService.showMessageWithAction(
         message: S.current.habitArchived,
         actionLabel: S.current.undo,
         onActionPressed: () {
@@ -348,7 +348,7 @@ class HabitsManager extends ChangeNotifier {
     }
 
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.showSuccess(S.current.habitUnarchived);
+      _uiFeedbackService.showSuccess(S.current.habitUnarchived);
     }
 
     notifyListeners();
@@ -370,7 +370,7 @@ class HabitsManager extends ChangeNotifier {
     Future.delayed(const Duration(seconds: 4), () => deleteFromDB());
 
     if (_uiFeedbackService != null) {
-      _uiFeedbackService!.showMessageWithAction(
+      _uiFeedbackService.showMessageWithAction(
         message: S.current.habitDeleted,
         actionLabel: S.current.undo,
         onActionPressed: () {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_darwin/local_auth_darwin.dart';
 import 'package:habo/generated/l10n.dart';
 
 class BiometricAuthService {
@@ -64,64 +61,17 @@ class BiometricAuthService {
 
       final bool didAuthenticate = await _localAuth.authenticate(
         localizedReason: localizedReason,
-        authMessages: [
-          AndroidAuthMessages(
-            signInTitle: S.of(context).biometricAuthenticationRequired,
-            cancelButton: S.of(context).cancel,
-            goToSettingsButton: S.of(context).settings,
-            goToSettingsDescription: S.of(context).setupFingerprintFaceUnlock,
-            biometricHint: S.of(context).touchSensor,
-            biometricNotRecognized: S.of(context).biometricNotRecognized,
-            biometricRequiredTitle: S.of(context).biometricRequired,
-            biometricSuccess: S.of(context).biometricAuthenticationSucceeded,
-            deviceCredentialsRequiredTitle:
-                S.of(context).deviceCredentialsRequired,
-            deviceCredentialsSetupDescription:
-                S.of(context).setupDeviceCredentials,
-          ),
-          IOSAuthMessages(
-            cancelButton: S.of(context).cancel,
-            goToSettingsButton: S.of(context).settings,
-            goToSettingsDescription: S.of(context).setupTouchIdFaceId,
-            lockOut: S.of(context).reenableTouchIdFaceId,
-          ),
-        ],
-        options: AuthenticationOptions(
-          biometricOnly: biometricOnly,
-          stickyAuth: true,
-          sensitiveTransaction: true,
-        ),
+        biometricOnly: biometricOnly,
+        sensitiveTransaction: true,
+        persistAcrossBackgrounding: true,
       );
       debugPrint(
           'BiometricAuthService: Authentication result: $didAuthenticate');
       return didAuthenticate;
-    } on PlatformException catch (e) {
-      debugPrint(
-          'BiometricAuthService: PlatformException - ${e.code}: ${e.message}');
-      // Handle specific error cases
-      switch (e.code) {
-        case 'NotAvailable':
-          debugPrint(
-              'BiometricAuthService: Biometric authentication not available');
-          return false;
-        case 'NotEnrolled':
-          debugPrint('BiometricAuthService: No biometric credentials enrolled');
-          return false;
-        case 'LockedOut':
-          debugPrint(
-              'BiometricAuthService: Authentication locked out temporarily');
-          return false;
-        case 'PermanentlyLockedOut':
-          debugPrint(
-              'BiometricAuthService: Authentication permanently locked out');
-          return false;
-        case 'UserCancel':
-          debugPrint('BiometricAuthService: User cancelled authentication');
-          return false;
-        default:
-          debugPrint('BiometricAuthService: Unknown error: ${e.code}');
-          return false;
-      }
+    } on LocalAuthException catch (e) {
+      debugPrint('BiometricAuthService: LocalAuthException - ${e.code}');
+      // Handle specific error cases using the error codes
+      return false;
     } catch (e) {
       debugPrint('BiometricAuthService: General error: $e');
       return false;
@@ -159,7 +109,8 @@ class BiometricAuthService {
         if (methods.length == 1) {
           _cachedAuthDescription = methods.first;
         } else if (methods.length == 2) {
-          _cachedAuthDescription = '${methods[0]} ${S.of(context).or} ${methods[1]}';
+          _cachedAuthDescription =
+              '${methods[0]} ${S.of(context).or} ${methods[1]}';
         } else {
           _cachedAuthDescription =
               '${methods.sublist(0, methods.length - 1).join(', ')}, ${S.of(context).or} ${methods.last}';

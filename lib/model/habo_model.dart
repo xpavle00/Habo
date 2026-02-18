@@ -198,31 +198,6 @@ class HaboModel {
     batch.execute('ALTER TABLE events ADD targetValue REAL DEFAULT 0.0');
   }
 
-  // void _createTableEventsV3(Batch batch) {
-  //   batch.execute('DROP TABLE IF EXISTS events');
-  //   batch.execute('''CREATE TABLE events (
-  //   id INTEGER,
-  //   dateTime TEXT,
-  //   dayType INTEGER,
-  //   comment TEXT,
-  //   PRIMARY KEY(id, dateTime),
-  //   FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
-  //   )''');
-  // }
-
-  void _createTableEventsV4(Batch batch) {
-    batch.execute('DROP TABLE IF EXISTS events');
-    batch.execute('''CREATE TABLE events (
-    id INTEGER,
-    dateTime TEXT,
-    dayType INTEGER,
-    comment TEXT,
-    progressValue REAL DEFAULT 0.0,
-    PRIMARY KEY(id, dateTime),
-    FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
-    )''');
-  }
-
   void _createTableEventsV5(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS events');
     batch.execute('''CREATE TABLE events (
