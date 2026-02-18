@@ -481,8 +481,7 @@ class HabitState extends State<Habit> {
       final targetAtTime = (events.length > 3)
           ? (events[3] as double?) ?? widget.habitData.targetValue
           : widget.habitData.targetValue;
-      final percentage =
-          (progressValue / targetAtTime).clamp(0.0, 1.0);
+      final percentage = (progressValue / targetAtTime).clamp(0.0, 1.0);
 
       return Stack(
         children: [
