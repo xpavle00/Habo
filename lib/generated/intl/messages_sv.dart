@@ -22,31 +22,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "allHabitsWillBeReplaced": MessageLookupByLibrary.simpleMessage(
-          "Alla vanor kommer att ersättas med vanor från backup.",
-        ),
-        "cancel": MessageLookupByLibrary.simpleMessage("Avbryt"),
-        "currentStreak":
-            MessageLookupByLibrary.simpleMessage("Nuvarande serie"),
-        "emptyList": MessageLookupByLibrary.simpleMessage("Tom lista"),
-        "firstDayOfWeek": MessageLookupByLibrary.simpleMessage(
-          "Första dagen i veckan",
-        ),
-        "habits": MessageLookupByLibrary.simpleMessage("Rutiner:"),
-        "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
-          "Det finns ingen data om rutiner.",
-        ),
-        "notificationTime":
-            MessageLookupByLibrary.simpleMessage("Meddelandetid"),
-        "notifications": MessageLookupByLibrary.simpleMessage("Meddelanden"),
-        "restore": MessageLookupByLibrary.simpleMessage("Återställ"),
-        "settings": MessageLookupByLibrary.simpleMessage("Inställningar"),
-        "soundEffects": MessageLookupByLibrary.simpleMessage("Ljudeffekter"),
-        "statistics": MessageLookupByLibrary.simpleMessage("Statistik"),
-        "theme": MessageLookupByLibrary.simpleMessage("Tema"),
-        "topStreak": MessageLookupByLibrary.simpleMessage("Bästa serie"),
-        "total": MessageLookupByLibrary.simpleMessage("Totalt"),
-        "unknown": MessageLookupByLibrary.simpleMessage("Okänd"),
-        "warning": MessageLookupByLibrary.simpleMessage("Varning"),
-      };
+    "allHabitsWillBeReplaced": MessageLookupByLibrary.simpleMessage(
+      "Alla vanor kommer att ersättas med vanor från backup.",
+    ),
+    "cancel": MessageLookupByLibrary.simpleMessage("Avbryt"),
+    "currentStreak": MessageLookupByLibrary.simpleMessage("Nuvarande serie"),
+    "emptyList": MessageLookupByLibrary.simpleMessage("Tom lista"),
+    "firstDayOfWeek": MessageLookupByLibrary.simpleMessage(
+      "Första dagen i veckan",
+    ),
+    "habits": MessageLookupByLibrary.simpleMessage("Rutiner:"),
+    "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
+      "Det finns ingen data om rutiner.",
+    ),
+    "notificationTime": MessageLookupByLibrary.simpleMessage("Meddelandetid"),
+    "notifications": MessageLookupByLibrary.simpleMessage("Meddelanden"),
+    "restore": MessageLookupByLibrary.simpleMessage("Återställ"),
+    "settings": MessageLookupByLibrary.simpleMessage("Inställningar"),
+    "soundEffects": MessageLookupByLibrary.simpleMessage("Ljudeffekter"),
+    "statistics": MessageLookupByLibrary.simpleMessage("Statistik"),
+    "theme": MessageLookupByLibrary.simpleMessage("Tema"),
+    "topStreak": MessageLookupByLibrary.simpleMessage("Bästa serie"),
+    "total": MessageLookupByLibrary.simpleMessage("Totalt"),
+    "unknown": MessageLookupByLibrary.simpleMessage("Okänd"),
+    "warning": MessageLookupByLibrary.simpleMessage("Varning"),
+  };
 }
