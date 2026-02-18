@@ -1,17 +1,11 @@
 {
     "yourCommentHere": "在此输入你的备注",
-    "@yourCommentHere": {},
     "appNotificationsChannel": "应用程序通知的通知方式",
-    "@appNotificationsChannel": {},
     "habitLoopDescription": "习惯循环是一种描述习惯形成过程的心理学模型。它由三个部分组成：提示、惯例（习惯性行为）和奖励。提示会引发惯例（习惯性行为），随后这种行为会得到奖励的强化，从而形成一个循环，使得习惯更加根深蒂固，也更有可能被重复。",
-    "@habitLoopDescription": {},
     "rewardDescription": "是你在完成习惯性行为之后所体验到的益处或积极感受。它会强化这一习惯。",
-    "@rewardDescription": {},
     "appNotifications": "应用程序通知",
-    "@appNotifications": {},
     "accountabilityPartner": "责任伙伴",
-    "@accountabilityPartner": {},
-    "themeSelect": "{theme, select, device {跟随系统} light {浅色模式} dark {深色模式} oled {OLED 黑色} other{跟随系统}}",
+    "themeSelect": "{theme, select,device {Device} 浅色{Light} 深色{Dark} oled{OLED black} materialYou {Material You} 跟随设备{Device}}",
     "@themeSelect": {
         "placeholders": {
             "theme": {
@@ -20,197 +14,324 @@
         }
     },
     "notSoSuccessful": "未成功",
-    "@notSoSuccessful": {},
     "fifteenMinOfVideoGames": "玩 15 分钟游戏",
-    "@fifteenMinOfVideoGames": {},
     "remainderOfReward": "成功完成一套动作后的奖励提醒。",
-    "@remainderOfReward": {},
     "showSanction": "显示惩罚",
-    "@showSanction": {},
     "skipDoesNotAffectStreaks": "跳过（不影响连续记录）",
-    "@skipDoesNotAffectStreaks": {},
     "habits": "习惯：",
-    "@habits": {},
     "statistics": "统计数据",
-    "@statistics": {},
     "noDataAboutHabits": "没有关于习惯的数据。",
-    "@noDataAboutHabits": {},
-    "total": "统计",
-    "@total": {},
+    "total": "合计",
     "unknown": "未知",
-    "@unknown": {},
     "currentStreak": "目前连续天数",
-    "@currentStreak": {},
     "topStreak": "最长连续天数",
-    "@topStreak": {},
     "emptyList": "空白清单",
-    "@emptyList": {},
     "cancel": "取消",
-    "@cancel": {},
     "warning": "警告",
-    "@warning": {},
     "settings": "设置",
-    "@settings": {},
     "theme": "主题",
-    "@theme": {},
     "firstDayOfWeek": "每周的第一天",
-    "@firstDayOfWeek": {},
     "restore": "恢复备份",
-    "@restore": {},
     "allHabitsWillBeReplaced": "所有习惯将被替换为备份中的习惯。",
-    "@allHabitsWillBeReplaced": {},
     "setColors": "设置颜色",
-    "@setColors": {},
     "notificationTime": "提醒时间",
-    "@notificationTime": {},
     "soundEffects": "音效",
-    "@soundEffects": {},
     "showMonthName": "显示月份名称",
-    "@showMonthName": {},
     "backup": "备份",
-    "@backup": {},
     "create": "创建备份",
-    "@create": {},
     "notifications": "通知提醒",
-    "@notifications": {},
     "about": "关于",
-    "@about": {},
     "habo": "Habo",
-    "@habo": {},
     "onboarding": "新手引导",
-    "@onboarding": {},
     "done": "完成",
-    "@done": {},
     "copyright": "©2023 Habo",
-    "@copyright": {},
     "sourceCode": "源代码(Github)",
-    "@sourceCode": {},
     "ifYouWantToSupport": "如果你想支持 Habo ，你可以：",
-    "@ifYouWantToSupport": {},
     "buyMeACoffee": "请我喝杯咖啡",
-    "@buyMeACoffee": {},
     "termsAndConditions": "使用条款",
-    "@termsAndConditions": {},
     "privacyPolicy": "隐私政策",
-    "@privacyPolicy": {},
     "reset": "恢复默认",
-    "@reset": {},
     "congratulationsReward": "恭喜你！你的奖励：",
-    "@congratulationsReward": {},
     "ohNoSanction": "糟糕！你的惩罚：",
-    "@ohNoSanction": {},
     "month": "月",
-    "@month": {},
     "week": "周",
-    "@week": {},
     "habitLoop": "习惯循环",
-    "@habitLoop": {},
     "cue": "提示",
-    "@cue": {},
     "cueDescription": "是引发你习惯的触发因素。它可能是一个特定的时间、地点、某种感觉，或者是一件事情。",
-    "@cueDescription": {},
     "routine": "惯例",
-    "@routine": {},
     "routineDescription": "是你对提示做出的行动。这就是习惯本身。",
-    "@routineDescription": {},
     "reward": "奖励",
-    "@reward": {},
     "exercise": "锻炼",
-    "@exercise": {},
     "editHabit": "编辑习惯",
-    "@editHabit": {},
     "createHabit": "创建习惯",
-    "@createHabit": {},
     "delete": "删除",
-    "@delete": {},
     "habitTitleEmptyError": "习惯的标题不能为空。",
-    "@habitTitleEmptyError": {},
     "save": "保存",
-    "@save": {},
     "useTwoDayRule": "使用“两天规则”",
-    "@useTwoDayRule": {},
     "twoDayRule": "两天规则",
-    "@twoDayRule": {},
     "advancedHabitBuilding": "进阶习惯养成",
-    "@advancedHabitBuilding": {},
     "at7AM": "早上 7:00",
-    "@at7AM": {},
     "showReward": "显示奖励",
-    "@showReward": {},
     "do50PushUps": "做 50 个俯卧撑",
-    "@do50PushUps": {},
     "habitContract": "习惯契约",
-    "@habitContract": {},
     "sanction": "惩罚",
-    "@sanction": {},
     "dan": "小帅",
-    "@dan": {},
     "allow": "允许",
-    "@allow": {},
     "skip": "跳过",
-    "@skip": {},
     "date": "日期",
-    "@date": {},
     "add": "新增",
-    "@add": {},
     "check": "勾选",
-    "@check": {},
     "fail": "失败",
-    "@fail": {},
     "close": "关闭",
-    "@close": {},
     "modify": "修改",
-    "@modify": {},
     "backupFailedError": "错误：创建备份失败。",
-    "@backupFailedError": {},
     "undo": "恢复",
-    "@undo": {},
     "habitNotificationsChannel": "习惯通知的通知方式",
-    "@habitNotificationsChannel": {},
     "doNotForgetToCheckYourHabits": "别忘了检查你的习惯。",
-    "@doNotForgetToCheckYourHabits": {},
     "defineYourHabitsDescription": "为了更好地坚持你的习惯，你可以定义：",
-    "@defineYourHabitsDescription": {},
     "cueNumbered": "1.提示",
-    "@cueNumbered": {},
     "routineNumbered": "2.惯例",
-    "@routineNumbered": {},
     "successful": "成功",
-    "@successful": {},
     "logYourDays": "记录你的每日进度",
-    "@logYourDays": {},
     "observeYourProgress": "查看你的进度",
-    "@observeYourProgress": {},
     "trackYourProgress": "您可以通过每个习惯的日历视图或统计页面来查看您的进度。",
-    "@trackYourProgress": {},
     "habitDeleted": "习惯已删除。",
-    "@habitDeleted": {},
     "habitNotifications": "习惯通知",
-    "@habitNotifications": {},
     "disclaimer": "免责声明",
-    "@disclaimer": {},
     "donateToCharity": "捐赠 10 美元给慈善机构",
-    "@donateToCharity": {},
     "restoreFailedError": "错误：恢复备份失败。",
-    "@restoreFailedError": {},
     "advancedHabitBuildingDescription": "这一部分将帮助你利用“习惯循环”更好地定义自己的习惯。你应该为每一个习惯明确提示因素、行为模式以及奖励机制。",
-    "@advancedHabitBuildingDescription": {},
     "remainderOfSanction": "未成功执行惯例后的惩罚提醒。",
-    "@remainderOfSanction": {},
     "twoDayRuleDescription": "使用“两天规则”，你可以有一天没完成任务，但只要第二天成功完成了，就不会中断连续打卡的记录。",
-    "@twoDayRuleDescription": {},
     "haboNeedsPermission": "Habo 需要通知权限才能正常运行。",
-    "@haboNeedsPermission": {},
     "defineYourHabits": "定义你的习惯",
-    "@defineYourHabits": {},
     "rewardNumbered": "3.奖励",
-    "@rewardNumbered": {},
     "habit": "习惯",
-    "@habit": {},
     "habitContractDescription": "虽然建议采用正面激励的方式，但有些人可能会选择签订习惯契约。习惯契约能让你制定未养成目标习惯受到的惩罚，而且契约中可能会有一位监督伙伴，帮助你监督自己是否达成目标。",
-    "@habitContractDescription": {},
     "note": "备注",
-    "@note": {},
     "createYourFirstHabit": "培养你的第一个习惯。",
-    "@createYourFirstHabit": {}
+    "backupCreatedSuccessfully": "成功地创建备份！",
+    "backupFailed": "备份失败！",
+    "restoreCompletedSuccessfully": "成功完成恢复！",
+    "restoreFailed": "恢复失败！",
+    "fileNotFound": "文件没找到",
+    "fileTooLarge": "文件太大（最大10MB）",
+    "invalidBackupFile": "不合法的备份文件",
+    "progress": "进度",
+    "enterAmount": "输入数量",
+    "complete": "完成",
+    "saveProgress": "保存进度",
+    "currentProgress": "当前进度：{current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "目标进度： {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "计数型习惯",
+    "targetValue": "目标值",
+    "unit": "单位",
+    "habitType": "习惯类型",
+    "booleanHabit": "布尔型习惯",
+    "input": "输入",
+    "numericHabitDescription": "计数型习惯使你可以通过增量的方式整天跟踪进度。",
+    "partialValueDescription": "以更小的增量跟踪进度",
+    "categories": "分类",
+    "addCategory": "添加分类",
+    "editCategory": "编辑分类",
+    "category": "分类",
+    "noCategoriesYet": "还没有创建分类",
+    "createFirstCategory": "创建你的第一个分类来组织你的习惯",
+    "pleaseEnterCategoryTitle": "请输入分类标题",
+    "categoryAlreadyExists": "分类\"{title}\" 已经存在",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "分类\"{title}\"创建成功",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "分类 \"{title}\"更新成功",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "分类 \"{title}\"删除成功",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "保存分类失败： {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "删除分类失败： {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "选择分类",
+    "selectedCategories": "已选中的分类({count})",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "所有分类",
+    "deleteCategory": "删除分类",
+    "deleteCategoryConfirmation": "你确定想要删除 \"{title}\"?\n\n这将从所有使用该分类的习惯中移除该分类",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "没有习惯在 \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "fingerprint": "指纹",
+    "whatsNewTitle": "更新了什么",
+    "whatsNewVersion": "版本 {version}",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureNumericDesc": "跟踪的数目如几杯水或者阅读页数",
+    "featureCategoriesTitle": "分类",
+    "featureCategoriesDesc": "使用分类过滤器组织习惯",
+    "featureArchiveTitle": "归档",
+    "featureArchiveDesc": "隐藏不在跟踪的习惯且不删除",
+    "featureMaterialYouTitle": "Material You 主题(Android)",
+    "featureMaterialYouDesc": "动态匹配你的壁纸的颜色",
+    "featureSoundDesc": "可调节音量",
+    "featureLockTitle": "锁定功能",
+    "featureLockDesc": "使用Face ID / Touch ID / biometrics保护应用",
+    "featureHomescreenWidgetTitle": "首屏挂件",
+    "featureHomescreenWidgetDesc": "在首页屏幕瞥一眼你的习惯进度（实验性的）",
+    "featureLongpressCheckTitle": "长按切换",
+    "featureLongpressCheckDesc": "在习惯按钮上长按快速切换状态",
+    "haboSyncComingSoon": "即将到来",
+    "haboSyncDescription": "使用 Habo 端到端加密云服务在你所有的设备之间同步习惯。",
+    "haboSyncLearnMore": "在habo.space/sync上了解更多",
+    "habitsToday": "今日习惯",
+    "partialValue": "部分值",
+    "habitArchived": "习惯已归档",
+    "habitUnarchived": "习惯未归档",
+    "authenticationError": "身份验证错误",
+    "biometricAuthenticationRequired": "需要生物身份验证",
+    "setupFingerprintFaceUnlock": "请在设备设置中设置指纹或面部解锁",
+    "touchSensor": "触控传感器",
+    "biometricNotRecognized": "生物识别未被识别，请重试",
+    "biometricRequired": "需要生物识别",
+    "biometricAuthenticationSucceeded": "生物识别身份验证已成功",
+    "setupDeviceCredentials": "请在设置中设定设备凭证",
+    "setupTouchIdFaceId": "请在设置中设置 Touch ID 或 Face ID",
+    "reenableTouchIdFaceId": "请重启用 Touch ID 或 Face ID",
+    "biometricLock": "生物识别锁定",
+    "biometricLockDescription": "使用 {authMethod} 方法保护 应用",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToAccess": "请证实身份访问 Habo",
+    "authenticationRequired": "需要身份验证",
+    "authenticationFailedMessage": "请通过 {authMethod}授权访问 Habo",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "tryAgain": "请重试",
+    "authenticating": "授权中…",
+    "authenticate": "授权",
+    "buildingBetterHabits": "构建更好的习惯",
+    "authenticationPrompt": "请使用{authMethod} 授权访问你的习惯",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "archive": "归档",
+    "unarchive": "未归档",
+    "archiveHabit": "归档习惯",
+    "unarchiveHabit": "未归档习惯",
+    "archivedHabits": "归档的习惯",
+    "noArchivedHabits": "未归档的习惯",
+    "viewArchivedHabits": "查看归档的习惯",
+    "biometric": "生物特征识别",
+    "biometricLockEnabled": "生物特征锁定启用",
+    "biometricLockDisabled": "生物特征锁定禁用",
+    "authenticateToEnable": "授权以启用生物特征识别锁定",
+    "devicePinPatternPassword": "设备 PIN, Pattern, 或者 密码",
+    "showCategories": "显示所有分类",
+    "createHabitForCategory": "创建习惯并分给这个分类",
+    "deviceCredentialsRequired": "需要设备凭证"
 }

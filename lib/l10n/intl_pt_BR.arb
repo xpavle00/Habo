@@ -1,94 +1,266 @@
 {
     "habits": "Hábitos:",
-    "@habits": {},
     "statistics": "Estatísticas",
-    "@statistics": {},
     "emptyList": "Lista vazia",
-    "@emptyList": {},
     "noDataAboutHabits": "Não há dados sobre hábitos.",
-    "@noDataAboutHabits": {},
     "topStreak": "Maior sequência",
-    "@topStreak": {},
     "currentStreak": "Sequência atual",
-    "@currentStreak": {},
     "total": "Total",
-    "@total": {},
     "unknown": "Desconhecido",
-    "@unknown": {},
     "warning": "Aviso",
-    "@warning": {},
     "allHabitsWillBeReplaced": "Todos os hábitos serão substituídos pelos hábitos do becape.",
-    "@allHabitsWillBeReplaced": {},
     "restore": "Restaurar",
-    "@restore": {},
     "cancel": "Cancelar",
-    "@cancel": {},
     "settings": "Ajustes",
-    "@settings": {},
     "theme": "Tema",
-    "@theme": {},
     "firstDayOfWeek": "Primeiro dia da semana",
-    "@firstDayOfWeek": {},
     "notifications": "Notificações",
-    "@notifications": {},
     "notificationTime": "Agendar notificação",
-    "@notificationTime": {},
     "soundEffects": "Efeitos sonoros",
-    "@soundEffects": {},
     "showMonthName": "Mostrar nome do mês",
-    "@showMonthName": {},
     "setColors": "Personalizar cores",
-    "@setColors": {},
     "backup": "Becape",
-    "@backup": {},
     "create": "Criar novo",
-    "@create": {},
     "onboarding": "Introdução",
-    "@onboarding": {},
     "about": "Sobre",
-    "@about": {},
     "habo": "Habo",
-    "@habo": {},
     "copyright": "©2023 Habo",
-    "@copyright": {},
     "termsAndConditions": "Termos e Condições",
-    "@termsAndConditions": {},
     "privacyPolicy": "Política de Privacidade",
-    "@privacyPolicy": {},
     "disclaimer": "Aviso Legal",
-    "@disclaimer": {},
     "sourceCode": "Código-fonte (GitHub)",
-    "@sourceCode": {},
     "ifYouWantToSupport": "Você pode apoiar o desenvolvimento do Habo em:",
-    "@ifYouWantToSupport": {},
     "buyMeACoffee": "Buy me a coffee",
-    "@buyMeACoffee": {},
     "reset": "Redefinir",
-    "@reset": {},
     "done": "Concluído",
-    "@done": {},
     "congratulationsReward": "Parabéns! Sua recompensa:",
-    "@congratulationsReward": {},
     "ohNoSanction": "Ah não! Sua penalidade:",
-    "@ohNoSanction": {},
     "month": "Mês",
-    "@month": {},
     "week": "Semana",
-    "@week": {},
     "habitLoop": "O Ciclo do Hábito",
-    "@habitLoop": {},
-    "habitLoopDescription": "O Ciclo do Hábito é um modelo psicológico que descreve o processo de formação de hábitos. Consiste em três elementos: Deixa, Rotina e Recompensa. A Deixa desencadeia a Rotina (uma ação habitual), que é reforçada pela Recompensa, criando um ciclo que torna o hábito mais enraizado e provável de ser repetido.",
-    "@habitLoopDescription": {},
-    "cue": "Deixa",
-    "@cue": {},
-    "cueDescription": "é o gatilho que desencadeia o seu hábito. Pode ser uma hora específica, um local, um sentimento ou um evento.",
-    "@cueDescription": {},
+    "habitLoopDescription": "O Ciclo do Hábito é um modelo psicológico que descreve o processo de formação de hábitos. Consiste em três elementos: Gatilho, Rotina e Recompensa. A Deixa desencadeia a Rotina (uma ação habitual), que é reforçada pela Recompensa, criando um ciclo que torna o hábito mais enraizado e provável de ser repetido.",
+    "cue": "Gatilho",
+    "cueDescription": "é o que desencadeia o seu hábito. Pode ser uma hora específica, um local, um sentimento ou um evento.",
     "routine": "Rotina",
-    "@routine": {},
     "routineDescription": "é a ação que você toma em resposta à Deixa. É o hábito em si.",
-    "@routineDescription": {},
     "reward": "Recompensa",
-    "@reward": {},
     "rewardDescription": "é a gratificação ou sentimento positivo que você experimenta após realizar a Rotina, reforçando o hábito.",
-    "@rewardDescription": {}
+    "editHabit": "Editar Hábito",
+    "createHabit": "Criar Hábito",
+    "delete": "Deletar",
+    "habitTitleEmptyError": "O título do hábito não pode ficar vazio.",
+    "save": "Salvar",
+    "exercise": "Exercício",
+    "habit": "Hábito",
+    "useTwoDayRule": "Usar regra dos dois dias",
+    "twoDayRule": "Regra dos dois dias",
+    "twoDayRuleDescription": "Com a regra dos dois dias, você pode não marcar um dia sem perder as ofensivas caso o próximo dia seja bem sucedido.",
+    "advancedHabitBuilding": "Gerenciamento avançado do hábito",
+    "advancedHabitBuildingDescription": "Esta seção ajuda você a definir melhor seus hábitos utilizando o ciclo do hábito. Você pode definir gatilhos, rotinas e recompensas para cada hábito.",
+    "at7AM": "De 7:00AM",
+    "do50PushUps": "Faça 50 flexões",
+    "fifteenMinOfVideoGames": "15 min. jogando",
+    "showReward": "Mostrar recompensa",
+    "remainderOfReward": "Um lembrete da recompensa após uma rotina concluida com sucesso.",
+    "habitContract": "Contrato de hábito",
+    "habitContractDescription": "Embora o reforço positivo seja recomendado, algumas pessoas podem optar por um contrato de hábito. Um contrato de hábito permite que você especifique uma penalidade que será imposta caso você não consiga cumprir o hábito, e pode envolver um parceiro de responsabilidade que ajude a supervisionar seus objetivos.",
+    "donateToCharity": "Doar R$10 para caridade",
+    "sanction": "Penalidade",
+    "showSanction": "Mostrar penalidade",
+    "remainderOfSanction": "O lembrete da penalidade após uma rotina malsucedida.",
+    "add": "Add",
+    "haboNeedsPermission": "Para funcionar corretamente, o Habo precisa de permissão para enviar notificações.",
+    "allow": "Permitir",
+    "date": "Data",
+    "skip": "Pular",
+    "note": "Notas",
+    "yourCommentHere": "Seu texto",
+    "close": "Fechar",
+    "createYourFirstHabit": "Crie seu primeiro hábito.",
+    "modify": "Modificar",
+    "backupFailedError": "ERRO: Falha ao criar o backup.",
+    "restoreFailedError": "ERRO: Falha ao restaurar o backup.",
+    "habitDeleted": "Hábito excluído.",
+    "undo": "Desfazer",
+    "appNotifications": "Notificações do aplicativo",
+    "appNotificationsChannel": "Canal de notificações de aplicativo",
+    "habitNotifications": "Notificações de aplicativo",
+    "habitNotificationsChannel": "Canal de notificações de hábito",
+    "defineYourHabits": "Defina seus hábitos",
+    "defineYourHabitsDescription": "Para desenvolver melhor seus hábitos, você pode definir:",
+    "cueNumbered": "1. Gatilho",
+    "routineNumbered": "2. Rotina",
+    "rewardNumbered": "3. Recompensa",
+    "logYourDays": "Registre seus dias",
+    "successful": "Bem-sucedido",
+    "notSoSuccessful": "Malsucedido",
+    "skipDoesNotAffectStreaks": "Pular (não afeta o ofensiva)",
+    "observeYourProgress": "Observe seu progresso",
+    "trackYourProgress": "Você pode acompanhar seu progresso através do calendário em cada hábito ou na página de estatísticas.",
+    "backupCreatedSuccessfully": "Backup criado com sucesso!",
+    "backupFailed": "Backup malsucedido!",
+    "restoreCompletedSuccessfully": "Restauração concluída com sucesso!",
+    "restoreFailed": "Falha na restauração!",
+    "fileNotFound": "Arquivo não encontrado",
+    "fileTooLarge": "Arquivo muito grande (max 10MB)",
+    "invalidBackupFile": "Arquivo de backup inválido",
+    "progress": "Progresso",
+    "enterAmount": "Adicionar quantidade",
+    "complete": "Completo",
+    "saveProgress": "Salvar progresso",
+    "currentProgress": "Atual: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "Objetivo: {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Hábito numérico",
+    "partialValue": "Valor parcial",
+    "unit": "Unidade",
+    "habitType": "Tipo de hábito",
+    "booleanHabit": "Hábito binário",
+    "input": "Entrada",
+    "numericHabitDescription": "Os hábitos numéricos permitem que você acompanhe o progresso em incrementos ao longo do dia.",
+    "partialValueDescription": "Para acompanhar o progresso em incrementos menores",
+    "categories": "Categorias",
+    "addCategory": "Adicionar Categoria",
+    "editCategory": "Editar categoria",
+    "category": "Categoria",
+    "noCategoriesYet": "Ainda não há categorias",
+    "createFirstCategory": "Crie sua primeira categoria para organizar seus hábitos",
+    "pleaseEnterCategoryTitle": "Por favor, insira um título de categoria",
+    "categoryAlreadyExists": "A categoria \"{title}\" já existe",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "Categoria \"{title}\" criada com sucesso",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "Categoria \"{title}\" atualizada com sucesso",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "Categoria \"{title}\" deletada com sucesso",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "Falha ao salvar a categoria: {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "Falha ao deletar a categoria: {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "Selecionar categorias",
+    "selectedCategories": "Categorias selecionadas ({count})",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "Todas categorias",
+    "deleteCategory": "Deletar categoria",
+    "deleteCategoryConfirmation": "Tem certeza de que deseja excluir \"{title}\"?\n\nIsso removerá a categoria de todos os hábitos que a utilizam.",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "Sem hábitos em \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "createHabitForCategory": "Crie um hábito e atribua-o a esta categoria",
+    "showCategories": "Mostrar categorias",
+    "doNotForgetToCheckYourHabits": "Não esqueça de registrar seus hábitos.",
+    "archive": "Arquivar",
+    "unarchive": "Desarquivar",
+    "archiveHabit": "Arquivar Hábito",
+    "unarchiveHabit": "Desarquivar Hábito",
+    "archivedHabits": "Hábitos Arquivados",
+    "noArchivedHabits": "Sem hábitos arquivados",
+    "viewArchivedHabits": "Visualizar hábitos arquivados",
+    "habitArchived": "Hábito arquivado",
+    "habitUnarchived": "Hábito desarquivado",
+    "biometric": "Biometria",
+    "biometricLockEnabled": "Bloqueio por biometria ativado",
+    "biometricLockDisabled": "Bloqueio por biometria desativado",
+    "authenticationError": "Erro de autenticação",
+    "biometricAuthenticationRequired": "Autenticação por biometria obrigatória",
+    "setupFingerprintFaceUnlock": "Por favor ativar o desbloqueio por impressões digitais ou biometria facial nas configurações do dispositivo",
+    "biometricNotRecognized": "Biometria não reconhecida, tente novamente",
+    "biometricRequired": "Biometria obrigatória",
+    "biometricAuthenticationSucceeded": "Autenticação biométrica realizada",
+    "setupTouchIdFaceId": "Por favor ativar o desbloqueio por impressões digitais ou biometria facial nas configurações do dispositivo",
+    "tryAgain": "Tente Novamente",
+    "buildingBetterHabits": "Construindo Hábitos Melhores",
+    "fingerprint": "Impressões digitais",
+    "whatsNewTitle": "O que há de novo",
+    "whatsNewVersion": "Versão",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureCategoriesTitle": "Categorias",
+    "featureCategoriesDesc": "Organize hábitos com filtros de categorias",
+    "featureMaterialYouTitle": "Tema Material You (Android)",
+    "featureMaterialYouDesc": "Cores dinâmicas que se adequam ao seu papel de parede",
+    "featureHomescreenWidgetTitle": "Widget da tela inicial",
+    "haboSyncComingSoon": "Em breve",
+    "haboSyncDescription": "Sincronize seus hábitos através de todos os seus dispositivos com o serviço de criptografia ponta a ponta em nuvem do Habo.",
+    "haboSyncLearnMore": "Descubra mais em habo.space/sync",
+    "authenticate": "Autenticação"
 }

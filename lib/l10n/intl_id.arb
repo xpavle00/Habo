@@ -1,0 +1,345 @@
+{
+    "habits": "Kebiasaan:",
+    "statistics": "Statistik",
+    "emptyList": "Daftar kosong",
+    "noDataAboutHabits": "Tidak tersedia data untuk kebiasaan ini.",
+    "topStreak": "Streak terbaik",
+    "currentStreak": "Streak saat ini",
+    "total": "Total",
+    "unknown": "Tidak diketahui",
+    "warning": "Peringatan",
+    "allHabitsWillBeReplaced": "Kebiasaan Anda akan diganti dengan data cadangan.",
+    "restore": "Pulihkan",
+    "cancel": "Batal",
+    "settings": "Pengaturan",
+    "theme": "Tema",
+    "firstDayOfWeek": "Hari pertama dalam minggu",
+    "notifications": "Pengingat",
+    "notificationTime": "Waktu pengingat",
+    "soundEffects": "Efek suara",
+    "showMonthName": "Tampilkan nama bulan",
+    "setColors": "Atur warna",
+    "backup": "Cadangan",
+    "create": "Buat",
+    "onboarding": "Pengenalan awal",
+    "about": "Tentang",
+    "habo": "Habo",
+    "copyright": "©2023 Habo",
+    "termsAndConditions": "Syarat dan Ketentuan",
+    "privacyPolicy": "Kebijakan Privasi",
+    "disclaimer": "Pernyataan Penting",
+    "sourceCode": "Kode Sumber (GitHub)",
+    "ifYouWantToSupport": "Jika kamu ingin mendukung Habo, kamu bisa:",
+    "buyMeACoffee": "Membelikan aku segelas kopi",
+    "reset": "Atur Ulang",
+    "done": "Selesai",
+    "congratulationsReward": "Selamat! Kamu mendapatkan:",
+    "ohNoSanction": "Yah, Anda mendapat sanksi:",
+    "month": "Bulan",
+    "week": "Minggu",
+    "habitLoop": "Kebiasaan Berulang",
+    "habitLoopDescription": "Kebiasaan Berulang adalah model psikologis yang menjelaskan bahwa kebiasaan terbentuk melalui lingkaran Isyarat → Rutinitas → Hadiah yang saling memperkuat sehingga kebiasaan semakin tertanam dan mudah diulangi.",
+    "cue": "Pemicu",
+    "cueDescription": "adalah hal yang memulai kebiasaanmu. Bisa berupa: waktu tertentu, lokasi, perasaan, atau sebuah kejadian.",
+    "routine": "Rutinitas",
+    "routineDescription": "adalah tindakan yang kamu lakukan sebagai respon terhadap pemicu; inilah kebiasaan itu sendiri.",
+    "reward": "Hadiah",
+    "rewardDescription": "adalah manfaat atau perasaan positif yang kamu rasakan setelah melakukan rutinitas; hal ini memperkuat kebiasaanmu.",
+    "editHabit": "Edit Kebiasaan",
+    "createHabit": "Buat Kebiasaan",
+    "delete": "Hapus",
+    "habitTitleEmptyError": "Judul kebiasaan tidak boleh dikosongi.",
+    "save": "Simpan",
+    "exercise": "Latihan",
+    "habit": "Kebiasaan",
+    "useTwoDayRule": "Pakai metode Dua-Hari",
+    "twoDayRule": "Metode Dua Hari",
+    "twoDayRuleDescription": "Dengan metode Dua Hari, kamu boleh melewatkan satu hari tanpa kehilangan streak, asalkan hari berikutnya tercapai.",
+    "advancedHabitBuilding": "Membangun kebiasaan tingkat lanjut",
+    "advancedHabitBuildingDescription": "Bagian ini membantu kamu mendefinisikan kebiasaan dengan lebih jelas menggunakan Kebiasaan Berulang. Kamu perlu menentukan pemicu, rutinitas, dan hadiah untuk setiap kebiasaan.",
+    "at7AM": "Jam 7 Pagi",
+    "do50PushUps": "Lakukan 50 push up",
+    "fifteenMinOfVideoGames": "15 menit bermain game",
+    "showReward": "Tampilkan hadiah",
+    "remainderOfReward": "Pengingat hadiah setelah kebiasaan yang tercapai.",
+    "habitContract": "Kontrak kebiasaaan",
+    "habitContractDescription": "Meskipun penguatan positif lebih dianjurkan, sebagian orang memilih menggunakan kontrak kebiasaan. Kontrak kebiasaan memungkinkan kamu menentukan sanksi yang akan diberlakukan jika melewatkan kebiasaan, dan dapat melibatkan teman yang membantu mengawasi tujuanmu.",
+    "donateToCharity": "Donasikan 10$ untuk amal",
+    "sanction": "Sanksi",
+    "showSanction": "Tampilkan sanksi",
+    "remainderOfSanction": "Pengingat sanksi setelah rutinitas tidak tercapai.",
+    "dan": "Dan",
+    "accountabilityPartner": "Teman Penanggungjawab",
+    "add": "Tambah",
+    "haboNeedsPermission": "Habo membutuhkan izin untuk mengirim notifikasi agar berfungsi dengan baik.",
+    "allow": "Izinkan",
+    "date": "Tanggal",
+    "check": "Cek",
+    "fail": "Gagal",
+    "skip": "Lewati",
+    "note": "Catatan",
+    "yourCommentHere": "Tuliskan catatan di sini",
+    "close": "Tutup",
+    "createYourFirstHabit": "Buat kebiasaan pertama Anda.",
+    "modify": "Edit",
+    "backupFailedError": "EROR: Gagal membuat cadangan.",
+    "restoreFailedError": "EROR: Gagal memulihkan cadangan.",
+    "habitDeleted": "Kebiasaan telah dihapus.",
+    "undo": "Batalkan",
+    "appNotifications": "Notifikasi aplikasi",
+    "appNotificationsChannel": "Saluran notifikasi untuk notifikasi aplikasi",
+    "habitNotifications": "Notifikasi Kebiasaan",
+    "habitNotificationsChannel": "Saluran notifikasi untuk notifikasi kebiasaan",
+    "doNotForgetToCheckYourHabits": "Jangan lupa untuk memeriksa kebiasaan Anda.",
+    "themeSelect": "{theme, select, device {Perangkat} light {Terang} dark {Gelap} oled {Gelap OLED} materialYou {Material You} other{Perangkat}}",
+    "@themeSelect": {
+        "placeholders": {
+            "theme": {
+                "type": "String"
+            }
+        }
+    },
+    "defineYourHabits": "Tentukan kebiasaan Anda",
+    "defineYourHabitsDescription": "Untuk lebih berpegang teguh pada kebiasaanmu, kamu dapat mendefinisikan:",
+    "cueNumbered": "1. Pemicu",
+    "routineNumbered": "2. Rutinitas",
+    "rewardNumbered": "3. Hadiah",
+    "logYourDays": "Catat hari-hari Anda",
+    "successful": "Tercapai",
+    "notSoSuccessful": "Tidak tercapai",
+    "skipDoesNotAffectStreaks": "Lewati (tidak memengaruhi streak)",
+    "observeYourProgress": "Amati kemajuamu",
+    "trackYourProgress": "Kamu dapat melacak kemajuan melalui tampilan kalender di setiap kebiasaan atau di halaman statistik.",
+    "backupCreatedSuccessfully": "Cadangan berhasil dibuat!",
+    "backupFailed": "Pencadangan gagal!",
+    "restoreCompletedSuccessfully": "Pemulihan berhasil diselesaikan!",
+    "restoreFailed": "Pemulihan gagal!",
+    "fileNotFound": "File tidak ditemukan",
+    "fileTooLarge": "File terlalu besar (maks 10MB)",
+    "invalidBackupFile": "File cadangan tidak valid",
+    "progress": "Kemajuan",
+    "enterAmount": "Masukkan jumlah",
+    "complete": "Tercapai",
+    "saveProgress": "Simpan Kemajuan",
+    "currentProgress": "Saat ini: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "Target : {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Kebiasaan numerik",
+    "targetValue": "Nilai target",
+    "partialValue": "Nilai parsial",
+    "unit": "Satuan",
+    "habitType": "Jenis kebiasaan",
+    "booleanHabit": "Kebiasaan Sederhana",
+    "slider": "Bilah Geser",
+    "input": "Kolom Masukan",
+    "numericHabitDescription": "Kebiasaan numerik memungkinkan Anda melacak kemajuan secara bertahap sepanjang hari.",
+    "partialValueDescription": "Untuk melacak kemajuan dalam peningkatan yang lebih kecil",
+    "categories": "Kategori",
+    "addCategory": "Tambah Kategori",
+    "editCategory": "Edit Kategori",
+    "category": "Kategori",
+    "noCategoriesYet": "Belum ada kategori",
+    "createFirstCategory": "Buat kategori pertamamu untuk mengelola kebiasaan",
+    "pleaseEnterCategoryTitle": "Silakan masukkan judul kategori",
+    "categoryAlreadyExists": "Kategori \"{title}\" sudah ada",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "Kategori \"{title}\" berhasil dibuat",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "Kategori \"{title}\" berhasil diperbarui",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "Kategori \"{title}\" berhasil dihapus",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "Gagal menyimpan kategori: {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "Gagal menghapus kategori: {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "Pilih Kategori",
+    "selectedCategories": "Kategori Terpilih {count}",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "Semua Kategori",
+    "deleteCategory": "Hapus Kategori",
+    "deleteCategoryConfirmation": "Apakah Anda yakin ingin menghapus \"{title}\"?\n\nIni akan menghapus kategori dari semua kebiasaan yang menggunakannya.",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "Tidak ada kebiasaan di \"{title}\"",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "createHabitForCategory": "Buat kebiasaan dan tetapkan ke kategori ini",
+    "showCategories": "Tampilkan Kategori",
+    "archive": "Arsipkan",
+    "unarchive": "Batalkan arsip",
+    "archiveHabit": "Arsipkan Kebiasaan",
+    "unarchiveHabit": "Hapus dari arsip",
+    "archivedHabits": "Kebiasaan Diarsip",
+    "noArchivedHabits": "Tidak ada kebiasaan yang diarsipkan",
+    "viewArchivedHabits": "Lihat kebiasaan yang diarsipkan",
+    "habitArchived": "Kebiasaan yang diarsipkan",
+    "habitUnarchived": "Kebiasaan yang tidak diarsipkan",
+    "biometric": "Biometrik",
+    "biometricLockEnabled": "Kunci biometrik diaktifkan",
+    "biometricLockDisabled": "Kunci biometrik dinonaktifkan",
+    "authenticationError": "Kesalahan autentikasi",
+    "biometricAuthenticationRequired": "Diperlukan otentikasi biometrik",
+    "setupFingerprintFaceUnlock": "Silakan atur sidik jari atau buka kunci wajah Anda di pengaturan perangkat",
+    "touchSensor": "Sensor sentuh",
+    "biometricNotRecognized": "Biometrik tidak dikenali, coba lagi",
+    "biometricRequired": "Diperlukan biometrik",
+    "biometricAuthenticationSucceeded": "Autentikasi biometrik berhasil",
+    "deviceCredentialsRequired": "Kredensial perangkat diperlukan",
+    "setupDeviceCredentials": "Silakan atur kredensial perangkat di pengaturan",
+    "setupTouchIdFaceId": "Silakan atur Touch ID atau Face ID Anda di pengaturan perangkat",
+    "reenableTouchIdFaceId": "Aktifkan kembali Touch ID atau Face ID Anda",
+    "biometricLock": "Kunci Biometrik",
+    "biometricLockDescription": "Amankan aplikasi dengan {authMethod}",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToEnable": "Autentikasi untuk mengaktifkan kunci biometrik",
+    "authenticateToAccess": "Silakan autentikasi untuk mengakses Habo",
+    "authenticationRequired": "Otentikasi Diperlukan",
+    "authenticationFailedMessage": "Silakan autentikasi untuk mengakses Habo menggunakan {authMethod}",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "tryAgain": "Coba Lagi",
+    "authenticating": "Mengautentikasi…",
+    "authenticate": "Mengautentikasi",
+    "buildingBetterHabits": "Membangun Kebiasaan yang Lebih Baik",
+    "authenticationPrompt": "Silakan autentikasi menggunakan {authMethod} untuk mengakses kebiasaan Anda",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "devicePinPatternPassword": "PIN, Pola, atau Kata Sandi Perangkat",
+    "fingerprint": "Sidik jari",
+    "iris": "Iris Mata",
+    "whatsNewTitle": "Apa yang baru",
+    "whatsNewVersion": "Versi {version}",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureNumericTitle": "Nilai numerik dalam kebiasaan",
+    "featureNumericDesc": "Lacak jumlah seperti halaman buku yang dibaca atau berapa gelas air yang diminum",
+    "featureDeepLinksTitle": "Skema URL (tautan dalam)",
+    "featureDeepLinksDesc": "Buka Habo langsung ke layar seperti pengaturan atau buat",
+    "featureCategoriesTitle": "Kategori",
+    "featureCategoriesDesc": "Atur kebiasaan dengan filter kategori",
+    "featureArchiveTitle": "Arsip",
+    "featureArchiveDesc": "Sembunyikan kebiasaan yang tidak Anda lacak lagi tanpa dihapus",
+    "featureMaterialYouTitle": "Tema Material You (Android)",
+    "featureMaterialYouDesc": "Warna dinamis yang cocok dengan wallpaper Anda",
+    "featureSoundTitle": "Mesin suara baru",
+    "featureSoundDesc": "Volume yang dapat disesuaikan",
+    "featureLockTitle": "Fitur kunci",
+    "featureLockDesc": "Amankan aplikasi dengan Face ID / Touch ID / biometrik",
+    "featureIosSoundMixingTitle": "Pencampuran suara tetap",
+    "featureIosSoundMixingDesc": "Suara Habo tidak lagi mengganggu musik atau podcast Anda",
+    "featureHomescreenWidgetTitle": "Widget layar utama",
+    "featureHomescreenWidgetDesc": "Melihat kemajuan kebiasaan Anda secara sekilas dari layar utama (eksperimental)",
+    "featureLongpressCheckTitle": "Periksa tekan lama",
+    "featureLongpressCheckDesc": "Tekan lama pada kebiasaan untuk mengubah status dengan cepat",
+    "haboSyncComingSoon": "Segera Hadir",
+    "haboSyncDescription": "Sinkronkan kebiasaan Anda di semua perangkat dengan layanan cloud terenkripsi end-to-end Habo.",
+    "haboSyncLearnMore": "Pelajari lebih lanjut di habo.space/sync",
+    "habitsToday": "Kebiasaan hari ini"
+}
