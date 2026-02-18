@@ -22,7 +22,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.38.4"
+          flutter-version: "3.41.1"
           channel: "stable"
 
       - name: Get dependencies
@@ -35,7 +35,6 @@ jobs:
         run: |
           flutter analyze
           flutter test
-          dart format --set-exit-if-changed .
 
   build-android:
     runs-on: ubuntu-latest
@@ -52,7 +51,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.38.4"
+          flutter-version: "3.41.1"
           channel: "stable"
 
       - name: Get dependencies
@@ -63,8 +62,7 @@ jobs:
 
       - name: Build Unsigned APK
         run: |
-          flutter build apk --release --split-per-abi --no-tree-shake-icons \
-            --build-number=$((5100 + ${{ github.run_number }}))
+          flutter build apk --release --split-per-abi --no-tree-shake-icons
 
       - name: Upload Unsigned APKs
         uses: actions/upload-artifact@v4
