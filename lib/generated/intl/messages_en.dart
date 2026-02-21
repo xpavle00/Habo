@@ -53,14 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m15(target, unit) => "Target: ${target} ${unit}";
 
-  static String m0(theme) => "${Intl.select(theme, {
-            'device': 'Device',
-            'light': 'Light',
-            'dark': 'Dark',
-            'oled': 'OLED black',
-            'materialYou': 'Material You',
-            'other': 'Device'
-          })}";
+  static String m0(theme) =>
+      "${Intl.select(theme, {'device': 'Device', 'light': 'Light', 'dark': 'Dark', 'oled': 'OLED black', 'materialYou': 'Material You', 'other': 'Device'})}";
 
   static String m16(version) => "Version ${version}";
 
@@ -75,10 +69,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedHabitBuilding": MessageLookupByLibrary.simpleMessage(
       "Advanced habit building",
     ),
-        "advancedHabitBuildingDescription":
-            MessageLookupByLibrary.simpleMessage(
+    "advancedHabitBuildingDescription": MessageLookupByLibrary.simpleMessage(
       "This section helps you better define your habits utilizing the Habit loop. You should define cues, routines, and rewards for every habit.",
     ),
+    "all": MessageLookupByLibrary.simpleMessage("All"),
     "allCategories": MessageLookupByLibrary.simpleMessage("All Categories"),
     "allHabitsWillBeReplaced": MessageLookupByLibrary.simpleMessage(
       "All habits will be replaced with habits from backup.",
@@ -92,8 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "archive": MessageLookupByLibrary.simpleMessage("Archive"),
     "archiveHabit": MessageLookupByLibrary.simpleMessage("Archive habit"),
-        "archivedHabits":
-            MessageLookupByLibrary.simpleMessage("Archived Habits"),
+    "archivedHabits": MessageLookupByLibrary.simpleMessage("Archived Habits"),
     "at7AM": MessageLookupByLibrary.simpleMessage("At 7:00AM"),
     "authenticate": MessageLookupByLibrary.simpleMessage("Authenticate"),
     "authenticateToAccess": MessageLookupByLibrary.simpleMessage(
@@ -102,8 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "authenticateToEnable": MessageLookupByLibrary.simpleMessage(
       "Authenticate to enable biometric lock",
     ),
-        "authenticating":
-            MessageLookupByLibrary.simpleMessage("Authenticating…"),
+    "authenticating": MessageLookupByLibrary.simpleMessage("Authenticating…"),
     "authenticationError": MessageLookupByLibrary.simpleMessage(
       "Authentication error",
     ),
@@ -124,8 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "biometricAuthenticationRequired": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication required",
     ),
-        "biometricAuthenticationSucceeded":
-            MessageLookupByLibrary.simpleMessage(
+    "biometricAuthenticationSucceeded": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication succeeded",
     ),
     "biometricLock": MessageLookupByLibrary.simpleMessage("Biometric Lock"),
@@ -142,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "biometricRequired": MessageLookupByLibrary.simpleMessage(
       "Biometric required",
     ),
-        "booleanHabit": MessageLookupByLibrary.simpleMessage("Boolean habit"),
+    "booleanHabit": MessageLookupByLibrary.simpleMessage("Checkable (Yes/No)"),
     "buildingBetterHabits": MessageLookupByLibrary.simpleMessage(
       "Building Better Habits",
     ),
@@ -190,8 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "To better stick to your habits, you can define:",
     ),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "deleteCategory":
-            MessageLookupByLibrary.simpleMessage("Delete Category"),
+    "deleteCategory": MessageLookupByLibrary.simpleMessage("Delete Category"),
     "deleteCategoryConfirmation": m9,
     "deviceCredentialsRequired": MessageLookupByLibrary.simpleMessage(
       "Device credentials required",
@@ -247,8 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Secure the app with Face ID / Touch ID / biometrics",
     ),
-        "featureLockTitle":
-            MessageLookupByLibrary.simpleMessage("Lock feature"),
+    "featureLockTitle": MessageLookupByLibrary.simpleMessage("Lock feature"),
     "featureLongpressCheckDesc": MessageLookupByLibrary.simpleMessage(
       "Longpress on habit buttons to quickly change status",
     ),
@@ -305,16 +294,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "The habit title can not be empty.",
     ),
     "habitType": MessageLookupByLibrary.simpleMessage("Habit type"),
-        "habitUnarchived":
-            MessageLookupByLibrary.simpleMessage("Habit unarchived"),
+    "habitUnarchived": MessageLookupByLibrary.simpleMessage("Habit unarchived"),
     "habits": MessageLookupByLibrary.simpleMessage("Habits:"),
     "habitsToday": MessageLookupByLibrary.simpleMessage("Habits today"),
     "habo": MessageLookupByLibrary.simpleMessage("Habo"),
     "haboNeedsPermission": MessageLookupByLibrary.simpleMessage(
       "Habo needs permission to send notifications to work properly.",
     ),
-        "haboSyncComingSoon":
-            MessageLookupByLibrary.simpleMessage("Coming Soon"),
+    "haboSyncComingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon"),
     "haboSyncDescription": MessageLookupByLibrary.simpleMessage(
       "Sync your habits across all your devices with Habo\'s end-to-end encrypted cloud service.",
     ),
@@ -350,7 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Notification time",
     ),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
-        "numericHabit": MessageLookupByLibrary.simpleMessage("Numeric habit"),
+    "numericHabit": MessageLookupByLibrary.simpleMessage("Progressive"),
     "numericHabitDescription": MessageLookupByLibrary.simpleMessage(
       "Numeric habits let you track progress in increments throughout the day.",
     ),
@@ -387,8 +374,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "restoreCompletedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Restore completed successfully!",
     ),
-        "restoreFailed":
-            MessageLookupByLibrary.simpleMessage("Restore failed!"),
+    "restoreFailed": MessageLookupByLibrary.simpleMessage("Restore failed!"),
     "restoreFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: Restoring backup failed.",
     ),
@@ -422,10 +408,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "setupTouchIdFaceId": MessageLookupByLibrary.simpleMessage(
       "Please set up your Touch ID or Face ID in device settings",
     ),
-        "showCategories":
-            MessageLookupByLibrary.simpleMessage("Show Categories"),
-        "showMonthName":
-            MessageLookupByLibrary.simpleMessage("Show month name"),
+    "showCategories": MessageLookupByLibrary.simpleMessage("Show Categories"),
+    "showMonthName": MessageLookupByLibrary.simpleMessage("Show month name"),
     "showReward": MessageLookupByLibrary.simpleMessage("Show reward"),
     "showSanction": MessageLookupByLibrary.simpleMessage("Show sanction"),
     "skip": MessageLookupByLibrary.simpleMessage("Skip"),
@@ -434,8 +418,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "slider": MessageLookupByLibrary.simpleMessage("Slider"),
     "soundEffects": MessageLookupByLibrary.simpleMessage("Sound effects"),
-        "sourceCode":
-            MessageLookupByLibrary.simpleMessage("Source code (GitHub)"),
+    "sourceCode": MessageLookupByLibrary.simpleMessage("Source code (GitHub)"),
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "successful": MessageLookupByLibrary.simpleMessage("Successful"),
     "tapCheckLongPressMenu": MessageLookupByLibrary.simpleMessage(
@@ -460,13 +443,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "With two day rule, you can miss one day and do not lose a streak if the next day is successful.",
     ),
     "unarchive": MessageLookupByLibrary.simpleMessage("Unarchive"),
-        "unarchiveHabit":
-            MessageLookupByLibrary.simpleMessage("Unarchive habit"),
+    "unarchiveHabit": MessageLookupByLibrary.simpleMessage("Unarchive habit"),
     "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unit": MessageLookupByLibrary.simpleMessage("Unit"),
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
-        "useTwoDayRule":
-            MessageLookupByLibrary.simpleMessage("Use Two day rule"),
+    "useTwoDayRule": MessageLookupByLibrary.simpleMessage("Use Two day rule"),
     "viewArchivedHabits": MessageLookupByLibrary.simpleMessage(
       "View archived habits",
     ),
@@ -474,7 +455,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "week": MessageLookupByLibrary.simpleMessage("Week"),
     "whatsNewTitle": MessageLookupByLibrary.simpleMessage("What\'s New"),
     "whatsNewVersion": m16,
-        "yourCommentHere":
-            MessageLookupByLibrary.simpleMessage("Your note here"),
+    "yourCommentHere": MessageLookupByLibrary.simpleMessage("Your note here"),
   };
 }

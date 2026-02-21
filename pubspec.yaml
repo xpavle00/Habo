@@ -3,16 +3,16 @@ description: Minimalistic habit tracker.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 3.1.1+1
+version: 3.1.2+5115
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-  flutter: "^3.38.4"
+  sdk: ">=3.11.0 <4.0.0"
+  flutter: ">=3.41.1"
 
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^6.1.0
+  google_fonts: ^8.0.0
   provider: ^6.0.5
   shared_preferences: ^2.2.0
   table_calendar: ^3.2.0
@@ -29,8 +29,8 @@ dependencies:
   flutter_file_dialog: ^3.0.2
   file_picker: ^10.2.0
   path_provider: ^2.1.0
-  awesome_notifications: ^0.10.1
-  timezone: ^0.10.1
+  awesome_notifications: ^0.11.0
+  timezone: ^0.11.0
   flutter_colorpicker: ^1.0.3
   flutter_launcher_icons: ^0.14.4
   window_manager: ^0.5.1
@@ -43,11 +43,9 @@ dependencies:
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
   flutter_soloud: ^3.2.5
-  audio_session: ^0.1.21
-  local_auth: ^2.3.0
-  local_auth_android: ^1.0.51
-  local_auth_darwin: ^1.6.0
-  home_widget: ^0.8.1
+  audio_session: ^0.2.0
+  local_auth: ^3.0.0
+  home_widget: ^0.9.0
 
 dev_dependencies:
   flutter_test:

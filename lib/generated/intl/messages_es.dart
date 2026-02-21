@@ -20,13 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es';
 
-  static String m0(theme) => "${Intl.select(theme, {
-            'device': 'Dispositivo',
-            'light': 'Claro',
-            'dark': 'Oscuro',
-            'oled': 'Oscuro para Oled',
-            'other': 'Dispositivo'
-          })}";
+  static String m3(authMethod) => "Utiliza la autenticación ${authMethod}";
+
+  static String m12(title) => "No hay hábitos en la categoría  \"${title}\"";
+
+  static String m0(theme) =>
+      "${Intl.select(theme, {'device': 'Dispositivo', 'light': 'Claro', 'dark': 'Oscuro', 'oled': 'Oscuro para Oled', 'other': 'Dispositivo'})}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -39,8 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedHabitBuilding": MessageLookupByLibrary.simpleMessage(
       "Creación avanzada de hábitos",
     ),
-        "advancedHabitBuildingDescription":
-            MessageLookupByLibrary.simpleMessage(
+    "advancedHabitBuildingDescription": MessageLookupByLibrary.simpleMessage(
       "Esta sección te ayuda a definir mejor los hábitos utilizando un bucle de hábitos. Debes definir señales, rutinas y recompensas para cada hábito.",
     ),
     "all": MessageLookupByLibrary.simpleMessage("Todas"),
@@ -65,8 +63,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "backupFailedError": MessageLookupByLibrary.simpleMessage(
       "ERROR: al crear la copia de seguridad.",
     ),
-        "buyMeACoffee":
-            MessageLookupByLibrary.simpleMessage("Invítame a un café"),
+    "biometric": MessageLookupByLibrary.simpleMessage("Biométrica"),
+    "biometricLock": MessageLookupByLibrary.simpleMessage("Bloqueo biométrico"),
+    "biometricLockDescription": m3,
+    "booleanHabit": MessageLookupByLibrary.simpleMessage("Marcable (Sí/No)"),
+    "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Invítame a un café"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
     "categories": MessageLookupByLibrary.simpleMessage("Categorías"),
     "categoryName": MessageLookupByLibrary.simpleMessage(
@@ -109,8 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "PIN, patrón o contraseña del dispositivo",
     ),
     "disclaimer": MessageLookupByLibrary.simpleMessage("Aviso legal"),
-        "do50PushUps":
-            MessageLookupByLibrary.simpleMessage("Hacer 50 flexiones"),
+    "do50PushUps": MessageLookupByLibrary.simpleMessage("Hacer 50 flexiones"),
     "doNotForgetToCheckYourHabits": MessageLookupByLibrary.simpleMessage(
       "No olvides revisar tus hábitos.",
     ),
@@ -120,8 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "done": MessageLookupByLibrary.simpleMessage("Hecho"),
     "editCategory": MessageLookupByLibrary.simpleMessage("Editar categoría"),
     "editHabit": MessageLookupByLibrary.simpleMessage("Editar el hábito"),
-        "emptyList":
-            MessageLookupByLibrary.simpleMessage("La lista está vacía"),
+    "emptyList": MessageLookupByLibrary.simpleMessage("La lista está vacía"),
     "exercise": MessageLookupByLibrary.simpleMessage("Ejercicio"),
     "fail": MessageLookupByLibrary.simpleMessage("Fracaso"),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
@@ -137,8 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "habitContractDescription": MessageLookupByLibrary.simpleMessage(
       "Aunque se recomienda el refuerzo positivo, algunas personas pueden optar por un contrato de hábitos. Un contrato de hábitos permite especificar una sanción que se impondrá si no cumples el hábito, y puede implicar a otra persona o responsable que te ayude a supervisar tus objetivos.",
     ),
-        "habitDeleted":
-            MessageLookupByLibrary.simpleMessage("Hábito eliminado."),
+    "habitDeleted": MessageLookupByLibrary.simpleMessage("Hábito eliminado."),
     "habitLoop": MessageLookupByLibrary.simpleMessage("Costumbre"),
     "habitLoopDescription": MessageLookupByLibrary.simpleMessage(
       "Las costumbres es un modelo psicológico que describe el proceso de formación de los hábitos. Consta de tres componentes: Estímulo, Rutina y Recompensa. La señal desencadena la rutina (acción habitual), que se ve reforzada por la recompensa, creando un bucle que hace que el hábito esté más arraigado y sea más probable que se repita.",
@@ -161,8 +159,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "Si quieres apoyar a Habo puedes hacerlo:",
     ),
-        "logYourDays":
-            MessageLookupByLibrary.simpleMessage("Registra tus días"),
+    "logYourDays": MessageLookupByLibrary.simpleMessage("Registra tus días"),
     "modify": MessageLookupByLibrary.simpleMessage("Modificar"),
     "month": MessageLookupByLibrary.simpleMessage("Mes"),
     "noArchivedHabits": MessageLookupByLibrary.simpleMessage(
@@ -185,8 +182,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "observeYourProgress": MessageLookupByLibrary.simpleMessage(
       "Observa tus progresos",
     ),
-        "ohNoSanction":
-            MessageLookupByLibrary.simpleMessage("¡Oh no! Tu sanción:"),
+    "ohNoSanction": MessageLookupByLibrary.simpleMessage("¡Oh no! Tu sanción:"),
     "onboarding": MessageLookupByLibrary.simpleMessage("Incorporando"),
     "oneTapCheck": MessageLookupByLibrary.simpleMessage(
       "Toca una vez para marcar",
@@ -231,16 +227,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "showMonthName": MessageLookupByLibrary.simpleMessage(
       "Mostrar el nombre del mes",
     ),
-        "showReward":
-            MessageLookupByLibrary.simpleMessage("Mostrar la recompensa"),
-        "showSanction":
-            MessageLookupByLibrary.simpleMessage("Mostrar la sanción"),
+    "showReward": MessageLookupByLibrary.simpleMessage("Mostrar la recompensa"),
+    "showSanction": MessageLookupByLibrary.simpleMessage("Mostrar la sanción"),
     "skip": MessageLookupByLibrary.simpleMessage("Omitir"),
     "skipDoesNotAffectStreaks": MessageLookupByLibrary.simpleMessage(
       "Omitir (no afecta a las rachas)",
     ),
-        "soundEffects":
-            MessageLookupByLibrary.simpleMessage("Efectos de sonido"),
+    "soundEffects": MessageLookupByLibrary.simpleMessage("Efectos de sonido"),
     "sourceCode": MessageLookupByLibrary.simpleMessage(
       "Código fuente (en GitHub)",
     ),
@@ -259,8 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "trackYourProgress": MessageLookupByLibrary.simpleMessage(
       "Puedes seguir tu progreso a través del calendario para cada hábito o en la página de estadísticas.",
     ),
-        "twoDayRule":
-            MessageLookupByLibrary.simpleMessage("Regla de los dos días"),
+    "twoDayRule": MessageLookupByLibrary.simpleMessage("Regla de los dos días"),
     "twoDayRuleDescription": MessageLookupByLibrary.simpleMessage(
       "Con la regla de los dos días, puedes perder un día y no pierdes una racha si el día siguiente tienes éxito.",
     ),

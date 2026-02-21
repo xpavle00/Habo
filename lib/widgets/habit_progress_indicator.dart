@@ -79,7 +79,12 @@ class HabitProgressIndicator extends StatelessWidget {
     final progress = habitData.getProgressForDate(date);
     final percentage = habitData.getProgressPercentage(date);
     final isCompleted = habitData.isCompletedForDate(date);
-    final isExceeded = progress > habitData.targetValue;
+    // Use stored target value for exceeded check
+    final event = habitData.events[date];
+    final targetAtTime = (event != null && event.length > 3)
+        ? (event[3] as double?) ?? habitData.targetValue
+        : habitData.targetValue;
+    final isExceeded = progress > targetAtTime;
 
     Color progressColor;
     Color backgroundColor = HaboColors.progressBackground;
@@ -166,10 +171,15 @@ class HabitProgressSummary extends StatelessWidget {
 
     final progress = habitData.getProgressForDate(date);
     final isCompleted = habitData.isCompletedForDate(date);
+    // Use stored target value for display
+    final event = habitData.events[date];
+    final targetAtTime = (event != null && event.length > 3)
+        ? (event[3] as double?) ?? habitData.targetValue
+        : habitData.targetValue;
 
     if (progress == 0) {
       return Text(
-        '0 / ${habitData.targetValue.toStringAsFixed(habitData.targetValue == habitData.targetValue.roundToDouble() ? 0 : 1)} ${habitData.unit}',
+        '0 / ${targetAtTime.toStringAsFixed(targetAtTime == targetAtTime.roundToDouble() ? 0 : 1)} ${habitData.unit}',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Colors.grey.shade600,
             ),
@@ -190,7 +200,7 @@ class HabitProgressSummary extends StatelessWidget {
           ),
           TextSpan(
             text:
-                ' / ${habitData.targetValue.toStringAsFixed(habitData.targetValue == habitData.targetValue.roundToDouble() ? 0 : 1)} ${habitData.unit}',
+                ' / ${targetAtTime.toStringAsFixed(targetAtTime == targetAtTime.roundToDouble() ? 0 : 1)} ${habitData.unit}',
             style: TextStyle(color: Colors.grey.shade600),
           ),
           if (isCompleted)

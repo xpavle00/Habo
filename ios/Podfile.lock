@@ -1,9 +1,9 @@
 PODS:
   - audio_session (0.0.1):
     - Flutter
-  - awesome_notifications (0.10.0):
+  - awesome_notifications (0.11.0):
     - Flutter
-    - IosAwnCore (~> 0.10.0)
+    - IosAwnCore (~> 0.11.0)
   - file_picker (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -17,7 +17,7 @@ PODS:
     - Flutter
   - home_widget (0.0.1):
     - Flutter
-  - IosAwnCore (0.10.0)
+  - IosAwnCore (0.11.0)
   - local_auth_darwin (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -95,15 +95,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
-  awesome_notifications: 0f432b28098d193920b11a44cfa9d2d9313a3888
+  awesome_notifications: 8291dd4082db761556cd8bf7977567f5c960c87e
   file_picker: fb04e739ae6239a76ce1f571863a196a922c87d4
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_file_dialog: ca8d7fbd1772d4f0c2777b4ab20a7787ef4e7dd8
   flutter_keyboard_visibility_temp_fork: 95b2d534bacf6ac62e7fcbe5c2a9e2c2a17ce06f
   flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
   flutter_soloud: 272cc604453b6ca135f274045fb259e7c6426122
-  home_widget: f169fc41fd807b4d46ab6615dc44d62adbf9f64f
-  IosAwnCore: 653786a911089012092ce831f2945cd339855a89
+  home_widget: 54b4f6b36ed8d64cfee594a476225c35c3e45091
+  IosAwnCore: 32019505f4a4909fa9079ee401b2c82aeeab78a8
   local_auth_darwin: c3ee6cce0a8d56be34c8ccb66ba31f7f180aaebb
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
@@ -112,6 +112,6 @@ SPEC CHECKSUMS:
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
-PODFILE CHECKSUM: abd18e8f8abbcac92691267b54775079818e91e0
+PODFILE CHECKSUM: 18d0083f2af033201829d351b36c2bd7dd9022c5
 
 COCOAPODS: 1.16.2

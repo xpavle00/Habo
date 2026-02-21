@@ -144,8 +144,18 @@ class OneDayButton extends StatelessWidget {
           Provider.of<SettingsManager>(context, listen: false).playCheckSound();
           // Complete the habit with full target value
           Provider.of<HabitsManager>(context, listen: false)
-              .addEvent(id, date, [DayType.check, comment]);
-          parent.events[date] = [DayType.check, comment];
+              .addEvent(id, date, [
+            DayType.check,
+            comment,
+            parent.widget.habitData.targetValue,
+            parent.widget.habitData.targetValue
+          ]);
+          parent.events[date] = [
+            DayType.check,
+            comment,
+            parent.widget.habitData.targetValue,
+            parent.widget.habitData.targetValue
+          ];
           parent.showRewardNotification(date);
         } else {
           final dayType = _getDayTypeFromKey(value.key);
@@ -213,20 +223,30 @@ class OneDayButton extends StatelessWidget {
                           instance.onTap = () {
                             parent.setSelectedDay(date);
                             if (oneTapCheck) {
-                              // For numeric habits, add increment instead of full check
                               if (parent.widget.habitData.isNumeric) {
                                 _addIncrement(context);
                               } else {
-                                // Perform Check action for non-numeric habits
-                                final checkItem = icons.firstWhere(
-                                  (element) =>
-                                      element.key == const Key('Check'),
-                                  orElse: () => icons[1],
-                                );
+                                final isCurrentlyChecked = event != null &&
+                                    event!.isNotEmpty &&
+                                    event![0] == DayType.check;
+                                InButton checkItem;
+                                if (isCurrentlyChecked) {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Date'),
+                                    orElse: () => icons[0],
+                                  );
+                                } else {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Check'),
+                                    orElse: () => icons[1],
+                                  );
+                                }
                                 handleSelection(checkItem);
                               }
                             } else {
-                              // Show menu
+                              // Show menu when one-tap is OFF
                               _showMenu(context, icons, index, color,
                                   handleSelection);
                             }
@@ -241,20 +261,30 @@ class OneDayButton extends StatelessWidget {
                         (LongPressGestureRecognizer instance) {
                           instance.onLongPress = () {
                             if (oneTapCheck) {
-                              // Show menu
+                              // Show menu when one-tap is OFF
                               _showMenu(context, icons, index, color,
                                   handleSelection);
                             } else {
-                              // For numeric habits, add increment instead of full check
                               if (parent.widget.habitData.isNumeric) {
                                 _addIncrement(context);
                               } else {
-                                // Perform Check action for non-numeric habits
-                                final checkItem = icons.firstWhere(
-                                  (element) =>
-                                      element.key == const Key('Check'),
-                                  orElse: () => icons[1],
-                                );
+                                final isCurrentlyChecked = event != null &&
+                                    event!.isNotEmpty &&
+                                    event![0] == DayType.check;
+                                InButton checkItem;
+                                if (isCurrentlyChecked) {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Date'),
+                                    orElse: () => icons[0],
+                                  );
+                                } else {
+                                  checkItem = icons.firstWhere(
+                                    (element) =>
+                                        element.key == const Key('Check'),
+                                    orElse: () => icons[1],
+                                  );
+                                }
                                 handleSelection(checkItem);
                               }
                             }
@@ -352,6 +382,10 @@ class OneDayButton extends StatelessWidget {
     final progressValue = (currentEvent != null && currentEvent.length > 2)
         ? currentEvent[2]
         : null;
+    // Preserve target value for numeric habits (stored at index 3)
+    final targetValue = (currentEvent != null && currentEvent.length > 3)
+        ? currentEvent[3]
+        : null;
 
     AwesomeDialog(
       context: context,
@@ -389,10 +423,20 @@ class OneDayButton extends StatelessWidget {
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
-        // Build event data preserving progress value for numeric habits
-        final List eventData = progressValue != null
-            ? [currentDayType, commentController.text, progressValue]
-            : [currentDayType, commentController.text];
+        // Build event data preserving progress and target value for numeric habits
+        final List eventData;
+        if (targetValue != null) {
+          eventData = [
+            currentDayType,
+            commentController.text,
+            progressValue,
+            targetValue
+          ];
+        } else if (progressValue != null) {
+          eventData = [currentDayType, commentController.text, progressValue];
+        } else {
+          eventData = [currentDayType, commentController.text];
+        }
 
         Provider.of<HabitsManager>(context, listen: false)
             .addEvent(id, date, eventData);
@@ -420,6 +464,8 @@ class OneDayButton extends StatelessWidget {
   void _showProgressInputModal(BuildContext context) {
     final habitData = parent.widget.habitData;
     final currentProgress = habitData.getProgressForDate(date);
+    // Capture target value at time of opening modal (before any changes)
+    final targetValueAtTime = habitData.targetValue;
     // Preserve existing comment
     final existingComment =
         (event != null && event!.length > 1) ? event![1] as String : '';
@@ -429,22 +475,28 @@ class OneDayButton extends StatelessWidget {
       builder: (BuildContext context) {
         return ProgressInputModal(
           habitTitle: habitData.title,
-          targetValue: habitData.targetValue,
+          targetValue: targetValueAtTime,
           partialValue: habitData.partialValue,
           unit: habitData.unit,
           currentProgress: currentProgress,
           onProgressChanged: (double progressValue) {
-            // Add progress event preserving existing comment
+            // Use DayType.check if completed, otherwise DayType.progress
+            final dayType = progressValue >= targetValueAtTime
+                ? DayType.check
+                : DayType.progress;
             Provider.of<HabitsManager>(context, listen: false).addEvent(
-                id, date, [DayType.progress, existingComment, progressValue]);
+                id,
+                date,
+                [dayType, existingComment, progressValue, targetValueAtTime]);
             parent.events[date] = [
-              DayType.progress,
+              dayType,
               existingComment,
-              progressValue
+              progressValue,
+              targetValueAtTime
             ];
 
             // Play appropriate sound and show notification
-            if (progressValue >= habitData.targetValue) {
+            if (progressValue >= targetValueAtTime) {
               parent.showRewardNotification(date);
               Provider.of<SettingsManager>(context, listen: false)
                   .playCheckSound();
@@ -465,17 +517,24 @@ class OneDayButton extends StatelessWidget {
     final currentProgress = habitData.getProgressForDate(date);
     final increment = habitData.partialValue;
     final newProgress = currentProgress + increment;
+    // Capture target value at time of increment
+    final targetValueAtTime = habitData.targetValue;
     // Preserve existing comment
     final existingComment =
         (event != null && event!.length > 1) ? event![1] as String : '';
 
-    // Add progress event with the incremented value, preserving comment
-    Provider.of<HabitsManager>(context, listen: false)
-        .addEvent(id, date, [DayType.progress, existingComment, newProgress]);
-    parent.events[date] = [DayType.progress, existingComment, newProgress];
+    // Add progress event with the incremented value, preserving comment and target value
+    Provider.of<HabitsManager>(context, listen: false).addEvent(id, date,
+        [DayType.progress, existingComment, newProgress, targetValueAtTime]);
+    parent.events[date] = [
+      DayType.progress,
+      existingComment,
+      newProgress,
+      targetValueAtTime
+    ];
 
     // Play appropriate sound and show notification
-    if (newProgress >= habitData.targetValue) {
+    if (newProgress >= targetValueAtTime) {
       parent.showRewardNotification(date);
       Provider.of<SettingsManager>(context, listen: false).playCheckSound();
     } else {

@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 
 class HaboModel {
-  static const _dbVersion = 8;
+  static const _dbVersion = 9;
   Database? _db;
 
   Database get db {
@@ -107,9 +107,20 @@ class HaboModel {
           final dayType = DayType.values[event['dayType'] as int];
           final comment = event['comment'];
           final progressValue = event['progressValue'] as double?;
+          final targetValue = event['targetValue'] as double?;
 
-          // Handle progress data for numeric habits
-          if (dayType == DayType.progress && progressValue != null) {
+          // Handle numeric habits with progress and target values
+          if ((dayType == DayType.progress || dayType == DayType.check) &&
+              progressValue != null &&
+              targetValue != null &&
+              targetValue > 0) {
+            eventsMap[DateTime.parse(event['dateTime'] as String)] = [
+              dayType,
+              comment,
+              progressValue,
+              targetValue
+            ];
+          } else if (dayType == DayType.progress && progressValue != null) {
             eventsMap[DateTime.parse(event['dateTime'] as String)] = [
               dayType,
               comment,
@@ -183,19 +194,11 @@ class HaboModel {
     batch.execute('ALTER TABLE events ADD progressValue REAL DEFAULT 0.0');
   }
 
-  // void _createTableEventsV3(Batch batch) {
-  //   batch.execute('DROP TABLE IF EXISTS events');
-  //   batch.execute('''CREATE TABLE events (
-  //   id INTEGER,
-  //   dateTime TEXT,
-  //   dayType INTEGER,
-  //   comment TEXT,
-  //   PRIMARY KEY(id, dateTime),
-  //   FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
-  //   )''');
-  // }
+  void _updateTableEventsV4toV5(Batch batch) {
+    batch.execute('ALTER TABLE events ADD targetValue REAL DEFAULT 0.0');
+  }
 
-  void _createTableEventsV4(Batch batch) {
+  void _createTableEventsV5(Batch batch) {
     batch.execute('DROP TABLE IF EXISTS events');
     batch.execute('''CREATE TABLE events (
     id INTEGER,
@@ -203,6 +206,7 @@ class HaboModel {
     dayType INTEGER,
     comment TEXT,
     progressValue REAL DEFAULT 0.0,
+    targetValue REAL DEFAULT 0.0,
     PRIMARY KEY(id, dateTime),
     FOREIGN KEY (id) REFERENCES habits(id) ON DELETE CASCADE
     )''');
@@ -330,7 +334,7 @@ class HaboModel {
   void _onCreate(Database db, int version) {
     var batch = db.batch();
     _createTableHabitsV6(batch);
-    _createTableEventsV4(batch);
+    _createTableEventsV5(batch);
     _createTableCategoriesV7(batch); // Use V7 with fontFamily column
     _createTableHabitCategoriesV5(batch);
     batch.commit();
@@ -343,6 +347,7 @@ class HaboModel {
       _updateTableHabitsV2toV3(batch);
       _updateTableHabitsV3toV4(batch);
       _updateTableEventsV3toV4(batch);
+      _updateTableEventsV4toV5(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
       _updateTableHabitsV5toV6(batch);
@@ -351,6 +356,7 @@ class HaboModel {
       _updateTableHabitsV2toV3(batch);
       _updateTableHabitsV3toV4(batch);
       _updateTableEventsV3toV4(batch);
+      _updateTableEventsV4toV5(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
       _updateTableHabitsV5toV6(batch);
@@ -358,17 +364,29 @@ class HaboModel {
     if (oldVersion == 3) {
       _updateTableHabitsV3toV4(batch);
       _updateTableEventsV3toV4(batch);
+      _updateTableEventsV4toV5(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
       _updateTableHabitsV5toV6(batch);
     }
     if (oldVersion == 4) {
+      _updateTableEventsV4toV5(batch);
       _createTableCategoriesV5(batch);
       _createTableHabitCategoriesV5(batch);
       _updateTableHabitsV5toV6(batch);
     }
     if (oldVersion == 5) {
       _updateTableHabitsV5toV6(batch);
+      _updateTableEventsV4toV5(batch);
+    }
+    if (oldVersion == 6) {
+      _updateTableEventsV4toV5(batch);
+    }
+    if (oldVersion == 7) {
+      _updateTableEventsV4toV5(batch);
+    }
+    if (oldVersion == 8) {
+      _updateTableEventsV4toV5(batch);
     }
 
     // Commit batch operations first
@@ -390,10 +408,18 @@ class HaboModel {
       };
 
       // Add progress value for numeric habits
-      if (event.length > 2 && event[0] == DayType.progress) {
+      if (event.length > 2 &&
+          (event[0] == DayType.progress || event[0] == DayType.check)) {
         eventData['progressValue'] = event[2] as double;
       } else {
         eventData['progressValue'] = 0.0;
+      }
+
+      // Add target value for numeric habits (stored at index 3)
+      if (event.length > 3) {
+        eventData['targetValue'] = event[3] as double;
+      } else {
+        eventData['targetValue'] = 0.0;
       }
 
       db.insert('events', eventData,

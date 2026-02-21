@@ -65,9 +65,11 @@ class Habit extends StatefulWidget {
       'events': habitData.events.map((key, value) {
         return MapEntry(
             key.toString(),
-            value.length > 2
-                ? [value[0].toString(), value[1], value[2]]
-                : [value[0].toString(), value[1]]);
+            value.length > 3
+                ? [value[0].toString(), value[1], value[2], value[3]]
+                : value.length > 2
+                    ? [value[0].toString(), value[1], value[2]]
+                    : [value[0].toString(), value[1]]);
       }),
       'sanction': habitData.sanction,
       'showSanction': habitData.showSanction ? 1 : 0,
@@ -120,7 +122,18 @@ class Habit extends StatefulWidget {
       final comment = value[1];
 
       // Handle progress data for numeric habits
-      if (value.length > 2 && dayType == DayType.progress) {
+      if (value.length > 3 &&
+          (dayType == DayType.progress || dayType == DayType.check)) {
+        final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
+        final targetValue = (value[3] as num?)?.toDouble() ?? 0.0;
+        result[DateTime.parse(key)] = [
+          dayType,
+          comment,
+          progressValue,
+          targetValue
+        ];
+      } else if (value.length > 2 &&
+          (dayType == DayType.progress || dayType == DayType.check)) {
         final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
         result[DateTime.parse(key)] = [dayType, comment, progressValue];
       } else {
@@ -405,7 +418,10 @@ class HabitState extends State<Habit> {
         // For progress events, check if it's 100% completion
         if (widget.habitData.isNumeric && events.length > 2) {
           final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
-          if (progressValue >= widget.habitData.targetValue) {
+          final targetAtTime = (events.length > 3)
+              ? (events[3] as double?) ?? widget.habitData.targetValue
+              : widget.habitData.targetValue;
+          if (progressValue >= targetAtTime) {
             // 100% or more = green check color
             return Provider.of<SettingsManager>(context, listen: false)
                 .checkColor;
@@ -441,7 +457,10 @@ class HabitState extends State<Habit> {
         // For progress events, check if it's 100% completion
         if (widget.habitData.isNumeric && events.length > 2) {
           final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
-          if (progressValue >= widget.habitData.targetValue) {
+          final targetAtTime = (events.length > 3)
+              ? (events[3] as double?) ?? widget.habitData.targetValue
+              : widget.habitData.targetValue;
+          if (progressValue >= targetAtTime) {
             // 100% or more = green check icon
             return const Icon(
               Icons.check,
@@ -459,8 +478,10 @@ class HabitState extends State<Habit> {
     // For progress events, show a circular progress indicator
     if (events.length > 2 && widget.habitData.isNumeric) {
       final progressValue = (events[2] as num?)?.toDouble() ?? 0.0;
-      final percentage =
-          (progressValue / widget.habitData.targetValue).clamp(0.0, 1.0);
+      final targetAtTime = (events.length > 3)
+          ? (events[3] as double?) ?? widget.habitData.targetValue
+          : widget.habitData.targetValue;
+      final percentage = (progressValue / targetAtTime).clamp(0.0, 1.0);
 
       return Stack(
         children: [
@@ -523,8 +544,12 @@ class HabitState extends State<Habit> {
 
       if (widget.habitData.events[checkDayKey]![0] == DayType.check ||
           (widget.habitData.events[checkDayKey]![0] == DayType.progress &&
+              widget.habitData.events[checkDayKey]!.length > 2 &&
               widget.habitData.events[checkDayKey]![2] >=
-                  widget.habitData.targetValue)) {
+                  ((widget.habitData.events[checkDayKey]!.length > 3)
+                      ? (widget.habitData.events[checkDayKey]![3] as double?) ??
+                          widget.habitData.targetValue
+                      : widget.habitData.targetValue))) {
         inStreak++;
       }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
@@ -575,10 +600,15 @@ class HabitState extends State<Habit> {
 
       // Count streak if check or 100% progress
       lastDay = widget.habitData.events[checkDayKey]![0];
-      if (widget.habitData.events[checkDayKey]![0] == DayType.check ||
-          (widget.habitData.events[checkDayKey]![0] == DayType.progress &&
-              widget.habitData.events[checkDayKey]![2] >=
-                  widget.habitData.targetValue)) {
+      final event = widget.habitData.events[checkDayKey]!;
+      // Use stored target value for completion check
+      final targetAtTime = (event.length > 3)
+          ? (event[3] as double?) ?? widget.habitData.targetValue
+          : widget.habitData.targetValue;
+      if (event[0] == DayType.check ||
+          (event[0] == DayType.progress &&
+              (event[2] as double?) != null &&
+              (event[2] as double) >= targetAtTime)) {
         inStreak++;
       }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);

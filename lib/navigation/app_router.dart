@@ -23,11 +23,12 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
   final SettingsManager settingsManager;
   final HabitsManager habitsManager;
 
-  AppRouter(
-      {required this.navigatorKey,
-      required this.appStateManager,
-      required this.settingsManager,
-      required this.habitsManager}) {
+  AppRouter({
+    required this.navigatorKey,
+    required this.appStateManager,
+    required this.settingsManager,
+    required this.habitsManager,
+  }) {
     appStateManager.addListener(notifyListeners);
     settingsManager.addListener(notifyListeners);
     // Note: We intentionally do NOT listen to habitsManager here.
@@ -188,6 +189,8 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     final current = settingsManager.getCurrentAppVersion;
     if (current.isEmpty) return false;
     final last = settingsManager.getLastWhatsNewVersion;
-    return current != last;
+    // Compare only major.minor (ignore patch) so hotfix releases don't trigger What's New.
+    String majorMinor(String v) => v.split('.').take(2).join('.');
+    return majorMinor(current) != majorMinor(last);
   }
 }
