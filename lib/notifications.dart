@@ -8,26 +8,24 @@ import 'package:habo/generated/l10n.dart';
 bool platformSupportsNotifications() => Platform.isAndroid || Platform.isIOS;
 
 void initializeNotifications() {
-  AwesomeNotifications().initialize(
-    'resource://raw/res_app_icon',
-    [
-      NotificationChannel(
-          channelKey: 'app_notifications_habo',
-          channelName: 'App notifications',
-          channelDescription:
-              'Notification channel for application notifications',
-          defaultColor: HaboColors.primary,
-          importance: NotificationImportance.Max,
-          criticalAlerts: true),
-      NotificationChannel(
-          channelKey: 'habit_notifications_habo',
-          channelName: 'Habit notifications',
-          channelDescription: 'Notification channel for habit notifications',
-          defaultColor: HaboColors.primary,
-          importance: NotificationImportance.Max,
-          criticalAlerts: true)
-    ],
-  );
+  AwesomeNotifications().initialize('resource://raw/res_app_icon', [
+    NotificationChannel(
+      channelKey: 'app_notifications_habo',
+      channelName: 'App notifications',
+      channelDescription: 'Notification channel for application notifications',
+      defaultColor: HaboColors.primary,
+      importance: NotificationImportance.Max,
+      criticalAlerts: true,
+    ),
+    NotificationChannel(
+      channelKey: 'habit_notifications_habo',
+      channelName: 'Habit notifications',
+      channelDescription: 'Notification channel for habit notifications',
+      defaultColor: HaboColors.primary,
+      importance: NotificationImportance.Max,
+      criticalAlerts: true,
+    ),
+  ]);
 }
 
 void resetAppNotificationIfMissing(TimeOfDay timeOfDay) async {
@@ -42,14 +40,28 @@ void resetAppNotificationIfMissing(TimeOfDay timeOfDay) async {
 }
 
 void setAppNotification(TimeOfDay timeOfDay) async {
-  _setupDailyNotification(0, timeOfDay, 'Habo',
-      S.current.doNotForgetToCheckYourHabits, 'app_notifications_habo');
+  _setupDailyNotification(
+    0,
+    timeOfDay,
+    'Habo',
+    S.current.doNotForgetToCheckYourHabits,
+    'app_notifications_habo',
+  );
 }
 
 void setHabitNotification(
-    int id, TimeOfDay timeOfDay, String title, String desc) {
+  int id,
+  TimeOfDay timeOfDay,
+  String title,
+  String desc,
+) {
   _setupDailyNotification(
-      id, timeOfDay, title, desc, 'habit_notifications_habo');
+    id,
+    timeOfDay,
+    title,
+    desc,
+    'habit_notifications_habo',
+  );
 }
 
 void disableHabitNotification(int id) {
@@ -62,11 +74,16 @@ void disableAppNotification() {
   AwesomeNotifications().cancel(0);
 }
 
-Future<void> _setupDailyNotification(int id, TimeOfDay timeOfDay, String title,
-    String desc, String channel) async {
+Future<void> _setupDailyNotification(
+  int id,
+  TimeOfDay timeOfDay,
+  String title,
+  String desc,
+  String channel,
+) async {
   if (platformSupportsNotifications()) {
-    String localTimeZone =
-        await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    String localTimeZone = await AwesomeNotifications()
+        .getLocalTimeZoneIdentifier();
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
@@ -78,13 +95,14 @@ Future<void> _setupDailyNotification(int id, TimeOfDay timeOfDay, String title,
         category: NotificationCategory.Reminder,
       ),
       schedule: NotificationCalendar(
-          hour: timeOfDay.hour,
-          minute: timeOfDay.minute,
-          second: 0,
-          millisecond: 0,
-          repeats: true,
-          preciseAlarm: true,
-          timeZone: localTimeZone),
+        hour: timeOfDay.hour,
+        minute: timeOfDay.minute,
+        second: 0,
+        millisecond: 0,
+        repeats: true,
+        preciseAlarm: true,
+        timeZone: localTimeZone,
+      ),
     );
   }
 }
@@ -93,8 +111,8 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
   if (platformSupportsNotifications()) {
     try {
       // Get all scheduled notifications
-      final notifications =
-          await AwesomeNotifications().listScheduledNotifications();
+      final notifications = await AwesomeNotifications()
+          .listScheduledNotifications();
 
       // Find the notification with the matching ID
       NotificationModel? existingNotification;
@@ -133,8 +151,8 @@ Future<void> rescheduleNotificationForTomorrow(int originalId) async {
               millisecond: 0,
               repeats: true,
               preciseAlarm: true,
-              timeZone:
-                  await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+              timeZone: await AwesomeNotifications()
+                  .getLocalTimeZoneIdentifier(),
             ),
           );
         }
@@ -149,8 +167,8 @@ Future<void> rescheduleNotificationForToday(int originalId) async {
   if (platformSupportsNotifications()) {
     try {
       // Get all scheduled notifications
-      final notifications =
-          await AwesomeNotifications().listScheduledNotifications();
+      final notifications = await AwesomeNotifications()
+          .listScheduledNotifications();
 
       // Find the notification with the matching ID
       NotificationModel? existingNotification;
@@ -184,8 +202,8 @@ Future<void> rescheduleNotificationForToday(int originalId) async {
               millisecond: 0,
               repeats: true,
               preciseAlarm: true,
-              timeZone:
-                  await AwesomeNotifications().getLocalTimeZoneIdentifier(),
+              timeZone: await AwesomeNotifications()
+                  .getLocalTimeZoneIdentifier(),
             ),
           );
         }

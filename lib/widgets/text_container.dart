@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TextContainer extends StatelessWidget {
-  const TextContainer(
-      {super.key,
-      required this.title,
-      required this.hint,
-      required this.label});
+  const TextContainer({
+    super.key,
+    required this.title,
+    required this.hint,
+    required this.label,
+  });
 
   final TextEditingController title;
   final String hint;
@@ -23,11 +24,9 @@ class TextContainer extends StatelessWidget {
             blurRadius: 4,
             offset: Offset.fromDirection(1, 3),
             color: const Color(0x21000000),
-          )
+          ),
         ],
-        borderRadius: const BorderRadius.all(
-          Radius.circular(15),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: TextField(
         controller: title,

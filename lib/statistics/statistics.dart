@@ -40,79 +40,77 @@ class Statistics {
 
       var lastDay = habit.habitData.events.firstKey();
 
-      habit.habitData.events.forEach(
-        (key, value) {
-          if (value[0] != null && value[0] != DayType.clear) {
-            if (key.difference(lastDay!).inDays > 1) {
-              stat.actualStreak = 0;
-            }
+      habit.habitData.events.forEach((key, value) {
+        if (value[0] != null && value[0] != DayType.clear) {
+          if (key.difference(lastDay!).inDays > 1) {
+            stat.actualStreak = 0;
+          }
 
-            switch (value[0]) {
-              case DayType.check:
-                stat.checks++;
-                stat.actualStreak++;
-                if (stat.actualStreak > stat.topStreak) {
-                  stat.topStreak = stat.actualStreak;
-                }
-                usingTwoDayRule = false;
-                break;
-              case DayType.progress:
-                // Handle numeric habit progress events as separate category
-                stat.progress++;
-                if (habit.habitData.isNumeric && value.length > 2) {
-                  final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
-                  // Use stored target value for completion check
-                  final targetAtTime = (value.length > 3)
-                      ? (value[3] as num?)?.toDouble() ??
+          switch (value[0]) {
+            case DayType.check:
+              stat.checks++;
+              stat.actualStreak++;
+              if (stat.actualStreak > stat.topStreak) {
+                stat.topStreak = stat.actualStreak;
+              }
+              usingTwoDayRule = false;
+              break;
+            case DayType.progress:
+              // Handle numeric habit progress events as separate category
+              stat.progress++;
+              if (habit.habitData.isNumeric && value.length > 2) {
+                final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
+                // Use stored target value for completion check
+                final targetAtTime = (value.length > 3)
+                    ? (value[3] as num?)?.toDouble() ??
                           habit.habitData.targetValue
-                      : habit.habitData.targetValue;
-                  if (progressValue >= targetAtTime) {
-                    // 100% or more = maintain streak
-                    stat.actualStreak++;
-                    if (stat.actualStreak > stat.topStreak) {
-                      stat.topStreak = stat.actualStreak;
-                    }
-                    usingTwoDayRule = false;
+                    : habit.habitData.targetValue;
+                if (progressValue >= targetAtTime) {
+                  // 100% or more = maintain streak
+                  stat.actualStreak++;
+                  if (stat.actualStreak > stat.topStreak) {
+                    stat.topStreak = stat.actualStreak;
                   }
-                } else {
-                  // Fallback for non-numeric progress events
-                  if (usingTwoDayRule) {
-                    stat.actualStreak = 0;
-                  }
+                  usingTwoDayRule = false;
                 }
-                usingTwoDayRule = false;
-                break;
-              case DayType.skip:
-                stat.skips++;
+              } else {
+                // Fallback for non-numeric progress events
                 if (usingTwoDayRule) {
                   stat.actualStreak = 0;
                 }
-                break;
-              case DayType.fail:
-                stat.fails++;
-                if (habit.habitData.twoDayRule) {
-                  if (usingTwoDayRule) {
-                    stat.actualStreak = 0;
-                  } else {
-                    usingTwoDayRule = true;
-                  }
-                } else {
+              }
+              usingTwoDayRule = false;
+              break;
+            case DayType.skip:
+              stat.skips++;
+              if (usingTwoDayRule) {
+                stat.actualStreak = 0;
+              }
+              break;
+            case DayType.fail:
+              stat.fails++;
+              if (habit.habitData.twoDayRule) {
+                if (usingTwoDayRule) {
                   stat.actualStreak = 0;
+                } else {
+                  usingTwoDayRule = true;
                 }
-                break;
-            }
-
-            generateYearIfNull(stat, key.year);
-
-            if (value[0] != DayType.clear) {
-              // Track all event types including progress in monthly stats
-              stat.monthlyCheck[key.year]![value[0]]![key.month - 1]++;
-            }
-
-            lastDay = key;
+              } else {
+                stat.actualStreak = 0;
+              }
+              break;
           }
-        },
-      );
+
+          generateYearIfNull(stat, key.year);
+
+          if (value[0] != DayType.clear) {
+            // Track all event types including progress in monthly stats
+            stat.monthlyCheck[key.year]![value[0]]![key.month - 1]++;
+          }
+
+          lastDay = key;
+        }
+      });
 
       generateYearIfNull(stat, DateTime.now().year);
       stats.habitsData.add(stat);

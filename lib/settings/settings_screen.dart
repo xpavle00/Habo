@@ -30,9 +30,7 @@ class SettingsScreen extends StatefulWidget {
     );
   }
 
-  const SettingsScreen({
-    super.key,
-  });
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -53,8 +51,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> testTime(BuildContext context) async {
     TimeOfDay? selectedTime;
-    TimeOfDay initialTime =
-        Provider.of<SettingsManager>(context, listen: false).getDailyNot;
+    TimeOfDay initialTime = Provider.of<SettingsManager>(
+      context,
+      listen: false,
+    ).getDailyNot;
     selectedTime = await showTimePicker(
       context: context,
       initialTime: initialTime,
@@ -82,8 +82,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _checkBiometricAvailability() async {
     final available = await _biometricService.hasDeviceAuthentication();
     if (!mounted) return;
-    final description =
-        await _biometricService.getAuthenticationDescription(context);
+    final description = await _biometricService.getAuthenticationDescription(
+      context,
+    );
     if (!mounted) return;
     setState(() {
       _biometricAvailable = available;
@@ -114,31 +115,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateManager>(
-      builder: (
-        context,
-        appStateManager,
-        child,
-      ) {
+      builder: (context, appStateManager, child) {
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {
             if (didPop) return;
-            Provider.of<AppStateManager>(context, listen: false)
-                .goSettings(false);
+            Provider.of<AppStateManager>(
+              context,
+              listen: false,
+            ).goSettings(false);
           },
           child: LoaderOverlay(
             overlayWidgetBuilder: (_) {
               return const Center(
-                child: CircularProgressIndicator(
-                  color: HaboColors.primary,
-                ),
+                child: CircularProgressIndicator(color: HaboColors.primary),
               );
             },
             child: Scaffold(
               appBar: AppBar(
-                title: Text(
-                  S.of(context).settings,
-                ),
+                title: Text(S.of(context).settings),
                 backgroundColor: Colors.transparent,
                 iconTheme: Theme.of(context).iconTheme,
               ),
@@ -149,29 +144,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ListTile(
                         title: Text(S.of(context).theme),
                         trailing: DropdownButton<Themes>(
-                          items: (Platform.isIOS
-                                  ? Themes.values
-                                      .where((t) => t != Themes.materialYou)
-                                  : Themes.values)
-                              .map((Themes value) {
-                            return DropdownMenuItem<Themes>(
-                              value: value,
-                              child: Text(
-                                S.of(context).themeSelect(value.name),
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }).toList(),
-                          value: (Platform.isIOS &&
-                                  Provider.of<SettingsManager>(context)
-                                          .getThemeString ==
+                          items:
+                              (Platform.isIOS
+                                      ? Themes.values.where(
+                                          (t) => t != Themes.materialYou,
+                                        )
+                                      : Themes.values)
+                                  .map((Themes value) {
+                                    return DropdownMenuItem<Themes>(
+                                      value: value,
+                                      child: Text(
+                                        S.of(context).themeSelect(value.name),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                  })
+                                  .toList(),
+                          value:
+                              (Platform.isIOS &&
+                                  Provider.of<SettingsManager>(
+                                        context,
+                                      ).getThemeString ==
                                       Themes.materialYou)
                               ? Themes.device
-                              : Provider.of<SettingsManager>(context)
-                                  .getThemeString,
+                              : Provider.of<SettingsManager>(
+                                  context,
+                                ).getThemeString,
                           onChanged: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .setTheme = value!;
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setTheme = value!;
                           },
                         ),
                       ),
@@ -199,11 +202,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             );
                           }).toList(),
-                          value: Provider.of<SettingsManager>(context)
-                              .getWeekStartEnum,
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).getWeekStartEnum,
                           onChanged: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .setWeekStart = value;
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setWeekStart = value;
                           },
                         ),
                       ),
@@ -211,37 +217,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ListTile(
                           title: Text(S.of(context).notifications),
                           trailing: Switch(
-                            value: Provider.of<SettingsManager>(context)
-                                .getShowDailyNot,
+                            value: Provider.of<SettingsManager>(
+                              context,
+                            ).getShowDailyNot,
                             onChanged: (value) async {
-                              Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .setShowDailyNot = value;
+                              Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).setShowDailyNot = value;
                             },
                           ),
                         ),
                       if (platformSupportsNotifications())
                         ListTile(
-                          enabled: Provider.of<SettingsManager>(context)
-                              .getShowDailyNot,
+                          enabled: Provider.of<SettingsManager>(
+                            context,
+                          ).getShowDailyNot,
                           title: Text(S.of(context).notificationTime),
                           trailing: InkWell(
                             onTap: () {
-                              if (Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .getShowDailyNot) {
+                              if (Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).getShowDailyNot) {
                                 testTime(context);
                               }
                             },
                             child: Text(
                               MaterialLocalizations.of(context).formatTimeOfDay(
-                                  Provider.of<SettingsManager>(context)
-                                      .getDailyNot),
+                                Provider.of<SettingsManager>(
+                                  context,
+                                ).getDailyNot,
+                              ),
                               style: TextStyle(
-                                  color: (Provider.of<SettingsManager>(context)
-                                          .getShowDailyNot)
-                                      ? null
-                                      : Theme.of(context).disabledColor),
+                                color:
+                                    (Provider.of<SettingsManager>(
+                                      context,
+                                    ).getShowDailyNot)
+                                    ? null
+                                    : Theme.of(context).disabledColor,
+                              ),
                             ),
                           ),
                         ),
@@ -272,23 +287,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       divisions: 5,
                                       label: '${volume.round()}',
                                       onChanged: (value) {
-                                        Provider.of<SettingsManager>(context,
-                                                listen: false)
-                                            .setSoundVolume = value;
+                                        Provider.of<SettingsManager>(
+                                          context,
+                                          listen: false,
+                                        ).setSoundVolume = value;
                                         // Play test sound when adjusting volume
                                         if (value > 0) {
-                                          Provider.of<SettingsManager>(context,
-                                                  listen: false)
-                                              .playClickSound();
+                                          Provider.of<SettingsManager>(
+                                            context,
+                                            listen: false,
+                                          ).playClickSound();
                                         }
                                       },
                                     ),
                                   ),
                                   Text(
                                     volume == 0 ? '0' : '${volume.round()}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
+                                    style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(
                                           color: volume == 0
                                               ? Theme.of(context).disabledColor
@@ -304,55 +319,64 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ListTile(
                         title: Text(S.of(context).biometricLock),
                         enabled: _biometricAvailable,
-                        subtitle: Text(S
-                            .of(context)
-                            .biometricLockDescription(_authDescription)),
+                        subtitle: Text(
+                          S
+                              .of(context)
+                              .biometricLockDescription(_authDescription),
+                        ),
                         trailing: Switch(
-                          value: Provider.of<SettingsManager>(context)
-                              .getBiometricLock,
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).getBiometricLock,
                           onChanged: (value) async {
                             if (value) {
                               try {
                                 // Test authentication before enabling
-                                final authenticated =
-                                    await _biometricService.authenticate(
-                                  context: context,
-                                  localizedReason:
-                                      S.of(context).authenticateToEnable,
-                                );
+                                final authenticated = await _biometricService
+                                    .authenticate(
+                                      context: context,
+                                      localizedReason: S
+                                          .of(context)
+                                          .authenticateToEnable,
+                                    );
                                 if (!mounted) return;
                                 if (authenticated) {
-                                  Provider.of<SettingsManager>(context,
-                                          listen: false)
-                                      .setBiometricLock = true;
+                                  Provider.of<SettingsManager>(
+                                    context,
+                                    listen: false,
+                                  ).setBiometricLock = true;
                                   if (mounted) {
                                     ServiceLocator.instance.uiFeedbackService
                                         .showSuccess(
-                                            S.of(context).biometricLockEnabled);
+                                          S.of(context).biometricLockEnabled,
+                                        );
                                   }
                                 } else {
                                   if (mounted) {
                                     ServiceLocator.instance.uiFeedbackService
-                                        .showError(S
-                                            .of(context)
-                                            .authenticationRequired);
+                                        .showError(
+                                          S.of(context).authenticationRequired,
+                                        );
                                   }
                                 }
                               } catch (e) {
                                 if (mounted) {
                                   ServiceLocator.instance.uiFeedbackService
                                       .showError(
-                                          '${S.of(context).authenticationError}: $e');
+                                        '${S.of(context).authenticationError}: $e',
+                                      );
                                 }
                               }
                             } else {
-                              Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .setBiometricLock = false;
+                              Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).setBiometricLock = false;
                               if (mounted) {
                                 ServiceLocator.instance.uiFeedbackService
                                     .showSuccess(
-                                        S.of(context).biometricLockDisabled);
+                                      S.of(context).biometricLockDisabled,
+                                    );
                               }
                             }
                           },
@@ -360,36 +384,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       ListTile(
                         title: Text(S.of(context).oneTapCheck),
-                        subtitle:
-                            Text(S.of(context).tapCheckLongPressMenu),
+                        subtitle: Text(S.of(context).tapCheckLongPressMenu),
                         trailing: Switch(
-                          value: Provider.of<SettingsManager>(context)
-                              .getOneTapCheck,
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).getOneTapCheck,
                           onChanged: (value) async {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .setOneTapCheck = value;
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setOneTapCheck = value;
                           },
                         ),
                       ),
                       ListTile(
                         title: Text(S.of(context).showMonthName),
                         trailing: Switch(
-                          value: Provider.of<SettingsManager>(context)
-                              .getShowMonthName,
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).getShowMonthName,
                           onChanged: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .setShowMonthName = value;
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setShowMonthName = value;
                           },
                         ),
                       ),
                       ListTile(
                         title: Text(S.of(context).showCategories),
                         trailing: Switch(
-                          value: Provider.of<SettingsManager>(context)
-                              .getShowCategories,
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).getShowCategories,
                           onChanged: (value) {
-                            Provider.of<SettingsManager>(context, listen: false)
-                                .setShowCategories = value;
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setShowCategories = value;
                           },
                         ),
                       ),
@@ -399,51 +431,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             ColorIcon(
-                              color: Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .checkColor,
+                              color: Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).checkColor,
                               icon: Icons.check,
                               defaultColor: HaboColors.primary,
                               onPicked: (value) {
-                                Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .checkColor = value;
+                                Provider.of<SettingsManager>(
+                                  context,
+                                  listen: false,
+                                ).checkColor = value;
                               },
                             ),
                             ColorIcon(
-                              color: Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .progressColor,
+                              color: Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).progressColor,
                               icon: Icons.trending_up,
                               defaultColor: HaboColors.progress,
                               onPicked: (value) {
-                                Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .progressColor = value;
+                                Provider.of<SettingsManager>(
+                                  context,
+                                  listen: false,
+                                ).progressColor = value;
                               },
                             ),
                             ColorIcon(
-                              color: Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .failColor,
+                              color: Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).failColor,
                               icon: Icons.close,
                               defaultColor: HaboColors.red,
                               onPicked: (value) {
-                                Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .failColor = value;
+                                Provider.of<SettingsManager>(
+                                  context,
+                                  listen: false,
+                                ).failColor = value;
                               },
                             ),
                             ColorIcon(
-                              color: Provider.of<SettingsManager>(context,
-                                      listen: false)
-                                  .skipColor,
+                              color: Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).skipColor,
                               icon: Icons.last_page,
                               defaultColor: HaboColors.skip,
                               onPicked: (value) {
-                                Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .skipColor = value;
+                                Provider.of<SettingsManager>(
+                                  context,
+                                  listen: false,
+                                ).skipColor = value;
                               },
                             ),
                           ],
@@ -462,7 +502,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               child: Text(
                                 S.of(context).create,
                                 style: const TextStyle(
-                                    decoration: TextDecoration.underline),
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
                             const VerticalDivider(
@@ -478,24 +519,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               child: Text(
                                 S.of(context).restore,
                                 style: const TextStyle(
-                                    decoration: TextDecoration.underline),
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
                       ListTile(
+                        title: const Text('Habo Sync'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          Provider.of<AppStateManager>(
+                            context,
+                            listen: false,
+                          ).goSync(true);
+                        },
+                      ),
+                      ListTile(
                         title: Text(S.of(context).onboarding),
                         onTap: () {
-                          Provider.of<AppStateManager>(context, listen: false)
-                              .goOnboarding(true);
+                          Provider.of<AppStateManager>(
+                            context,
+                            listen: false,
+                          ).goOnboarding(true);
                         },
                       ),
                       ListTile(
                         title: Text(S.of(context).whatsNewTitle),
                         onTap: () {
-                          Provider.of<AppStateManager>(context, listen: false)
-                              .goWhatsNew(true);
+                          Provider.of<AppStateManager>(
+                            context,
+                            listen: false,
+                          ).goWhatsNew(true);
                         },
                       ),
                       ListTile(
@@ -516,19 +572,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: RichText(
                                   text: TextSpan(
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
                                     children: [
                                       TextSpan(
                                         style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         text: S.of(context).termsAndConditions,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
                                             final Uri url = Uri.parse(
-                                                'https://habo.space/terms.html#terms');
+                                              'https://habo.space/terms.html#terms',
+                                            );
                                             if (await canLaunchUrl(url)) {
                                               await launchUrl(
                                                 url,
@@ -541,14 +599,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       const TextSpan(text: '\n'),
                                       TextSpan(
                                         style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         text: S.of(context).privacyPolicy,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
                                             final Uri url = Uri.parse(
-                                                'https://habo.space/terms.html#privacy');
+                                              'https://habo.space/terms.html#privacy',
+                                            );
                                             if (await canLaunchUrl(url)) {
                                               await launchUrl(
                                                 url,
@@ -561,14 +620,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       const TextSpan(text: '\n'),
                                       TextSpan(
                                         style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         text: S.of(context).disclaimer,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
                                             final Uri url = Uri.parse(
-                                                'https://habo.space/terms.html#disclaimer');
+                                              'https://habo.space/terms.html#disclaimer',
+                                            );
                                             if (await canLaunchUrl(url)) {
                                               await launchUrl(
                                                 url,
@@ -581,14 +641,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       const TextSpan(text: '\n'),
                                       TextSpan(
                                         style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         text: S.of(context).sourceCode,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
                                             final Uri url = Uri.parse(
-                                                'https://github.com/xpavle00/Habo');
+                                              'https://github.com/xpavle00/Habo',
+                                            );
                                             if (await canLaunchUrl(url)) {
                                               await launchUrl(
                                                 url,
@@ -605,14 +666,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       const TextSpan(text: '\n'),
                                       TextSpan(
                                         style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
                                         text: S.of(context).buyMeACoffee,
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async {
                                             final Uri url = Uri.parse(
-                                                'https://www.buymeacoffee.com/peterpavlenko');
+                                              'https://www.buymeacoffee.com/peterpavlenko',
+                                            );
                                             if (await canLaunchUrl(url)) {
                                               await launchUrl(
                                                 url,
@@ -625,7 +687,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           );
                         },

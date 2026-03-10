@@ -22,19 +22,31 @@ import 'package:habo/generated/l10n.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:habo/constants.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/screens/reset_password_screen.dart';
+import 'package:habo/env_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Load secrets from .env file
+  await dotenv.load();
+
+  // Initialize Supabase with values from .env
+  await Supabase.initialize(
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
+  );
+
   if (Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
     windowManager.setMinimumSize(const Size(320, 320));
     windowManager.setMaximumSize(Size.infinite);
   }
   addLicenses();
-  runApp(
-    const Habo(),
-  );
+  runApp(const Habo());
 }
 
 class Habo extends StatefulWidget {
@@ -53,6 +65,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
   final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   bool _isInitialized = false;
   Timer? _dayChangeTimer;
+  StreamSubscription<AuthState>? _authSubscription;
 
   @override
   void initState() {
@@ -66,6 +79,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _stopDayChangeTimer();
+    _authSubscription?.cancel();
     super.dispose();
   }
 
@@ -116,8 +130,11 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     await haboModel.initDatabase();
 
     // Initialize service locator with the scaffold key and HaboModel
-    ServiceLocator.instance
-        .initialize(_scaffoldKey, haboModel, _settingsManager);
+    ServiceLocator.instance.initialize(
+      scaffoldKey: _scaffoldKey,
+      haboModel: haboModel,
+      settingsManager: _settingsManager,
+    );
 
     // Create HabitsManager with repositories and services from ServiceLocator
     final repositoryFactory = ServiceLocator.instance.repositoryFactory;
@@ -128,6 +145,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       backupService: ServiceLocator.instance.backupService,
       notificationService: ServiceLocator.instance.notificationService,
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
+      syncManager: ServiceLocator.instance.syncManager,
     );
     await habitsManager.initialize();
 
@@ -160,6 +178,18 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
 
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
+
+    // Listen for password recovery auth events
+    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      data,
+    ) {
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        // Navigate to the reset password screen
+        _navigatorKey.currentState?.push(
+          MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -178,63 +208,54 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
         systemNavigationBarDividerColor: Colors.transparent,
       ),
     );
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // Enable edge-to-edge mode explicitly for consistency
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => _appStateManager,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => _settingsManager,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => _habitManager,
-        ),
+        ChangeNotifierProvider(create: (context) => _appStateManager),
+        ChangeNotifierProvider(create: (context) => _settingsManager),
+        ChangeNotifierProvider(create: (context) => _habitManager),
       ],
-      child: Consumer<SettingsManager>(builder: (context, settingsManager, _) {
-        return DynamicColorBuilder(
+      child: Consumer<SettingsManager>(
+        builder: (context, settingsManager, _) {
+          return DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-          // Only use dynamic colors if Material You theme is selected
-          final useDynamicColors =
-              settingsManager.getThemeString == Themes.materialYou;
+              // Only use dynamic colors if Material You theme is selected
+              final useDynamicColors =
+                  settingsManager.getThemeString == Themes.materialYou;
 
-          return MaterialApp.router(
-            title: 'Habo',
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            scaffoldMessengerKey: _scaffoldKey,
-            theme: (useDynamicColors && lightDynamic != null)
-                ? ThemeData(
-                    colorScheme: lightDynamic,
-                  )
-                : settingsManager.getLight,
-            darkTheme: (useDynamicColors && darkDynamic != null)
-                ? ThemeData(
-                    colorScheme: darkDynamic,
-                  )
-                : settingsManager.getDark,
-            routerDelegate: _appRouter,
-            routeInformationParser: HaboRouteInformationParser(),
-            backButtonDispatcher: RootBackButtonDispatcher(),
-            builder: (context, child) {
-              // Set context for automatic widget updates
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _habitManager.setWidgetContext(context);
-              });
-              return BiometricAuthWrapper(child: child!);
+              return MaterialApp.router(
+                title: 'Habo',
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                scaffoldMessengerKey: _scaffoldKey,
+                theme: (useDynamicColors && lightDynamic != null)
+                    ? ThemeData(colorScheme: lightDynamic)
+                    : settingsManager.getLight,
+                darkTheme: (useDynamicColors && darkDynamic != null)
+                    ? ThemeData(colorScheme: darkDynamic)
+                    : settingsManager.getDark,
+                routerDelegate: _appRouter,
+                routeInformationParser: HaboRouteInformationParser(),
+                backButtonDispatcher: RootBackButtonDispatcher(),
+                builder: (context, child) {
+                  // Set context for automatic widget updates
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _habitManager.setWidgetContext(context);
+                  });
+                  return BiometricAuthWrapper(child: child!);
+                },
+              );
             },
           );
-        });
-      }),
+        },
+      ),
     );
   }
 }

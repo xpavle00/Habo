@@ -47,9 +47,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).selectCategories),
-      ),
+      appBar: AppBar(title: Text(S.of(context).selectCategories)),
       body: Consumer<HabitsManager>(
         builder: (context, habitsManager, child) {
           return Column(
@@ -59,10 +57,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withValues(alpha: 0.3),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,10 +67,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                         S
                             .of(context)
                             .selectedCategories(_selectedCategories.length),
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 8),
                       Wrap(
@@ -116,10 +111,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       children: [
                         Text(
                           S.of(context).allCategories,
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
                         FilledButton.icon(
@@ -145,22 +138,25 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       ],
 
                       // Show existing categories (sorted alphabetically)
-                      ...(habitsManager.allCategories.toList()
-                            ..sort((a, b) => a.title
-                                .toLowerCase()
-                                .compareTo(b.title.toLowerCase())))
+                      ...(habitsManager.allCategories.toList()..sort(
+                            (a, b) => a.title.toLowerCase().compareTo(
+                              b.title.toLowerCase(),
+                            ),
+                          ))
                           .map((category) {
-                        final isSelected =
-                            _selectedCategories.any((c) => c.id == category.id);
-                        final isEditing = _editingCategory?.id == category.id;
+                            final isSelected = _selectedCategories.any(
+                              (c) => c.id == category.id,
+                            );
+                            final isEditing =
+                                _editingCategory?.id == category.id;
 
-                        return _buildCategoryCard(
-                          category: category,
-                          isSelected: isSelected,
-                          isEditing: isEditing,
-                          habitsManager: habitsManager,
-                        );
-                      }),
+                            return _buildCategoryCard(
+                              category: category,
+                              isSelected: isSelected,
+                              isEditing: isEditing,
+                              habitsManager: habitsManager,
+                            );
+                          }),
                     ],
                   ],
                 ),
@@ -185,10 +181,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surfaceContainerHighest
-            .withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
@@ -205,16 +200,16 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           Text(
             S.of(context).noCategoriesYet,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             S.of(context).createFirstCategory,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -303,8 +298,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       ? S.of(context).createCategory
                       : S.of(context).editCategory,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
                 TextButton.icon(
@@ -313,9 +308,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       : () => _deleteCategory(category, habitsManager),
                   icon: const Icon(Icons.delete, size: 16),
                   label: Text(S.of(context).delete),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.red,
-                  ),
+                  style: TextButton.styleFrom(foregroundColor: Colors.red),
                 ),
               ],
             ),
@@ -332,9 +325,11 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                     width: 56, // Square container
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.outline),
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                       borderRadius: BorderRadius.circular(
-                          12), // Match TextField border radius
+                        12,
+                      ), // Match TextField border radius
                     ),
                     child: Icon(
                       _editSelectedIcon,
@@ -426,9 +421,10 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
     IconPickerIcon? icon = await showIconPicker(
       context,
       configuration: SinglePickerConfiguration(
-          iconPackModes: [IconPack.fontAwesomeIcons],
-          title: Text(S.of(context).selectIcon),
-          searchHintText: S.of(context).searchIcons),
+        iconPackModes: [IconPack.fontAwesomeIcons],
+        title: Text(S.of(context).selectIcon),
+        searchHintText: S.of(context).searchIcons,
+      ),
     );
 
     if (icon != null) {
@@ -440,12 +436,15 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
   }
 
   Future<void> _saveCategory(
-      Category category, HabitsManager habitsManager) async {
+    Category category,
+    HabitsManager habitsManager,
+  ) async {
     final title = _editTitleController.text.trim();
 
     if (title.isEmpty) {
-      ServiceLocator.instance.uiFeedbackService
-          .showError(S.of(context).pleaseEnterCategoryTitle);
+      ServiceLocator.instance.uiFeedbackService.showError(
+        S.of(context).pleaseEnterCategoryTitle,
+      );
       return;
     }
 
@@ -461,8 +460,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             .firstOrNull;
 
         if (existingCategory != null) {
-          ServiceLocator.instance.uiFeedbackService
-              .showWarning(S.of(context).categoryAlreadyExists(title));
+          ServiceLocator.instance.uiFeedbackService.showWarning(
+            S.of(context).categoryAlreadyExists(title),
+          );
           setState(() {
             _isProcessing = false;
           });
@@ -470,7 +470,10 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         }
 
         await habitsManager.addCategory(
-            title, _editSelectedIcon.codePoint, _editSelectedFontFamily);
+          title,
+          _editSelectedIcon.codePoint,
+          _editSelectedFontFamily,
+        );
 
         // Find the newly created category and auto-select it
         final newCategory = habitsManager.allCategories
@@ -488,19 +491,23 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         });
 
         if (!mounted) return;
-        ServiceLocator.instance.uiFeedbackService
-            .showSuccess(S.of(context).categoryCreatedSuccessfully(title));
+        ServiceLocator.instance.uiFeedbackService.showSuccess(
+          S.of(context).categoryCreatedSuccessfully(title),
+        );
       } else {
         // Updating existing category
         final existingCategory = habitsManager.allCategories
-            .where((cat) =>
-                cat.title.toLowerCase() == title.toLowerCase() &&
-                cat.id != category.id)
+            .where(
+              (cat) =>
+                  cat.title.toLowerCase() == title.toLowerCase() &&
+                  cat.id != category.id,
+            )
             .firstOrNull;
 
         if (existingCategory != null) {
-          ServiceLocator.instance.uiFeedbackService
-              .showWarning(S.of(context).categoryAlreadyExists(title));
+          ServiceLocator.instance.uiFeedbackService.showWarning(
+            S.of(context).categoryAlreadyExists(title),
+          );
           setState(() {
             _isProcessing = false;
           });
@@ -517,8 +524,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
 
         // Update selected categories if this category was selected
         setState(() {
-          final index =
-              _selectedCategories.indexWhere((c) => c.id == category.id);
+          final index = _selectedCategories.indexWhere(
+            (c) => c.id == category.id,
+          );
           if (index != -1) {
             _selectedCategories[index] = updatedCategory;
           }
@@ -528,12 +536,14 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           _editSelectedFontFamily = null;
         });
 
-        ServiceLocator.instance.uiFeedbackService
-            .showSuccess(S.of(context).categoryUpdatedSuccessfully(title));
+        ServiceLocator.instance.uiFeedbackService.showSuccess(
+          S.of(context).categoryUpdatedSuccessfully(title),
+        );
       }
     } catch (e) {
-      ServiceLocator.instance.uiFeedbackService
-          .showError(S.of(context).failedToSaveCategory(e.toString()));
+      ServiceLocator.instance.uiFeedbackService.showError(
+        S.of(context).failedToSaveCategory(e.toString()),
+      );
     } finally {
       setState(() {
         _isProcessing = false;
@@ -542,14 +552,14 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
   }
 
   Future<void> _deleteCategory(
-      Category category, HabitsManager habitsManager) async {
+    Category category,
+    HabitsManager habitsManager,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(S.of(context).deleteCategory),
-        content: Text(
-          S.of(context).deleteCategoryConfirmation(category.title),
-        ),
+        content: Text(S.of(context).deleteCategoryConfirmation(category.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -557,9 +567,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: Text(S.of(context).delete),
           ),
         ],
@@ -584,10 +592,12 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       });
 
       ServiceLocator.instance.uiFeedbackService.showSuccess(
-          S.of(context).categoryDeletedSuccessfully(category.title));
+        S.of(context).categoryDeletedSuccessfully(category.title),
+      );
     } catch (e) {
-      ServiceLocator.instance.uiFeedbackService
-          .showError(S.of(context).failedToDeleteCategory(e.toString()));
+      ServiceLocator.instance.uiFeedbackService.showError(
+        S.of(context).failedToDeleteCategory(e.toString()),
+      );
     } finally {
       setState(() {
         _isProcessing = false;

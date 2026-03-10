@@ -36,7 +36,9 @@ class HomeWidgetService {
       await HomeWidget.saveWidgetData<String>('filename', currentResult);
       await HomeWidget.saveWidgetData<String>('filename_empty', emptyResult);
       await HomeWidget.saveWidgetData<String>(
-          'lastUpdateDate', DateTime.now().toIso8601String());
+        'lastUpdateDate',
+        DateTime.now().toIso8601String(),
+      );
 
       // Update the widget
       await HomeWidget.updateWidget(

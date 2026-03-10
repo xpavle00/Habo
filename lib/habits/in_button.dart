@@ -8,8 +8,6 @@ class InButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: text ?? icon,
-    );
+    return Center(child: text ?? icon);
   }
 }

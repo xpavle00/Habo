@@ -11,8 +11,10 @@ class EmptyListImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<AppStateManager>(context, listen: false)
-            .goCreateHabit(true);
+        Provider.of<AppStateManager>(
+          context,
+          listen: false,
+        ).goCreateHabit(true);
       },
       child: Center(
         child: SingleChildScrollView(
@@ -23,8 +25,10 @@ class EmptyListImage extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 300,
-                child: SvgPicture.asset('assets/images/emptyList.svg',
-                    semanticsLabel: S.of(context).emptyList),
+                child: SvgPicture.asset(
+                  'assets/images/emptyList.svg',
+                  semanticsLabel: S.of(context).emptyList,
+                ),
               ),
               Text(
                 S.of(context).createYourFirstHabit,

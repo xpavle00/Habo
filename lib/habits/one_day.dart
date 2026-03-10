@@ -26,12 +26,14 @@ class OneDay extends StatelessWidget {
             shadowColor: Theme.of(context).shadowColor,
             child: Container(
               alignment: Alignment.center,
-              child: child ??
+              child:
+                  child ??
                   Center(
                     child: Text(
                       date.day.toString(),
                       style: TextStyle(
-                          color: (date.weekday > 5) ? Colors.red[300] : null),
+                        color: (date.weekday > 5) ? Colors.red[300] : null,
+                      ),
                     ),
                   ),
             ),

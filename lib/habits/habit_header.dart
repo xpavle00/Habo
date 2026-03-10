@@ -12,9 +12,9 @@ class HabitHeader extends StatelessWidget {
     required bool streakVisible,
     required bool orangeStreak,
     required int streak,
-  })  : _streakVisible = streakVisible,
-        _orangeStreak = orangeStreak,
-        _streak = streak;
+  }) : _streakVisible = streakVisible,
+       _orangeStreak = orangeStreak,
+       _streak = streak;
 
   final Habit widget;
   final bool _streakVisible;
@@ -30,8 +30,9 @@ class HabitHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
             child: Text(
-              Provider.of<HabitsManager>(context)
-                  .getNameOfHabit(widget.habitData.id!),
+              Provider.of<HabitsManager>(
+                context,
+              ).getNameOfHabit(widget.habitData.id!),
               style: const TextStyle(fontSize: 20),
               overflow: TextOverflow.ellipsis,
             ),
@@ -39,12 +40,12 @@ class HabitHeader extends StatelessWidget {
         ),
         IconButton(
           padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
-          constraints:
-              const BoxConstraints(minHeight: 36, minWidth: 36, maxHeight: 48),
-          icon: Icon(
-            Icons.edit_outlined,
-            semanticLabel: S.of(context).modify,
+          constraints: const BoxConstraints(
+            minHeight: 36,
+            minWidth: 36,
+            maxHeight: 48,
           ),
+          icon: Icon(Icons.edit_outlined, semanticLabel: S.of(context).modify),
           color: Colors.grey,
           tooltip: S.of(context).modify,
           onPressed: () {
@@ -58,20 +59,21 @@ class HabitHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
-                  border: Border.all(
-                    color: (_orangeStreak)
-                        ? HaboColors.orange
-                        : HaboColors.primary,
+                border: Border.all(
+                  color: (_orangeStreak)
+                      ? HaboColors.orange
+                      : HaboColors.primary,
+                ),
+                color: (_orangeStreak) ? HaboColors.orange : HaboColors.primary,
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    offset: Offset.fromDirection(1, 3),
+                    color: const Color(0x21000000),
                   ),
-                  color:
-                      (_orangeStreak) ? HaboColors.orange : HaboColors.primary,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 4,
-                        offset: Offset.fromDirection(1, 3),
-                        color: const Color(0x21000000))
-                  ]),
+                ],
+              ),
               alignment: Alignment.center,
               child: Text(
                 '$_streak',

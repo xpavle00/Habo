@@ -43,7 +43,7 @@ void main() {
               showSanction: true,
               accountant: 'self',
             ),
-          )
+          ),
         ];
 
         // Test JSON serialization directly

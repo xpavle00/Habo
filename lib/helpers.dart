@@ -12,10 +12,5 @@ TimeOfDay parseTimeOfDay(String? value) {
 }
 
 DateTime transformDate(DateTime date) {
-  return DateTime.utc(
-    date.year,
-    date.month,
-    date.day,
-    12,
-  );
+  return DateTime.utc(date.year, date.month, date.day, 12);
 }

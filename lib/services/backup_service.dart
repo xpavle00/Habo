@@ -8,6 +8,7 @@ import 'package:habo/habits/habit.dart';
 import 'package:habo/model/backup.dart';
 import 'package:habo/services/backup_result.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:habo/repositories/backup_repository.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:intl/intl.dart';
@@ -20,8 +21,13 @@ import 'package:intl/intl.dart';
 class BackupService {
   final UIFeedbackService _uiFeedbackService;
   final BackupRepository _backupRepository;
+  final SyncManager? _syncManager;
 
-  BackupService(this._uiFeedbackService, this._backupRepository);
+  BackupService(
+    this._uiFeedbackService,
+    this._backupRepository, [
+    this._syncManager,
+  ]);
 
   /// Public getter for backupRepository
   BackupRepository get backupRepository => _backupRepository;
@@ -37,8 +43,9 @@ class BackupService {
 
       // Write FULL backup structure to temporary file
       final file = await Backup.writeBackup(backupData);
-      final timestamp =
-          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final timestamp = DateFormat(
+        'yyyy-MM-dd_HH-mm-ss',
+      ).format(DateTime.now());
       final fileName = 'habo_backup_$timestamp.json';
 
       bool? userSaved = false;
@@ -68,9 +75,7 @@ class BackupService {
       }
 
       if (userSaved == true) {
-        _uiFeedbackService.showSuccess(
-          S.current.backupCreatedSuccessfully,
-        );
+        _uiFeedbackService.showSuccess(S.current.backupCreatedSuccessfully);
         return true;
       }
       return false;
@@ -90,8 +95,9 @@ class BackupService {
   Future<bool> createBackup(List<Habit> habits) async {
     try {
       final file = await Backup.writeBackup(habits);
-      final timestamp =
-          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final timestamp = DateFormat(
+        'yyyy-MM-dd_HH-mm-ss',
+      ).format(DateTime.now());
       final fileName = 'habo_backup_$timestamp.json';
 
       bool? userSaved = false;
@@ -122,9 +128,7 @@ class BackupService {
 
       // Show success message if user saved the file
       if (userSaved == true) {
-        _uiFeedbackService.showSuccess(
-          S.current.backupCreatedSuccessfully,
-        );
+        _uiFeedbackService.showSuccess(S.current.backupCreatedSuccessfully);
         return true;
       }
 
@@ -170,9 +174,7 @@ class BackupService {
       }
 
       // Success - show success message and return habits
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return parseResult;
     } catch (e) {
       debugPrint('Error loading backup: $e');
@@ -228,7 +230,8 @@ class BackupService {
       final decoded = jsonDecode(json);
       if (decoded is! List) {
         return BackupResult.failure(
-            'Invalid backup format: expected a list of habits');
+          'Invalid backup format: expected a list of habits',
+        );
       }
 
       // Validate each habit has required fields
@@ -242,7 +245,8 @@ class BackupService {
         for (var field in requiredFields) {
           if (!habitJson.containsKey(field)) {
             return BackupResult.failure(
-                'Invalid backup: missing required field "$field"');
+              'Invalid backup: missing required field "$field"',
+            );
           }
         }
       }
@@ -306,9 +310,10 @@ class BackupService {
 
       await _backupRepository.importData(backupData);
 
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      // Reset sync version and push to cloud so restored data becomes source of truth
+      await _syncManager?.onLocalBackupRestored();
+
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
       debugPrint('Error restoring from backup file: $e');
@@ -334,9 +339,7 @@ class BackupService {
       // Import data to database via repository
       await _backupRepository.importData(backupData);
 
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
       debugPrint('Error restoring to database: $e');
@@ -353,16 +356,10 @@ class BackupService {
       final habitCount = await _backupRepository.getHabitCount();
       final eventCount = await _backupRepository.getEventCount();
 
-      return {
-        'habits': habitCount,
-        'events': eventCount,
-      };
+      return {'habits': habitCount, 'events': eventCount};
     } catch (e) {
       debugPrint('Error getting database stats: $e');
-      return {
-        'habits': 0,
-        'events': 0,
-      };
+      return {'habits': 0, 'events': 0};
     }
   }
 }
