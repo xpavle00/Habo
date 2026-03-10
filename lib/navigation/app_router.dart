@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:habo/screens/sync_screen.dart';
+import 'package:habo/screens/profile_screen.dart';
 import 'package:habo/habits/edit_habit_screen.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/habits/habits_screen.dart';
@@ -56,6 +58,8 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
         if (appStateManager.getSettings) SettingsScreen.page(),
         if (appStateManager.getWhatsNew || _shouldShowWhatsNew())
           WhatsNewScreen.page(),
+        if (appStateManager.getSync) SyncScreen.page(),
+        if (appStateManager.getProfile) ProfileScreen.page(),
         if (appStateManager.getOnboarding || !settingsManager.getSeenOnboarding)
           OnboardingScreen.page(),
         if (appStateManager.getCreateHabit) EditHabitScreen.page(null),
@@ -90,6 +94,14 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
         if (current.isNotEmpty) {
           settingsManager.setLastWhatsNewVersion = current;
         }
+      }
+
+      if (page.name == Routes.syncPath) {
+        appStateManager.goSync(false);
+      }
+
+      if (page.name == Routes.profilePath) {
+        appStateManager.goProfile(false);
       }
 
       if (page.name == Routes.createHabitPath) {
@@ -129,6 +141,12 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
     if (appStateManager.getOnboarding) {
       return const HaboRouteConfiguration(path: '/onboarding');
     }
+    if (appStateManager.getSync) {
+      return const HaboRouteConfiguration(path: '/sync');
+    }
+    if (appStateManager.getProfile) {
+      return const HaboRouteConfiguration(path: '/profile');
+    }
     return const HaboRouteConfiguration(path: '/');
   }
 
@@ -156,6 +174,7 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       appStateManager.goOnboarding(false);
       appStateManager.goWhatsNew(false);
       appStateManager.goEditHabit(null);
+      appStateManager.goSync(false);
 
       // Navigate based on the URL path
       switch (normalizedPath) {
@@ -172,6 +191,12 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
           break;
         case '/whatsnew':
           appStateManager.goWhatsNew(true);
+          break;
+        case '/sync':
+          appStateManager.goSync(true);
+          break;
+        case '/profile':
+          appStateManager.goProfile(true);
           break;
         case '/':
         case '/main':

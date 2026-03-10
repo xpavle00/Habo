@@ -15,8 +15,9 @@ class HomeWidgetData {
     required this.completedHabits,
     this.skippedHabits = 0,
     this.failedHabits = 0,
-  }) : completionPercentage =
-            totalHabits > 0 ? (completedHabits / totalHabits * 100) : 0.0;
+  }) : completionPercentage = totalHabits > 0
+           ? (completedHabits / totalHabits * 100)
+           : 0.0;
 }
 
 /// Helper class to calculate widget data from habits
@@ -24,12 +25,14 @@ class HomeWidgetHelper {
   /// Calculate today's habit completion data
   static HomeWidgetData getTodayData(List<Habit> habits) {
     final today = DateTime.now();
-    final todayDate =
-        transformDate(today); // Use transformDate to match event keys
+    final todayDate = transformDate(
+      today,
+    ); // Use transformDate to match event keys
 
     // Filter out archived habits
-    final activeHabits =
-        habits.where((habit) => !habit.habitData.archived).toList();
+    final activeHabits = habits
+        .where((habit) => !habit.habitData.archived)
+        .toList();
 
     int totalHabits = activeHabits.length;
     int completedHabits = 0;

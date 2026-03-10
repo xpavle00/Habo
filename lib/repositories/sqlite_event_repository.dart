@@ -59,7 +59,9 @@ class SQLiteEventRepository implements EventRepository {
 
   @override
   Future<void> insertEventsForHabit(
-      int habitId, Map<DateTime, List> events) async {
+    int habitId,
+    Map<DateTime, List> events,
+  ) async {
     for (final entry in events.entries) {
       await insertEvent(habitId, entry.key, entry.value);
     }

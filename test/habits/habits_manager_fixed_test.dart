@@ -12,6 +12,7 @@ import 'package:habo/repositories/habit_repository.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
@@ -26,6 +27,8 @@ class MockNotificationService extends Mock implements NotificationService {}
 
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
+class MockSyncManager extends Mock implements SyncManager {}
+
 void main() {
   late HabitsManager habitsManager;
   late MockHabitRepository mockHabitRepository;
@@ -34,29 +37,32 @@ void main() {
   late MockBackupService mockBackupService;
   late MockNotificationService mockNotificationService;
   late MockUIFeedbackService mockUIFeedbackService;
+  late MockSyncManager mockSyncManager;
 
   setUpAll(() async {
     // Initialize localization for tests
     TestWidgetsFlutterBinding.ensureInitialized();
     await S.load(const Locale('en'));
-    registerFallbackValue(Habit(
-      habitData: HabitData(
-        position: 0,
-        title: 'Fallback',
-        twoDayRule: false,
-        cue: '',
-        routine: '',
-        reward: '',
-        showReward: false,
-        advanced: false,
-        notification: false,
-        notTime: const TimeOfDay(hour: 9, minute: 0),
-        events: SplayTreeMap<DateTime, List>(),
-        sanction: '',
-        showSanction: false,
-        accountant: '',
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: 'Fallback',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          notification: false,
+          notTime: const TimeOfDay(hour: 9, minute: 0),
+          events: SplayTreeMap<DateTime, List>(),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
       ),
-    ));
+    );
     registerFallbackValue(TimeOfDay.now());
     registerFallbackValue(Colors.grey);
   });
@@ -68,6 +74,10 @@ void main() {
     mockBackupService = MockBackupService();
     mockNotificationService = MockNotificationService();
     mockUIFeedbackService = MockUIFeedbackService();
+    mockSyncManager = MockSyncManager();
+
+    // Setup SyncManager mock
+    when(() => mockSyncManager.scheduleSync()).thenReturn(null);
 
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
@@ -76,6 +86,7 @@ void main() {
       backupService: mockBackupService,
       notificationService: mockNotificationService,
       uiFeedbackService: mockUIFeedbackService,
+      syncManager: mockSyncManager,
     );
   });
 
@@ -108,8 +119,9 @@ void main() {
         ),
       ];
 
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => mockHabits);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => mockHabits);
 
       // Act
       await habitsManager.initModel();
@@ -122,8 +134,9 @@ void main() {
       test('should add habit', () async {
         // Arrange
 
-        when(() => mockHabitRepository.createHabit(any()))
-            .thenAnswer((_) async => 1);
+        when(
+          () => mockHabitRepository.createHabit(any()),
+        ).thenAnswer((_) async => 1);
 
         // Act
         habitsManager.addHabit(
@@ -169,8 +182,9 @@ void main() {
 
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
-        when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async {});
+        when(
+          () => mockHabitRepository.updateHabit(any()),
+        ).thenAnswer((_) async {});
 
         // Act
         habitsManager.editHabit(testHabit.habitData);
@@ -203,14 +217,17 @@ void main() {
 
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
-        when(() => mockHabitRepository.deleteHabit(any()))
-            .thenAnswer((_) async {});
-        when(() => mockUIFeedbackService.showMessageWithAction(
-              message: any(named: 'message'),
-              actionLabel: any(named: 'actionLabel'),
-              onActionPressed: any(named: 'onActionPressed'),
-              backgroundColor: any(named: 'backgroundColor'),
-            )).thenReturn(null);
+        when(
+          () => mockHabitRepository.deleteHabit(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockUIFeedbackService.showMessageWithAction(
+            message: any(named: 'message'),
+            actionLabel: any(named: 'actionLabel'),
+            onActionPressed: any(named: 'onActionPressed'),
+            backgroundColor: any(named: 'backgroundColor'),
+          ),
+        ).thenReturn(null);
 
         // Act
         habitsManager.deleteHabit(1);
@@ -247,16 +264,20 @@ void main() {
 
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
-        when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async {});
-        when(() => mockNotificationService.disableHabitNotification(any()))
-            .thenReturn(null);
-        when(() => mockUIFeedbackService.showMessageWithAction(
-              message: any(named: 'message'),
-              actionLabel: any(named: 'actionLabel'),
-              onActionPressed: any(named: 'onActionPressed'),
-              backgroundColor: any(named: 'backgroundColor'),
-            )).thenReturn(null);
+        when(
+          () => mockHabitRepository.updateHabit(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.disableHabitNotification(any()),
+        ).thenReturn(null);
+        when(
+          () => mockUIFeedbackService.showMessageWithAction(
+            message: any(named: 'message'),
+            actionLabel: any(named: 'actionLabel'),
+            onActionPressed: any(named: 'onActionPressed'),
+            backgroundColor: any(named: 'backgroundColor'),
+          ),
+        ).thenReturn(null);
 
         // Act
         habitsManager.archiveHabit(1);
@@ -264,14 +285,17 @@ void main() {
         // Assert
         expect(testHabit.habitData.archived, true);
         verify(() => mockHabitRepository.updateHabit(any())).called(1);
-        verify(() => mockNotificationService.disableHabitNotification(1))
-            .called(1);
-        verify(() => mockUIFeedbackService.showMessageWithAction(
-              message: any(named: 'message'),
-              actionLabel: any(named: 'actionLabel'),
-              onActionPressed: any(named: 'onActionPressed'),
-              backgroundColor: any(named: 'backgroundColor'),
-            )).called(1);
+        verify(
+          () => mockNotificationService.disableHabitNotification(1),
+        ).called(1);
+        verify(
+          () => mockUIFeedbackService.showMessageWithAction(
+            message: any(named: 'message'),
+            actionLabel: any(named: 'actionLabel'),
+            onActionPressed: any(named: 'onActionPressed'),
+            backgroundColor: any(named: 'backgroundColor'),
+          ),
+        ).called(1);
       });
 
       test('should unarchive habit', () async {
@@ -299,10 +323,17 @@ void main() {
 
         // Add habit to internal state
         habitsManager.allHabits.add(testHabit);
-        when(() => mockHabitRepository.updateHabit(any()))
-            .thenAnswer((_) async {});
-        when(() => mockNotificationService.setHabitNotification(
-            any(), any(), any(), any())).thenReturn(null);
+        when(
+          () => mockHabitRepository.updateHabit(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.setHabitNotification(
+            any(),
+            any(),
+            any(),
+            any(),
+          ),
+        ).thenReturn(null);
         when(() => mockUIFeedbackService.showSuccess(any())).thenReturn(null);
 
         // Act
@@ -311,8 +342,14 @@ void main() {
         // Assert
         expect(testHabit.habitData.archived, false);
         verify(() => mockHabitRepository.updateHabit(any())).called(1);
-        verify(() => mockNotificationService.setHabitNotification(
-            1, any(), 'Habo', 'Test Habit')).called(1);
+        verify(
+          () => mockNotificationService.setHabitNotification(
+            1,
+            any(),
+            'Habo',
+            'Test Habit',
+          ),
+        ).called(1);
         verify(() => mockUIFeedbackService.showSuccess(any())).called(1);
       });
 

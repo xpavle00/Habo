@@ -3,10 +3,14 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/model/category.dart';
+import 'package:uuid/uuid.dart';
+
+const _uuidGenerator = Uuid();
 
 class HabitData {
   HabitData({
     this.id,
+    String? uuid,
     required this.position,
     required this.title,
     required this.twoDayRule,
@@ -27,12 +31,18 @@ class HabitData {
     this.unit = '',
     this.categories = const [],
     this.archived = false,
-  });
+    this.deletedAt,
+    DateTime? updatedAt,
+  }) : uuid = uuid ?? _uuidGenerator.v4(),
+       updatedAt = updatedAt ?? DateTime.now().toUtc();
 
   SplayTreeMap<DateTime, List> events;
   int streak = 0;
   int? id;
+  final String uuid;
+  DateTime updatedAt;
   int position;
+  DateTime? deletedAt;
   String title;
   bool twoDayRule;
   String cue;

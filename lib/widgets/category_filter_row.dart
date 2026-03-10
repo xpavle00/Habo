@@ -38,7 +38,9 @@ class CategoryFilterRow extends StatelessWidget {
             key: ValueKey('cat-row-$themeSig'),
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(
-                left: 16, right: 24), // Extra right padding
+              left: 16,
+              right: 24,
+            ), // Extra right padding
             itemCount:
                 habitsManager.allCategories.length + 1, // +1 for "All" chip
             itemBuilder: (context, index) {
@@ -52,7 +54,9 @@ class CategoryFilterRow extends StatelessWidget {
                     label: Text(
                       S.of(context).all,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600, color: Colors.grey),
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey,
+                      ),
                     ),
                     selected: isSelected,
                     onSelected: (selected) {
@@ -61,14 +65,14 @@ class CategoryFilterRow extends StatelessWidget {
                       }
                     },
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    selectedColor:
-                        Theme.of(context).colorScheme.primaryContainer,
+                    selectedColor: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer,
                     side: BorderSide(
                       color: isSelected
-                          ? Theme.of(context)
-                              .colorScheme
-                              .outline
-                              .withValues(alpha: 0.3)
+                          ? Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.3)
                           : Colors.transparent,
                       width: 1,
                     ),
@@ -91,11 +95,7 @@ class CategoryFilterRow extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  avatar: Icon(
-                    category.icon,
-                    size: 18,
-                    color: Colors.grey,
-                  ),
+                  avatar: Icon(category.icon, size: 18, color: Colors.grey),
                   selected: isSelected,
                   onSelected: (selected) {
                     if (selected) {

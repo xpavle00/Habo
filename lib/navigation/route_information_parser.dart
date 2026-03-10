@@ -22,7 +22,8 @@ class HaboRouteInformationParser
     extends RouteInformationParser<HaboRouteConfiguration> {
   @override
   Future<HaboRouteConfiguration> parseRouteInformation(
-      RouteInformation routeInformation) async {
+    RouteInformation routeInformation,
+  ) async {
     // For custom schemes, the path is in the host part. For web, it's in the path.
     final uri = routeInformation.uri;
     String path = uri.path;
@@ -38,7 +39,8 @@ class HaboRouteInformationParser
 
   @override
   RouteInformation? restoreRouteInformation(
-      HaboRouteConfiguration configuration) {
+    HaboRouteConfiguration configuration,
+  ) {
     return RouteInformation(uri: Uri.parse(configuration.path));
   }
 }

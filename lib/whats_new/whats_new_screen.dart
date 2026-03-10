@@ -23,11 +23,7 @@ class _WhatsNewScreenState extends State<WhatsNewScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateManager>(
-      builder: (
-        context,
-        appStateManager,
-        child,
-      ) {
+      builder: (context, appStateManager, child) {
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {

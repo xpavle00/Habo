@@ -11,6 +11,7 @@ import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
@@ -25,6 +26,8 @@ class MockNotificationService extends Mock implements NotificationService {}
 
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
+class MockSyncManager extends Mock implements SyncManager {}
+
 void main() {
   late HabitsManager habitsManager;
   late MockHabitRepository mockHabitRepository;
@@ -33,10 +36,31 @@ void main() {
   late MockBackupService mockBackupService;
   late MockNotificationService mockNotificationService;
   late MockUIFeedbackService mockUIFeedbackService;
+  late MockSyncManager mockSyncManager;
 
   setUpAll(() {
-    registerFallbackValue(Habit(
-      habitData: HabitData(
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: '',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          events: SplayTreeMap<DateTime, List>(),
+          notification: false,
+          notTime: const TimeOfDay(hour: 0, minute: 0),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
+      ),
+    );
+    registerFallbackValue(
+      HabitData(
         position: 0,
         title: '',
         twoDayRule: false,
@@ -52,23 +76,7 @@ void main() {
         showSanction: false,
         accountant: '',
       ),
-    ));
-    registerFallbackValue(HabitData(
-      position: 0,
-      title: '',
-      twoDayRule: false,
-      cue: '',
-      routine: '',
-      reward: '',
-      showReward: false,
-      advanced: false,
-      events: SplayTreeMap<DateTime, List>(),
-      notification: false,
-      notTime: const TimeOfDay(hour: 0, minute: 0),
-      sanction: '',
-      showSanction: false,
-      accountant: '',
-    ));
+    );
   });
 
   setUp(() {
@@ -78,6 +86,10 @@ void main() {
     mockBackupService = MockBackupService();
     mockNotificationService = MockNotificationService();
     mockUIFeedbackService = MockUIFeedbackService();
+    mockSyncManager = MockSyncManager();
+
+    // Setup SyncManager mock
+    when(() => mockSyncManager.scheduleSync()).thenReturn(null);
 
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
@@ -86,6 +98,7 @@ void main() {
       backupService: mockBackupService,
       notificationService: mockNotificationService,
       uiFeedbackService: mockUIFeedbackService,
+      syncManager: mockSyncManager,
     );
   });
 
@@ -117,8 +130,9 @@ void main() {
         ),
       ];
 
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => mockHabits);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => mockHabits);
 
       // Act
       await habitsManager.initModel();
@@ -131,8 +145,9 @@ void main() {
 
     test('should handle empty habits list', () async {
       // Arrange
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => []);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => []);
 
       // Act
       await habitsManager.initModel();
@@ -144,10 +159,12 @@ void main() {
     group('CRUD Operations', () {
       setUp(() async {
         // Setup initial state with empty habits
-        when(() => mockHabitRepository.getAllHabits())
-            .thenAnswer((_) async => []);
-        when(() => mockHabitRepository.createHabit(any()))
-            .thenAnswer((_) async => 1);
+        when(
+          () => mockHabitRepository.getAllHabits(),
+        ).thenAnswer((_) async => []);
+        when(
+          () => mockHabitRepository.createHabit(any()),
+        ).thenAnswer((_) async => 1);
         await habitsManager.initModel();
       });
 
@@ -162,8 +179,9 @@ void main() {
           const testAccountant = 'Test accountant';
           const testTime = TimeOfDay(hour: 9, minute: 0);
 
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
 
           // Act
           habitsManager.addHabit(
@@ -181,7 +199,8 @@ void main() {
             testAccountant,
           );
           await Future.delayed(
-              Duration.zero); // Allow async operations to complete
+            Duration.zero,
+          ); // Allow async operations to complete
 
           // Assert
           expect(habitsManager.allHabits.length, 1);
@@ -193,20 +212,45 @@ void main() {
 
         test('should add habit with correct position', () async {
           // Arrange
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
 
           // Act - Add first habit
-          habitsManager.addHabit('First Habit', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'First Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
 
           // Manually set ID for testing
           habitsManager.allHabits[0].habitData.id = 1;
 
           // Act - Add second habit
-          habitsManager.addHabit('Second Habit', false, '', '', '', false,
-              false, false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Second Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
 
           // Manually set ID for testing
@@ -222,16 +266,41 @@ void main() {
       group('Read Operations', () {
         setUp(() async {
           // Add some test habits
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
 
-          habitsManager.addHabit('Habit 1', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Habit 1',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
           habitsManager.allHabits[0].habitData.id = 1;
 
-          habitsManager.addHabit('Habit 2', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Habit 2',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
           habitsManager.allHabits[1].habitData.id = 2;
         });
@@ -275,26 +344,30 @@ void main() {
 
         setUp(() async {
           // Setup a test habit
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
-          when(() => mockHabitRepository.updateHabit(any()))
-              .thenAnswer((_) async {});
-          when(() => mockHabitRepository.getAllHabits())
-              .thenAnswer((_) async => [testHabit]);
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.updateHabit(any()),
+          ).thenAnswer((_) async {});
+          when(
+            () => mockHabitRepository.getAllHabits(),
+          ).thenAnswer((_) async => [testHabit]);
 
           habitsManager.addHabit(
-              'Original Title',
-              false,
-              'Original cue',
-              'Original routine',
-              'Original reward',
-              false,
-              false,
-              false,
-              const TimeOfDay(hour: 9, minute: 0),
-              'Original sanction',
-              false,
-              'Original accountant');
+            'Original Title',
+            false,
+            'Original cue',
+            'Original routine',
+            'Original reward',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            'Original sanction',
+            false,
+            'Original accountant',
+          );
           await Future.delayed(Duration.zero);
 
           testHabit = habitsManager.allHabits[0];
@@ -367,13 +440,27 @@ void main() {
 
         setUp(() async {
           // Setup a test habit
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
-          when(() => mockHabitRepository.deleteHabit(any()))
-              .thenAnswer((_) async {});
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.deleteHabit(any()),
+          ).thenAnswer((_) async {});
 
-          habitsManager.addHabit('Test Habit', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Test Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
 
           testHabit = habitsManager.allHabits[0];
@@ -411,21 +498,58 @@ void main() {
       group('Utility Methods', () {
         setUp(() async {
           // Add some test habits
-          when(() => mockHabitRepository.createHabit(any()))
-              .thenAnswer((_) async => 1);
+          when(
+            () => mockHabitRepository.createHabit(any()),
+          ).thenAnswer((_) async => 1);
 
-          habitsManager.addHabit('First Habit', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'First Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
           habitsManager.allHabits[0].habitData.id = 1;
 
-          habitsManager.addHabit('Second Habit', false, '', '', '', false,
-              false, false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Second Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
           habitsManager.allHabits[1].habitData.id = 2;
 
-          habitsManager.addHabit('Third Habit', false, '', '', '', false, false,
-              false, const TimeOfDay(hour: 9, minute: 0), '', false, '');
+          habitsManager.addHabit(
+            'Third Habit',
+            false,
+            '',
+            '',
+            '',
+            false,
+            false,
+            false,
+            const TimeOfDay(hour: 9, minute: 0),
+            '',
+            false,
+            '',
+          );
           await Future.delayed(Duration.zero);
           habitsManager.allHabits[2].habitData.id = 3;
         });

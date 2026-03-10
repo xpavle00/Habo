@@ -18,8 +18,10 @@ void main() {
       mockUIFeedbackService = MockUIFeedbackService();
       // Create a mock BackupRepository for testing
       final mockBackupRepository = MockBackupRepository();
-      backupService =
-          BackupService(mockUIFeedbackService, mockBackupRepository);
+      backupService = BackupService(
+        mockUIFeedbackService,
+        mockBackupRepository,
+      );
     });
 
     group('BackupResult', () {

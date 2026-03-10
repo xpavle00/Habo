@@ -66,11 +66,7 @@ class HabitProgressIndicator extends StatelessWidget {
           color: backgroundColor,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          icon,
-          color: iconColor,
-          size: size * 0.6,
-        ),
+        child: Icon(icon, color: iconColor, size: size * 0.6),
       ),
     );
   }
@@ -89,8 +85,10 @@ class HabitProgressIndicator extends StatelessWidget {
     Color progressColor;
     Color backgroundColor = HaboColors.progressBackground;
 
-    final settingsManager =
-        Provider.of<SettingsManager>(context, listen: false);
+    final settingsManager = Provider.of<SettingsManager>(
+      context,
+      listen: false,
+    );
 
     if (isExceeded) {
       progressColor = settingsManager.checkColor;
@@ -141,11 +139,7 @@ class HabitProgressIndicator extends StatelessWidget {
                 ),
               )
             else
-              Icon(
-                Icons.add,
-                color: Colors.grey.shade600,
-                size: size * 0.4,
-              ),
+              Icon(Icons.add, color: Colors.grey.shade600, size: size * 0.4),
           ],
         ),
       ),
@@ -180,9 +174,9 @@ class HabitProgressSummary extends StatelessWidget {
     if (progress == 0) {
       return Text(
         '0 / ${targetAtTime.toStringAsFixed(targetAtTime == targetAtTime.roundToDouble() ? 0 : 1)} ${habitData.unit}',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey.shade600,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
       );
     }
 
@@ -191,8 +185,9 @@ class HabitProgressSummary extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall,
         children: [
           TextSpan(
-            text: progress
-                .toStringAsFixed(progress == progress.roundToDouble() ? 0 : 1),
+            text: progress.toStringAsFixed(
+              progress == progress.roundToDouble() ? 0 : 1,
+            ),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: isCompleted ? HaboColors.primary : HaboColors.progress,

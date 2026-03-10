@@ -55,8 +55,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
   Future<void> setNotificationTime(BuildContext context) async {
     TimeOfDay? selectedTime;
     TimeOfDay initialTime = notTime;
-    selectedTime =
-        await showTimePicker(context: context, initialTime: initialTime);
+    selectedTime = await showTimePicker(
+      context: context,
+      initialTime: initialTime,
+    );
     if (selectedTime != null) {
       setState(() {
         notTime = selectedTime!;
@@ -94,55 +96,33 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
                 children: <TextSpan>[
-                  TextSpan(
-                    text: S.of(context).habitLoopDescription,
-                  ),
-                  const TextSpan(
-                    text: '\n\n',
-                  ),
+                  TextSpan(text: S.of(context).habitLoopDescription),
+                  const TextSpan(text: '\n\n'),
                   TextSpan(
                     text: S.of(context).cue,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const TextSpan(text: ' '),
-                  TextSpan(
-                    text: S.of(context).cueDescription,
-                  ),
-                  const TextSpan(
-                    text: '\n\n',
-                  ),
+                  TextSpan(text: S.of(context).cueDescription),
+                  const TextSpan(text: '\n\n'),
                   TextSpan(
                     text: S.of(context).routine,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const TextSpan(text: ' '),
-                  TextSpan(
-                    text: S.of(context).routineDescription,
-                  ),
-                  const TextSpan(
-                    text: '\n\n',
-                  ),
+                  TextSpan(text: S.of(context).routineDescription),
+                  const TextSpan(text: '\n\n'),
                   TextSpan(
                     text: S.of(context).reward,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const TextSpan(text: ' '),
-                  TextSpan(
-                    text: S.of(context).rewardDescription,
-                  ),
+                  TextSpan(text: S.of(context).rewardDescription),
                 ],
               ),
             ),
@@ -172,8 +152,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       accountant.text = widget.habitData!.accountant;
       habitType = widget.habitData!.habitType;
       targetValue.text = numberFormatter.format(widget.habitData!.targetValue);
-      partialValue.text =
-          numberFormatter.format(widget.habitData!.partialValue);
+      partialValue.text = numberFormatter.format(
+        widget.habitData!.partialValue,
+      );
       unit.text = widget.habitData!.unit;
       selectedCategories = List.from(widget.habitData!.categories);
     }
@@ -204,8 +185,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        final appStateManager =
-            Provider.of<AppStateManager>(context, listen: false);
+        final appStateManager = Provider.of<AppStateManager>(
+          context,
+          listen: false,
+        );
         if (widget.habitData != null) {
           appStateManager.goEditHabit(null);
         } else {
@@ -235,11 +218,15 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     ? S.of(context).unarchiveHabit
                     : S.of(context).archiveHabit,
                 onPressed: () {
-                  final appStateManager =
-                      Provider.of<AppStateManager>(context, listen: false);
+                  final appStateManager = Provider.of<AppStateManager>(
+                    context,
+                    listen: false,
+                  );
                   if (widget.habitData != null) {
-                    final habitsManager =
-                        Provider.of<HabitsManager>(context, listen: false);
+                    final habitsManager = Provider.of<HabitsManager>(
+                      context,
+                      listen: false,
+                    );
                     if (widget.habitData!.archived) {
                       habitsManager.unarchiveHabit(widget.habitData!.id!);
                     } else {
@@ -251,105 +238,114 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
               ),
             if (widget.habitData != null)
               IconButton(
-                icon: Icon(
-                  Icons.delete,
-                  semanticLabel: S.of(context).delete,
-                ),
+                icon: Icon(Icons.delete, semanticLabel: S.of(context).delete),
                 color: HaboColors.red,
                 tooltip: S.of(context).delete,
                 onPressed: () {
                   if (widget.habitData != null) {
-                    Provider.of<HabitsManager>(context, listen: false)
-                        .deleteHabit(widget.habitData!.id!);
-                    Provider.of<AppStateManager>(context, listen: false)
-                        .goEditHabit(null);
+                    Provider.of<HabitsManager>(
+                      context,
+                      listen: false,
+                    ).deleteHabit(widget.habitData!.id!);
+                    Provider.of<AppStateManager>(
+                      context,
+                      listen: false,
+                    ).goEditHabit(null);
                   }
                 },
               ),
           ],
         ),
-        floatingActionButton: Builder(builder: (BuildContext context) {
-          return FloatingActionButton(
-            onPressed: () {
-              if (title.text.isNotEmpty) {
-                if (widget.habitData != null) {
-                  final habitData = HabitData(
-                    id: widget.habitData!.id,
-                    title: title.text.toString(),
-                    twoDayRule: twoDayRule,
-                    cue: cue.text.toString(),
-                    routine: routine.text.toString(),
-                    reward: reward.text.toString(),
-                    showReward: showReward,
-                    advanced: advanced,
-                    notification: notification,
-                    notTime: notTime,
-                    position: widget.habitData!.position,
-                    events: widget.habitData!.events,
-                    sanction: sanction.text.toString(),
-                    showSanction: showSanction,
-                    accountant: accountant.text.toString(),
-                    habitType: habitType,
-                    targetValue: double.tryParse(targetValue.text) ?? 100.0,
-                    partialValue: double.tryParse(partialValue.text) ?? 10.0,
-                    unit: unit.text.toString(),
-                    categories: selectedCategories,
-                  );
-                  final habitsManager =
-                      Provider.of<HabitsManager>(context, listen: false);
-                  habitsManager.editHabit(habitData);
-                  // Update habit-category associations
-                  if (widget.habitData!.id != null) {
-                    habitsManager.updateHabitCategories(
-                        widget.habitData!.id!, selectedCategories);
+        floatingActionButton: Builder(
+          builder: (BuildContext context) {
+            return FloatingActionButton(
+              onPressed: () {
+                if (title.text.isNotEmpty) {
+                  if (widget.habitData != null) {
+                    final habitData = HabitData(
+                      id: widget.habitData!.id,
+                      title: title.text.toString(),
+                      twoDayRule: twoDayRule,
+                      cue: cue.text.toString(),
+                      routine: routine.text.toString(),
+                      reward: reward.text.toString(),
+                      showReward: showReward,
+                      advanced: advanced,
+                      notification: notification,
+                      notTime: notTime,
+                      position: widget.habitData!.position,
+                      events: widget.habitData!.events,
+                      sanction: sanction.text.toString(),
+                      showSanction: showSanction,
+                      accountant: accountant.text.toString(),
+                      habitType: habitType,
+                      targetValue: double.tryParse(targetValue.text) ?? 100.0,
+                      partialValue: double.tryParse(partialValue.text) ?? 10.0,
+                      unit: unit.text.toString(),
+                      categories: selectedCategories,
+                    );
+                    final habitsManager = Provider.of<HabitsManager>(
+                      context,
+                      listen: false,
+                    );
+                    habitsManager.editHabit(habitData);
+                    // Update habit-category associations
+                    if (widget.habitData!.id != null) {
+                      habitsManager.updateHabitCategories(
+                        widget.habitData!.id!,
+                        selectedCategories,
+                      );
+                    }
+                  } else {
+                    final habitsManager = Provider.of<HabitsManager>(
+                      context,
+                      listen: false,
+                    );
+                    habitsManager.addHabit(
+                      title.text.toString(),
+                      twoDayRule,
+                      cue.text.toString(),
+                      routine.text.toString(),
+                      reward.text.toString(),
+                      showReward,
+                      advanced,
+                      notification,
+                      notTime,
+                      sanction.text.toString(),
+                      showSanction,
+                      accountant.text.toString(),
+                      habitType: habitType,
+                      targetValue: double.tryParse(targetValue.text) ?? 100.0,
+                      partialValue: double.tryParse(partialValue.text) ?? 10.0,
+                      unit: unit.text.toString(),
+                      categories: selectedCategories,
+                    );
+                    // For new habits, we need to get the habit ID and then update categories
+                    // This will be handled by updating the addHabit method to accept categories
                   }
+                  Navigator.of(context).pop();
                 } else {
-                  final habitsManager =
-                      Provider.of<HabitsManager>(context, listen: false);
-                  habitsManager.addHabit(
-                    title.text.toString(),
-                    twoDayRule,
-                    cue.text.toString(),
-                    routine.text.toString(),
-                    reward.text.toString(),
-                    showReward,
-                    advanced,
-                    notification,
-                    notTime,
-                    sanction.text.toString(),
-                    showSanction,
-                    accountant.text.toString(),
-                    habitType: habitType,
-                    targetValue: double.tryParse(targetValue.text) ?? 100.0,
-                    partialValue: double.tryParse(partialValue.text) ?? 10.0,
-                    unit: unit.text.toString(),
-                    categories: selectedCategories,
-                  );
-                  // For new habits, we need to get the habit ID and then update categories
-                  // This will be handled by updating the addHabit method to accept categories
-                }
-                Navigator.of(context).pop();
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(S.of(context).habitTitleEmptyError),
                     ),
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(S.of(context).habitTitleEmptyError),
-                  ),
-                );
-              }
-            },
-            child: Icon(
-              Icons.check,
-              semanticLabel: S.of(context).save,
-              color: Colors.white,
-              size: 35.0,
-            ),
-          );
-        }),
+                  );
+                }
+              },
+              child: Icon(
+                Icons.check,
+                semanticLabel: S.of(context).save,
+                color: Colors.white,
+                size: 35.0,
+              ),
+            );
+          },
+        ),
         body: Builder(
           builder: (BuildContext context) {
             return SingleChildScrollView(
@@ -363,11 +359,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                     ),
 
                     ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 25),
-                      title: Text(
-                        S.of(context).habitType,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 25,
                       ),
+                      title: Text(S.of(context).habitType),
                       trailing: DropdownButton<HabitType>(
                         value: habitType,
                         onChanged: (value) {
@@ -398,29 +393,36 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 0),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 0,
+                              ),
                               child: Center(
                                 child: RichText(
                                   text: TextSpan(
                                     style: DefaultTextStyle.of(context).style,
                                     children: [
                                       TextSpan(
-                                          text: S
-                                              .of(context)
-                                              .numericHabitDescription),
+                                        text: S
+                                            .of(context)
+                                            .numericHabitDescription,
+                                      ),
                                       WidgetSpan(
                                         child: Padding(
                                           padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 0, 0),
+                                            10,
+                                            0,
+                                            0,
+                                            0,
+                                          ),
                                           child: GestureDetector(
                                             onTap: () {
                                               showSmallTooltip(
-                                                  context,
-                                                  S.of(context).numericHabit,
-                                                  S
-                                                      .of(context)
-                                                      .numericHabitDescription);
+                                                context,
+                                                S.of(context).numericHabit,
+                                                S
+                                                    .of(context)
+                                                    .numericHabitDescription,
+                                              );
                                             },
                                             child: const Icon(
                                               Icons.info,
@@ -444,13 +446,16 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                     controller: targetValue,
                                     keyboardType:
                                         const TextInputType.numberWithOptions(
-                                            decimal: true),
+                                          decimal: true,
+                                        ),
                                     decoration: InputDecoration(
                                       labelText: S.of(context).targetValue,
                                       hintText: '100',
                                       border: OutlineInputBorder(),
                                       contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
+                                        horizontal: 12,
+                                        vertical: 8,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -464,7 +469,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                       hintText: 'push-ups',
                                       border: OutlineInputBorder(),
                                       contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
+                                        horizontal: 12,
+                                        vertical: 8,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -475,15 +482,19 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                               controller: partialValue,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
+                                    decimal: true,
+                                  ),
                               decoration: InputDecoration(
                                 labelText: S.of(context).partialValue,
                                 hintText: '10',
                                 border: OutlineInputBorder(),
                                 contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                helperText:
-                                    S.of(context).partialValueDescription,
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                helperText: S
+                                    .of(context)
+                                    .partialValueDescription,
                               ),
                             ),
                             const SizedBox(height: 12),
@@ -507,9 +518,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           IconButton(
                             onPressed: () {
                               showSmallTooltip(
-                                  context,
-                                  S.of(context).twoDayRule,
-                                  S.of(context).twoDayRuleDescription);
+                                context,
+                                S.of(context).twoDayRule,
+                                S.of(context).twoDayRuleDescription,
+                              );
                             },
                             icon: const Icon(
                               Icons.info,
@@ -532,24 +544,25 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           children: [
                             // Categories ListTile with plus sign
                             ListTile(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ),
                               title: Text(S.of(context).categories),
                               trailing: IconButton(
                                 onPressed: () async {
                                   final result = await Navigator.of(context)
                                       .push<List<Category>>(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CategorySelectionScreen(
-                                        initialSelectedCategories:
-                                            selectedCategories,
-                                        onCategoriesChanged: (categories) {
-                                          // This callback is called when saving
-                                        },
-                                      ),
-                                    ),
-                                  );
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CategorySelectionScreen(
+                                                initialSelectedCategories:
+                                                    selectedCategories,
+                                                onCategoriesChanged: (categories) {
+                                                  // This callback is called when saving
+                                                },
+                                              ),
+                                        ),
+                                      );
                                   if (result != null) {
                                     setState(() {
                                       selectedCategories = result;
@@ -565,7 +578,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             if (selectedCategories.isNotEmpty)
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 4),
+                                  horizontal: 25,
+                                  vertical: 4,
+                                ),
                                 child: Wrap(
                                   spacing: 8.0,
                                   runSpacing: 4.0,
@@ -590,11 +605,12 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                           selectedCategories.remove(category);
                                         });
                                       },
-                                      backgroundColor: Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                      selectedColor: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).scaffoldBackgroundColor,
+                                      selectedColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primaryContainer,
                                       side: BorderSide(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -636,13 +652,18 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                 style: DefaultTextStyle.of(context).style,
                                 children: [
                                   TextSpan(
-                                      text: S
-                                          .of(context)
-                                          .advancedHabitBuildingDescription),
+                                    text: S
+                                        .of(context)
+                                        .advancedHabitBuildingDescription,
+                                  ),
                                   WidgetSpan(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          10, 0, 0, 0),
+                                        10,
+                                        0,
+                                        0,
+                                        0,
+                                      ),
                                       child: GestureDetector(
                                         onTap: () {
                                           showAdvancedTooltip(context);
@@ -660,9 +681,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                         TextContainer(
                           title: cue,
                           hint: S.of(context).at7AM,
@@ -670,11 +689,10 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                         if (platformSupportsNotifications())
                           ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
-                            title: Text(
-                              S.of(context).notifications,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 25,
                             ),
+                            title: Text(S.of(context).notifications),
                             trailing: Switch(
                               value: notification,
                               onChanged: (value) {
@@ -685,12 +703,11 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           ),
                         if (platformSupportsNotifications())
                           ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
-                            enabled: notification,
-                            title: Text(
-                              S.of(context).notificationTime,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 25,
                             ),
+                            enabled: notification,
+                            title: Text(S.of(context).notificationTime),
                             trailing: InkWell(
                               onTap: () {
                                 if (notification) {
@@ -698,12 +715,14 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                 }
                               },
                               child: Text(
-                                MaterialLocalizations.of(context)
-                                    .formatTimeOfDay(notTime),
+                                MaterialLocalizations.of(
+                                  context,
+                                ).formatTimeOfDay(notTime),
                                 style: TextStyle(
-                                    color: (notification)
-                                        ? null
-                                        : Theme.of(context).disabledColor),
+                                  color: (notification)
+                                      ? null
+                                      : Theme.of(context).disabledColor,
+                                ),
                               ),
                             ),
                           ),
@@ -719,7 +738,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
+                            vertical: 5,
+                            horizontal: 20,
+                          ),
                           child: Row(
                             children: <Widget>[
                               Checkbox(
@@ -730,9 +751,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                                 },
                                 value: showReward,
                               ),
-                              Text(
-                                S.of(context).showReward,
-                              ),
+                              Text(S.of(context).showReward),
                               IconButton(
                                 onPressed: () {
                                   showSmallTooltip(
@@ -768,9 +787,7 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         TextContainer(
                           title: sanction,
                           hint: S.of(context).donateToCharity,
@@ -778,22 +795,20 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 20),
+                            vertical: 5,
+                            horizontal: 20,
+                          ),
                           child: Row(
                             children: <Widget>[
                               Checkbox(
                                 onChanged: (bool? value) {
-                                  setState(
-                                    () {
-                                      showSanction = value!;
-                                    },
-                                  );
+                                  setState(() {
+                                    showSanction = value!;
+                                  });
                                 },
                                 value: showSanction,
                               ),
-                              Text(
-                                S.of(context).showSanction,
-                              ),
+                              Text(S.of(context).showSanction),
                               IconButton(
                                 onPressed: () {
                                   showSmallTooltip(
@@ -816,11 +831,9 @@ class _EditHabitScreenState extends State<EditHabitScreen> {
                           hint: S.of(context).dan,
                           label: S.of(context).accountabilityPartner,
                         ),
-                        const SizedBox(
-                          height: 110,
-                        ),
+                        const SizedBox(height: 110),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

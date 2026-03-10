@@ -17,9 +17,9 @@ class NotificationService {
     if (!notifications.platformSupportsNotifications()) return;
 
     // Check existing notifications and habit completion status
-    AwesomeNotifications()
-        .listScheduledNotifications()
-        .then((scheduledNotifications) {
+    AwesomeNotifications().listScheduledNotifications().then((
+      scheduledNotifications,
+    ) {
       final existingIds = scheduledNotifications
           .map((n) => n.content?.id)
           .whereType<int>()
@@ -48,7 +48,11 @@ class NotificationService {
           // Only schedule notification if not completed today
           if (!isCompletedToday && !existingIds.contains(data.id)) {
             notifications.setHabitNotification(
-                data.id!, data.notTime, 'Habo', data.title);
+              data.id!,
+              data.notTime,
+              'Habo',
+              data.title,
+            );
           }
         }
       }
@@ -79,8 +83,11 @@ class NotificationService {
   void handleHabitEventAdded(int habitId, DateTime eventDate, List event) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final eventDateOnly =
-        DateTime(eventDate.year, eventDate.month, eventDate.day);
+    final eventDateOnly = DateTime(
+      eventDate.year,
+      eventDate.month,
+      eventDate.day,
+    );
 
     if (eventDateOnly == today &&
         event.isNotEmpty &&
@@ -94,8 +101,11 @@ class NotificationService {
   void handleHabitEventDeleted(int habitId, DateTime eventDate) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final eventDateOnly =
-        DateTime(eventDate.year, eventDate.month, eventDate.day);
+    final eventDateOnly = DateTime(
+      eventDate.year,
+      eventDate.month,
+      eventDate.day,
+    );
 
     if (eventDateOnly == today) {
       notifications.rescheduleNotificationForToday(habitId);

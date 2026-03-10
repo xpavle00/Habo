@@ -36,8 +36,10 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
     super.initState();
     _currentValue = widget.currentProgress;
     _textController = TextEditingController(
-        text: _currentValue.toStringAsFixed(
-            _currentValue == _currentValue.roundToDouble() ? 0 : 1));
+      text: _currentValue.toStringAsFixed(
+        _currentValue == _currentValue.roundToDouble() ? 0 : 1,
+      ),
+    );
   }
 
   @override
@@ -49,9 +51,12 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
   void _updateValue(double value) {
     setState(() {
       _currentValue = value.clamp(
-          0.0, widget.targetValue * 2); // Allow up to 200% completion
+        0.0,
+        widget.targetValue * 2,
+      ); // Allow up to 200% completion
       _textController.text = _currentValue.toStringAsFixed(
-          _currentValue == _currentValue.roundToDouble() ? 0 : 1);
+        _currentValue == _currentValue.roundToDouble() ? 0 : 1,
+      );
     });
   }
 
@@ -86,8 +91,8 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
                   child: Text(
                     widget.habitTitle,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     softWrap: false,
@@ -122,58 +127,61 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
                         percent: _progressPercentage,
                         backgroundColor: Colors.transparent,
                         progressColor: _isExceeded
-                            ? Provider.of<SettingsManager>(context,
-                                    listen: false)
-                                .checkColor
+                            ? Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).checkColor
                             : _isCompleted
-                                ? Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .checkColor
-                                : Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .progressColor,
+                            ? Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).checkColor
+                            : Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).progressColor,
                         circularStrokeCap: CircularStrokeCap.round,
                       ),
                     ),
                     // Progress text
                     AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
-                        transitionBuilder:
-                            (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: ScaleTransition(
-                              scale: animation,
-                              child: child,
+                      duration: Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: ScaleTransition(
+                                scale: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                      child: _isCompleted
+                          ? Icon(
+                              Icons.check,
+                              color: Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).checkColor,
+                              size: 50,
+                            )
+                          : Text(
+                              '${(_progressPercentage * 100).round()}%',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: _isCompleted
+                                        ? Provider.of<SettingsManager>(
+                                            context,
+                                            listen: false,
+                                          ).checkColor
+                                        : Provider.of<SettingsManager>(
+                                            context,
+                                            listen: false,
+                                          ).progressColor,
+                                  ),
                             ),
-                          );
-                        },
-                        child: _isCompleted
-                            ? Icon(
-                                Icons.check,
-                                color: Provider.of<SettingsManager>(context,
-                                        listen: false)
-                                    .checkColor,
-                                size: 50,
-                              )
-                            : Text(
-                                '${(_progressPercentage * 100).round()}%',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: _isCompleted
-                                          ? Provider.of<SettingsManager>(
-                                                  context,
-                                                  listen: false)
-                                              .checkColor
-                                          : Provider.of<SettingsManager>(
-                                                  context,
-                                                  listen: false)
-                                              .progressColor,
-                                    ),
-                              )),
+                    ),
                   ],
                 ),
               ),
@@ -205,8 +213,9 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
               Center(
                 child: TextField(
                   controller: _textController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: InputDecoration(
                     labelText: S.of(context).enterAmount,
                     suffixText: widget.unit,
@@ -223,15 +232,20 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildQuickButton(
-                    '-${widget.partialValue.toStringAsFixed(widget.partialValue == widget.partialValue.roundToDouble() ? 0 : 1)}',
-                    () => _updateValue(_currentValue - widget.partialValue),
-                    context),
+                  '-${widget.partialValue.toStringAsFixed(widget.partialValue == widget.partialValue.roundToDouble() ? 0 : 1)}',
+                  () => _updateValue(_currentValue - widget.partialValue),
+                  context,
+                ),
                 _buildQuickButton(
-                    '+${widget.partialValue.toStringAsFixed(widget.partialValue == widget.partialValue.roundToDouble() ? 0 : 1)}',
-                    () => _updateValue(_currentValue + widget.partialValue),
-                    context),
-                _buildQuickButton(S.of(context).complete,
-                    () => _updateValue(widget.targetValue), context),
+                  '+${widget.partialValue.toStringAsFixed(widget.partialValue == widget.partialValue.roundToDouble() ? 0 : 1)}',
+                  () => _updateValue(_currentValue + widget.partialValue),
+                  context,
+                ),
+                _buildQuickButton(
+                  S.of(context).complete,
+                  () => _updateValue(widget.targetValue),
+                  context,
+                ),
               ],
             ),
             const SizedBox(height: 24),
@@ -244,8 +258,9 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.transparent,
-                    foregroundColor:
-                        Theme.of(context).textTheme.bodyMedium?.color,
+                    foregroundColor: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.color,
                   ),
                   child: Text(S.of(context).cancel),
                 ),
@@ -257,17 +272,23 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _isCompleted
-                        ? Provider.of<SettingsManager>(context, listen: false)
-                            .checkColor
-                        : Provider.of<SettingsManager>(context, listen: false)
-                            .progressColor,
+                        ? Provider.of<SettingsManager>(
+                            context,
+                            listen: false,
+                          ).checkColor
+                        : Provider.of<SettingsManager>(
+                            context,
+                            listen: false,
+                          ).progressColor,
                   ),
                   child: Text(
                     _isCompleted
                         ? S.of(context).complete
                         : S.of(context).saveProgress,
                     style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -279,7 +300,10 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
   }
 
   Widget _buildQuickButton(
-      String label, VoidCallback onPressed, BuildContext context) {
+    String label,
+    VoidCallback onPressed,
+    BuildContext context,
+  ) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -294,10 +318,7 @@ class _ProgressInputModalState extends State<ProgressInputModal> {
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
     );
   }

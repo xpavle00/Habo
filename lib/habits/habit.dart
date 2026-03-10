@@ -28,6 +28,7 @@ class Habit extends StatefulWidget {
   Map<String, dynamic> toMap() {
     return {
       'id': habitData.id,
+      'uuid': habitData.uuid,
       'title': habitData.title,
       'twoDayRule': habitData.twoDayRule ? 1 : 0,
       'position': habitData.position,
@@ -46,12 +47,14 @@ class Habit extends StatefulWidget {
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
       'archived': habitData.archived ? 1 : 0,
+      'deleted_at': habitData.deletedAt?.toIso8601String(),
     };
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': habitData.id,
+      'uuid': habitData.uuid,
       'title': habitData.title,
       'twoDayRule': habitData.twoDayRule ? 1 : 0,
       'position': habitData.position,
@@ -64,12 +67,13 @@ class Habit extends StatefulWidget {
       'notTime': '${habitData.notTime.hour}:${habitData.notTime.minute}',
       'events': habitData.events.map((key, value) {
         return MapEntry(
-            key.toString(),
-            value.length > 3
-                ? [value[0].toString(), value[1], value[2], value[3]]
-                : value.length > 2
-                    ? [value[0].toString(), value[1], value[2]]
-                    : [value[0].toString(), value[1]]);
+          key.toString(),
+          value.length > 3
+              ? [value[0].toString(), value[1], value[2], value[3]]
+              : value.length > 2
+              ? [value[0].toString(), value[1], value[2]]
+              : [value[0].toString(), value[1]],
+        );
       }),
       'sanction': habitData.sanction,
       'showSanction': habitData.showSanction ? 1 : 0,
@@ -78,47 +82,58 @@ class Habit extends StatefulWidget {
       'targetValue': habitData.targetValue,
       'partialValue': habitData.partialValue,
       'unit': habitData.unit,
-      'categories':
-          habitData.categories.map((category) => category.toJson()).toList(),
+      'categories': habitData.categories
+          .map((category) => category.toJson())
+          .toList(),
       'archived': habitData.archived ? 1 : 0,
+      'deleted_at': habitData.deletedAt?.toIso8601String(),
+      'updated_at': habitData.updatedAt.toIso8601String(),
     };
   }
 
   Habit.fromJson(Map<String, dynamic> json, {super.key})
-      : habitData = HabitData(
-          id: json['id'],
-          position: json['position'],
-          title: json['title'],
-          twoDayRule: json['twoDayRule'] != 0 ? true : false,
-          cue: json['cue'],
-          routine: json['routine'],
-          reward: json['reward'],
-          showReward: json['showReward'] != 0 ? true : false,
-          advanced: json['advanced'] != 0 ? true : false,
-          notification: json['notification'] != 0 ? true : false,
-          notTime: parseTimeOfDay(json['notTime']),
-          events: doEvents(json['events']),
-          sanction: json['sanction'] ?? '',
-          showSanction: (json['showSanction'] ?? 0) != 0 ? true : false,
-          accountant: json['accountant'] ?? '',
-          habitType: HabitType.values[json['habitType'] ?? 0],
-          targetValue: (json['targetValue'] ?? 1.0).toDouble(),
-          partialValue: (json['partialValue'] ?? 1.0).toDouble(),
-          unit: json['unit'] ?? '',
-          categories: json['categories'] != null
-              ? (json['categories'] as List)
+    : habitData = HabitData(
+        id: json['id'],
+        uuid: json['uuid'],
+        position: json['position'],
+        title: json['title'],
+        twoDayRule: json['twoDayRule'] != 0 ? true : false,
+        cue: json['cue'],
+        routine: json['routine'],
+        reward: json['reward'],
+        showReward: json['showReward'] != 0 ? true : false,
+        advanced: json['advanced'] != 0 ? true : false,
+        notification: json['notification'] != 0 ? true : false,
+        notTime: parseTimeOfDay(json['notTime']),
+        events: doEvents(json['events']),
+        sanction: json['sanction'] ?? '',
+        showSanction: (json['showSanction'] ?? 0) != 0 ? true : false,
+        accountant: json['accountant'] ?? '',
+        habitType: HabitType.values[json['habitType'] ?? 0],
+        targetValue: (json['targetValue'] ?? 1.0).toDouble(),
+        partialValue: (json['partialValue'] ?? 1.0).toDouble(),
+        unit: json['unit'] ?? '',
+        categories: json['categories'] != null
+            ? (json['categories'] as List)
                   .map((categoryJson) => Category.fromJson(categoryJson))
                   .toList()
-              : [],
-          archived: (json['archived'] ?? 0) != 0 ? true : false,
-        );
+            : [],
+        archived: (json['archived'] ?? 0) != 0 ? true : false,
+        deletedAt: json['deleted_at'] != null
+            ? DateTime.parse(json['deleted_at'])
+            : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : null,
+      );
 
   static SplayTreeMap<DateTime, List> doEvents(Map<String, dynamic> input) {
     SplayTreeMap<DateTime, List> result = SplayTreeMap<DateTime, List>();
 
     input.forEach((key, value) {
-      final dayType = DayType.values
-          .firstWhere((e) => e.toString() == reformatOld(value[0]));
+      final dayType = DayType.values.firstWhere(
+        (e) => e.toString() == reformatOld(value[0]),
+      );
       final comment = value[1];
 
       // Handle progress data for numeric habits
@@ -130,7 +145,7 @@ class Habit extends StatefulWidget {
           dayType,
           comment,
           progressValue,
-          targetValue
+          targetValue,
         ];
       } else if (value.length > 2 &&
           (dayType == DayType.progress || dayType == DayType.check)) {
@@ -226,8 +241,10 @@ class HabitState extends State<Habit> {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
           ),
-          backgroundColor:
-              Provider.of<SettingsManager>(context, listen: false).failColor,
+          backgroundColor: Provider.of<SettingsManager>(
+            context,
+            listen: false,
+          ).failColor,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -254,9 +271,10 @@ class HabitState extends State<Habit> {
 
   void reloadMonth(DateTime selectedDay) {
     _showMonth = (_calendarFormat == CalendarFormat.month);
-    _actualMonth = DateFormat('yMMMM', Intl.getCurrentLocale())
-        .format(selectedDay)
-        .capitalize();
+    _actualMonth = DateFormat(
+      'yMMMM',
+      Intl.getCurrentLocale(),
+    ).format(selectedDay).capitalize();
   }
 
   void _onFormatChanged(CalendarFormat format) {
@@ -305,8 +323,9 @@ class HabitState extends State<Habit> {
               onFormatChanged: _onFormatChanged,
               onPageChanged: setSelectedDay,
               onDaySelected: _onDaySelected,
-              startingDayOfWeek:
-                  Provider.of<SettingsManager>(context).getWeekStartEnum,
+              startingDayOfWeek: Provider.of<SettingsManager>(
+                context,
+              ).getWeekStartEnum,
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, date, _) {
                   return OneDayButton(
@@ -335,7 +354,8 @@ class HabitState extends State<Habit> {
                     child: Text(
                       date.day.toString(),
                       style: TextStyle(
-                          color: (date.weekday > 5) ? Colors.red[300] : null),
+                        color: (date.weekday > 5) ? Colors.red[300] : null,
+                      ),
                     ),
                   );
                 },
@@ -346,7 +366,8 @@ class HabitState extends State<Habit> {
                     child: Text(
                       date.day.toString(),
                       style: TextStyle(
-                          color: (date.weekday > 5) ? Colors.red[300] : null),
+                        color: (date.weekday > 5) ? Colors.red[300] : null,
+                      ),
                     ),
                   );
                 },
@@ -369,37 +390,39 @@ class HabitState extends State<Habit> {
     return AspectRatio(
       aspectRatio: 1,
       child: IgnorePointer(
-        child: Stack(children: [
-          (events[0] != DayType.clear)
-              ? Container(
-                  margin: const EdgeInsets.all(4.0),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: _getEventColor(events),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: _getEventIcon(events),
-                )
-              : Container(),
-          (events[1] != null && events[1] != '')
-              ? Container(
-                  alignment: const Alignment(1.0, 1.0),
-                  padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 2.0),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(15.0),
-                    elevation: 1,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: HaboColors.orange,
-                        shape: BoxShape.circle,
+        child: Stack(
+          children: [
+            (events[0] != DayType.clear)
+                ? Container(
+                    margin: const EdgeInsets.all(4.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: _getEventColor(events),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: _getEventIcon(events),
+                  )
+                : Container(),
+            (events[1] != null && events[1] != '')
+                ? Container(
+                    alignment: const Alignment(1.0, 1.0),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 2.0),
+                    child: Material(
+                      borderRadius: BorderRadius.circular(15.0),
+                      elevation: 1,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: HaboColors.orange,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : Container(),
-        ]),
+                  )
+                : Container(),
+          ],
+        ),
       ),
     );
   }
@@ -423,12 +446,16 @@ class HabitState extends State<Habit> {
               : widget.habitData.targetValue;
           if (progressValue >= targetAtTime) {
             // 100% or more = green check color
-            return Provider.of<SettingsManager>(context, listen: false)
-                .checkColor;
+            return Provider.of<SettingsManager>(
+              context,
+              listen: false,
+            ).checkColor;
           }
         }
-        return Provider.of<SettingsManager>(context, listen: false)
-            .progressColor;
+        return Provider.of<SettingsManager>(
+          context,
+          listen: false,
+        ).progressColor;
       case DayType.clear:
         return Colors.transparent;
     }
@@ -439,20 +466,11 @@ class HabitState extends State<Habit> {
 
     switch (eventType) {
       case DayType.check:
-        return const Icon(
-          Icons.check,
-          color: Colors.white,
-        );
+        return const Icon(Icons.check, color: Colors.white);
       case DayType.fail:
-        return const Icon(
-          Icons.close,
-          color: Colors.white,
-        );
+        return const Icon(Icons.close, color: Colors.white);
       case DayType.skip:
-        return const Icon(
-          Icons.last_page,
-          color: Colors.white,
-        );
+        return const Icon(Icons.last_page, color: Colors.white);
       case DayType.progress:
         // For progress events, check if it's 100% completion
         if (widget.habitData.isNumeric && events.length > 2) {
@@ -462,10 +480,7 @@ class HabitState extends State<Habit> {
               : widget.habitData.targetValue;
           if (progressValue >= targetAtTime) {
             // 100% or more = green check icon
-            return const Icon(
-              Icons.check,
-              color: Colors.white,
-            );
+            return const Icon(Icons.check, color: Colors.white);
           }
         }
         return _buildProgressIcon(events);
@@ -511,11 +526,7 @@ class HabitState extends State<Habit> {
       );
     }
     // Fallback for non-numeric progress events
-    return const Icon(
-      Icons.trending_up,
-      color: Colors.white,
-      size: 20,
-    );
+    return const Icon(Icons.trending_up, color: Colors.white, size: 20);
   }
 
   void _updateLastStreak() {
@@ -542,14 +553,14 @@ class HabitState extends State<Habit> {
         lastDayKey = checkDayKey;
       }
 
-      if (widget.habitData.events[checkDayKey]![0] == DayType.check ||
-          (widget.habitData.events[checkDayKey]![0] == DayType.progress &&
-              widget.habitData.events[checkDayKey]!.length > 2 &&
-              widget.habitData.events[checkDayKey]![2] >=
-                  ((widget.habitData.events[checkDayKey]!.length > 3)
-                      ? (widget.habitData.events[checkDayKey]![3] as double?) ??
-                          widget.habitData.targetValue
-                      : widget.habitData.targetValue))) {
+      final event = widget.habitData.events[checkDayKey]!;
+      final targetAtTime = (event.length > 3)
+          ? (event[3] as double?) ?? widget.habitData.targetValue
+          : widget.habitData.targetValue;
+      if (event[0] == DayType.check ||
+          (event[0] == DayType.progress &&
+              event.length > 2 &&
+              event[2] >= targetAtTime)) {
         inStreak++;
       }
       checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
@@ -569,8 +580,13 @@ class HabitState extends State<Habit> {
         widget.habitData.events[trueLastKey]![0] != null &&
         (widget.habitData.events[trueLastKey]![0] == DayType.clear ||
             (widget.habitData.events[trueLastKey]![0] == DayType.progress &&
+                widget.habitData.events[trueLastKey]!.length > 2 &&
                 widget.habitData.events[trueLastKey]![2] <
-                    widget.habitData.targetValue))) {
+                    ((widget.habitData.events[trueLastKey]!.length > 3)
+                        ? (widget.habitData.events[trueLastKey]![3]
+                                  as double?) ??
+                              widget.habitData.targetValue
+                        : widget.habitData.targetValue)))) {
       trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
     }
 
@@ -607,6 +623,7 @@ class HabitState extends State<Habit> {
           : widget.habitData.targetValue;
       if (event[0] == DayType.check ||
           (event[0] == DayType.progress &&
+              event.length > 2 &&
               (event[2] as double?) != null &&
               (event[2] as double) >= targetAtTime)) {
         inStreak++;
@@ -618,7 +635,8 @@ class HabitState extends State<Habit> {
 
     // Set orange streak if last event is fail
     widget.habitData.streak = inStreak;
-    _orangeStreak = (widget.habitData.events[trueLastKey] != null &&
+    _orangeStreak =
+        (widget.habitData.events[trueLastKey] != null &&
         widget.habitData.events[trueLastKey]![0] == DayType.fail);
   }
 }

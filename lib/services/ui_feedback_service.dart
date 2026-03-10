@@ -41,9 +41,7 @@ class UIFeedbackService {
     _scaffoldKey.currentState?.showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         content: Text(
           message,
           textAlign: TextAlign.center,
@@ -67,9 +65,7 @@ class UIFeedbackService {
     _scaffoldKey.currentState?.showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         content: Text(
           message,
           textAlign: TextAlign.center,

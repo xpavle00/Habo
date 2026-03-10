@@ -37,8 +37,9 @@ class InMemoryHabitRepository implements HabitRepository {
 
   @override
   Future<void> updateHabit(Habit habit) async {
-    final index =
-        _habits.indexWhere((h) => h.habitData.id == habit.habitData.id);
+    final index = _habits.indexWhere(
+      (h) => h.habitData.id == habit.habitData.id,
+    );
     if (index != -1) {
       _habits[index] = habit;
     }
@@ -133,7 +134,9 @@ class InMemoryEventRepository implements EventRepository {
 
   @override
   Future<void> insertEventsForHabit(
-      int habitId, Map<DateTime, List> events) async {
+    int habitId,
+    Map<DateTime, List> events,
+  ) async {
     _events[habitId] ??= SplayTreeMap<DateTime, List>();
     _events[habitId]!.addAll(events);
   }
@@ -228,6 +231,12 @@ class InMemoryBackupRepository implements BackupRepository {
       }
     }
     return _isDatabaseOpen;
+  }
+
+  @override
+  Future<void> mergeData(Map<String, dynamic> remoteData) async {
+    // For testing: just call importData (simple stub)
+    await importData(remoteData);
   }
 
   /// Test helper method to clear all data

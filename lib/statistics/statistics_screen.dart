@@ -19,9 +19,7 @@ class StatisticsScreen extends StatefulWidget {
     );
   }
 
-  const StatisticsScreen({
-    super.key,
-  });
+  const StatisticsScreen({super.key});
 
   @override
   State<StatisticsScreen> createState() => _StatisticsScreenState();
@@ -34,56 +32,55 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        Provider.of<AppStateManager>(context, listen: false)
-            .goStatistics(false);
+        Provider.of<AppStateManager>(
+          context,
+          listen: false,
+        ).goStatistics(false);
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            S.of(context).statistics,
-          ),
+          title: Text(S.of(context).statistics),
           backgroundColor: Colors.transparent,
           iconTheme: Theme.of(context).iconTheme,
         ),
         body: FutureBuilder(
-            future: Provider.of<HabitsManager>(context).getFutureStatsData(),
-            builder:
-                (BuildContext context, AsyncSnapshot<AllStatistics> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.habitsData.isEmpty) {
-                  return const EmptyStatisticsImage();
+          future: Provider.of<HabitsManager>(context).getFutureStatsData(),
+          builder:
+              (BuildContext context, AsyncSnapshot<AllStatistics> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.habitsData.isEmpty) {
+                    return const EmptyStatisticsImage();
+                  } else {
+                    return ListView(
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        OverallStatisticsCard(
+                          total: snapshot.data!.total,
+                          habits: snapshot.data!.habitsData.length,
+                        ),
+                        ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: snapshot.data!.habitsData
+                              .map(
+                                (index) => Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: StatisticsCard(data: index),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    );
+                  }
                 } else {
-                  return ListView(
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      OverallStatisticsCard(
-                        total: snapshot.data!.total,
-                        habits: snapshot.data!.habitsData.length,
-                      ),
-                      ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: snapshot.data!.habitsData
-                            .map(
-                              (index) => Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: StatisticsCard(data: index),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
+                  return const Center(
+                    child: CircularProgressIndicator(color: HaboColors.primary),
                   );
                 }
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: HaboColors.primary,
-                  ),
-                );
-              }
-            }),
+              },
+        ),
       ),
     );
   }

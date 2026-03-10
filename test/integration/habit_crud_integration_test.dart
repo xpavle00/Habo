@@ -10,6 +10,7 @@ import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,8 @@ class MockBackupService extends Mock implements BackupService {}
 class MockNotificationService extends Mock implements NotificationService {}
 
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
+
+class MockSyncManager extends Mock implements SyncManager {}
 
 class TestHabitScreen extends StatelessWidget {
   const TestHabitScreen({super.key});
@@ -40,9 +43,7 @@ class TestHabitScreen extends StatelessWidget {
                   itemCount: habitsManager.allHabits.length,
                   itemBuilder: (context, index) {
                     final habit = habitsManager.allHabits[index];
-                    return ListTile(
-                      title: Text(habit.habitData.title),
-                    );
+                    return ListTile(title: Text(habit.habitData.title));
                   },
                 ),
               ),
@@ -75,31 +76,39 @@ class TestHabitScreen extends StatelessWidget {
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(Habit(
-      habitData: HabitData(
-        position: 0,
-        title: '',
-        twoDayRule: false,
-        cue: '',
-        routine: '',
-        reward: '',
-        showReward: false,
-        advanced: false,
-        events: SplayTreeMap<DateTime, List>(),
-        notification: false,
-        notTime: const TimeOfDay(hour: 0, minute: 0),
-        sanction: '',
-        showSanction: false,
-        accountant: '',
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: '',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          events: SplayTreeMap<DateTime, List>(),
+          notification: false,
+          notTime: const TimeOfDay(hour: 0, minute: 0),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
       ),
-    ));
+    );
   });
 
   late HabitsManager habitsManager;
   late MockHabitRepository mockHabitRepository;
+  late MockSyncManager mockSyncManager;
 
   setUp(() {
     mockHabitRepository = MockHabitRepository();
+    mockSyncManager = MockSyncManager();
+
+    // Setup SyncManager mock
+    when(() => mockSyncManager.scheduleSync()).thenReturn(null);
+
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
       eventRepository: MockEventRepository(),
@@ -107,10 +116,12 @@ void main() {
       backupService: MockBackupService(),
       notificationService: MockNotificationService(),
       uiFeedbackService: MockUIFeedbackService(),
+      syncManager: mockSyncManager,
     );
 
-    when(() => mockHabitRepository.createHabit(any()))
-        .thenAnswer((_) async => 1);
+    when(
+      () => mockHabitRepository.createHabit(any()),
+    ).thenAnswer((_) async => 1);
     when(() => mockHabitRepository.updateHabit(any())).thenAnswer((_) async {});
     when(() => mockHabitRepository.deleteHabit(any())).thenAnswer((_) async {});
   });

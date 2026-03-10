@@ -7,4 +7,6 @@ class Routes {
   static String createHabitPath = '/createHabit';
   static String editHabitPath = '/editHabit';
   static String whatsNewPath = '/whatsnew';
+  static String syncPath = '/sync';
+  static String profilePath = '/profile';
 }

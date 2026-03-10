@@ -51,4 +51,11 @@ abstract class BackupRepository {
   /// Returns a [Future] containing a boolean indicating whether
   /// the database is in a valid state.
   Future<bool> validateDatabaseIntegrity();
+
+  /// Merges remote data with local data using Last-Write-Wins (LWW) strategy.
+  /// Compares updated_at timestamps and keeps the newer version of each record.
+  ///
+  /// [remoteData] The JSON data from remote sync.
+  /// Returns a [Future] that completes when the merge is done.
+  Future<void> mergeData(Map<String, dynamic> remoteData);
 }

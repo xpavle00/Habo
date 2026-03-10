@@ -16,10 +16,7 @@ class CalendarHeader extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: StartingDayOfWeek.values.length,
-        itemBuilder: (
-          BuildContext ctx,
-          int index,
-        ) {
+        itemBuilder: (BuildContext ctx, int index) {
           int start = settingsManager.getWeekStartEnum.index;
           int day = (start + index) % StartingDayOfWeek.values.length;
           TextStyle tex = const TextStyle(fontSize: 18, color: Colors.grey);
@@ -31,10 +28,12 @@ class CalendarHeader extends StatelessWidget {
             width: (MediaQuery.of(context).size.width - 32) * 0.141,
             child: Center(
               child: Text(
-                  DateFormat('E', Intl.getCurrentLocale())
-                      .dateSymbols
-                      .SHORTWEEKDAYS[(day + 1) % 7],
-                  style: tex),
+                DateFormat(
+                  'E',
+                  Intl.getCurrentLocale(),
+                ).dateSymbols.SHORTWEEKDAYS[(day + 1) % 7],
+                style: tex,
+              ),
             ),
           );
         },

@@ -44,16 +44,9 @@ class Backup {
       final file = File(path);
       final stat = await file.stat();
 
-      return {
-        'size': stat.size,
-        'modified': stat.modified,
-        'exists': true,
-      };
+      return {'size': stat.size, 'modified': stat.modified, 'exists': true};
     } catch (e) {
-      return {
-        'error': e.toString(),
-        'exists': false,
-      };
+      return {'error': e.toString(), 'exists': false};
     }
   }
 }

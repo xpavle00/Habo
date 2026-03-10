@@ -22,8 +22,9 @@ class _CalendarColumnState extends State<CalendarColumn> {
   @override
   Widget build(BuildContext context) {
     final habitsManager = Provider.of<HabitsManager>(context);
-    final List<Habit> calendars =
-        habitsManager.getHabitsByCategory(selectedCategory);
+    final List<Habit> calendars = habitsManager.getHabitsByCategory(
+      selectedCategory,
+    );
 
     return Column(
       children: <Widget>[
@@ -58,10 +59,8 @@ class _CalendarColumnState extends State<CalendarColumn> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 120),
                     children: calendars
                         .map(
-                          (index) => Container(
-                            key: ObjectKey(index),
-                            child: index,
-                          ),
+                          (index) =>
+                              Container(key: ObjectKey(index), child: index),
                         )
                         .toList(),
                     onReorder: (oldIndex, newIndex) {
@@ -83,8 +82,10 @@ class _CalendarColumnState extends State<CalendarColumn> {
                         actualNewIndex = allHabits.indexOf(newHabit);
                       }
 
-                      Provider.of<HabitsManager>(context, listen: false)
-                          .reorderList(actualOldIndex, actualNewIndex);
+                      Provider.of<HabitsManager>(
+                        context,
+                        listen: false,
+                      ).reorderList(actualOldIndex, actualNewIndex);
                     },
                   ),
                 )
@@ -110,15 +111,15 @@ class _CalendarColumnState extends State<CalendarColumn> {
             Text(
               S.of(context).noHabitsInCategory(selectedCategory!.title),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               S.of(context).createHabitForCategory,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
