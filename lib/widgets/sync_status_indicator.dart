@@ -5,10 +5,11 @@ import 'package:habo/services/sync_manager.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Widget that displays sync status in the AppBar.
-/// Uses streams and providers for reactive state updates.
+/// Lightweight AppBar icon that reactively mirrors [SyncManager] status.
+///
+/// All state comes from [SyncManager.statusStream] — no duplicate auth or
+/// subscription checks. Tapping always opens the Sync screen.
 class SyncStatusIndicator extends StatefulWidget {
   const SyncStatusIndicator({super.key});
 
@@ -16,32 +17,19 @@ class SyncStatusIndicator extends StatefulWidget {
   State<SyncStatusIndicator> createState() => _SyncStatusIndicatorState();
 }
 
-class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
-    with WidgetsBindingObserver {
-  StreamSubscription<AuthState>? _authSubscription;
+class _SyncStatusIndicatorState extends State<SyncStatusIndicator> {
   StreamSubscription<SyncStatus>? _syncSubscription;
-
-  // Cached state values - updated reactively
-  bool _isLoggedIn = false;
-  bool _isSubscribed = false;
   SyncStatus _syncStatus = SyncStatus.idle;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
 
-    // Initial state check
-    _refreshAllState();
-
-    // Listen to auth state changes
-    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen(
-      (event) => _refreshAllState(),
-    );
-
-    // Listen to sync status changes
     final syncManager = ServiceLocator.instance.syncManager;
     if (syncManager != null) {
+      // Seed with current value so we don't wait for the first stream event.
+      _syncStatus = syncManager.status;
+
       _syncSubscription = syncManager.statusStream.listen((status) {
         if (mounted) {
           setState(() => _syncStatus = status);
@@ -52,51 +40,13 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _authSubscription?.cancel();
     _syncSubscription?.cancel();
     super.dispose();
   }
 
-  /// Refresh when app comes to foreground (user might have subscribed externally)
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _refreshAllState();
-    }
-  }
-
-  /// Refresh all state - called on auth changes and app resume
-  Future<void> _refreshAllState() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    final isLoggedIn = user != null;
-
-    bool isSubscribed = false;
-    if (isLoggedIn) {
-      try {
-        isSubscribed = await ServiceLocator.instance.subscriptionService
-            .isSubscribed();
-      } catch (e) {
-        debugPrint('SyncStatusIndicator: Failed to check subscription: $e');
-      }
-    }
-
-    // Get current sync status
-    final syncManager = ServiceLocator.instance.syncManager;
-    final syncStatus = syncManager?.status ?? SyncStatus.notConfigured;
-
-    if (mounted) {
-      setState(() {
-        _isLoggedIn = isLoggedIn;
-        _isSubscribed = isSubscribed;
-        _syncStatus = syncStatus;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Use Consumer to react to SettingsManager changes (like isSyncPaused)
+    // Consumer reacts to SettingsManager changes (isSyncPaused).
     return Consumer<SettingsManager>(
       builder: (context, settings, _) {
         return _buildForCurrentState(context, settings);
@@ -105,28 +55,10 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
   }
 
   Widget _buildForCurrentState(BuildContext context, SettingsManager settings) {
-    // Priority 1: Not logged in
-    if (!_isLoggedIn) {
-      return _buildIndicator(
-        icon: Icons.cloud_outlined,
-        color: Colors.grey,
-        tooltip: 'Sign in to enable sync',
-        onTap: () => _navigateToSync(context),
-      );
-    }
-
-    // Priority 2: Logged in but not subscribed
-    if (!_isSubscribed) {
-      return _buildIndicator(
-        icon: Icons.cloud_off,
-        color: Colors.amber,
-        tooltip: 'Subscribe to enable sync',
-        onTap: () => _navigateToSync(context),
-      );
-    }
-
-    // Priority 3: Sync paused by user
-    if (settings.isSyncPaused) {
+    // Sync paused overrides everything except notConfigured / noSubscription
+    if (settings.isSyncPaused &&
+        _syncStatus != SyncStatus.notConfigured &&
+        _syncStatus != SyncStatus.noSubscription) {
       return _buildIndicator(
         icon: Icons.pause_circle_outline,
         color: Colors.orange,
@@ -135,7 +67,7 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
       );
     }
 
-    // Priority 4: Currently syncing
+    // Currently syncing — show spinner, no tap action
     if (_syncStatus == SyncStatus.syncing) {
       return IconButton(
         icon: const SizedBox(
@@ -146,18 +78,18 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
             valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
           ),
         ),
-        onPressed: null,
+        onPressed: () => _navigateToSync(context),
         tooltip: 'Syncing...',
       );
     }
 
-    // Priority 5: Other sync states
-    final indicatorData = _getIndicatorData(_syncStatus);
+    // All other states — icon derived from SyncStatus, tap opens sync screen
+    final data = _getIndicatorData(_syncStatus);
     return _buildIndicator(
-      icon: indicatorData.icon,
-      color: indicatorData.color,
-      tooltip: indicatorData.tooltip,
-      onTap: () => _handleTap(context),
+      icon: data.icon,
+      color: data.color,
+      tooltip: data.tooltip,
+      onTap: () => _navigateToSync(context),
     );
   }
 
@@ -203,7 +135,7 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
         return _IndicatorData(
           icon: Icons.sync_problem,
           color: Colors.red,
-          tooltip: 'Sync error - tap to retry',
+          tooltip: 'Sync error',
         );
 
       case SyncStatus.offline:
@@ -239,32 +171,6 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator>
 
   void _navigateToSync(BuildContext context) {
     Provider.of<AppStateManager>(context, listen: false).goSync(true);
-    // Refresh state when returning from sync screen
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) _refreshAllState();
-    });
-  }
-
-  void _handleTap(BuildContext context) {
-    if (_syncStatus == SyncStatus.notConfigured) {
-      _navigateToSync(context);
-      return;
-    }
-
-    if (_syncStatus == SyncStatus.syncing) {
-      return;
-    }
-
-    // Trigger manual sync
-    final syncManager = ServiceLocator.instance.syncManager;
-    syncManager?.syncNow();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Syncing...'),
-        duration: Duration(seconds: 1),
-      ),
-    );
   }
 }
 

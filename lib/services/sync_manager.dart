@@ -105,14 +105,45 @@ class SyncManager with WidgetsBindingObserver {
     _dataChangedController.close();
   }
 
-  /// Check if user is configured for sync
+  /// Check if user is configured for sync.
+  ///
+  /// Evaluates auth → subscription → encryption key in order and emits the
+  /// appropriate [SyncStatus] so the UI indicator stays accurate without
+  /// needing its own duplicate checks.
   Future<void> _checkConfiguration() async {
+    // 1. Auth check
+    final user = _supabaseClient.auth.currentUser;
+    if (user == null) {
+      _isConfigured = false;
+      _updateStatus(SyncStatus.notConfigured);
+      return;
+    }
+
+    // 2. Subscription check — ensure RevenueCat is initialized first so we
+    //    get the real subscription status instead of relying on the Supabase
+    //    webhook fallback (which may be stale or absent).
+    try {
+      final subscriptionService = ServiceLocator.instance.subscriptionService;
+      await subscriptionService.initialize();
+      final isSubscribed = await subscriptionService.isSubscribed();
+      if (!isSubscribed) {
+        _isConfigured = false;
+        _updateStatus(SyncStatus.noSubscription);
+        return;
+      }
+    } catch (e) {
+      debugPrint('SyncManager: Failed to check subscription: $e');
+      // On error, don't block — fall through to key check
+    }
+
+    // 3. Encryption key check
     final keyData = await _encryptionService.loadKey();
     _isConfigured = keyData != null;
     if (!_isConfigured) {
       _updateStatus(SyncStatus.notConfigured);
     } else {
-      if (_status == SyncStatus.notConfigured) {
+      if (_status == SyncStatus.notConfigured ||
+          _status == SyncStatus.noSubscription) {
         _updateStatus(SyncStatus.idle);
       }
       _subscribeToRealtime();
