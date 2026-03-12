@@ -437,6 +437,7 @@ class OneDayButton extends StatelessWidget {
                 controller: commentController,
                 autofocus: true,
                 maxLines: 5,
+                maxLength: 400,
                 showCursor: true,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: InputDecoration(
