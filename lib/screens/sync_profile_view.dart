@@ -18,38 +18,16 @@ class SyncProfileView extends StatefulWidget {
 }
 
 class _SyncProfileViewState extends State<SyncProfileView> {
-  bool _isCheckingSubscription = true;
-  bool _isSubscribed = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkSubscription();
-  }
-
-  Future<void> _checkSubscription() async {
-    final subscriptionService = ServiceLocator.instance.subscriptionService;
-
-    // Initialize RevenueCat if needed
-    await subscriptionService.initialize();
-
-    // Check subscription status (uses RevenueCat cache, no Apple ID prompt)
-    final isSubscribed = await subscriptionService.isSubscribed();
-
-    if (mounted) {
-      setState(() {
-        _isSubscribed = isSubscribed;
-        _isCheckingSubscription = false;
-      });
-    }
-  }
-
   Future<void> _showPaywall() async {
     final subscriptionService = ServiceLocator.instance.subscriptionService;
-    await subscriptionService.showPaywall();
+    await subscriptionService.initialize();
+    final result = await subscriptionService.showPaywall();
 
-    // Recheck subscription after paywall closes
-    await _checkSubscription();
+    if (result) {
+      // Paywall returned success — ask SyncManager to re-evaluate its status
+      // so the statusStream emits the updated state and the UI reacts.
+      await ServiceLocator.instance.syncManager?.refreshConfiguration();
+    }
   }
 
   @override
@@ -57,26 +35,28 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     final user = Supabase.instance.client.auth.currentUser;
     final syncManager = ServiceLocator.instance.syncManager;
 
-    if (_isCheckingSubscription) {
-      return const Center(child: CircularProgressIndicator());
+    if (syncManager == null) {
+      return const Center(child: Text('Sync not available'));
     }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 8),
+    return StreamBuilder<SyncStatus>(
+      stream: syncManager.statusStream,
+      initialData: syncManager.status,
+      builder: (context, statusSnapshot) {
+        final status = statusSnapshot.data ?? SyncStatus.idle;
+        final isSubscribed = status != SyncStatus.noSubscription;
 
-          // Hero section with sync status
-          if (_isSubscribed && syncManager != null)
-            Consumer<SettingsManager>(
-              builder: (context, settings, _) {
-                return StreamBuilder<SyncStatus>(
-                  stream: syncManager.statusStream,
-                  initialData: syncManager.status,
-                  builder: (context, snapshot) {
-                    final status = snapshot.data ?? SyncStatus.idle;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 8),
+
+              // Hero section with sync status
+              if (isSubscribed)
+                Consumer<SettingsManager>(
+                  builder: (context, settings, _) {
                     return _buildStatusHero(
                       context,
                       syncManager,
@@ -84,137 +64,132 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                       settings.isSyncPaused,
                     );
                   },
-                );
-              },
-            )
-          else
-            _buildStatusHeroSimple(context),
+                )
+              else
+                _buildStatusHeroSimple(context),
 
-          const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-          // Subscribe card or action rows
-          if (!_isSubscribed) ...[
-            _buildSubscriptionRequiredCard(context),
-          ] else ...[
-            // Sync Now CTA
-            if (syncManager != null)
-              StreamBuilder<SyncStatus>(
-                stream: syncManager.statusStream,
-                initialData: syncManager.status,
-                builder: (context, snapshot) {
-                  final status = snapshot.data ?? SyncStatus.idle;
-                  final isSyncing = status == SyncStatus.syncing;
-                  return PrimaryButton(
-                    onPressed: isSyncing
-                        ? null
-                        : () {
-                            syncManager.syncNow();
-                            setState(() {});
-                          },
-                    child: isSyncing
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+              // Subscribe card or action rows
+              if (!isSubscribed) ...[
+                _buildSubscriptionRequiredCard(context),
+              ] else ...[
+                // Sync Now CTA
+                Builder(
+                  builder: (context) {
+                    final isSyncing = status == SyncStatus.syncing;
+                    return PrimaryButton(
+                      onPressed: isSyncing
+                          ? null
+                          : () {
+                              syncManager.syncNow();
+                            },
+                      child: isSyncing
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
+                            )
+                          : const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.sync, size: 20),
+                                SizedBox(width: 8),
+                                Text('Sync Now'),
+                                SizedBox(width: 8),
+                                Icon(Icons.arrow_forward, size: 18),
+                              ],
                             ),
-                          )
-                        : const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.sync, size: 20),
-                              SizedBox(width: 8),
-                              Text('Sync Now'),
-                              SizedBox(width: 8),
-                              Icon(Icons.arrow_forward, size: 18),
-                            ],
-                          ),
-                  );
-                },
-              ),
-
-            const SizedBox(height: 24),
-
-            // Action rows
-            _buildActionRow(
-              context: context,
-              icon: Icons.pause_circle,
-              iconColor: Colors.orange,
-              title: 'Pause Syncing',
-              subtitle: 'Pauses syncing and backup',
-              trailing: Consumer<SettingsManager>(
-                builder: (context, settings, _) {
-                  return Transform.scale(
-                    scale: 0.85,
-                    child: Switch(
-                      value: settings.isSyncPaused,
-                      onChanged: (value) => settings.setIsSyncPaused(value),
-                      activeTrackColor: Colors.orange,
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            _buildActionRow(
-              context: context,
-              icon: Icons.restore,
-              iconColor: HaboColors.primary,
-              title: 'Restore Data',
-              subtitle: 'From previous backups',
-              trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
-              onTap: () => _showBackupsSheet(context),
-            ),
-          ],
-
-          SizedBox(height: _isSubscribed ? 12 : 24),
-
-          _buildActionRow(
-            context: context,
-            icon: Icons.person,
-            iconColor: HaboColors.primary,
-            title: 'Profile',
-            subtitle: 'Email, password, and account',
-            trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
-            onTap: () => Provider.of<AppStateManager>(
-              context,
-              listen: false,
-            ).goProfile(true),
-          ),
-
-          const SizedBox(height: 32),
-
-          // Email + Sign out
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  user?.email ?? '',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                    );
+                  },
                 ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: widget.onSignOut,
-                  child: const Text(
-                    'Sign Out',
-                    style: TextStyle(
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
+
+                const SizedBox(height: 24),
+
+                // Action rows
+                _buildActionRow(
+                  context: context,
+                  icon: Icons.pause_circle,
+                  iconColor: Colors.orange,
+                  title: 'Pause Syncing',
+                  subtitle: 'Pauses syncing and backup',
+                  trailing: Consumer<SettingsManager>(
+                    builder: (context, settings, _) {
+                      return Transform.scale(
+                        scale: 0.85,
+                        child: Switch(
+                          value: settings.isSyncPaused,
+                          onChanged: (value) => settings.setIsSyncPaused(value),
+                          activeTrackColor: Colors.orange,
+                        ),
+                      );
+                    },
                   ),
                 ),
+
+                const SizedBox(height: 12),
+
+                _buildActionRow(
+                  context: context,
+                  icon: Icons.restore,
+                  iconColor: HaboColors.primary,
+                  title: 'Restore Data',
+                  subtitle: 'From previous backups',
+                  trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
+                  onTap: () => _showBackupsSheet(context),
+                ),
               ],
-            ),
+
+              SizedBox(height: isSubscribed ? 12 : 24),
+
+              _buildActionRow(
+                context: context,
+                icon: Icons.person,
+                iconColor: HaboColors.primary,
+                title: 'Profile',
+                subtitle: 'Email, password, and account',
+                trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
+                onTap: () => Provider.of<AppStateManager>(
+                  context,
+                  listen: false,
+                ).goProfile(true),
+              ),
+
+              const SizedBox(height: 32),
+
+              // Email + Sign out
+              Center(
+                child: Column(
+                  children: [
+                    Text(
+                      user?.email ?? '',
+                      style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                    ),
+                    const SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: widget.onSignOut,
+                      child: const Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
-          const SizedBox(height: 24),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -551,9 +526,11 @@ class _SyncProfileViewState extends State<SyncProfileView> {
             onTap: () async {
               final subscriptionService =
                   ServiceLocator.instance.subscriptionService;
+              await subscriptionService.initialize();
               final restored = await subscriptionService.restorePurchases();
               if (restored && mounted) {
-                setState(() => _isSubscribed = true);
+                await ServiceLocator.instance.syncManager
+                    ?.refreshConfiguration();
                 ServiceLocator.instance.uiFeedbackService.showSuccess(
                   'Purchases restored successfully!',
                 );
