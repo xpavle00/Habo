@@ -22,7 +22,7 @@ class ServiceLocator {
   ServiceLocator._();
 
   // Service instances
-  late final BackupService _backupService;
+  late BackupService _backupService;
   late final NotificationService _notificationService;
   late final UIFeedbackService _uiFeedbackService;
   late final EncryptionService _encryptionService;
@@ -41,6 +41,7 @@ class ServiceLocator {
     required HaboModel haboModel,
     required SettingsManager settingsManager,
     SupabaseClient? client,
+    bool isSelfHosted = false,
   }) {
     if (_isInitialized) return;
 
@@ -53,7 +54,7 @@ class ServiceLocator {
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
     _notificationService = NotificationService();
     _encryptionService = EncryptionService();
-    _subscriptionService = SubscriptionService();
+    _subscriptionService = SubscriptionService(isSelfHosted: isSelfHosted);
     _syncService = SyncService(
       _repositoryFactory.backupRepository,
       _encryptionService,
@@ -76,6 +77,35 @@ class ServiceLocator {
     );
 
     _isInitialized = true;
+  }
+
+  /// Recreates SyncManager after a server switch.
+  /// SyncManager holds a reference to SupabaseClient which becomes stale
+  /// after Supabase.instance.dispose() + re-initialize.
+  /// SyncService is safe because it reads Supabase.instance.client on each call.
+  void reinitializeForServerSwitch() {
+    _ensureInitialized();
+
+    final supabaseClient = Supabase.instance.client;
+
+    // Dispose old sync manager
+    _syncManager?.dispose();
+
+    // Create new SyncManager with fresh client
+    _syncManager = SyncManager(
+      _syncService,
+      _encryptionService,
+      _settingsManager,
+      client: supabaseClient,
+    );
+    _syncManager!.initialize();
+
+    // Update BackupService reference
+    _backupService = BackupService(
+      _uiFeedbackService,
+      _repositoryFactory.backupRepository,
+      _syncManager,
+    );
   }
 
   /// Ensures ServiceLocator is initialized, throws StateError if not

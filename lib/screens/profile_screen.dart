@@ -157,16 +157,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
 
-            const SizedBox(height: 12),
-
-            _buildProfileAction(
-              context: context,
-              isDark: isDark,
-              icon: Icons.credit_card,
-              title: 'Manage Subscription',
-              subtitle: 'View or cancel your plan',
-              onTap: _openSubscriptionManagement,
-            ),
+            if (!ServiceLocator.instance.subscriptionService.isSelfHosted) ...[
+              const SizedBox(height: 12),
+              _buildProfileAction(
+                context: context,
+                isDark: isDark,
+                icon: Icons.credit_card,
+                title: 'Manage Subscription',
+                subtitle: 'View or cancel your plan',
+                onTap: _openSubscriptionManagement,
+              ),
+            ],
 
             const SizedBox(height: 12),
 

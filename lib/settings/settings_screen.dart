@@ -8,6 +8,7 @@ import 'package:habo/extensions.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/navigation/app_state_manager.dart';
+import 'package:habo/screens/server_config_screen.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/notifications.dart';
@@ -528,12 +529,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       ListTile(
                         title: const Text('Habo Sync'),
+                        subtitle: const Text('Sync and backup your data'),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           Provider.of<AppStateManager>(
                             context,
                             listen: false,
                           ).goSync(true);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text('Server'),
+                        subtitle:
+                            Provider.of<SettingsManager>(
+                              context,
+                            ).hasCustomServer
+                            ? const Text('Custom server')
+                            : const Text('Habo Cloud (default)'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ServerConfigScreen(),
+                            ),
+                          );
                         },
                       ),
                       ListTile(
