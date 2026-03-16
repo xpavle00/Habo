@@ -16,9 +16,19 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SubscriptionService {
   static const String _entitlementId = 'Habo Sync';
 
+  bool _isSelfHosted;
   bool _isInitialized = false;
   String? _currentUserId;
   Completer<void>? _initCompleter;
+
+  SubscriptionService({bool isSelfHosted = false})
+      : _isSelfHosted = isSelfHosted;
+
+  bool get isSelfHosted => _isSelfHosted;
+
+  void updateSelfHostedMode(bool value) {
+    _isSelfHosted = value;
+  }
 
   /// Initialize RevenueCat SDK.
   /// Should be called early in app lifecycle, after user logs in.
@@ -26,6 +36,13 @@ class SubscriptionService {
     // If an initialization is already in progress, await it.
     if (_initCompleter != null) {
       return _initCompleter!.future;
+    }
+
+    if (_isSelfHosted) {
+      debugPrint(
+        'SubscriptionService: Self-hosted mode - skipping RevenueCat',
+      );
+      return;
     }
 
     final user = Supabase.instance.client.auth.currentUser;
@@ -82,7 +99,7 @@ class SubscriptionService {
 
   /// Logout from RevenueCat. Call this when user signs out.
   Future<void> logout() async {
-    if (!_isInitialized) return;
+    if (_isSelfHosted || !_isInitialized) return;
 
     try {
       await Purchases.logOut();
@@ -95,6 +112,8 @@ class SubscriptionService {
 
   /// Check if user has an active subscription.
   Future<bool> isSubscribed() async {
+    if (_isSelfHosted) return true;
+
     // First try RevenueCat (source of truth)
     if (_isInitialized) {
       try {
@@ -147,6 +166,8 @@ class SubscriptionService {
   /// Show the paywall to the user.
   /// Returns true if purchase was successful.
   Future<bool> showPaywall() async {
+    if (_isSelfHosted) return true;
+
     if (!_isInitialized) {
       debugPrint('SubscriptionService: Cannot show paywall - not initialized');
       return false;
@@ -179,7 +200,7 @@ class SubscriptionService {
 
   /// Restore previous purchases.
   Future<bool> restorePurchases() async {
-    if (!_isInitialized) return false;
+    if (_isSelfHosted || !_isInitialized) return _isSelfHosted;
 
     try {
       final customerInfo = await Purchases.restorePurchases();
@@ -192,6 +213,7 @@ class SubscriptionService {
 
   /// Get subscription info for display.
   Future<SubscriptionInfo?> getSubscriptionInfo() async {
+    if (_isSelfHosted) return null;
     if (!_isInitialized) return null;
 
     try {

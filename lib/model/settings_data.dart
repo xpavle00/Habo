@@ -24,6 +24,9 @@ class SettingsData {
   bool hasUnsyncedChanges = false;
   bool isSyncPaused = false;
   bool hasSeenSyncOnboarding = false;
+  String? customSupabaseUrl;
+  String? customSupabaseAnonKey;
+  bool isSelfHostedCached = false;
 
   SettingsData();
 
@@ -77,6 +80,11 @@ class SettingsData {
           : false,
       hasSeenSyncOnboarding = (json['hasSeenSyncOnboarding'] != null)
           ? json['hasSeenSyncOnboarding']
+          : false,
+      customSupabaseUrl = json['customSupabaseUrl'] as String?,
+      customSupabaseAnonKey = json['customSupabaseAnonKey'] as String?,
+      isSelfHostedCached = (json['isSelfHostedCached'] != null)
+          ? json['isSelfHostedCached']
           : false;
 
   SettingsData copyWith({
@@ -100,6 +108,9 @@ class SettingsData {
     bool? hasUnsyncedChanges,
     bool? isSyncPaused,
     bool? hasSeenSyncOnboarding,
+    String? customSupabaseUrl,
+    String? customSupabaseAnonKey,
+    bool? isSelfHostedCached,
   }) {
     return SettingsData()
       ..theme = theme ?? this.theme
@@ -122,7 +133,10 @@ class SettingsData {
       ..hasUnsyncedChanges = hasUnsyncedChanges ?? this.hasUnsyncedChanges
       ..isSyncPaused = isSyncPaused ?? this.isSyncPaused
       ..hasSeenSyncOnboarding =
-          hasSeenSyncOnboarding ?? this.hasSeenSyncOnboarding;
+          hasSeenSyncOnboarding ?? this.hasSeenSyncOnboarding
+      ..customSupabaseUrl = customSupabaseUrl ?? this.customSupabaseUrl
+      ..customSupabaseAnonKey = customSupabaseAnonKey ?? this.customSupabaseAnonKey
+      ..isSelfHostedCached = isSelfHostedCached ?? this.isSelfHostedCached;
   }
 
   Map<String, dynamic> toJson() => {
@@ -147,5 +161,8 @@ class SettingsData {
     'hasUnsyncedChanges': hasUnsyncedChanges,
     'isSyncPaused': isSyncPaused,
     'hasSeenSyncOnboarding': hasSeenSyncOnboarding,
+    'customSupabaseUrl': customSupabaseUrl,
+    'customSupabaseAnonKey': customSupabaseAnonKey,
+    'isSelfHostedCached': isSelfHostedCached,
   };
 }

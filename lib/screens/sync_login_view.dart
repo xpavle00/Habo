@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/services/service_locator.dart';
 import 'package:habo/env_config.dart';
 import 'package:habo/screens/sync_helpers.dart';
 import 'package:habo/widgets/habo_text_field.dart';
@@ -550,73 +551,75 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              if (!ServiceLocator.instance.subscriptionService.isSelfHosted) ...[
+                const SizedBox(height: 24),
 
-              // Divider
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(color: Colors.grey[300], thickness: 1),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'or continue with',
-                      style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                // Divider
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(color: Colors.grey[300], thickness: 1),
                     ),
-                  ),
-                  Expanded(
-                    child: Divider(color: Colors.grey[300], thickness: 1),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              // Social login buttons
-              Column(
-                children: [
-                  // Apple
-                  if (Platform.isIOS || Platform.isMacOS) ...[
-                    SizedBox(
-                      height: 48,
-                      child: SignInWithAppleButton(
-                        onPressed: _signInWithApple,
-                        text: 'Continue with Apple',
-                        style: Theme.of(context).brightness == Brightness.dark
-                            ? SignInWithAppleButtonStyle.white
-                            : SignInWithAppleButtonStyle.black,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(12),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'or continue with',
+                        style: TextStyle(color: Colors.grey[500], fontSize: 13),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                  ],
-                  // Google
-                  _buildSocialButton(
-                    context: context,
-                    iconWidget: SvgPicture.asset(
-                      'assets/images/google_logo.svg',
-                      width: 20,
-                      height: 20,
+                    Expanded(
+                      child: Divider(color: Colors.grey[300], thickness: 1),
                     ),
-                    label: 'Continue with Google',
-                    onTap: _signInWithGoogle,
-                    backgroundColor:
-                        Theme.of(context).brightness == Brightness.dark
-                        ? const Color(0xFF131314)
-                        : Colors.white,
-                    textColor: Theme.of(context).brightness == Brightness.dark
-                        ? const Color(0xFFE3E3E3)
-                        : const Color(0xFF1F1F1F),
-                    borderColor: Theme.of(context).brightness == Brightness.dark
-                        ? const Color(0xFF8E918F)
-                        : const Color(0xFF747775),
-                  ),
-                  SizedBox(height: 48),
-                ],
-              ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Social login buttons
+                Column(
+                  children: [
+                    // Apple
+                    if (Platform.isIOS || Platform.isMacOS) ...[
+                      SizedBox(
+                        height: 48,
+                        child: SignInWithAppleButton(
+                          onPressed: _signInWithApple,
+                          text: 'Continue with Apple',
+                          style: Theme.of(context).brightness == Brightness.dark
+                              ? SignInWithAppleButtonStyle.white
+                              : SignInWithAppleButtonStyle.black,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    // Google
+                    _buildSocialButton(
+                      context: context,
+                      iconWidget: SvgPicture.asset(
+                        'assets/images/google_logo.svg',
+                        width: 20,
+                        height: 20,
+                      ),
+                      label: 'Continue with Google',
+                      onTap: _signInWithGoogle,
+                      backgroundColor:
+                          Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF131314)
+                          : Colors.white,
+                      textColor: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFFE3E3E3)
+                          : const Color(0xFF1F1F1F),
+                      borderColor: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF8E918F)
+                          : const Color(0xFF747775),
+                    ),
+                    SizedBox(height: 48),
+                  ],
+                ),
+              ],
             ],
           ),
         ),

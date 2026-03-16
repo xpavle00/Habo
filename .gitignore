@@ -11,7 +11,7 @@
 .vscode/
 .windsurf/
 migrate_working_dir/
-supabase
+# supabase
 
 # Environment secrets (use .env.example as template)
 .env

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -26,6 +27,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:habo/screens/reset_password_screen.dart';
 import 'package:habo/env_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -34,11 +36,57 @@ void main() async {
   // Load secrets from .env file
   await dotenv.load();
 
-  // Initialize Supabase with values from .env
-  await Supabase.initialize(
-    url: EnvConfig.supabaseUrl,
-    anonKey: EnvConfig.supabaseAnonKey,
-  );
+  // Load settings to check for custom server configuration
+  final prefs = await SharedPreferences.getInstance();
+  final settingsJson = prefs.getString('habo_settings');
+  String supabaseUrl = EnvConfig.supabaseUrl;
+  String supabaseAnonKey = EnvConfig.supabaseAnonKey;
+
+  if (settingsJson != null) {
+    try {
+      final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+      final customUrl = settings['customSupabaseUrl'] as String?;
+      final customKey = settings['customSupabaseAnonKey'] as String?;
+      if (customUrl != null &&
+          customUrl.isNotEmpty &&
+          customKey != null &&
+          customKey.isNotEmpty) {
+        supabaseUrl = customUrl;
+        supabaseAnonKey = customKey;
+      }
+    } catch (_) {
+      // Ignore parse errors, use defaults
+    }
+  }
+
+  // Initialize Supabase with resolved values, with error recovery
+  try {
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  } catch (e) {
+    // Bad custom server values — clear them and fall back to defaults
+    if (supabaseUrl != EnvConfig.supabaseUrl) {
+      debugPrint('Supabase.initialize() failed with custom URL: $e');
+      debugPrint('Falling back to default Habo Cloud server');
+      final prefs = await SharedPreferences.getInstance();
+      // Clear custom server from settings JSON
+      final settingsJson = prefs.getString('habo_settings');
+      if (settingsJson != null) {
+        try {
+          final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+          settings.remove('customSupabaseUrl');
+          settings.remove('customSupabaseAnonKey');
+          settings['isSelfHostedCached'] = false;
+          await prefs.setString('habo_settings', jsonEncode(settings));
+        } catch (_) {}
+      }
+      await Supabase.initialize(
+        url: EnvConfig.supabaseUrl,
+        anonKey: EnvConfig.supabaseAnonKey,
+      );
+    } else {
+      rethrow;
+    }
+  }
 
   if (Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
@@ -129,11 +177,27 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     // Initialize database first and wait for completion
     await haboModel.initDatabase();
 
+    // Query self-hosted flag from server
+    bool isSelfHosted = _settingsManager.isSelfHostedCached;
+    try {
+      final response = await Supabase.instance.client
+          .from('app_settings')
+          .select('value')
+          .eq('key', 'self_hosted')
+          .single();
+      isSelfHosted = response['value'] == 'true';
+      _settingsManager.setIsSelfHostedCached(isSelfHosted);
+    } catch (e) {
+      debugPrint('Failed to query self_hosted flag: $e');
+      // Fall back to cached value (defaults to false if never fetched)
+    }
+
     // Initialize service locator with the scaffold key and HaboModel
     ServiceLocator.instance.initialize(
       scaffoldKey: _scaffoldKey,
       haboModel: haboModel,
       settingsManager: _settingsManager,
+      isSelfHosted: isSelfHosted,
     );
 
     // Create HabitsManager with repositories and services from ServiceLocator

@@ -364,4 +364,31 @@ class SettingsManager extends ChangeNotifier {
     await saveData();
     notifyListeners();
   }
+
+  String? get customSupabaseUrl => _settingsData.customSupabaseUrl;
+  void setCustomSupabaseUrl(String? val) {
+    _settingsData.customSupabaseUrl = val;
+    saveData();
+    notifyListeners();
+  }
+
+  String? get customSupabaseAnonKey => _settingsData.customSupabaseAnonKey;
+  void setCustomSupabaseAnonKey(String? val) {
+    _settingsData.customSupabaseAnonKey = val;
+    saveData();
+    notifyListeners();
+  }
+
+  bool get isSelfHostedCached => _settingsData.isSelfHostedCached;
+  void setIsSelfHostedCached(bool val) {
+    _settingsData.isSelfHostedCached = val;
+    saveData();
+    notifyListeners();
+  }
+
+  bool get hasCustomServer =>
+      _settingsData.customSupabaseUrl != null &&
+      _settingsData.customSupabaseUrl!.isNotEmpty &&
+      _settingsData.customSupabaseAnonKey != null &&
+      _settingsData.customSupabaseAnonKey!.isNotEmpty;
 }
