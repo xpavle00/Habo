@@ -16,7 +16,11 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SyncLoginView extends StatefulWidget {
-  const SyncLoginView({super.key});
+  const SyncLoginView({super.key, this.onPendingVerification});
+
+  /// Called after a successful email sign-up so the parent can show
+  /// the email verification screen. Passes the email address.
+  final void Function(String email)? onPendingVerification;
 
   @override
   State<SyncLoginView> createState() => _SyncLoginViewState();
@@ -66,8 +70,8 @@ class _SyncLoginViewState extends State<SyncLoginView> {
     if (password.isEmpty) {
       setState(() => _passwordError = 'Password is required');
       isValid = false;
-    } else if (_isSignUp && password.length < 6) {
-      setState(() => _passwordError = 'Password must be at least 6 characters');
+    } else if (_isSignUp && password.length < 8) {
+      setState(() => _passwordError = 'Password must be at least 8 characters');
       isValid = false;
     }
 
@@ -92,12 +96,9 @@ class _SyncLoginViewState extends State<SyncLoginView> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Sign up successful! Check your email.'),
-            ),
-          );
+        // Notify parent to show verification screen
+        if (mounted && widget.onPendingVerification != null) {
+          widget.onPendingVerification!(_emailController.text.trim());
         }
       } else {
         await supabase.auth.signInWithPassword(
