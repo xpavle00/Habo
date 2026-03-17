@@ -3,6 +3,7 @@ import 'package:habo/screens/sync_login_view.dart';
 import 'package:habo/screens/sync_master_password_view.dart';
 import 'package:habo/screens/sync_onboarding_view.dart';
 import 'package:habo/screens/sync_profile_view.dart';
+import 'package:habo/screens/verify_email_view.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class _SyncScreenState extends State<SyncScreen> {
   bool _hasLocalKey = false;
   bool _hasCheckedProfile = false;
   Map<String, dynamic>? _remoteProfile;
+  String? _pendingVerificationEmail;
 
   @override
   void initState() {
@@ -149,7 +151,19 @@ class _SyncScreenState extends State<SyncScreen> {
           }
 
           if (session == null) {
-            return const SyncLoginView();
+            if (_pendingVerificationEmail != null) {
+              return VerifyEmailView(
+                email: _pendingVerificationEmail!,
+                onBack: () {
+                  setState(() => _pendingVerificationEmail = null);
+                },
+              );
+            }
+            return SyncLoginView(
+              onPendingVerification: (email) {
+                setState(() => _pendingVerificationEmail = email);
+              },
+            );
           }
 
           if (_isLoading) {
