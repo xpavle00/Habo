@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer' as dev;
 import 'package:flutter/widgets.dart';
 import 'package:habo/services/sync_service.dart';
+import 'package:habo/services/sync_error.dart';
 import 'package:habo/services/encryption_service.dart';
 import 'package:habo/services/service_locator.dart';
 
@@ -37,6 +39,8 @@ enum SyncStatus {
 /// - Pushes data when app goes to background
 /// - Pulls data when app returns to foreground
 class SyncManager with WidgetsBindingObserver {
+  static const _logName = 'SyncManager';
+
   final SyncService _syncService;
   final EncryptionService _encryptionService;
   final SettingsManager _settingsManager;
@@ -51,6 +55,10 @@ class SyncManager with WidgetsBindingObserver {
   /// Detected clock drift in seconds (positive = local ahead).
   /// `null` means not yet measured.
   int? _clockDriftSeconds;
+
+  /// Last error that occurred during sync, if any.
+  /// Cleared on successful sync.
+  HaboSyncException? _lastError;
 
   final _statusController = StreamController<SyncStatus>.broadcast();
   final _dataChangedController = StreamController<void>.broadcast();
@@ -67,6 +75,9 @@ class SyncManager with WidgetsBindingObserver {
 
   /// Last successful sync time
   DateTime? get lastSyncTime => _lastSyncTime;
+
+  /// The last error that occurred, or `null` if the last operation succeeded.
+  HaboSyncException? get lastError => _lastError;
 
   /// Detected clock drift in seconds (positive = local ahead).
   /// `null` means not yet measured. Absolute value > 60 is considered risky
@@ -131,14 +142,30 @@ class SyncManager with WidgetsBindingObserver {
         _updateStatus(SyncStatus.noSubscription);
         return;
       }
-    } catch (e) {
-      debugPrint('SyncManager: Failed to check subscription: $e');
+    } on SubscriptionException catch (e) {
+      dev.log(
+        'Subscription check failed (${e.code}), falling through to key check',
+        name: _logName,
+        error: e,
+      );
       // On error, don't block — fall through to key check
+    } catch (e) {
+      dev.log(
+        'Unexpected error checking subscription',
+        name: _logName,
+        error: e,
+      );
     }
 
     // 3. Encryption key check
-    final keyData = await _encryptionService.loadKey();
-    _isConfigured = keyData != null;
+    try {
+      final keyData = await _encryptionService.loadKey();
+      _isConfigured = keyData != null;
+    } on EncryptionException catch (e) {
+      dev.log('Encryption key check failed (${e.code})', name: _logName, error: e);
+      _isConfigured = false;
+    }
+
     if (!_isConfigured) {
       _updateStatus(SyncStatus.notConfigured);
     } else {
@@ -193,7 +220,7 @@ class SyncManager with WidgetsBindingObserver {
     final isSubscribed = await ServiceLocator.instance.subscriptionService
         .isSubscribed();
     if (!isSubscribed) {
-      debugPrint('Pull sync blocked: no active subscription');
+      dev.log('Pull blocked: no active subscription', name: _logName);
       _updateStatus(SyncStatus.noSubscription);
       _isSyncing = false;
       return;
@@ -212,34 +239,36 @@ class SyncManager with WidgetsBindingObserver {
           await _syncService.createPreSyncBackup();
         } catch (e) {
           // Backup failure must never block the sync itself
-          debugPrint('Pre-sync backup failed (non-fatal): $e');
+          dev.log('Pre-sync backup failed (non-fatal)', name: _logName, error: e);
         }
       }
 
       final newVersion = await _syncService.pullSync(currentVersion);
 
       _lastSyncTime = DateTime.now();
+      _lastError = null;
 
       if (newVersion != null) {
         if (newVersion > currentVersion) {
           _settingsManager.setSyncVersion(newVersion);
           _dataChangedController.add(null);
-          debugPrint(
-            'Pull sync completed: updated from $currentVersion to $newVersion',
+          dev.log(
+            'Pull completed: $currentVersion → $newVersion',
+            name: _logName,
           );
         } else {
-          debugPrint('Pull sync completed: force pull at version $newVersion');
+          dev.log('Pull completed: force pull at version $newVersion', name: _logName);
           _dataChangedController.add(null);
         }
       } else {
-        debugPrint('Pull sync skipped: up to date at version $currentVersion');
+        dev.log('Pull skipped: up to date at version $currentVersion', name: _logName);
 
         // First-time setup: no remote data exists yet.
         // Mark local data as unsynced so the next syncNow/scheduleSync
         // pushes the existing habits to the cloud.
         if (currentVersion == 0) {
           await _settingsManager.setHasUnsyncedChanges(true);
-          debugPrint('First sync setup: marked local data for initial push');
+          dev.log('First sync setup: marked local data for initial push', name: _logName);
         }
       }
 
@@ -251,18 +280,22 @@ class SyncManager with WidgetsBindingObserver {
         if (_clockDriftSeconds != null) {
           final absDrift = _clockDriftSeconds!.abs();
           if (absDrift > SyncService.clockDriftThresholdSeconds) {
-            debugPrint(
-              'WARNING: Device clock is off by ${_clockDriftSeconds}s '
-              '(threshold: ${SyncService.clockDriftThresholdSeconds}s). '
-              'LWW conflict resolution may produce incorrect results.',
+            dev.log(
+              'WARNING: Clock drift ${_clockDriftSeconds}s exceeds threshold '
+                  '${SyncService.clockDriftThresholdSeconds}s',
+              name: _logName,
+              level: 900,
             );
-          } else {
-            debugPrint('Clock drift check OK: ${_clockDriftSeconds}s');
           }
         }
       }
+    } on HaboSyncException catch (e) {
+      dev.log('Pull failed (${e.code}): ${e.message}', name: _logName, error: e.cause);
+      _lastError = e;
+      _updateStatus(SyncStatus.error);
     } catch (e) {
-      debugPrint('Pull sync failed: $e');
+      dev.log('Pull failed (unexpected)', name: _logName, error: e);
+      _lastError = SyncException.pullFailed(e);
       _updateStatus(SyncStatus.error);
     } finally {
       _isSyncing = false;
@@ -285,7 +318,7 @@ class SyncManager with WidgetsBindingObserver {
     final isSubscribed = await ServiceLocator.instance.subscriptionService
         .isSubscribed();
     if (!isSubscribed) {
-      debugPrint('Push sync blocked: no active subscription');
+      dev.log('Push blocked: no active subscription', name: _logName);
       _updateStatus(SyncStatus.noSubscription);
       _isSyncing = false;
       return;
@@ -304,42 +337,89 @@ class SyncManager with WidgetsBindingObserver {
         await _settingsManager.setHasUnsyncedChanges(false);
 
         _lastSyncTime = DateTime.now();
+        _lastError = null;
         _updateStatus(SyncStatus.synced);
-        debugPrint('Push sync completed: updated to version $newVersion');
+        dev.log('Push completed: version $newVersion', name: _logName);
         _isSyncing = false;
         return; // Success — exit
-      } on SyncVersionConflictException {
-        // Another device pushed since our last pull.
-        // Pull their changes (merge via LWW), then retry push.
-        debugPrint(
-          'Push sync: version conflict on attempt $attempt/$maxRetries, '
-          'pulling remote changes...',
-        );
-        try {
-          final localVersion = _settingsManager.syncVersion;
-          final newVersion = await _syncService.pullSync(localVersion);
-          if (newVersion != null) {
-            await _settingsManager.setSyncVersion(newVersion);
-            _dataChangedController.add(null);
+      } on SyncException catch (e) {
+        if (e.code == 'SYNC_VERSION_CONFLICT') {
+          // Another device pushed since our last pull.
+          // Pull their changes (merge via LWW), then retry push.
+          dev.log(
+            'Push: version conflict on attempt $attempt/$maxRetries',
+            name: _logName,
+          );
+          try {
+            final localVersion = _settingsManager.syncVersion;
+            final newVersion = await _syncService.pullSync(localVersion);
+            if (newVersion != null) {
+              await _settingsManager.setSyncVersion(newVersion);
+              _dataChangedController.add(null);
+            }
+          } on HaboSyncException catch (pullError) {
+            dev.log(
+              'Pull during conflict resolution failed (${pullError.code})',
+              name: _logName,
+              error: pullError,
+            );
+          } catch (pullError) {
+            dev.log(
+              'Pull during conflict resolution failed',
+              name: _logName,
+              error: pullError,
+            );
           }
-        } catch (pullError) {
-          debugPrint('Pull during conflict resolution failed: $pullError');
-        }
-        if (attempt < maxRetries) {
-          await Future.delayed(Duration(seconds: attempt));
+          if (attempt < maxRetries) {
+            await Future.delayed(Duration(seconds: attempt));
+          } else {
+            dev.log('Push failed after $maxRetries conflict retries', name: _logName);
+            _lastError = SyncException.pushFailed(e);
+            _updateStatus(SyncStatus.error);
+          }
         } else {
-          debugPrint('Push sync failed after $maxRetries conflict retries');
+          // Non-conflict SyncException
+          dev.log(
+            'Push attempt $attempt/$maxRetries failed (${e.code})',
+            name: _logName,
+            error: e,
+          );
+          if (attempt < maxRetries) {
+            final delay = Duration(seconds: 2 * attempt);
+            dev.log('Retrying push in ${delay.inSeconds}s', name: _logName);
+            await Future.delayed(delay);
+          } else {
+            dev.log('Push failed after $maxRetries attempts', name: _logName);
+            _lastError = e;
+            _updateStatus(SyncStatus.error);
+          }
+        }
+      } on HaboSyncException catch (e) {
+        dev.log(
+          'Push attempt $attempt/$maxRetries failed (${e.code})',
+          name: _logName,
+          error: e,
+        );
+        if (attempt < maxRetries) {
+          final delay = Duration(seconds: 2 * attempt);
+          dev.log('Retrying push in ${delay.inSeconds}s', name: _logName);
+          await Future.delayed(delay);
+        } else {
+          dev.log('Push failed after $maxRetries attempts', name: _logName);
+          _lastError = e;
           _updateStatus(SyncStatus.error);
         }
       } catch (e) {
-        debugPrint('Push sync attempt $attempt/$maxRetries failed: $e');
+        dev.log(
+          'Push attempt $attempt/$maxRetries failed (unexpected)',
+          name: _logName,
+          error: e,
+        );
         if (attempt < maxRetries) {
-          // Exponential backoff: 2s, 4s
           final delay = Duration(seconds: 2 * attempt);
-          debugPrint('Retrying push sync in ${delay.inSeconds}s...');
           await Future.delayed(delay);
         } else {
-          debugPrint('Push sync failed after $maxRetries attempts');
+          _lastError = SyncException.pushFailed(e);
           _updateStatus(SyncStatus.error);
         }
       }
@@ -367,7 +447,7 @@ class SyncManager with WidgetsBindingObserver {
     final user = _supabaseClient.auth.currentUser;
     if (user == null) return;
 
-    debugPrint('Realtime: Subscribing to profiles changes for user ${user.id}');
+    dev.log('Subscribing to realtime updates', name: _logName);
 
     _realtimeSubscription = _supabaseClient
         .channel('public:profiles:${user.id}')
@@ -386,11 +466,11 @@ class SyncManager with WidgetsBindingObserver {
               final remoteVersion = newRecord['sync_version'] as int?;
               final localVersion = _settingsManager.syncVersion;
 
-              debugPrint(
-                'Realtime: Update detected. Remote=$remoteVersion, Local=$localVersion',
-              );
-
               if (remoteVersion != null && remoteVersion > localVersion) {
+                dev.log(
+                  'Realtime: remote=$remoteVersion > local=$localVersion, pulling',
+                  name: _logName,
+                );
                 pullSync();
               }
             }
@@ -401,7 +481,7 @@ class SyncManager with WidgetsBindingObserver {
 
   void _unsubscribeRealtime() {
     if (_realtimeSubscription != null) {
-      debugPrint('Realtime: Unsubscribing');
+      dev.log('Unsubscribing from realtime', name: _logName);
       _supabaseClient.removeChannel(_realtimeSubscription!);
       _realtimeSubscription = null;
     }
@@ -409,10 +489,10 @@ class SyncManager with WidgetsBindingObserver {
 
   /// Re-check configuration after login or master password setup
   Future<void> refreshConfiguration() async {
-    debugPrint('SyncManager: Refreshing configuration...');
+    dev.log('Refreshing configuration', name: _logName);
     await _checkConfiguration();
     if (_isConfigured) {
-      debugPrint('SyncManager: Configured, triggering initial pull');
+      dev.log('Configured, triggering initial pull', name: _logName);
       await pullSync();
     }
   }
@@ -422,11 +502,11 @@ class SyncManager with WidgetsBindingObserver {
   /// This prevents cloud data from overwriting the restored backup on next sync.
   Future<void> onLocalBackupRestored() async {
     if (!_isConfigured) {
-      debugPrint('SyncManager: Not configured, skipping post-restore sync');
+      dev.log('Not configured, skipping post-restore sync', name: _logName);
       return;
     }
 
-    debugPrint('SyncManager: Local backup restored, pushing to cloud...');
+    dev.log('Local backup restored, pushing to cloud', name: _logName);
 
     await _settingsManager.setHasUnsyncedChanges(true);
 
@@ -435,7 +515,7 @@ class SyncManager with WidgetsBindingObserver {
     // to increment it; conflict resolution is handled automatically.
     await _performPushSync();
 
-    debugPrint('SyncManager: Post-restore push completed');
+    dev.log('Post-restore push completed', name: _logName);
   }
 
   /// Called when user signs out.
@@ -445,6 +525,7 @@ class SyncManager with WidgetsBindingObserver {
     _debounceTimer?.cancel();
     _unsubscribeRealtime();
     _updateStatus(SyncStatus.notConfigured);
+    _lastError = null;
 
     // Clear encryption key material from secure storage
     await _encryptionService.clearKey();

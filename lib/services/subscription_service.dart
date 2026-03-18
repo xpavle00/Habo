@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:developer' as dev;
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:habo/env_config.dart';
+import 'package:habo/services/sync_error.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,6 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// - Syncing status with Supabase (via webhooks)
 class SubscriptionService {
   static const String _entitlementId = 'Habo Sync';
+  static const _logName = 'SubscriptionService';
 
   bool _isSelfHosted;
   bool _isInitialized = false;
@@ -32,6 +34,9 @@ class SubscriptionService {
 
   /// Initialize RevenueCat SDK.
   /// Should be called early in app lifecycle, after user logs in.
+  ///
+  /// Throws [SubscriptionException] with code `SUB_INIT_FAILED` if
+  /// initialization fails on a supported platform.
   Future<void> initialize() async {
     // If an initialization is already in progress, await it.
     if (_initCompleter != null) {
@@ -39,15 +44,13 @@ class SubscriptionService {
     }
 
     if (_isSelfHosted) {
-      debugPrint(
-        'SubscriptionService: Self-hosted mode - skipping RevenueCat',
-      );
+      dev.log('Self-hosted mode — skipping RevenueCat', name: _logName);
       return;
     }
 
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) {
-      debugPrint('SubscriptionService: Cannot initialize - no user logged in');
+      dev.log('Cannot initialize — no user logged in', name: _logName);
       return;
     }
 
@@ -64,14 +67,16 @@ class SubscriptionService {
       } else if (Platform.isAndroid) {
         apiKey = EnvConfig.revenueCatApiKeyAndroid;
       } else {
-        debugPrint('SubscriptionService: Platform not supported');
+        dev.log('Platform not supported for subscriptions', name: _logName);
+        _initCompleter!.complete();
+        _initCompleter = null;
         return;
       }
 
       if (apiKey.isEmpty) {
-        debugPrint(
-          'SubscriptionService: API key not set - skipping initialization',
-        );
+        dev.log('API key not set — skipping initialization', name: _logName);
+        _initCompleter!.complete();
+        _initCompleter = null;
         return;
       }
 
@@ -87,11 +92,14 @@ class SubscriptionService {
       }
 
       _currentUserId = user.id;
-      debugPrint('SubscriptionService: Initialized for user ${user.id}');
+      dev.log('Initialized for user ${user.id}', name: _logName);
       _initCompleter!.complete();
     } catch (e) {
-      debugPrint('SubscriptionService: Failed to initialize - $e');
-      _initCompleter!.completeError(e);
+      dev.log('Initialization failed', name: _logName, error: e);
+      final exception = SubscriptionException.initFailed(e);
+      _initCompleter!.completeError(exception);
+      _initCompleter = null;
+      throw exception;
     } finally {
       _initCompleter = null;
     }
@@ -104,13 +112,16 @@ class SubscriptionService {
     try {
       await Purchases.logOut();
       _currentUserId = null;
-      debugPrint('SubscriptionService: Logged out from RevenueCat');
+      dev.log('Logged out from RevenueCat', name: _logName);
     } catch (e) {
-      debugPrint('SubscriptionService: Error logging out - $e');
+      dev.log('Error logging out', name: _logName, error: e);
     }
   }
 
   /// Check if user has an active subscription.
+  ///
+  /// Tries RevenueCat first (source of truth), falls back to Supabase
+  /// (updated via webhooks). Returns `false` if both checks fail.
   Future<bool> isSubscribed() async {
     if (_isSelfHosted) return true;
 
@@ -121,12 +132,13 @@ class SubscriptionService {
         final isActive = customerInfo.entitlements.active.containsKey(
           _entitlementId,
         );
-        debugPrint(
-          'SubscriptionService: RevenueCat check - subscribed: $isActive',
-        );
         return isActive;
       } catch (e) {
-        debugPrint('SubscriptionService: Error checking RevenueCat - $e');
+        dev.log(
+          'RevenueCat check failed, falling back to Supabase',
+          name: _logName,
+          error: e,
+        );
       }
     }
 
@@ -158,18 +170,21 @@ class SubscriptionService {
 
       return false;
     } catch (e) {
-      debugPrint('SubscriptionService: Error checking Supabase - $e');
+      dev.log('Supabase subscription check failed', name: _logName, error: e);
       return false;
     }
   }
 
   /// Show the paywall to the user.
   /// Returns true if purchase was successful.
+  ///
+  /// Throws [SubscriptionException] with code `SUB_PAYWALL_FAILED` if
+  /// the paywall cannot be displayed.
   Future<bool> showPaywall() async {
     if (_isSelfHosted) return true;
 
     if (!_isInitialized) {
-      debugPrint('SubscriptionService: Cannot show paywall - not initialized');
+      dev.log('Cannot show paywall — not initialized', name: _logName);
       return false;
     }
 
@@ -179,26 +194,32 @@ class SubscriptionService {
       switch (result) {
         case PaywallResult.purchased:
         case PaywallResult.restored:
-          debugPrint('SubscriptionService: Paywall result - success');
+          dev.log('Paywall result: success', name: _logName);
           return true;
         case PaywallResult.notPresented:
           // User already has entitlement
-          debugPrint(
-            'SubscriptionService: Paywall not presented - already subscribed',
-          );
+          dev.log('Paywall not presented — already subscribed', name: _logName);
           return true;
         case PaywallResult.cancelled:
+          dev.log('Paywall cancelled by user', name: _logName);
+          return false;
         case PaywallResult.error:
-          debugPrint('SubscriptionService: Paywall result - $result');
+          dev.log('Paywall returned error', name: _logName);
           return false;
       }
     } catch (e) {
-      debugPrint('SubscriptionService: Error showing paywall - $e');
-      return false;
+      dev.log('Paywall display failed', name: _logName, error: e);
+      throw SubscriptionException.paywallFailed(e);
     }
   }
 
   /// Restore previous purchases.
+  ///
+  /// Returns `true` if purchases were restored and the user has an active
+  /// entitlement, `false` otherwise.
+  ///
+  /// Throws [SubscriptionException] with code `SUB_RESTORE_FAILED` if
+  /// the restore operation fails.
   Future<bool> restorePurchases() async {
     if (_isSelfHosted || !_isInitialized) return _isSelfHosted;
 
@@ -206,12 +227,16 @@ class SubscriptionService {
       final customerInfo = await Purchases.restorePurchases();
       return customerInfo.entitlements.active.containsKey(_entitlementId);
     } catch (e) {
-      debugPrint('SubscriptionService: Error restoring purchases - $e');
-      return false;
+      dev.log('Restore purchases failed', name: _logName, error: e);
+      throw SubscriptionException.restoreFailed(e);
     }
   }
 
   /// Get subscription info for display.
+  ///
+  /// Returns `null` if the service is not initialized or self-hosted.
+  /// Throws [SubscriptionException] with code `SUB_CHECK_FAILED` if
+  /// the info retrieval fails.
   Future<SubscriptionInfo?> getSubscriptionInfo() async {
     if (_isSelfHosted) return null;
     if (!_isInitialized) return null;
@@ -234,8 +259,8 @@ class SubscriptionService {
 
       return SubscriptionInfo(isActive: false);
     } catch (e) {
-      debugPrint('SubscriptionService: Error getting subscription info - $e');
-      return null;
+      dev.log('Failed to get subscription info', name: _logName, error: e);
+      throw SubscriptionException.checkFailed(e);
     }
   }
 }

@@ -1,8 +1,10 @@
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/services/service_locator.dart';
+import 'package:habo/services/sync_error.dart';
 import 'package:habo/services/sync_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/widgets/primary_button.dart';
@@ -630,33 +632,32 @@ class _SyncProfileViewState extends State<SyncProfileView> {
 
   Future<void> _performRestore(String backupId) async {
     try {
-      debugPrint('DEBUG: _performRestore starting...');
       await ServiceLocator.instance.syncService.restoreFromBackup(backupId);
 
-      // IMMEDIATELY push the restored data to make it the "truth"
-      // This must happen BEFORE realtime can trigger a pull that would merge
-      debugPrint('DEBUG: Pushing restored data to cloud...');
+      // Push the restored data to make it the "truth"
       await ServiceLocator.instance.syncManager?.onLocalBackupRestored();
-      debugPrint('DEBUG: Push complete - restored data is now the cloud truth');
 
-      // NOW reload habits in memory
-      debugPrint('DEBUG: Calling reloadFromDatabase...');
+      // Reload habits in memory
       final habitsManager = Provider.of<HabitsManager>(context, listen: false);
       await habitsManager.reloadFromDatabase();
-      debugPrint(
-        'DEBUG: reloadFromDatabase completed. Habits count: ${habitsManager.allHabits.length}',
-      );
 
       if (mounted) {
         ServiceLocator.instance.uiFeedbackService.showSuccess(
           'Backup restored successfully!',
         );
       }
-    } catch (e) {
-      debugPrint('DEBUG: _performRestore error: $e');
+    } on HaboSyncException catch (e) {
+      dev.log('Restore failed (${e.code})', name: 'SyncProfileView', error: e);
       if (mounted) {
         ServiceLocator.instance.uiFeedbackService.showError(
-          'Restore failed: $e',
+          'Restore failed: ${e.message}',
+        );
+      }
+    } catch (e) {
+      dev.log('Restore failed (unexpected)', name: 'SyncProfileView', error: e);
+      if (mounted) {
+        ServiceLocator.instance.uiFeedbackService.showError(
+          'Restore failed. Please try again.',
         );
       }
     }
