@@ -4,6 +4,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:habo/widgets/primary_button.dart';
+import 'package:habo/generated/l10n.dart';
 
 class SyncOnboardingView extends StatefulWidget {
   final VoidCallback onComplete;
@@ -18,23 +19,20 @@ class _SyncOnboardingViewState extends State<SyncOnboardingView> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<_OnboardingPageData> _pages = [
+  late final List<_OnboardingPageData> _pages = [
     _OnboardingPageData(
-      title: 'Seamless Continuity',
-      description:
-          'Your habits, flawlessly synchronized across everywhere. Start tracking on your phone, tick off on your tablet seamlessly.',
+      title: S.current.seamlessContinuity,
+      description: S.current.seamlessContinuityDesc,
       imagePath: 'assets/images/sync_onboard/sync.svg',
     ),
     _OnboardingPageData(
-      title: 'Zero-Knowledge Privacy',
-      description:
-          'State-of-the-art End-to-End Encryption. Only you hold the master key — we can never read or access your personal data.',
+      title: S.current.zeroKnowledgePrivacy,
+      description: S.current.zeroKnowledgePrivacyDesc,
       imagePath: 'assets/images/sync_onboard/encrypt.svg',
     ),
     _OnboardingPageData(
-      title: 'Rest Easy',
-      description:
-          'We securely snapshot your entire progress history to the cloud. Total peace of mind, automatically.',
+      title: S.current.restEasy,
+      description: S.current.restEasyDesc,
       imagePath: 'assets/images/sync_onboard/backup.svg',
     ),
   ];
@@ -83,7 +81,7 @@ class _SyncOnboardingViewState extends State<SyncOnboardingView> {
                 child: TextButton(
                   onPressed: _completeOnboarding,
                   child: Text(
-                    'Skip',
+                    S.of(context).skip,
                     style: TextStyle(
                       color: isDark ? Colors.grey[400] : Colors.grey[600],
                       fontWeight: FontWeight.w500,
@@ -195,8 +193,8 @@ class _SyncOnboardingViewState extends State<SyncOnboardingView> {
                     onPressed: _onNext,
                     child: Text(
                       _currentPage == _pages.length - 1
-                          ? 'Get Started'
-                          : 'Next',
+                          ? S.of(context).getStarted
+                          : S.of(context).next,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

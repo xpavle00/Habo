@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/widgets/password_change_widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/generated/l10n.dart';
 
 class ChangeAccountPasswordScreen extends StatefulWidget {
   const ChangeAccountPasswordScreen({super.key});
@@ -44,35 +45,35 @@ class _ChangeAccountPasswordScreenState
     final confirm = _confirmPasswordController.text;
 
     if (currentPassword.isEmpty) {
-      setState(() => _currentPasswordError = 'Current password is required');
-      return false;
-    }
-
-    if (newPassword.isEmpty) {
-      setState(() => _newPasswordError = 'New password is required');
-      return false;
-    }
-
-    if (newPassword.length < 8) {
       setState(
-        () => _newPasswordError = 'Password must be at least 8 characters',
+        () => _currentPasswordError = S.of(context).currentPasswordIsRequired,
       );
       return false;
     }
 
+    if (newPassword.isEmpty) {
+      setState(() => _newPasswordError = S.of(context).newPasswordIsRequired);
+      return false;
+    }
+
+    if (newPassword.length < 8) {
+      setState(() => _newPasswordError = S.of(context).passwordMinLengthError);
+      return false;
+    }
+
     if (confirm.isEmpty) {
-      setState(() => _confirmError = 'Please confirm your password');
+      setState(() => _confirmError = S.of(context).pleaseConfirmYourPassword);
       return false;
     }
 
     if (newPassword != confirm) {
-      setState(() => _confirmError = 'Passwords do not match');
+      setState(() => _confirmError = S.of(context).passwordsDoNotMatch);
       return false;
     }
 
     if (currentPassword == newPassword) {
       setState(
-        () => _newPasswordError = 'New password must be different from current',
+        () => _newPasswordError = S.of(context).newPasswordMustBeDifferent,
       );
       return false;
     }
@@ -110,7 +111,7 @@ class _ChangeAccountPasswordScreenState
       } on AuthException {
         // If sign in fails, the password is wrong
         setState(() {
-          _currentPasswordError = 'Incorrect current password';
+          _currentPasswordError = S.of(context).incorrectCurrentPassword;
           _isProcessing = false;
         });
         return;
@@ -123,8 +124,8 @@ class _ChangeAccountPasswordScreenState
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account password changed successfully'),
+          SnackBar(
+            content: Text(S.of(context).accountPasswordChangedSuccessfully),
             backgroundColor: Colors.green,
           ),
         );
@@ -135,7 +136,7 @@ class _ChangeAccountPasswordScreenState
         String errorMessage = e.message;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $errorMessage'),
+            content: Text(S.of(context).errorWithDescription(errorMessage)),
             backgroundColor: Colors.red,
           ),
         );
@@ -145,7 +146,7 @@ class _ChangeAccountPasswordScreenState
         String errorMessage = e.toString().replaceFirst('Exception: ', '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $errorMessage'),
+            content: Text(S.of(context).errorWithDescription(errorMessage)),
             backgroundColor: Colors.red,
           ),
         );
@@ -161,7 +162,7 @@ class _ChangeAccountPasswordScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Change Account Password'),
+        title: Text(S.of(context).changeAccountPassword),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -200,7 +201,7 @@ class _ChangeAccountPasswordScreenState
 
                         // Title
                         Text(
-                          'Change Account Password',
+                          S.of(context).changeAccountPassword,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -209,7 +210,7 @@ class _ChangeAccountPasswordScreenState
 
                         // Description
                         Text(
-                          'This changes your login password for Habo.',
+                          S.of(context).thisChangesYourLoginPassword,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.grey[600]),
@@ -219,7 +220,7 @@ class _ChangeAccountPasswordScreenState
                         // Current Password field
                         PasswordFormField(
                           controller: _currentPasswordController,
-                          label: 'Current Password',
+                          label: S.of(context).currentPassword,
                           errorText: _currentPasswordError,
                           obscureText: _obscureCurrent,
                           onToggleVisibility: () => setState(
@@ -233,21 +234,21 @@ class _ChangeAccountPasswordScreenState
                         // New Password field
                         PasswordFormField(
                           controller: _newPasswordController,
-                          label: 'New Password',
+                          label: S.of(context).newPassword,
                           errorText: _newPasswordError,
                           obscureText: _obscureNew,
                           onToggleVisibility: () =>
                               setState(() => _obscureNew = !_obscureNew),
                           onErrorClear: () =>
                               setState(() => _newPasswordError = null),
-                          helperText: 'Minimum 8 characters',
+                          helperText: S.of(context).minimum8Characters,
                         ),
                         const SizedBox(height: 16),
 
                         // Confirm Password field
                         PasswordFormField(
                           controller: _confirmPasswordController,
-                          label: 'Confirm New Password',
+                          label: S.of(context).confirmNewPassword,
                           errorText: _confirmError,
                           obscureText: _obscureConfirm,
                           onToggleVisibility: () => setState(
@@ -274,12 +275,12 @@ class _ChangeAccountPasswordScreenState
                                     ),
                                   ),
                                 )
-                              : const Row(
+                              : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Change Password'),
-                                    SizedBox(width: 8),
-                                    Icon(Icons.arrow_forward, size: 18),
+                                    Text(S.of(context).changePassword),
+                                    const SizedBox(width: 8),
+                                    const Icon(Icons.arrow_forward, size: 18),
                                   ],
                                 ),
                         ),

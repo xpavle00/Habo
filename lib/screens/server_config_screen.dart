@@ -3,6 +3,7 @@ import 'package:habo/services/service_locator.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/generated/l10n.dart';
 
 class ServerConfigScreen extends StatefulWidget {
   const ServerConfigScreen({super.key});
@@ -37,19 +38,19 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
   }
 
   String? _validateUrl(String? value) {
-    if (value == null || value.isEmpty) return 'URL is required';
+    if (value == null || value.isEmpty) return S.of(context).urlIsRequired;
     final uri = Uri.tryParse(value);
     if (uri == null || !uri.hasScheme || !uri.hasAuthority) {
-      return 'Enter a valid URL (e.g., https://your-project.supabase.co)';
+      return S.of(context).enterValidUrl;
     }
     if (!value.startsWith('https://') && !value.startsWith('http://')) {
-      return 'URL must start with https:// or http://';
+      return S.of(context).urlMustStartWithHttpOrHttps;
     }
     return null;
   }
 
   String? _validateKey(String? value) {
-    if (value == null || value.isEmpty) return 'Anon key is required';
+    if (value == null || value.isEmpty) return S.of(context).anonKeyIsRequired;
     return null;
   }
 
@@ -89,9 +90,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Could not connect to server. Verify the URL, anon key, and that the Habo migration has been applied.\n\nError: $e',
-          ),
+          content: Text(S.of(context).couldNotConnectToServer(e.toString())),
           duration: const Duration(seconds: 5),
         ),
       );
@@ -108,18 +107,16 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset to Habo Cloud?'),
-        content: const Text(
-          'This will disconnect from your self-hosted server and switch back to the default Habo Cloud server. You will need to sign in again.',
-        ),
+        title: Text(S.of(context).resetToHaboCloudQuestion),
+        content: Text(S.of(context).disconnectFromSelfHosted),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Reset'),
+            child: Text(S.of(context).resetAction),
           ),
         ],
       ),
@@ -142,10 +139,8 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Restart Required'),
-        content: const Text(
-          'Please close and reopen the app to connect to the new server.',
-        ),
+        title: Text(S.of(context).restartRequired),
+        content: Text(S.of(context).restartRequiredContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -159,7 +154,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Server Configuration')),
+      appBar: AppBar(title: Text(S.of(context).serverConfiguration)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -169,13 +164,13 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
             children: [
               Text(
                 _isCustomServer
-                    ? 'Connected to a custom server'
-                    : 'Connected to Habo Cloud (default)',
+                    ? S.of(context).connectedToCustomServer
+                    : S.of(context).connectedToHaboCloudDefault,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
               Text(
-                'Self-host your own Supabase backend for full sync access without a subscription. See the self-hosting guide for setup instructions.',
+                S.of(context).selfHostDescription,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 24),
@@ -211,7 +206,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Test Connection & Save'),
+                      : Text(S.of(context).testConnectionAndSave),
                 ),
               ),
               if (_isCustomServer) ...[
@@ -220,7 +215,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                   width: double.infinity,
                   child: OutlinedButton(
                     onPressed: _isLoading ? null : _resetToDefault,
-                    child: const Text('Reset to Habo Cloud'),
+                    child: Text(S.of(context).resetToHaboCloud),
                   ),
                 ),
               ],

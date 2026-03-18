@@ -54,10 +54,7 @@ class SyncService {
 
       return response;
     } on PostgrestException catch (e) {
-      throw SyncException.profileError(
-        'Failed to fetch encryption profile',
-        e,
-      );
+      throw SyncException.profileError('Failed to fetch encryption profile', e);
     }
   }
 
@@ -299,11 +296,7 @@ class SyncService {
 
       return hoursSinceLastBackup >= _minBackupIntervalHours;
     } on PostgrestException catch (e) {
-      dev.log(
-        'Failed to check backup status',
-        name: _logName,
-        error: e,
-      );
+      dev.log('Failed to check backup status', name: _logName, error: e);
       return false;
     }
   }
@@ -556,10 +549,7 @@ class SyncService {
   /// Throws [EncryptionException] if no key is found.
   /// Throws [SyncException] on version conflict or payload size violation.
   Future<int> pushSync({required int expectedVersion}) async {
-    dev.log(
-      'Push started (expectedVersion=$expectedVersion)',
-      name: _logName,
-    );
+    dev.log('Push started (expectedVersion=$expectedVersion)', name: _logName);
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) throw HaboAuthException.notLoggedIn();
 
@@ -578,7 +568,7 @@ class SyncService {
     final pushCategories = data['categories'] as List? ?? [];
     dev.log(
       'Push: exporting ${pushHabits.length} habits, '
-          '${pushCategories.length} categories',
+      '${pushCategories.length} categories',
       name: _logName,
     );
 
@@ -597,7 +587,7 @@ class SyncService {
     if (currentRemoteVersion != expectedVersion) {
       dev.log(
         'Push: version conflict in pre-check '
-            '(remote=$currentRemoteVersion, expected=$expectedVersion)',
+        '(remote=$currentRemoteVersion, expected=$expectedVersion)',
         name: _logName,
         level: 900,
       );
@@ -663,7 +653,11 @@ class SyncService {
             oldBlobPath,
           ]);
         } catch (e) {
-          dev.log('Failed to delete old blob (non-fatal)', name: _logName, error: e);
+          dev.log(
+            'Failed to delete old blob (non-fatal)',
+            name: _logName,
+            error: e,
+          );
         }
       }
 
@@ -714,10 +708,7 @@ class SyncService {
     }
 
     final remoteVersion = (profile['sync_version'] as int?) ?? 0;
-    dev.log(
-      'Pull: remote=$remoteVersion, local=$localVersion',
-      name: _logName,
-    );
+    dev.log('Pull: remote=$remoteVersion, local=$localVersion', name: _logName);
 
     if (remoteVersion <= localVersion) {
       dev.log('Pull: already up to date', name: _logName);
@@ -744,7 +735,7 @@ class SyncService {
     final pullCategories = remoteData['categories'] as List? ?? [];
     dev.log(
       'Pull: received ${pullHabits.length} habits, '
-          '${pullCategories.length} categories',
+      '${pullCategories.length} categories',
       name: _logName,
     );
 

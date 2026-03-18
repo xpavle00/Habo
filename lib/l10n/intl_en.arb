@@ -350,5 +350,289 @@
     "createCategory": "Create category",
     "all": "All",
     "selectIcon": "Pick an icon",
-    "searchIcons": "Search"
+    "searchIcons": "Search",
+    "syncTitle": "Sync",
+    "syncAndBackupYourData": "Sync and backup your data",
+    "server": "Server",
+    "customServer": "Custom server",
+    "haboCloudDefault": "Habo Cloud (default)",
+    "syncNotAvailable": "Sync not available",
+    "syncNow": "Sync Now",
+    "subscribe": "Subscribe",
+    "restoreBackupQuestion": "Restore Backup?",
+    "habitsCount": "{count} habits",
+    "@habitsCount": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "anUnexpectedErrorOccurred": "An unexpected error occurred",
+    "anUnexpectedErrorOccurredTryAgain": "An unexpected error occurred. Please try again.",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "pleaseEnterValidEmail": "Please enter a valid email address",
+    "checkEmailForResetLink": "Check your email for a password reset link.",
+    "failedToSendResetLink": "Failed to send reset link. Please try again.",
+    "appleSignInError": "Apple Sign In error: {error}",
+    "@appleSignInError": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "signInFailedPleaseTryAgain": "Sign in failed. Please try again.",
+    "enterEmailForResetLink": "Enter your email address and we'll send you a link to reset your password.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "createAccountToBackupAndSync": "Create an account to backup & sync.",
+    "welcomeBackStayConsistent": "Welcome back! Let's stay consistent.",
+    "emailIsRequired": "Email is required",
+    "enterValidEmail": "Enter a valid email",
+    "passwordIsRequired": "Password is required",
+    "passwordMinLengthError": "Password must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "createAccount": "Create Account",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "alreadyHaveAnAccount": "Already have an account? ",
+    "dontHaveAnAccount": "Don't have an account? ",
+    "orContinueWith": "or continue with",
+    "continueWithApple": "Continue with Apple",
+    "continueWithGoogle": "Continue with Google",
+    "forgotPassword": "Forgot password?",
+    "pauseSyncing": "Pause Syncing",
+    "pausesSyncingAndBackup": "Pauses syncing and backup",
+    "restoreData": "Restore Data",
+    "fromPreviousBackups": "From previous backups",
+    "profile": "Profile",
+    "emailPasswordAndAccount": "Email, password, and account",
+    "signOut": "Sign Out",
+    "syncingPaused": "Syncing Paused",
+    "syncingPausedDesc": "Paused",
+    "neverSynced": "Never synced",
+    "paused": "Paused",
+    "syncingHero": "Syncing...",
+    "dataBeingSynchronized": "Your data is being synchronized",
+    "syncingToCloud": "Syncing to Cloud",
+    "everythingIsSafe": "Everything is safe",
+    "connectedToCloud": "Connected to Cloud",
+    "syncError": "Sync Error",
+    "tapSyncNowToRetry": "Tap Sync Now to retry",
+    "errorText": "Error",
+    "youAreOffline": "You're offline",
+    "willSyncWhenConnected": "Will sync when connected",
+    "offline": "Offline",
+    "notConfigured": "Not configured",
+    "setUpSyncToEnable": "Set up sync to enable",
+    "subscriptionNeeded": "Subscription needed",
+    "subscribeToEnableSync": "Subscribe to enable sync",
+    "notActive": "Not active",
+    "cloudAndBackup": "Cloud & Backup",
+    "unlockSyncAndBackup": "Unlock Sync & Backup",
+    "keepHabitsSafeAndSynced": "Keep your habits safe and synced across all your devices.",
+    "realTimeSyncAcrossDevices": "Real-time sync across devices",
+    "automaticCloudBackups": "Automatic cloud backups",
+    "endToEndEncryption": "End-to-end encryption",
+    "restorePurchases": "Restore Purchases",
+    "lastSyncedJustNow": "Last synced just now",
+    "lastSyncedMinsAgo": "Last synced {minutes} min ago",
+    "@lastSyncedMinsAgo": {
+      "placeholders": {
+        "minutes": {
+          "type": "int"
+        }
+      }
+    },
+    "lastSyncedHoursAgo": "Last synced {hours} hours ago",
+    "@lastSyncedHoursAgo": {
+      "placeholders": {
+        "hours": {
+          "type": "int"
+        }
+      }
+    },
+    "lastSyncedDaysAgo": "Last synced {days} day{plural} ago",
+    "@lastSyncedDaysAgo": {
+      "placeholders": {
+        "days": {
+          "type": "int"
+        },
+        "plural": {
+          "type": "String"
+        }
+      }
+    },
+    "todayAt": "Today at {time}",
+    "@todayAt": {
+      "placeholders": {
+        "time": {
+          "type": "String"
+        }
+      }
+    },
+    "yesterdayAt": "Yesterday at {time}",
+    "@yesterdayAt": {
+      "placeholders": {
+        "time": {
+          "type": "String"
+        }
+      }
+    },
+    "weekdayAt": "{weekday} at {time}",
+    "@weekdayAt": {
+      "placeholders": {
+        "weekday": {
+          "type": "String"
+        },
+        "time": {
+          "type": "String"
+        }
+      }
+    },
+    "restoreBackupConfirmation": "This will replace all current data with the backup from {date}.\n\nThis action cannot be undone.",
+    "@restoreBackupConfirmation": {
+      "placeholders": {
+        "date": {
+          "type": "String"
+        }
+      }
+    },
+    "backupRestoredSuccessfully": "Backup restored successfully!",
+    "restoreFailedWithError": "Restore failed: {error}",
+    "@restoreFailedWithError": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "restoreFailedTryAgain": "Restore failed. Please try again.",
+    "chooseBackupToRestore": "Choose a backup to restore from",
+    "noBackupsAvailable": "No backups available yet.\nBackups are created automatically during sync.",
+    "purchasesRestoredSuccessfully": "Purchases restored successfully!",
+    "noPreviousPurchasesFound": "No previous purchases found.",
+    "verificationEmailResent": "Verification email resent!",
+    "failedToResend": "Failed to resend: {error}",
+    "@failedToResend": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "iveVerifiedMyEmail": "I've verified my email",
+    "seamlessContinuity": "Seamless Continuity",
+    "seamlessContinuityDesc": "Your habits, flawlessly synchronized across everywhere. Start tracking on your phone, tick off on your tablet seamlessly.",
+    "zeroKnowledgePrivacy": "Zero-Knowledge Privacy",
+    "zeroKnowledgePrivacyDesc": "State-of-the-art End-to-End Encryption. Only you hold the master key — we can never read or access your personal data.",
+    "restEasy": "Rest Easy",
+    "restEasyDesc": "We securely snapshot your entire progress history to the cloud. Total peace of mind, automatically.",
+    "getStarted": "Get Started",
+    "next": "Next",
+    "passwordCannotBeEmpty": "Password cannot be empty",
+    "pleaseConfirmYourPassword": "Please confirm your password",
+    "createMasterPassword": "Create Master Password",
+    "unlockYourData": "Unlock Your Data",
+    "masterPasswordDescriptionSetup": "Your master password encrypts all your data before it leaves your device. Choose something strong and memorable.",
+    "masterPasswordDescriptionUnlock": "Enter your master password to decrypt your data and enable sync.",
+    "importantCannotBeRecovered": "Important: Cannot be recovered",
+    "masterPasswordWarning": "We do not store your password. If you forget it, your data cannot be recovered. Write it down somewhere safe!",
+    "masterPasswordLabel": "Master Password",
+    "minimum8Characters": "Minimum 8 characters",
+    "setPassword": "Set Password",
+    "unlockAndSync": "Unlock & Sync",
+    "unlockPasswordExplanation": "This is the password you created when you first set up sync on another device.",
+    "masterPasswordChangedSuccessfully": "Master password changed successfully",
+    "errorWithDescription": "Error: {error}",
+    "@errorWithDescription": {
+      "placeholders": {
+        "error": {
+          "type": "String"
+        }
+      }
+    },
+    "changeMasterPassword": "Change Master Password",
+    "changePassword": "Change Password",
+    "accountPasswordChangedSuccessfully": "Account password changed successfully",
+    "changeAccountPassword": "Change Account Password",
+    "deleteAccountTitle": "Delete Account",
+    "unexpectedErrorPleaseTryAgain": "An unexpected error occurred. Please try again.",
+    "checkEmailForPasswordReset": "Check your email for a password reset link.",
+    "signOutQuestion": "Sign Out?",
+    "resetToHaboCloudQuestion": "Reset to Habo Cloud?",
+    "resetAction": "Reset",
+    "restartRequired": "Restart Required",
+    "ok": "OK",
+    "serverConfiguration": "Server Configuration",
+    "testConnectionAndSave": "Test Connection & Save",
+    "resetToHaboCloud": "Reset to Habo Cloud",
+    "currentPasswordIsRequired": "Current password is required",
+    "newPasswordIsRequired": "New password is required",
+    "newPasswordMustBeDifferent": "New password must be different from current",
+    "incorrectCurrentPassword": "Incorrect current password",
+    "enterCurrentPasswordAndChooseNew": "Enter your current password and choose a new one.",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "thisChangesYourLoginPassword": "This changes your login password for Habo.",
+    "passwordUpdated": "Password Updated!",
+    "passwordResetSuccessMessage": "Your password has been reset successfully. You can now sign in with your new password.",
+    "setNewPassword": "Set New Password",
+    "chooseStrongPassword": "Choose a strong password for your account.",
+    "pleaseTypeDeleteToConfirm": "Please type DELETE to confirm",
+    "unableToVerifyIdentity": "Unable to verify identity",
+    "incorrectPassword": "Incorrect password",
+    "failedToDeleteAccount": "Failed to delete account",
+    "deleteYourAccount": "Delete Your Account",
+    "deleteAccountWarning": "This action is permanent and cannot be undone. The following data will be permanently deleted:",
+    "deleteHabitsAndTrackingData": "All your habits and tracking data",
+    "deleteCloudBackupsAndSyncData": "Cloud backups and sync data",
+    "deleteEncryptionKeysAndProfile": "Encryption keys and profile",
+    "deleteYourAccountAndLoginCredentials": "Your account and login credentials",
+    "deleteSubscriptionManagedSeparately": "Subscription (managed separately by store)",
+    "typeDeleteToConfirm": "Type DELETE to confirm",
+    "enterYourPasswordToConfirm": "Enter your password to confirm",
+    "permanentlyDeleteAccount": "Permanently Delete Account",
+    "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
+    "updateYourEncryptionPassword": "Update your encryption password",
+    "updateYourLoginPassword": "Update your login password",
+    "manageSubscription": "Manage Subscription",
+    "viewOrCancelYourPlan": "View or cancel your plan",
+    "permanentlyDeleteYourAccountAndData": "Permanently delete your account and data",
+    "signOutConfirmationContent": "You will need to enter your master password again to access your synced data.",
+    "couldNotConnectToServer": "Could not connect to server. Verify the URL, anon key, and that the Habo migration has been applied.\n\nError: {e}",
+    "@couldNotConnectToServer": {
+      "placeholders": {
+        "e": {
+          "type": "String"
+        }
+      }
+    },
+    "disconnectFromSelfHosted": "This will disconnect from your self-hosted server and switch back to the default Habo Cloud server. You will need to sign in again.",
+    "restartRequiredContent": "Please close and reopen the app to connect to the new server.",
+    "connectedToCustomServer": "Connected to a custom server",
+    "connectedToHaboCloudDefault": "Connected to Habo Cloud (default)",
+    "selfHostDescription": "Self-host your own Supabase backend for full sync access without a subscription. See the self-hosting guide for setup instructions.",
+    "urlIsRequired": "URL is required",
+    "enterValidUrl": "Enter a valid URL (e.g., https://your-project.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "URL must start with https:// or http://",
+    "anonKeyIsRequired": "Anon key is required",
+    "pleaseSignInWithEmailAndPassword": "Please sign in with your email and password.",
+    "checkYourEmail": "Check your email",
+    "weSentVerificationLinkTo": "We sent a verification link to",
+    "clickLinkInEmailToVerify": "Click the link in the email to verify your account, then come back here and tap the button below.",
+    "resendInSeconds": "Resend in {seconds}s",
+    "@resendInSeconds": {
+      "placeholders": {
+        "seconds": {
+          "type": "int"
+        }
+      }
+    },
+    "resendVerificationEmail": "Resend verification email",
+    "backToSignIn": "Back to Sign In"
   }

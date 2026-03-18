@@ -162,7 +162,11 @@ class SyncManager with WidgetsBindingObserver {
       final keyData = await _encryptionService.loadKey();
       _isConfigured = keyData != null;
     } on EncryptionException catch (e) {
-      dev.log('Encryption key check failed (${e.code})', name: _logName, error: e);
+      dev.log(
+        'Encryption key check failed (${e.code})',
+        name: _logName,
+        error: e,
+      );
       _isConfigured = false;
     }
 
@@ -239,7 +243,11 @@ class SyncManager with WidgetsBindingObserver {
           await _syncService.createPreSyncBackup();
         } catch (e) {
           // Backup failure must never block the sync itself
-          dev.log('Pre-sync backup failed (non-fatal)', name: _logName, error: e);
+          dev.log(
+            'Pre-sync backup failed (non-fatal)',
+            name: _logName,
+            error: e,
+          );
         }
       }
 
@@ -257,18 +265,27 @@ class SyncManager with WidgetsBindingObserver {
             name: _logName,
           );
         } else {
-          dev.log('Pull completed: force pull at version $newVersion', name: _logName);
+          dev.log(
+            'Pull completed: force pull at version $newVersion',
+            name: _logName,
+          );
           _dataChangedController.add(null);
         }
       } else {
-        dev.log('Pull skipped: up to date at version $currentVersion', name: _logName);
+        dev.log(
+          'Pull skipped: up to date at version $currentVersion',
+          name: _logName,
+        );
 
         // First-time setup: no remote data exists yet.
         // Mark local data as unsynced so the next syncNow/scheduleSync
         // pushes the existing habits to the cloud.
         if (currentVersion == 0) {
           await _settingsManager.setHasUnsyncedChanges(true);
-          dev.log('First sync setup: marked local data for initial push', name: _logName);
+          dev.log(
+            'First sync setup: marked local data for initial push',
+            name: _logName,
+          );
         }
       }
 
@@ -282,7 +299,7 @@ class SyncManager with WidgetsBindingObserver {
           if (absDrift > SyncService.clockDriftThresholdSeconds) {
             dev.log(
               'WARNING: Clock drift ${_clockDriftSeconds}s exceeds threshold '
-                  '${SyncService.clockDriftThresholdSeconds}s',
+              '${SyncService.clockDriftThresholdSeconds}s',
               name: _logName,
               level: 900,
             );
@@ -290,7 +307,11 @@ class SyncManager with WidgetsBindingObserver {
         }
       }
     } on HaboSyncException catch (e) {
-      dev.log('Pull failed (${e.code}): ${e.message}', name: _logName, error: e.cause);
+      dev.log(
+        'Pull failed (${e.code}): ${e.message}',
+        name: _logName,
+        error: e.cause,
+      );
       _lastError = e;
       _updateStatus(SyncStatus.error);
     } catch (e) {
@@ -373,7 +394,10 @@ class SyncManager with WidgetsBindingObserver {
           if (attempt < maxRetries) {
             await Future.delayed(Duration(seconds: attempt));
           } else {
-            dev.log('Push failed after $maxRetries conflict retries', name: _logName);
+            dev.log(
+              'Push failed after $maxRetries conflict retries',
+              name: _logName,
+            );
             _lastError = SyncException.pushFailed(e);
             _updateStatus(SyncStatus.error);
           }

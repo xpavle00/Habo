@@ -244,20 +244,23 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     FlutterNativeSplash.remove();
 
     // Listen for password recovery auth events
-    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
-      data,
-    ) {
-      if (data.event == AuthChangeEvent.passwordRecovery) {
-        // Navigate to the reset password screen
-        _navigatorKey.currentState?.push(
-          MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
-        );
-      }
-    }, onError: (error) {
-      // Deep link auth failures (e.g. expired PKCE token from email
-      // confirmation) are expected on mobile — log and ignore.
-      debugPrint('Auth state change error (ignored): $error');
-    });
+    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen(
+      (data) {
+        if (data.event == AuthChangeEvent.passwordRecovery) {
+          // Navigate to the reset password screen
+          _navigatorKey.currentState?.push(
+            MaterialPageRoute(
+              builder: (context) => const ResetPasswordScreen(),
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        // Deep link auth failures (e.g. expired PKCE token from email
+        // confirmation) are expected on mobile — log and ignore.
+        debugPrint('Auth state change error (ignored): $error');
+      },
+    );
   }
 
   @override

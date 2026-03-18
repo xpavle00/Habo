@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/services/sync_error.dart';
@@ -38,7 +39,7 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     final syncManager = ServiceLocator.instance.syncManager;
 
     if (syncManager == null) {
-      return const Center(child: Text('Sync not available'));
+      return Center(child: Text(S.of(context).syncNotAvailable));
     }
 
     return StreamBuilder<SyncStatus>(
@@ -97,14 +98,14 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                                 ),
                               ),
                             )
-                          : const Row(
+                          : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.sync, size: 20),
-                                SizedBox(width: 8),
-                                Text('Sync Now'),
-                                SizedBox(width: 8),
-                                Icon(Icons.arrow_forward, size: 18),
+                                const Icon(Icons.sync, size: 20),
+                                const SizedBox(width: 8),
+                                Text(S.of(context).syncNow),
+                                const SizedBox(width: 8),
+                                const Icon(Icons.arrow_forward, size: 18),
                               ],
                             ),
                     );
@@ -118,8 +119,8 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                   context: context,
                   icon: Icons.pause_circle,
                   iconColor: Colors.orange,
-                  title: 'Pause Syncing',
-                  subtitle: 'Pauses syncing and backup',
+                  title: S.of(context).pauseSyncing,
+                  subtitle: S.of(context).pausesSyncingAndBackup,
                   trailing: Consumer<SettingsManager>(
                     builder: (context, settings, _) {
                       return Transform.scale(
@@ -140,8 +141,8 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                   context: context,
                   icon: Icons.restore,
                   iconColor: HaboColors.primary,
-                  title: 'Restore Data',
-                  subtitle: 'From previous backups',
+                  title: S.of(context).restoreData,
+                  subtitle: S.of(context).fromPreviousBackups,
                   trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
                   onTap: () => _showBackupsSheet(context),
                 ),
@@ -153,8 +154,8 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                 context: context,
                 icon: Icons.person,
                 iconColor: HaboColors.primary,
-                title: 'Profile',
-                subtitle: 'Email, password, and account',
+                title: S.of(context).profile,
+                subtitle: S.of(context).emailPasswordAndAccount,
                 trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
                 onTap: () => Provider.of<AppStateManager>(
                   context,
@@ -208,10 +209,10 @@ class _SyncProfileViewState extends State<SyncProfileView> {
       return _buildHeroColumn(
         context,
         Icons.cloud_done,
-        'Syncing Paused',
-        _formatLastSyncTime(lastSyncTime) ?? 'Never synced',
+        S.of(context).syncingPaused,
+        _formatLastSyncTime(context, lastSyncTime) ?? S.of(context).neverSynced,
         Colors.orange,
-        'Paused',
+        S.of(context).paused,
         false,
       );
     }
@@ -224,46 +225,48 @@ class _SyncProfileViewState extends State<SyncProfileView> {
 
     switch (status) {
       case SyncStatus.syncing:
-        heroText = 'Syncing...';
-        subtitleText = 'Your data is being synchronized';
+        heroText = S.of(context).syncingHero;
+        subtitleText = S.of(context).dataBeingSynchronized;
         dotColor = HaboColors.primary;
-        connectionText = 'Syncing to Cloud';
+        connectionText = S.of(context).syncingToCloud;
         iconData = Icons.cloud_sync;
         break;
       case SyncStatus.synced:
       case SyncStatus.idle:
-        heroText = 'Everything is safe';
-        subtitleText = _formatLastSyncTime(lastSyncTime) ?? 'Never synced';
+        heroText = S.of(context).everythingIsSafe;
+        subtitleText =
+            _formatLastSyncTime(context, lastSyncTime) ??
+            S.of(context).neverSynced;
         dotColor = HaboColors.primary;
-        connectionText = 'Connected to Cloud';
+        connectionText = S.of(context).connectedToCloud;
         iconData = Icons.cloud_done;
         break;
       case SyncStatus.error:
-        heroText = 'Sync Error';
-        subtitleText = 'Tap Sync Now to retry';
+        heroText = S.of(context).syncError;
+        subtitleText = S.of(context).tapSyncNowToRetry;
         dotColor = Colors.red;
-        connectionText = 'Error';
+        connectionText = S.of(context).errorText;
         iconData = Icons.cloud_off;
         break;
       case SyncStatus.offline:
-        heroText = 'You\'re offline';
-        subtitleText = 'Will sync when connected';
+        heroText = S.of(context).youAreOffline;
+        subtitleText = S.of(context).willSyncWhenConnected;
         dotColor = Colors.grey;
-        connectionText = 'Offline';
+        connectionText = S.of(context).offline;
         iconData = Icons.cloud_off;
         break;
       case SyncStatus.notConfigured:
-        heroText = 'Not configured';
-        subtitleText = 'Set up sync to enable';
+        heroText = S.of(context).notConfigured;
+        subtitleText = S.of(context).setUpSyncToEnable;
         dotColor = Colors.orange;
-        connectionText = 'Not configured';
+        connectionText = S.of(context).notConfigured;
         iconData = Icons.cloud_off;
         break;
       case SyncStatus.noSubscription:
-        heroText = 'Subscription needed';
-        subtitleText = 'Subscribe to enable sync';
+        heroText = S.of(context).subscriptionNeeded;
+        subtitleText = S.of(context).subscribeToEnableSync;
         dotColor = Colors.amber;
-        connectionText = 'Not active';
+        connectionText = S.of(context).notActive;
         iconData = Icons.cloud_off;
         break;
     }
@@ -283,10 +286,10 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     return _buildHeroColumn(
       context,
       Icons.cloud_sync,
-      'Cloud & Backup',
-      'Subscribe to enable sync',
+      S.of(context).cloudAndBackup,
+      S.of(context).subscribeToEnableSync,
       Colors.grey,
-      'Not active',
+      S.of(context).notActive,
       false,
     );
   }
@@ -485,7 +488,7 @@ class _SyncProfileViewState extends State<SyncProfileView> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Unlock Sync & Backup',
+            S.of(context).unlockSyncAndBackup,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -493,32 +496,35 @@ class _SyncProfileViewState extends State<SyncProfileView> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Keep your habits safe and synced across all your devices.',
+            S.of(context).keepHabitsSafeAndSynced,
             style: TextStyle(color: Colors.grey[600], fontSize: 14),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
 
           // Feature list
-          _buildFeatureItem(Icons.sync, 'Real-time sync across devices'),
+          _buildFeatureItem(
+            Icons.sync,
+            S.of(context).realTimeSyncAcrossDevices,
+          ),
           const SizedBox(height: 10),
-          _buildFeatureItem(Icons.backup, 'Automatic cloud backups'),
+          _buildFeatureItem(Icons.backup, S.of(context).automaticCloudBackups),
           const SizedBox(height: 10),
-          _buildFeatureItem(Icons.lock, 'End-to-end encryption'),
+          _buildFeatureItem(Icons.lock, S.of(context).endToEndEncryption),
 
           const SizedBox(height: 24),
 
           // Subscribe button
           PrimaryButton(
             onPressed: _showPaywall,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.star, size: 20),
-                SizedBox(width: 8),
-                Text('Subscribe'),
-                SizedBox(width: 8),
-                Icon(Icons.arrow_forward, size: 18),
+                const Icon(Icons.star, size: 20),
+                const SizedBox(width: 8),
+                Text(S.of(context).subscribe),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward, size: 18),
               ],
             ),
           ),
@@ -534,16 +540,16 @@ class _SyncProfileViewState extends State<SyncProfileView> {
                 await ServiceLocator.instance.syncManager
                     ?.refreshConfiguration();
                 ServiceLocator.instance.uiFeedbackService.showSuccess(
-                  'Purchases restored successfully!',
+                  S.of(context).purchasesRestoredSuccessfully,
                 );
               } else if (mounted) {
                 ServiceLocator.instance.uiFeedbackService.showError(
-                  'No previous purchases found.',
+                  S.of(context).noPreviousPurchasesFound,
                 );
               }
             },
             child: Text(
-              'Restore Purchases',
+              S.of(context).restorePurchases,
               style: TextStyle(color: Colors.grey[500], fontSize: 13),
             ),
           ),
@@ -562,36 +568,38 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     );
   }
 
-  String? _formatLastSyncTime(DateTime? lastSyncTime) {
+  String? _formatLastSyncTime(BuildContext context, DateTime? lastSyncTime) {
     if (lastSyncTime == null) {
-      return 'Never synced';
+      return S.of(context).neverSynced;
     }
 
     final diff = DateTime.now().difference(lastSyncTime);
 
     if (diff.inMinutes < 1) {
-      return 'Last synced just now';
+      return S.of(context).lastSyncedJustNow;
     } else if (diff.inMinutes < 60) {
-      return 'Last synced ${diff.inMinutes} min ago';
+      return S.of(context).lastSyncedMinsAgo(diff.inMinutes);
     } else if (diff.inHours < 24) {
-      return 'Last synced ${diff.inHours} hours ago';
+      return S.of(context).lastSyncedHoursAgo(diff.inHours);
     } else {
       final days = diff.inDays;
-      return 'Last synced $days day${days > 1 ? 's' : ''} ago';
+      return S.of(context).lastSyncedDaysAgo(days, days > 1 ? 's' : '');
     }
   }
 
-  String _formatBackupDate(DateTime date) {
+  String _formatBackupDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
+    final timeStr =
+        '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 
     if (diff.inDays == 0) {
-      return 'Today at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).todayAt(timeStr);
     } else if (diff.inDays == 1) {
-      return 'Yesterday at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).yesterdayAt(timeStr);
     } else if (diff.inDays < 7) {
       final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      return '${weekdays[date.weekday - 1]} at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).weekdayAt(weekdays[date.weekday - 1], timeStr);
     } else {
       return '${date.day}.${date.month}.${date.year}';
     }
@@ -605,14 +613,18 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Restore Backup?'),
+        title: Text(S.of(context).restoreBackupQuestion),
         content: Text(
-          'This will replace all current data with the backup from ${_formatBackupDate(backupDate)}.\n\nThis action cannot be undone.',
+          S
+              .of(context)
+              .restoreBackupConfirmation(
+                _formatBackupDate(context, backupDate),
+              ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -623,7 +635,7 @@ class _SyncProfileViewState extends State<SyncProfileView> {
               backgroundColor: Colors.orange,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Restore'),
+            child: Text(S.of(context).restore),
           ),
         ],
       ),
@@ -643,21 +655,21 @@ class _SyncProfileViewState extends State<SyncProfileView> {
 
       if (mounted) {
         ServiceLocator.instance.uiFeedbackService.showSuccess(
-          'Backup restored successfully!',
+          S.of(context).backupRestoredSuccessfully,
         );
       }
     } on HaboSyncException catch (e) {
       dev.log('Restore failed (${e.code})', name: 'SyncProfileView', error: e);
       if (mounted) {
         ServiceLocator.instance.uiFeedbackService.showError(
-          'Restore failed: ${e.message}',
+          S.of(context).restoreFailedWithError(e.message),
         );
       }
     } catch (e) {
       dev.log('Restore failed (unexpected)', name: 'SyncProfileView', error: e);
       if (mounted) {
         ServiceLocator.instance.uiFeedbackService.showError(
-          'Restore failed. Please try again.',
+          S.of(context).restoreFailedTryAgain,
         );
       }
     }
@@ -669,17 +681,19 @@ class _BackupsSheet extends StatelessWidget {
 
   const _BackupsSheet({required this.onRestore});
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
+    final timeStr =
+        '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
 
     if (diff.inDays == 0) {
-      return 'Today at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).todayAt(timeStr);
     } else if (diff.inDays == 1) {
-      return 'Yesterday at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).yesterdayAt(timeStr);
     } else if (diff.inDays < 7) {
       final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      return '${weekdays[date.weekday - 1]} at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      return S.of(context).weekdayAt(weekdays[date.weekday - 1], timeStr);
     } else {
       return '${date.day}.${date.month}.${date.year}';
     }
@@ -705,14 +719,14 @@ class _BackupsSheet extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Restore Data',
+            S.of(context).restoreData,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
-            'Choose a backup to restore from',
+            S.of(context).chooseBackupToRestore,
             style: TextStyle(color: Colors.grey[500], fontSize: 14),
           ),
           const SizedBox(height: 16),
@@ -736,7 +750,7 @@ class _BackupsSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(32),
                     child: Center(
                       child: Text(
-                        'No backups available yet.\nBackups are created automatically during sync.',
+                        S.of(context).noBackupsAvailable,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey[500]),
                       ),
@@ -774,13 +788,13 @@ class _BackupsSheet extends StatelessWidget {
                         ),
                       ),
                       title: Text(
-                        _formatDate(createdAt),
+                        _formatDate(context, createdAt),
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      subtitle: Text('$habitsCount habits'),
+                      subtitle: Text(S.of(context).habitsCount(habitsCount)),
                       trailing: TextButton(
                         onPressed: () => onRestore(backup['id'], createdAt),
-                        child: const Text('Restore'),
+                        child: Text(S.of(context).restore),
                       ),
                     );
                   },

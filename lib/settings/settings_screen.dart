@@ -528,8 +528,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ListTile(
-                        title: const Text('Habo Sync'),
-                        subtitle: const Text('Sync and backup your data'),
+                        title: Text(S.of(context).syncTitle),
+                        subtitle: Text(S.of(context).syncAndBackupYourData),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           Provider.of<AppStateManager>(
@@ -539,13 +539,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                       ListTile(
-                        title: const Text('Server'),
+                        title: Text(S.of(context).server),
                         subtitle:
                             Provider.of<SettingsManager>(
                               context,
                             ).hasCustomServer
-                            ? const Text('Custom server')
-                            : const Text('Habo Cloud (default)'),
+                            ? Text(S.of(context).customServer)
+                            : Text(S.of(context).haboCloudDefault),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           Navigator.push(

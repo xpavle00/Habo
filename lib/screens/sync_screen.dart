@@ -8,6 +8,7 @@ import 'package:habo/services/service_locator.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/generated/l10n.dart';
 
 class SyncScreen extends StatefulWidget {
   const SyncScreen({super.key});
@@ -94,7 +95,7 @@ class _SyncScreenState extends State<SyncScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sync'),
+        title: Text(S.of(context).syncTitle),
         elevation: 0,
         backgroundColor: Colors.transparent,
         actions: [

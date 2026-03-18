@@ -118,7 +118,11 @@ class EncryptionService {
       await _storage.write(key: _storageKeySalt, value: base64.encode(salt));
     } catch (e) {
       if (e is EncryptionException) rethrow;
-      dev.log('Secure storage write failed', name: 'EncryptionService', error: e);
+      dev.log(
+        'Secure storage write failed',
+        name: 'EncryptionService',
+        error: e,
+      );
       throw EncryptionException.storageError(e);
     }
   }
@@ -154,7 +158,11 @@ class EncryptionService {
       return (key: SecretKey(keyBytes), salt: salt);
     } catch (e) {
       if (e is EncryptionException) rethrow;
-      dev.log('Secure storage read failed', name: 'EncryptionService', error: e);
+      dev.log(
+        'Secure storage read failed',
+        name: 'EncryptionService',
+        error: e,
+      );
       throw EncryptionException.storageError(e);
     }
   }
@@ -169,7 +177,11 @@ class EncryptionService {
       await _storage.delete(key: _storageKeySalt);
     } catch (e) {
       if (e is EncryptionException) rethrow;
-      dev.log('Secure storage clear failed', name: 'EncryptionService', error: e);
+      dev.log(
+        'Secure storage clear failed',
+        name: 'EncryptionService',
+        error: e,
+      );
       throw EncryptionException.storageError(e);
     }
   }

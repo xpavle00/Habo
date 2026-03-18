@@ -5,6 +5,7 @@ import 'package:habo/services/service_locator.dart';
 import 'package:habo/services/sync_error.dart';
 import 'package:habo/widgets/habo_text_field.dart';
 import 'package:habo/widgets/primary_button.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SyncMasterPasswordView extends StatefulWidget {
@@ -51,25 +52,23 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
     });
 
     if (password.isEmpty) {
-      setState(() => _passwordError = 'Password cannot be empty');
+      setState(() => _passwordError = S.of(context).passwordCannotBeEmpty);
       return false;
     }
 
     if (widget.isSetupMode) {
       if (password.length < 8) {
-        setState(
-          () => _passwordError = 'Password must be at least 8 characters',
-        );
+        setState(() => _passwordError = S.of(context).passwordMinLengthError);
         return false;
       }
 
       if (confirm.isEmpty) {
-        setState(() => _confirmError = 'Please confirm your password');
+        setState(() => _confirmError = S.of(context).pleaseConfirmYourPassword);
         return false;
       }
 
       if (password != confirm) {
-        setState(() => _confirmError = 'Passwords do not match');
+        setState(() => _confirmError = S.of(context).passwordsDoNotMatch);
         return false;
       }
     }
@@ -114,7 +113,7 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('An unexpected error occurred')),
+          SnackBar(content: Text(S.of(context).anUnexpectedErrorOccurred)),
         );
       }
     } finally {
@@ -164,8 +163,8 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                       // Title
                       Text(
                         widget.isSetupMode
-                            ? 'Create Master Password'
-                            : 'Unlock Your Data',
+                            ? S.of(context).createMasterPassword
+                            : S.of(context).unlockYourData,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
@@ -175,8 +174,8 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                       // Description
                       Text(
                         widget.isSetupMode
-                            ? 'Your master password encrypts all your data before it leaves your device. Choose something strong and memorable.'
-                            : 'Enter your master password to decrypt your data and enable sync.',
+                            ? S.of(context).masterPasswordDescriptionSetup
+                            : S.of(context).masterPasswordDescriptionUnlock,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey[600],
@@ -207,7 +206,7 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Important: Cannot be recovered',
+                                      S.of(context).importantCannotBeRecovered,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red.shade800,
@@ -215,7 +214,7 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      'We do not store your password. If you forget it, your data cannot be recovered. Write it down somewhere safe!',
+                                      S.of(context).masterPasswordWarning,
                                       style: TextStyle(
                                         color: Colors.red.shade700,
                                         fontSize: 13,
@@ -232,10 +231,10 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
 
                       // Password field
                       HaboTextField(
-                        label: 'Master Password',
+                        label: S.of(context).masterPasswordLabel,
                         errorText: _passwordError,
                         helperText: widget.isSetupMode
-                            ? 'Minimum 8 characters'
+                            ? S.of(context).minimum8Characters
                             : null,
                         child: TextField(
                           controller: _passwordController,
@@ -275,7 +274,7 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                       // Confirm password field (only in setup mode)
                       if (widget.isSetupMode) ...[
                         HaboTextField(
-                          label: 'Confirm Password',
+                          label: S.of(context).confirmPasswordLabel,
                           errorText: _confirmError,
                           child: TextField(
                             controller: _confirmController,
@@ -333,8 +332,8 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                                 children: [
                                   Text(
                                     widget.isSetupMode
-                                        ? 'Set Password'
-                                        : 'Unlock & Sync',
+                                        ? S.of(context).setPassword
+                                        : S.of(context).unlockAndSync,
                                   ),
                                   const SizedBox(width: 8),
                                   const Icon(Icons.arrow_forward, size: 18),
@@ -346,7 +345,7 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                       if (!widget.isSetupMode) ...[
                         const SizedBox(height: 24),
                         Text(
-                          'This is the password you created when you first set up sync on another device.',
+                          S.of(context).unlockPasswordExplanation,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[500],
@@ -378,9 +377,9 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
                             const SizedBox(height: 8),
                             GestureDetector(
                               onTap: widget.onSignOut,
-                              child: const Text(
-                                'Sign Out',
-                                style: TextStyle(
+                              child: Text(
+                                S.of(context).signOut,
+                                style: const TextStyle(
                                   color: Colors.redAccent,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
