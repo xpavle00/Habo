@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:habo/services/sync_error.dart';
 
 class EncryptionService {
   final FlutterSecureStorage _storage;
@@ -58,42 +60,67 @@ class EncryptionService {
 
   /// Decrypts [formattedText] using [key].
   /// [formattedText] must be in format: salt:nonce:ciphertext:mac
+  ///
+  /// Throws [EncryptionException] with code `ENC_INVALID_FORMAT` if the
+  /// format is wrong, or `ENC_DECRYPTION_FAILED` if the key is incorrect
+  /// or the data has been tampered with.
   Future<String> decrypt(String formattedText, SecretKey key) async {
     final parts = formattedText.split(':');
     if (parts.length != 4) {
-      throw Exception('Invalid format. Expected salt:nonce:ciphertext:mac');
+      throw EncryptionException.invalidFormat();
     }
 
-    // parts[0] is salt, but we assume key is already derived correctly using it
-    final nonce = base64.decode(parts[1]);
-    final cipherText = base64.decode(parts[2]);
-    final macBytes = base64.decode(parts[3]);
+    try {
+      final nonce = base64.decode(parts[1]);
+      final cipherText = base64.decode(parts[2]);
+      final macBytes = base64.decode(parts[3]);
 
-    final secretBox = SecretBox(cipherText, nonce: nonce, mac: Mac(macBytes));
+      final secretBox = SecretBox(cipherText, nonce: nonce, mac: Mac(macBytes));
+      final clearTextBytes = await _aes.decrypt(secretBox, secretKey: key);
 
-    final clearTextBytes = await _aes.decrypt(secretBox, secretKey: key);
-
-    return utf8.decode(clearTextBytes);
+      return utf8.decode(clearTextBytes);
+    } on SecretBoxAuthenticationError catch (e) {
+      throw EncryptionException.decryptionFailed(e);
+    } on FormatException catch (e) {
+      throw EncryptionException.invalidFormat(e);
+    }
   }
 
   /// Extracts the salt from a formatted ciphertext without decrypting.
+  ///
+  /// Throws [EncryptionException] with code `ENC_INVALID_FORMAT` if
+  /// the ciphertext is empty or malformed.
   List<int> extractSalt(String formattedText) {
     final parts = formattedText.split(':');
-    if (parts.isEmpty) {
-      throw Exception('Invalid format');
+    if (parts.isEmpty || parts[0].isEmpty) {
+      throw EncryptionException.invalidFormat();
     }
-    return base64.decode(parts[0]);
+    try {
+      return base64.decode(parts[0]);
+    } on FormatException catch (e) {
+      throw EncryptionException.invalidFormat(e);
+    }
   }
 
   // --- Secure Storage Operations ---
 
+  /// Saves the encryption key and salt to secure storage.
+  ///
+  /// Throws [EncryptionException] with code `ENC_STORAGE_ERROR` if
+  /// the secure storage write fails.
   Future<void> saveKey(SecretKey key, List<int> salt) async {
-    final keyBytes = await key.extractBytes();
-    await _storage.write(
-      key: _storageKeyDerived,
-      value: base64.encode(keyBytes),
-    );
-    await _storage.write(key: _storageKeySalt, value: base64.encode(salt));
+    try {
+      final keyBytes = await key.extractBytes();
+      await _storage.write(
+        key: _storageKeyDerived,
+        value: base64.encode(keyBytes),
+      );
+      await _storage.write(key: _storageKeySalt, value: base64.encode(salt));
+    } catch (e) {
+      if (e is EncryptionException) rethrow;
+      dev.log('Secure storage write failed', name: 'EncryptionService', error: e);
+      throw EncryptionException.storageError(e);
+    }
   }
 
   /// Generates a new salt, derives key from [password], and saves it.
@@ -108,22 +135,42 @@ class EncryptionService {
   }
 
   /// Loads the key from secure storage if it exists.
+  ///
+  /// Returns `null` if no key has been saved yet.
+  /// Throws [EncryptionException] with code `ENC_STORAGE_ERROR` if
+  /// the secure storage read fails.
   Future<({SecretKey key, List<int> salt})?> loadKey() async {
-    final keyB64 = await _storage.read(key: _storageKeyDerived);
-    final saltB64 = await _storage.read(key: _storageKeySalt);
+    try {
+      final keyB64 = await _storage.read(key: _storageKeyDerived);
+      final saltB64 = await _storage.read(key: _storageKeySalt);
 
-    if (keyB64 == null || saltB64 == null) {
-      return null;
+      if (keyB64 == null || saltB64 == null) {
+        return null;
+      }
+
+      final keyBytes = base64.decode(keyB64);
+      final salt = base64.decode(saltB64);
+
+      return (key: SecretKey(keyBytes), salt: salt);
+    } catch (e) {
+      if (e is EncryptionException) rethrow;
+      dev.log('Secure storage read failed', name: 'EncryptionService', error: e);
+      throw EncryptionException.storageError(e);
     }
-
-    final keyBytes = base64.decode(keyB64);
-    final salt = base64.decode(saltB64);
-
-    return (key: SecretKey(keyBytes), salt: salt);
   }
 
+  /// Clears the encryption key and salt from secure storage.
+  ///
+  /// Throws [EncryptionException] with code `ENC_STORAGE_ERROR` if
+  /// the secure storage delete fails.
   Future<void> clearKey() async {
-    await _storage.delete(key: _storageKeyDerived);
-    await _storage.delete(key: _storageKeySalt);
+    try {
+      await _storage.delete(key: _storageKeyDerived);
+      await _storage.delete(key: _storageKeySalt);
+    } catch (e) {
+      if (e is EncryptionException) rethrow;
+      dev.log('Secure storage clear failed', name: 'EncryptionService', error: e);
+      throw EncryptionException.storageError(e);
+    }
   }
 }

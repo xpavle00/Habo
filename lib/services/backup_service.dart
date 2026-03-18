@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:habo/habits/habit.dart';
@@ -19,6 +20,7 @@ import 'package:intl/intl.dart';
 /// a focused, testable service for backup operations.
 /// Now uses BackupRepository for database operations.
 class BackupService {
+  static const _logName = 'BackupService';
   final UIFeedbackService _uiFeedbackService;
   final BackupRepository _backupRepository;
   final SyncManager? _syncManager;
@@ -80,7 +82,7 @@ class BackupService {
       }
       return false;
     } catch (e) {
-      debugPrint('Error creating database backup: $e');
+      dev.log('Error creating database backup', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.backupFailed}: ${e.toString()}',
       );
@@ -134,7 +136,7 @@ class BackupService {
 
       return false;
     } catch (e) {
-      debugPrint('Error creating backup: $e');
+      dev.log('Error creating backup', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.backupFailed}: ${e.toString()}',
       );
@@ -177,7 +179,7 @@ class BackupService {
       _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return parseResult;
     } catch (e) {
-      debugPrint('Error loading backup: $e');
+      dev.log('Error loading backup', name: _logName, error: e);
       final errorMessage = '${S.current.restoreFailed}: ${e.toString()}';
       _uiFeedbackService.showError(errorMessage);
       return BackupResult.failure(errorMessage);
@@ -316,7 +318,7 @@ class BackupService {
       _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
-      debugPrint('Error restoring from backup file: $e');
+      dev.log('Error restoring from backup file', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.restoreFailed}: ${e.toString()}',
       );
@@ -342,7 +344,7 @@ class BackupService {
       _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
-      debugPrint('Error restoring to database: $e');
+      dev.log('Error restoring to database', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.restoreFailed}: ${e.toString()}',
       );
@@ -358,7 +360,7 @@ class BackupService {
 
       return {'habits': habitCount, 'events': eventCount};
     } catch (e) {
-      debugPrint('Error getting database stats: $e');
+      dev.log('Error getting database stats', name: _logName, error: e);
       return {'habits': 0, 'events': 0};
     }
   }

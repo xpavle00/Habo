@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/screens/sync_helpers.dart';
 import 'package:habo/services/service_locator.dart';
+import 'package:habo/services/sync_error.dart';
 import 'package:habo/widgets/habo_text_field.dart';
 import 'package:habo/widgets/primary_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -98,11 +99,23 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
       await ServiceLocator.instance.syncManager?.refreshConfiguration();
 
       widget.onKeySet();
-    } catch (e) {
+    } on MasterPasswordException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    } on HaboSyncException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An unexpected error occurred')),
+        );
       }
     } finally {
       if (mounted) {

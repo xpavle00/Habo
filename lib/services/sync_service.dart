@@ -1,24 +1,18 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:cryptography/cryptography.dart';
 import 'package:habo/repositories/backup_repository.dart';
 import 'package:habo/services/encryption_service.dart';
+import 'package:habo/services/sync_error.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/foundation.dart'; // For debugPrint
-
-/// Thrown when a push fails because another device incremented sync_version
-/// since this client last pulled.  The caller should pull, merge, and retry.
-class SyncVersionConflictException implements Exception {
-  const SyncVersionConflictException();
-  @override
-  String toString() =>
-      'SyncVersionConflictException: '
-      'remote sync_version changed since last pull';
-}
+import 'package:flutter/foundation.dart'; // For Uint8List
 
 class SyncService {
   final BackupRepository _backupRepository;
   final EncryptionService _encryptionService;
+
+  static const _logName = 'SyncService';
 
   SyncService(this._backupRepository, this._encryptionService);
 
@@ -44,9 +38,12 @@ class SyncService {
 
   /// Fetches the user's profile which contains the [encryption_salt], [verifier_token], and [encrypted_vault_key].
   /// Returns `null` if the profile does not exist or fields are missing.
+  ///
+  /// Throws [AuthException] if user is not logged in.
+  /// Throws [SyncException] if the profile fetch fails.
   Future<Map<String, dynamic>?> fetchProfile() async {
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) return null;
+    if (user == null) throw HaboAuthException.notLoggedIn();
 
     try {
       final response = await Supabase.instance.client
@@ -56,20 +53,24 @@ class SyncService {
           .maybeSingle();
 
       return response;
-    } catch (e) {
-      // TODO: Log error properly
-      return null;
+    } on PostgrestException catch (e) {
+      throw SyncException.profileError(
+        'Failed to fetch encryption profile',
+        e,
+      );
     }
   }
 
   /// Saves the [encryption_salt], [verifier_token], and [encrypted_vault_key] to the user's profile.
+  ///
+  /// Throws [AuthException] if user is not logged in.
   Future<void> upsertProfile({
     required String saltB64,
     required String verifierTokenB64,
     required String encryptedVaultKeyB64,
   }) async {
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) throw Exception('User not logged in');
+    if (user == null) throw HaboAuthException.notLoggedIn();
 
     await Supabase.instance.client.from('profiles').upsert({
       'id': user.id,
@@ -82,11 +83,13 @@ class SyncService {
 
   // --- Master Password Logic ---
 
-  static const _verifierContent = 'habo-valid'; //TODO: move to env
+  static const _verifierContent = 'habo-valid';
 
   /// Sets up a new Master Password for the user.
   /// Generates salts, keys, and uploads encrypted artifacts to Supabase.
   /// Also saves the Vault Key locally.
+  ///
+  /// Throws [AuthException], [EncryptionException], or [SyncException] on failure.
   Future<void> setupMasterPassword(String password) async {
     // 1. Generate new Salt using cryptographically secure random
     final random = Random.secure();
@@ -127,6 +130,9 @@ class SyncService {
 
   /// Unlocks the Master Password flow.
   /// Downloads profile, verifies password, decrypts Vault Key and saves it locally.
+  ///
+  /// Throws [MasterPasswordException] if password is incorrect or profile data is missing.
+  /// Throws [EncryptionException] on decryption failures.
   Future<void> unlockMasterPassword(
     String password,
     Map<String, dynamic> remoteProfile,
@@ -149,15 +155,18 @@ class SyncService {
         masterKey,
       );
       if (decryptedVerifier != _verifierContent) {
-        throw Exception('Invalid verification token');
+        throw MasterPasswordException.incorrect();
       }
-    } catch (e) {
-      throw Exception('Incorrect Master Password');
+    } on MasterPasswordException {
+      rethrow;
+    } on EncryptionException {
+      // Decryption failure means wrong password
+      throw MasterPasswordException.incorrect();
     }
 
     // 4. Unwrap Vault Key (DEK)
     if (encryptedVaultKeyB64 == null) {
-      throw Exception('Vault Key missing from profile. Please reset account.');
+      throw MasterPasswordException.vaultKeyMissing();
     }
 
     final vaultKeyStr = await _encryptionService.decrypt(
@@ -173,6 +182,9 @@ class SyncService {
 
   /// Changes the master password.
   /// First verifies the current password, then re-encrypts the vault key with the new password.
+  ///
+  /// Throws [MasterPasswordException] if the current password is incorrect
+  /// or profile data is missing.
   Future<void> changeMasterPassword(
     String currentPassword,
     String newPassword,
@@ -180,7 +192,7 @@ class SyncService {
     // 1. Fetch current profile
     final profile = await fetchProfile();
     if (profile == null || profile['encryption_salt'] == null) {
-      throw Exception('No encryption profile found');
+      throw MasterPasswordException.profileMissing();
     }
 
     // 2. Get current salt and data
@@ -197,7 +209,7 @@ class SyncService {
 
     // 4. Verify current password against verifier token
     if (remoteVerifierToken == null) {
-      throw Exception('Verifier token missing from profile');
+      throw MasterPasswordException.verifierMissing();
     }
     try {
       final decryptedVerifier = await _encryptionService.decrypt(
@@ -205,15 +217,17 @@ class SyncService {
         currentMasterKey,
       );
       if (decryptedVerifier != _verifierContent) {
-        throw Exception('Invalid verification token');
+        throw MasterPasswordException.incorrect();
       }
-    } catch (e) {
-      throw Exception('Incorrect current Master Password');
+    } on MasterPasswordException {
+      rethrow;
+    } on EncryptionException {
+      throw MasterPasswordException.incorrect();
     }
 
     // 5. Decrypt the vault key with current master key
     if (encryptedVaultKeyB64 == null) {
-      throw Exception('Vault Key missing from profile');
+      throw MasterPasswordException.vaultKeyMissing();
     }
     final vaultKeyStr = await _encryptionService.decrypt(
       encryptedVaultKeyB64,
@@ -284,8 +298,12 @@ class SyncService {
           .inHours;
 
       return hoursSinceLastBackup >= _minBackupIntervalHours;
-    } catch (e) {
-      debugPrint('Error checking backup status: $e');
+    } on PostgrestException catch (e) {
+      dev.log(
+        'Failed to check backup status',
+        name: _logName,
+        error: e,
+      );
       return false;
     }
   }
@@ -303,14 +321,16 @@ class SyncService {
           .order('created_at', ascending: false);
 
       return List<Map<String, dynamic>>.from(response);
-    } catch (e) {
-      debugPrint('Error listing backups: $e');
+    } on PostgrestException catch (e) {
+      dev.log('Failed to list backups', name: _logName, error: e);
       return [];
     }
   }
 
   /// Creates a backup by copying the sync payload bytes to a backup path.
-  /// Returns the backup ID if successful, null otherwise.
+  /// Returns the backup ID if successful.
+  ///
+  /// Throws [BackupException] on failure.
   Future<String?> createBackupFromPayload(
     Uint8List payloadBytes,
     int habitsCount,
@@ -342,68 +362,79 @@ class SyncService {
           .select('id')
           .single();
 
-      debugPrint('Created backup: $backupPath');
+      dev.log(
+        'Backup created: $backupPath ($habitsCount habits)',
+        name: _logName,
+      );
       return response['id'] as String;
     } catch (e) {
-      debugPrint('Error creating backup: $e');
+      dev.log('Backup creation failed', name: _logName, error: e);
       return null;
     }
   }
 
   /// Restores data from a specific backup.
-  /// Downloads the backup, decrypts it, and merges with local data.
+  /// Downloads the backup, decrypts it, and imports to local DB.
+  ///
+  /// Throws [AuthException] if user is not logged in.
+  /// Throws [EncryptionException] if no key is found or decryption fails.
+  /// Throws [BackupException] if the backup cannot be found or downloaded.
   Future<void> restoreFromBackup(String backupId) async {
-    debugPrint('DEBUG: restoreFromBackup called with id=$backupId');
-
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) throw Exception('User not logged in');
+    if (user == null) throw HaboAuthException.notLoggedIn();
 
     // 1. Get backup info
-    debugPrint('DEBUG: Fetching backup info from database...');
-    final backup = await Supabase.instance.client
-        .from('backups')
-        .select('blob_path')
-        .eq('id', backupId)
-        .eq('user_id', user.id)
-        .single();
+    final Map<String, dynamic> backup;
+    try {
+      backup = await Supabase.instance.client
+          .from('backups')
+          .select('blob_path')
+          .eq('id', backupId)
+          .eq('user_id', user.id)
+          .single();
+    } on PostgrestException {
+      throw BackupException.notFound(backupId);
+    }
 
     final blobPath = backup['blob_path'] as String;
-    debugPrint('DEBUG: Got blob_path=$blobPath');
 
     // 2. Load encryption key
     final keyData = await _encryptionService.loadKey();
-    if (keyData == null) throw Exception('No encryption key found');
-    debugPrint('DEBUG: Encryption key loaded');
+    if (keyData == null) throw EncryptionException.keyNotFound();
 
     // 3. Download backup blob
-    debugPrint('DEBUG: Downloading backup from storage...');
-    final bytes = await Supabase.instance.client.storage
-        .from('sync-blobs')
-        .download(blobPath);
-    debugPrint('DEBUG: Downloaded ${bytes.length} bytes');
+    final Uint8List bytes;
+    try {
+      bytes = await Supabase.instance.client.storage
+          .from('sync-blobs')
+          .download(blobPath);
+    } catch (e) {
+      throw BackupException.restoreFailed(
+        'Failed to download backup from storage',
+        e,
+      );
+    }
 
     final encryptedPayload = utf8.decode(bytes);
 
     // 4. Decrypt
-    debugPrint('DEBUG: Decrypting backup...');
     final jsonString = await _encryptionService.decrypt(
       encryptedPayload,
       keyData.key,
     );
     final backupData = jsonDecode(jsonString) as Map<String, dynamic>;
 
-    // Log what we're about to import
     final habitsCount = (backupData['habits'] as List?)?.length ?? 0;
     final categoriesCount = (backupData['categories'] as List?)?.length ?? 0;
-    debugPrint(
-      'DEBUG: Backup contains $habitsCount habits, $categoriesCount categories',
+    dev.log(
+      'Restoring backup: $habitsCount habits, $categoriesCount categories',
+      name: _logName,
     );
 
     // 5. Import data (replace local with backup)
-    debugPrint('DEBUG: Calling importData...');
     await _backupRepository.importData(backupData);
 
-    debugPrint('DEBUG: Restore completed successfully from: $blobPath');
+    dev.log('Restore completed from: $blobPath', name: _logName);
   }
 
   // --- Pre-Sync Safety Backup ---
@@ -425,7 +456,7 @@ class SyncService {
     final habitsCount = (data['habits'] as List?)?.length ?? 0;
 
     if (habitsCount == 0) {
-      debugPrint('Pre-sync backup skipped: no local habits to protect');
+      dev.log('Pre-sync backup skipped: no local habits', name: _logName);
       return;
     }
 
@@ -442,11 +473,16 @@ class SyncService {
     // 4. Upload as backup
     final backupId = await createBackupFromPayload(bytes, habitsCount);
     if (backupId != null) {
-      debugPrint(
+      dev.log(
         'Pre-sync safety backup created: $habitsCount habits preserved',
+        name: _logName,
       );
     } else {
-      debugPrint('Pre-sync safety backup failed to upload');
+      dev.log(
+        'Pre-sync safety backup failed to upload',
+        name: _logName,
+        level: 900, // Warning
+      );
     }
   }
 
@@ -482,7 +518,7 @@ class SyncService {
 
       return localMidpoint.difference(serverTime).inSeconds;
     } catch (e) {
-      debugPrint('Clock drift check failed: $e');
+      dev.log('Clock drift check failed', name: _logName, error: e);
       return null;
     }
   }
@@ -512,20 +548,24 @@ class SyncService {
   /// Uses an atomic server-side RPC (`push_sync_version`) that increments
   /// `sync_version` only when it still equals [expectedVersion].  If another
   /// device pushed in the meantime the RPC raises `SYNC_VERSION_CONFLICT` and
-  /// this method throws [SyncVersionConflictException] so the caller can pull,
-  /// merge, and retry.
+  /// this method throws [SyncException] so the caller can pull, merge, and retry.
   ///
   /// Also creates a backup if >24 h since the last backup.
+  ///
+  /// Throws [AuthException] if user is not logged in.
+  /// Throws [EncryptionException] if no key is found.
+  /// Throws [SyncException] on version conflict or payload size violation.
   Future<int> pushSync({required int expectedVersion}) async {
-    debugPrint('\n=== PUSH SYNC START (expectedVersion=$expectedVersion) ===');
+    dev.log(
+      'Push started (expectedVersion=$expectedVersion)',
+      name: _logName,
+    );
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) throw Exception('User not logged in');
-    debugPrint('PUSH: user=${user.id}');
+    if (user == null) throw HaboAuthException.notLoggedIn();
 
     // 1. Load local key
     final keyData = await _encryptionService.loadKey();
-    if (keyData == null) throw Exception('No encryption key found');
-    debugPrint('PUSH: Encryption key loaded');
+    if (keyData == null) throw EncryptionException.keyNotFound();
 
     final vaultKey = keyData.key;
     final salt = keyData.salt;
@@ -534,27 +574,13 @@ class SyncService {
     final data = await _backupRepository.exportAllData();
     data['sync_timestamp'] = DateTime.now().toUtc().toIso8601String();
 
-    // --- Debug: log exactly what we're pushing ---
     final pushHabits = data['habits'] as List? ?? [];
     final pushCategories = data['categories'] as List? ?? [];
-    debugPrint(
-      'PUSH: Exporting ${pushHabits.length} habits, '
-      '${pushCategories.length} categories',
+    dev.log(
+      'Push: exporting ${pushHabits.length} habits, '
+          '${pushCategories.length} categories',
+      name: _logName,
     );
-    for (int i = 0; i < pushHabits.length; i++) {
-      final h = pushHabits[i] as Map<String, dynamic>;
-      final hData = h['habitData'] as Map<String, dynamic>? ?? h;
-      final title = hData['title'] ?? 'N/A';
-      final uuid = hData['uuid'] ?? 'N/A';
-      final updatedAt = hData['updatedAt'] ?? hData['updated_at'] ?? 'N/A';
-      final deletedAt = hData['deletedAt'] ?? hData['deleted_at'];
-      final events = hData['events'] as Map? ?? {};
-      debugPrint(
-        '  PUSH habit[$i]: "$title" uuid=$uuid '
-        'updatedAt=$updatedAt deletedAt=$deletedAt '
-        'events=${events.length}',
-      );
-    }
 
     final jsonString = jsonEncode(data);
     final encryptedPayload = await _encryptionService.encrypt(
@@ -568,19 +594,18 @@ class SyncService {
     //    The atomic RPC in step 5 remains as a second safety net for the narrow
     //    window between this check and the upload.
     final currentRemoteVersion = await getRemoteSyncVersion();
-    debugPrint(
-      'PUSH: Pre-check remoteVersion=$currentRemoteVersion '
-      'vs expectedVersion=$expectedVersion',
-    );
     if (currentRemoteVersion != expectedVersion) {
-      debugPrint('PUSH: VERSION CONFLICT detected in pre-check!');
-      throw const SyncVersionConflictException();
+      dev.log(
+        'Push: version conflict in pre-check '
+            '(remote=$currentRemoteVersion, expected=$expectedVersion)',
+        name: _logName,
+        level: 900,
+      );
+      throw SyncException.versionConflict();
     }
 
     // 4. Upload to Storage
     // Use a versioned blob path to prevent CDN caching issues.
-    // Each push creates a unique file so the pulling device never gets a stale
-    // cached copy from a CDN edge node.
     final nextVersion = expectedVersion + 1;
     final blobPath = '${user.id}/sync_v$nextVersion.enc';
 
@@ -599,18 +624,15 @@ class SyncService {
 
     final bytes = Uint8List.fromList(utf8.encode(encryptedPayload));
 
-    debugPrint(
-      'PUSH: Payload size=${(bytes.length / 1024).toStringAsFixed(1)} KB',
-    );
-
     if (bytes.length > _maxPayloadBytes) {
-      throw Exception(
-        'Sync payload too large (${(bytes.length / 1024 / 1024).toStringAsFixed(1)} MB). '
-        'Maximum allowed is ${_maxPayloadBytes ~/ 1024 ~/ 1024} MB.',
-      );
+      throw SyncException.payloadTooLarge(bytes.length, _maxPayloadBytes);
     }
 
-    debugPrint('PUSH: Uploading blob to $blobPath ...');
+    dev.log(
+      'Push: uploading ${(bytes.length / 1024).toStringAsFixed(1)} KB',
+      name: _logName,
+    );
+
     await Supabase.instance.client.storage
         .from('sync-blobs')
         .uploadBinary(
@@ -621,14 +643,9 @@ class SyncService {
             cacheControl: 'no-cache, no-store, must-revalidate',
           ),
         );
-    debugPrint('PUSH: Blob uploaded successfully');
 
     // 5. Atomically increment version (fails if another device pushed first)
     try {
-      debugPrint(
-        'PUSH: Calling push_sync_version RPC '
-        '(expectedVersion=$expectedVersion) ...',
-      );
       final newVersion = await Supabase.instance.client.rpc(
         'push_sync_version',
         params: {
@@ -638,7 +655,6 @@ class SyncService {
       );
       // newVersion is returned as dynamic; cast to int.
       final version = newVersion as int;
-      debugPrint('PUSH: RPC succeeded, newVersion=$version');
 
       // 6. Clean up old blob (best-effort, non-blocking)
       if (oldBlobPath != null && oldBlobPath != blobPath) {
@@ -646,9 +662,8 @@ class SyncService {
           await Supabase.instance.client.storage.from('sync-blobs').remove([
             oldBlobPath,
           ]);
-          debugPrint('PUSH: Deleted old blob: $oldBlobPath');
         } catch (e) {
-          debugPrint('PUSH: Failed to delete old blob (non-fatal): $e');
+          dev.log('Failed to delete old blob (non-fatal)', name: _logName, error: e);
         }
       }
 
@@ -658,13 +673,11 @@ class SyncService {
         await createBackupFromPayload(bytes, habitsCount);
       }
 
-      debugPrint('=== PUSH SYNC COMPLETE (version=$version) ===\n');
+      dev.log('Push completed (version=$version)', name: _logName);
       return version;
     } on PostgrestException catch (e) {
-      debugPrint('PUSH: PostgrestException code=${e.code} msg=${e.message}');
       if (e.code == 'P0002' || (e.message.contains('SYNC_VERSION_CONFLICT'))) {
-        debugPrint('PUSH: VERSION CONFLICT from RPC!');
-        throw const SyncVersionConflictException();
+        throw SyncException.versionConflict();
       }
       rethrow;
     }
@@ -673,15 +686,18 @@ class SyncService {
   /// Pulls remote data from Supabase Storage and merges with local.
   /// Uses LWW (Last-Write-Wins) strategy.
   /// Returns the new sync version if updated, or null if no update needed.
+  ///
+  /// Throws [AuthException] if user is not logged in.
+  /// Throws [EncryptionException] if no key is found or decryption fails.
+  /// Throws [SyncException] on download/merge failures.
   Future<int?> pullSync(int localVersion) async {
-    debugPrint('\n=== PULL SYNC START (localVersion=$localVersion) ===');
+    dev.log('Pull started (localVersion=$localVersion)', name: _logName);
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) throw Exception('User not logged in');
-    debugPrint('PULL: user=${user.id}');
+    if (user == null) throw HaboAuthException.notLoggedIn();
 
     // 1. Load local key
     final keyData = await _encryptionService.loadKey();
-    if (keyData == null) throw Exception('No encryption key found');
+    if (keyData == null) throw EncryptionException.keyNotFound();
 
     final vaultKey = keyData.key;
 
@@ -692,71 +708,50 @@ class SyncService {
         .eq('id', user.id)
         .maybeSingle();
 
-    debugPrint('PULL: Profile fetch result: ${profile.toString()}');
-
     if (profile == null || profile['sync_blob_path'] == null) {
-      debugPrint('PULL: No remote data yet (no blob_path), nothing to pull');
-      debugPrint('=== PULL SYNC END (no remote data) ===\n');
+      dev.log('Pull: no remote data yet', name: _logName);
       return null;
     }
 
     final remoteVersion = (profile['sync_version'] as int?) ?? 0;
-    debugPrint(
-      'PULL: RemoteVersion=$remoteVersion vs LocalVersion=$localVersion',
+    dev.log(
+      'Pull: remote=$remoteVersion, local=$localVersion',
+      name: _logName,
     );
 
     if (remoteVersion <= localVersion) {
-      debugPrint('PULL: Already up to date, skipping');
-      debugPrint('=== PULL SYNC END (up to date) ===\n');
+      dev.log('Pull: already up to date', name: _logName);
       return null;
     }
 
     final blobPath = profile['sync_blob_path'] as String;
-    debugPrint('PULL: Downloading blob from $blobPath ...');
 
     // 3. Download blob
     final bytes = await Supabase.instance.client.storage
         .from('sync-blobs')
         .download(blobPath);
-    debugPrint('PULL: Downloaded ${bytes.length} bytes');
 
     final encryptedPayload = utf8.decode(bytes);
 
     // 4. Decrypt
-    debugPrint('PULL: Decrypting ...');
     final jsonString = await _encryptionService.decrypt(
       encryptedPayload,
       vaultKey,
     );
     final remoteData = jsonDecode(jsonString) as Map<String, dynamic>;
 
-    // --- Debug: log what we pulled ---
     final pullHabits = remoteData['habits'] as List? ?? [];
     final pullCategories = remoteData['categories'] as List? ?? [];
-    debugPrint(
-      'PULL: Remote payload contains ${pullHabits.length} habits, '
-      '${pullCategories.length} categories',
+    dev.log(
+      'Pull: received ${pullHabits.length} habits, '
+          '${pullCategories.length} categories',
+      name: _logName,
     );
-    for (int i = 0; i < pullHabits.length; i++) {
-      final h = pullHabits[i] as Map<String, dynamic>;
-      final hData = h['habitData'] as Map<String, dynamic>? ?? h;
-      final title = hData['title'] ?? 'N/A';
-      final uuid = hData['uuid'] ?? 'N/A';
-      final updatedAt = hData['updatedAt'] ?? hData['updated_at'] ?? 'N/A';
-      final deletedAt = hData['deletedAt'] ?? hData['deleted_at'];
-      final events = hData['events'] as Map? ?? {};
-      debugPrint(
-        '  PULL habit[$i]: "$title" uuid=$uuid '
-        'updatedAt=$updatedAt deletedAt=$deletedAt '
-        'events=${events.length}',
-      );
-    }
 
     // 5. Merge with local using LWW strategy
-    debugPrint('PULL: Starting LWW merge ...');
     await _backupRepository.mergeData(remoteData);
 
-    debugPrint('=== PULL SYNC COMPLETE (remoteVersion=$remoteVersion) ===\n');
+    dev.log('Pull completed (version=$remoteVersion)', name: _logName);
     return remoteVersion;
   }
 }
