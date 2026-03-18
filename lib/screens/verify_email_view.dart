@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/screens/sync_helpers.dart';
 import 'package:habo/widgets/primary_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,11 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// Guides the user to check their inbox, lets them resend,
 /// and provides a button to continue once they've confirmed.
 class VerifyEmailView extends StatefulWidget {
-  const VerifyEmailView({
-    super.key,
-    required this.email,
-    required this.onBack,
-  });
+  const VerifyEmailView({super.key, required this.email, required this.onBack});
 
   /// The email address the confirmation was sent to.
   final String email;
@@ -67,13 +64,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       _startCooldown();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Verification email resent!')),
+          SnackBar(content: Text(S.of(context).verificationEmailResent)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to resend: $e')),
+          SnackBar(content: Text(S.of(context).failedToResend(e.toString()))),
         );
       }
     } finally {
@@ -96,10 +93,8 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       // but the email IS confirmed server-side. Send user back to login.
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Please sign in with your email and password.',
-            ),
+          SnackBar(
+            content: Text(S.of(context).pleaseSignInWithEmailAndPassword),
           ),
         );
         widget.onBack();
@@ -112,9 +107,9 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(context).copyWith(
-        inputDecorationTheme: syncInputDecorationTheme(context),
-      ),
+      data: Theme.of(
+        context,
+      ).copyWith(inputDecorationTheme: syncInputDecorationTheme(context)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Column(
@@ -141,37 +136,37 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             const SizedBox(height: 24),
 
             Text(
-              'Check your email',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              S.of(context).checkYourEmail,
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
 
             Text(
-              'We sent a verification link to',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
+              S.of(context).weSentVerificationLinkTo,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 4),
 
             Text(
               widget.email,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
 
             Text(
-              'Click the link in the email to verify your account, then come back here and tap the button below.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[500],
-              ),
+              S.of(context).clickLinkInEmailToVerify,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.grey[500]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -185,17 +180,15 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.white,
-                        ),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Row(
+                  : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("I've verified my email"),
-                        SizedBox(width: 8),
-                        Icon(Icons.check_circle_outline, size: 18),
+                        Text(S.of(context).iveVerifiedMyEmail),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.check_circle_outline, size: 18),
                       ],
                     ),
             ),
@@ -215,8 +208,8 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                       )
                     : Text(
                         _resendCooldown > 0
-                            ? 'Resend in ${_resendCooldown}s'
-                            : 'Resend verification email',
+                            ? S.of(context).resendInSeconds(_resendCooldown)
+                            : S.of(context).resendVerificationEmail,
                         style: TextStyle(
                           color: _resendCooldown > 0
                               ? Colors.grey[400]
@@ -233,7 +226,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               child: GestureDetector(
                 onTap: widget.onBack,
                 child: Text(
-                  'Back to Sign In',
+                  S.of(context).backToSignIn,
                   style: TextStyle(
                     color: Colors.grey[500],
                     fontSize: 13,

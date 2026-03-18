@@ -6,6 +6,7 @@ import 'package:habo/screens/delete_account_screen.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:habo/generated/l10n.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -81,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(S.of(context).profile),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -132,8 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context: context,
               isDark: isDark,
               icon: Icons.lock_outline,
-              title: 'Change Master Password',
-              subtitle: 'Update your encryption password',
+              title: S.of(context).changeMasterPassword,
+              subtitle: S.of(context).updateYourEncryptionPassword,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const ChangeMasterPasswordScreen(),
@@ -147,8 +148,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 context: context,
                 isDark: isDark,
                 icon: Icons.key,
-                title: 'Change Account Password',
-                subtitle: 'Update your login password',
+                title: S.of(context).changeAccountPassword,
+                subtitle: S.of(context).updateYourLoginPassword,
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const ChangeAccountPasswordScreen(),
@@ -163,8 +164,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 context: context,
                 isDark: isDark,
                 icon: Icons.credit_card,
-                title: 'Manage Subscription',
-                subtitle: 'View or cancel your plan',
+                title: S.of(context).manageSubscription,
+                subtitle: S.of(context).viewOrCancelYourPlan,
                 onTap: _openSubscriptionManagement,
               ),
             ],
@@ -176,8 +177,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               isDark: isDark,
               icon: Icons.delete_forever,
               iconColor: Colors.redAccent,
-              title: 'Delete Account',
-              subtitle: 'Permanently delete your account and data',
+              title: S.of(context).deleteAccountTitle,
+              subtitle: S.of(context).permanentlyDeleteYourAccountAndData,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const DeleteAccountScreen(),
@@ -199,9 +200,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 8),
                   GestureDetector(
                     onTap: () => _showSignOutConfirmation(),
-                    child: const Text(
-                      'Sign Out',
-                      style: TextStyle(
+                    child: Text(
+                      S.of(context).signOut,
+                      style: const TextStyle(
                         color: Colors.redAccent,
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -291,14 +292,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Sign Out?'),
-        content: const Text(
-          'You will need to enter your master password again to access your synced data.',
-        ),
+        title: Text(S.of(context).signOutQuestion),
+        content: Text(S.of(context).signOutConfirmationContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -309,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: Colors.redAccent,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Sign Out'),
+            child: Text(S.of(context).signOut),
           ),
         ],
       ),

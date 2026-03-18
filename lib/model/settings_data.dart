@@ -135,7 +135,8 @@ class SettingsData {
       ..hasSeenSyncOnboarding =
           hasSeenSyncOnboarding ?? this.hasSeenSyncOnboarding
       ..customSupabaseUrl = customSupabaseUrl ?? this.customSupabaseUrl
-      ..customSupabaseAnonKey = customSupabaseAnonKey ?? this.customSupabaseAnonKey
+      ..customSupabaseAnonKey =
+          customSupabaseAnonKey ?? this.customSupabaseAnonKey
       ..isSelfHostedCached = isSelfHostedCached ?? this.isSelfHostedCached;
   }
 

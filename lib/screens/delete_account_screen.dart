@@ -4,6 +4,7 @@ import 'package:habo/services/service_locator.dart';
 import 'package:habo/widgets/password_change_widgets.dart';
 import 'package:habo/widgets/primary_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/generated/l10n.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
   const DeleteAccountScreen({super.key});
@@ -45,7 +46,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     });
 
     if (!_isDeleteConfirmed) {
-      setState(() => _confirmError = 'Please type DELETE to confirm');
+      setState(() => _confirmError = S.of(context).pleaseTypeDeleteToConfirm);
       return;
     }
 
@@ -53,13 +54,13 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     if (_isEmailPasswordUser) {
       final password = _passwordController.text;
       if (password.isEmpty) {
-        setState(() => _passwordError = 'Password is required');
+        setState(() => _passwordError = S.of(context).passwordCannotBeEmpty);
         return;
       }
 
       final user = Supabase.instance.client.auth.currentUser;
       if (user?.email == null) {
-        setState(() => _passwordError = 'Unable to verify identity');
+        setState(() => _passwordError = S.of(context).unableToVerifyIdentity);
         return;
       }
 
@@ -72,7 +73,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
         );
       } on AuthException {
         setState(() {
-          _passwordError = 'Incorrect password';
+          _passwordError = S.of(context).incorrectPassword;
           _isProcessing = false;
         });
         return;
@@ -95,8 +96,8 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
       if (response.status != 200) {
         final errorMsg = response.data is Map
-            ? (response.data['error'] ?? 'Unknown error')
-            : 'Failed to delete account';
+            ? (response.data['error'] ?? S.of(context).failedToDeleteAccount)
+            : S.of(context).failedToDeleteAccount;
         throw Exception(errorMsg);
       }
 
@@ -116,7 +117,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
         String errorMessage = e.toString().replaceFirst('Exception: ', '');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $errorMessage'),
+            content: Text(S.of(context).errorWithDescription(errorMessage)),
             backgroundColor: Colors.red,
           ),
         );
@@ -131,7 +132,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delete Account'),
+        title: Text(S.of(context).deleteAccountTitle),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -170,7 +171,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
                         // Title
                         Text(
-                          'Delete Your Account',
+                          S.of(context).deleteYourAccount,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -196,8 +197,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'This action is permanent and cannot be undone. '
-                                'The following data will be permanently deleted:',
+                                S.of(context).deleteAccountWarning,
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: isDark
@@ -208,23 +208,27 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                               const SizedBox(height: 12),
                               _buildDeletionItem(
                                 context,
-                                'All your habits and tracking data',
+                                S.of(context).deleteHabitsAndTrackingData,
                               ),
                               _buildDeletionItem(
                                 context,
-                                'Cloud backups and sync data',
+                                S.of(context).deleteCloudBackupsAndSyncData,
                               ),
                               _buildDeletionItem(
                                 context,
-                                'Encryption keys and profile',
+                                S.of(context).deleteEncryptionKeysAndProfile,
                               ),
                               _buildDeletionItem(
                                 context,
-                                'Your account and login credentials',
+                                S
+                                    .of(context)
+                                    .deleteYourAccountAndLoginCredentials,
                               ),
                               _buildDeletionItem(
                                 context,
-                                'Subscription (managed separately by store)',
+                                S
+                                    .of(context)
+                                    .deleteSubscriptionManagedSeparately,
                               ),
                             ],
                           ),
@@ -233,7 +237,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
                         // Type DELETE confirmation
                         Text(
-                          'Type DELETE to confirm',
+                          S.of(context).typeDeleteToConfirm,
                           style: Theme.of(context).textTheme.labelLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -314,14 +318,14 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                         // Password field (only for email/password users)
                         if (_isEmailPasswordUser) ...[
                           Text(
-                            'Enter your password to confirm',
+                            S.of(context).enterYourPasswordToConfirm,
                             style: Theme.of(context).textTheme.labelLarge
                                 ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(height: 8),
                           PasswordFormField(
                             controller: _passwordController,
-                            label: 'Password',
+                            label: S.of(context).passwordLabel,
                             errorText: _passwordError,
                             obscureText: _obscurePassword,
                             onToggleVisibility: () => setState(
@@ -351,14 +355,14 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                                     ),
                                   ),
                                 )
-                              : const Row(
+                              : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.delete_forever, size: 20),
-                                    SizedBox(width: 8),
+                                    const Icon(Icons.delete_forever, size: 20),
+                                    const SizedBox(width: 8),
                                     Text(
-                                      'Permanently Delete Account',
-                                      style: TextStyle(
+                                      S.of(context).permanentlyDeleteAccount,
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),

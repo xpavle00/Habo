@@ -120,28 +120,20 @@ class BackupException extends HaboSyncException {
   const BackupException(super.code, super.message, [super.cause]);
 
   /// Backup not found in database.
-  factory BackupException.notFound(String backupId) => BackupException(
-    'BACKUP_NOT_FOUND',
-    'Backup not found: $backupId',
-  );
+  factory BackupException.notFound(String backupId) =>
+      BackupException('BACKUP_NOT_FOUND', 'Backup not found: $backupId');
 
   /// Upload to cloud storage failed.
-  factory BackupException.uploadFailed([Object? cause]) => BackupException(
-    'BACKUP_UPLOAD_FAILED',
-    'Failed to upload backup',
-    cause,
-  );
+  factory BackupException.uploadFailed([Object? cause]) =>
+      BackupException('BACKUP_UPLOAD_FAILED', 'Failed to upload backup', cause);
 
   /// Restore from backup failed.
   factory BackupException.restoreFailed(String detail, [Object? cause]) =>
       BackupException('BACKUP_RESTORE_FAILED', detail, cause);
 
   /// Local backup creation failed.
-  factory BackupException.createFailed([Object? cause]) => BackupException(
-    'BACKUP_CREATE_FAILED',
-    'Failed to create backup',
-    cause,
-  );
+  factory BackupException.createFailed([Object? cause]) =>
+      BackupException('BACKUP_CREATE_FAILED', 'Failed to create backup', cause);
 }
 
 // --- Subscription ---
@@ -150,10 +142,8 @@ class SubscriptionException extends HaboSyncException {
   const SubscriptionException(super.code, super.message, [super.cause]);
 
   /// No active subscription.
-  factory SubscriptionException.notActive() => const SubscriptionException(
-    'SUB_NOT_ACTIVE',
-    'No active subscription',
-  );
+  factory SubscriptionException.notActive() =>
+      const SubscriptionException('SUB_NOT_ACTIVE', 'No active subscription');
 
   /// Subscription status check failed.
   factory SubscriptionException.checkFailed([Object? cause]) =>

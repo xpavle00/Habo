@@ -1926,6 +1926,1701 @@ class S {
   String get searchIcons {
     return Intl.message('Search', name: 'searchIcons', desc: '', args: []);
   }
+
+  /// `Sync`
+  String get syncTitle {
+    return Intl.message('Sync', name: 'syncTitle', desc: '', args: []);
+  }
+
+  /// `Sync and backup your data`
+  String get syncAndBackupYourData {
+    return Intl.message(
+      'Sync and backup your data',
+      name: 'syncAndBackupYourData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server`
+  String get server {
+    return Intl.message('Server', name: 'server', desc: '', args: []);
+  }
+
+  /// `Custom server`
+  String get customServer {
+    return Intl.message(
+      'Custom server',
+      name: 'customServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Habo Cloud (default)`
+  String get haboCloudDefault {
+    return Intl.message(
+      'Habo Cloud (default)',
+      name: 'haboCloudDefault',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync not available`
+  String get syncNotAvailable {
+    return Intl.message(
+      'Sync not available',
+      name: 'syncNotAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync Now`
+  String get syncNow {
+    return Intl.message('Sync Now', name: 'syncNow', desc: '', args: []);
+  }
+
+  /// `Subscribe`
+  String get subscribe {
+    return Intl.message('Subscribe', name: 'subscribe', desc: '', args: []);
+  }
+
+  /// `Restore Backup?`
+  String get restoreBackupQuestion {
+    return Intl.message(
+      'Restore Backup?',
+      name: 'restoreBackupQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} habits`
+  String habitsCount(int count) {
+    return Intl.message(
+      '$count habits',
+      name: 'habitsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `An unexpected error occurred`
+  String get anUnexpectedErrorOccurred {
+    return Intl.message(
+      'An unexpected error occurred',
+      name: 'anUnexpectedErrorOccurred',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred. Please try again.`
+  String get anUnexpectedErrorOccurredTryAgain {
+    return Intl.message(
+      'An unexpected error occurred. Please try again.',
+      name: 'anUnexpectedErrorOccurredTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Reset Link`
+  String get sendResetLink {
+    return Intl.message(
+      'Send Reset Link',
+      name: 'sendResetLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid email address`
+  String get pleaseEnterValidEmail {
+    return Intl.message(
+      'Please enter a valid email address',
+      name: 'pleaseEnterValidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email for a password reset link.`
+  String get checkEmailForResetLink {
+    return Intl.message(
+      'Check your email for a password reset link.',
+      name: 'checkEmailForResetLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to send reset link. Please try again.`
+  String get failedToSendResetLink {
+    return Intl.message(
+      'Failed to send reset link. Please try again.',
+      name: 'failedToSendResetLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apple Sign In error: {error}`
+  String appleSignInError(String error) {
+    return Intl.message(
+      'Apple Sign In error: $error',
+      name: 'appleSignInError',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Sign in failed. Please try again.`
+  String get signInFailedPleaseTryAgain {
+    return Intl.message(
+      'Sign in failed. Please try again.',
+      name: 'signInFailedPleaseTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address and we'll send you a link to reset your password.`
+  String get enterEmailForResetLink {
+    return Intl.message(
+      'Enter your email address and we\'ll send you a link to reset your password.',
+      name: 'enterEmailForResetLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get emailLabel {
+    return Intl.message('Email', name: 'emailLabel', desc: '', args: []);
+  }
+
+  /// `Password`
+  String get passwordLabel {
+    return Intl.message('Password', name: 'passwordLabel', desc: '', args: []);
+  }
+
+  /// `Confirm Password`
+  String get confirmPasswordLabel {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirmPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create an account to backup & sync.`
+  String get createAccountToBackupAndSync {
+    return Intl.message(
+      'Create an account to backup & sync.',
+      name: 'createAccountToBackupAndSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome back! Let's stay consistent.`
+  String get welcomeBackStayConsistent {
+    return Intl.message(
+      'Welcome back! Let\'s stay consistent.',
+      name: 'welcomeBackStayConsistent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is required`
+  String get emailIsRequired {
+    return Intl.message(
+      'Email is required',
+      name: 'emailIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid email`
+  String get enterValidEmail {
+    return Intl.message(
+      'Enter a valid email',
+      name: 'enterValidEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get passwordIsRequired {
+    return Intl.message(
+      'Password is required',
+      name: 'passwordIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must be at least 8 characters`
+  String get passwordMinLengthError {
+    return Intl.message(
+      'Password must be at least 8 characters',
+      name: 'passwordMinLengthError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get passwordsDoNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'passwordsDoNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Account`
+  String get createAccount {
+    return Intl.message(
+      'Create Account',
+      name: 'createAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign In`
+  String get signIn {
+    return Intl.message('Sign In', name: 'signIn', desc: '', args: []);
+  }
+
+  /// `Sign Up`
+  String get signUp {
+    return Intl.message('Sign Up', name: 'signUp', desc: '', args: []);
+  }
+
+  /// `Already have an account? `
+  String get alreadyHaveAnAccount {
+    return Intl.message(
+      'Already have an account? ',
+      name: 'alreadyHaveAnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account? `
+  String get dontHaveAnAccount {
+    return Intl.message(
+      'Don\'t have an account? ',
+      name: 'dontHaveAnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `or continue with`
+  String get orContinueWith {
+    return Intl.message(
+      'or continue with',
+      name: 'orContinueWith',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Apple`
+  String get continueWithApple {
+    return Intl.message(
+      'Continue with Apple',
+      name: 'continueWithApple',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue with Google`
+  String get continueWithGoogle {
+    return Intl.message(
+      'Continue with Google',
+      name: 'continueWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot password?',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pause Syncing`
+  String get pauseSyncing {
+    return Intl.message(
+      'Pause Syncing',
+      name: 'pauseSyncing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pauses syncing and backup`
+  String get pausesSyncingAndBackup {
+    return Intl.message(
+      'Pauses syncing and backup',
+      name: 'pausesSyncingAndBackup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Data`
+  String get restoreData {
+    return Intl.message(
+      'Restore Data',
+      name: 'restoreData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From previous backups`
+  String get fromPreviousBackups {
+    return Intl.message(
+      'From previous backups',
+      name: 'fromPreviousBackups',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
+
+  /// `Email, password, and account`
+  String get emailPasswordAndAccount {
+    return Intl.message(
+      'Email, password, and account',
+      name: 'emailPasswordAndAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Out`
+  String get signOut {
+    return Intl.message('Sign Out', name: 'signOut', desc: '', args: []);
+  }
+
+  /// `Syncing Paused`
+  String get syncingPaused {
+    return Intl.message(
+      'Syncing Paused',
+      name: 'syncingPaused',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paused`
+  String get syncingPausedDesc {
+    return Intl.message(
+      'Paused',
+      name: 'syncingPausedDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never synced`
+  String get neverSynced {
+    return Intl.message(
+      'Never synced',
+      name: 'neverSynced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paused`
+  String get paused {
+    return Intl.message('Paused', name: 'paused', desc: '', args: []);
+  }
+
+  /// `Syncing...`
+  String get syncingHero {
+    return Intl.message('Syncing...', name: 'syncingHero', desc: '', args: []);
+  }
+
+  /// `Your data is being synchronized`
+  String get dataBeingSynchronized {
+    return Intl.message(
+      'Your data is being synchronized',
+      name: 'dataBeingSynchronized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Syncing to Cloud`
+  String get syncingToCloud {
+    return Intl.message(
+      'Syncing to Cloud',
+      name: 'syncingToCloud',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Everything is safe`
+  String get everythingIsSafe {
+    return Intl.message(
+      'Everything is safe',
+      name: 'everythingIsSafe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connected to Cloud`
+  String get connectedToCloud {
+    return Intl.message(
+      'Connected to Cloud',
+      name: 'connectedToCloud',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync Error`
+  String get syncError {
+    return Intl.message('Sync Error', name: 'syncError', desc: '', args: []);
+  }
+
+  /// `Tap Sync Now to retry`
+  String get tapSyncNowToRetry {
+    return Intl.message(
+      'Tap Sync Now to retry',
+      name: 'tapSyncNowToRetry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get errorText {
+    return Intl.message('Error', name: 'errorText', desc: '', args: []);
+  }
+
+  /// `You're offline`
+  String get youAreOffline {
+    return Intl.message(
+      'You\'re offline',
+      name: 'youAreOffline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Will sync when connected`
+  String get willSyncWhenConnected {
+    return Intl.message(
+      'Will sync when connected',
+      name: 'willSyncWhenConnected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message('Offline', name: 'offline', desc: '', args: []);
+  }
+
+  /// `Not configured`
+  String get notConfigured {
+    return Intl.message(
+      'Not configured',
+      name: 'notConfigured',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set up sync to enable`
+  String get setUpSyncToEnable {
+    return Intl.message(
+      'Set up sync to enable',
+      name: 'setUpSyncToEnable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription needed`
+  String get subscriptionNeeded {
+    return Intl.message(
+      'Subscription needed',
+      name: 'subscriptionNeeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscribe to enable sync`
+  String get subscribeToEnableSync {
+    return Intl.message(
+      'Subscribe to enable sync',
+      name: 'subscribeToEnableSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not active`
+  String get notActive {
+    return Intl.message('Not active', name: 'notActive', desc: '', args: []);
+  }
+
+  /// `Cloud & Backup`
+  String get cloudAndBackup {
+    return Intl.message(
+      'Cloud & Backup',
+      name: 'cloudAndBackup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock Sync & Backup`
+  String get unlockSyncAndBackup {
+    return Intl.message(
+      'Unlock Sync & Backup',
+      name: 'unlockSyncAndBackup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep your habits safe and synced across all your devices.`
+  String get keepHabitsSafeAndSynced {
+    return Intl.message(
+      'Keep your habits safe and synced across all your devices.',
+      name: 'keepHabitsSafeAndSynced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real-time sync across devices`
+  String get realTimeSyncAcrossDevices {
+    return Intl.message(
+      'Real-time sync across devices',
+      name: 'realTimeSyncAcrossDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatic cloud backups`
+  String get automaticCloudBackups {
+    return Intl.message(
+      'Automatic cloud backups',
+      name: 'automaticCloudBackups',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End-to-end encryption`
+  String get endToEndEncryption {
+    return Intl.message(
+      'End-to-end encryption',
+      name: 'endToEndEncryption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Purchases`
+  String get restorePurchases {
+    return Intl.message(
+      'Restore Purchases',
+      name: 'restorePurchases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last synced just now`
+  String get lastSyncedJustNow {
+    return Intl.message(
+      'Last synced just now',
+      name: 'lastSyncedJustNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last synced {minutes} min ago`
+  String lastSyncedMinsAgo(int minutes) {
+    return Intl.message(
+      'Last synced $minutes min ago',
+      name: 'lastSyncedMinsAgo',
+      desc: '',
+      args: [minutes],
+    );
+  }
+
+  /// `Last synced {hours} hours ago`
+  String lastSyncedHoursAgo(int hours) {
+    return Intl.message(
+      'Last synced $hours hours ago',
+      name: 'lastSyncedHoursAgo',
+      desc: '',
+      args: [hours],
+    );
+  }
+
+  /// `Last synced {days} day{plural} ago`
+  String lastSyncedDaysAgo(int days, String plural) {
+    return Intl.message(
+      'Last synced $days day$plural ago',
+      name: 'lastSyncedDaysAgo',
+      desc: '',
+      args: [days, plural],
+    );
+  }
+
+  /// `Today at {time}`
+  String todayAt(String time) {
+    return Intl.message(
+      'Today at $time',
+      name: 'todayAt',
+      desc: '',
+      args: [time],
+    );
+  }
+
+  /// `Yesterday at {time}`
+  String yesterdayAt(String time) {
+    return Intl.message(
+      'Yesterday at $time',
+      name: 'yesterdayAt',
+      desc: '',
+      args: [time],
+    );
+  }
+
+  /// `{weekday} at {time}`
+  String weekdayAt(String weekday, String time) {
+    return Intl.message(
+      '$weekday at $time',
+      name: 'weekdayAt',
+      desc: '',
+      args: [weekday, time],
+    );
+  }
+
+  /// `This will replace all current data with the backup from {date}.\n\nThis action cannot be undone.`
+  String restoreBackupConfirmation(String date) {
+    return Intl.message(
+      'This will replace all current data with the backup from $date.\n\nThis action cannot be undone.',
+      name: 'restoreBackupConfirmation',
+      desc: '',
+      args: [date],
+    );
+  }
+
+  /// `Backup restored successfully!`
+  String get backupRestoredSuccessfully {
+    return Intl.message(
+      'Backup restored successfully!',
+      name: 'backupRestoredSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore failed: {error}`
+  String restoreFailedWithError(String error) {
+    return Intl.message(
+      'Restore failed: $error',
+      name: 'restoreFailedWithError',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Restore failed. Please try again.`
+  String get restoreFailedTryAgain {
+    return Intl.message(
+      'Restore failed. Please try again.',
+      name: 'restoreFailedTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a backup to restore from`
+  String get chooseBackupToRestore {
+    return Intl.message(
+      'Choose a backup to restore from',
+      name: 'chooseBackupToRestore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No backups available yet.\nBackups are created automatically during sync.`
+  String get noBackupsAvailable {
+    return Intl.message(
+      'No backups available yet.\nBackups are created automatically during sync.',
+      name: 'noBackupsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchases restored successfully!`
+  String get purchasesRestoredSuccessfully {
+    return Intl.message(
+      'Purchases restored successfully!',
+      name: 'purchasesRestoredSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No previous purchases found.`
+  String get noPreviousPurchasesFound {
+    return Intl.message(
+      'No previous purchases found.',
+      name: 'noPreviousPurchasesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification email resent!`
+  String get verificationEmailResent {
+    return Intl.message(
+      'Verification email resent!',
+      name: 'verificationEmailResent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to resend: {error}`
+  String failedToResend(String error) {
+    return Intl.message(
+      'Failed to resend: $error',
+      name: 'failedToResend',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `I've verified my email`
+  String get iveVerifiedMyEmail {
+    return Intl.message(
+      'I\'ve verified my email',
+      name: 'iveVerifiedMyEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seamless Continuity`
+  String get seamlessContinuity {
+    return Intl.message(
+      'Seamless Continuity',
+      name: 'seamlessContinuity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your habits, flawlessly synchronized across everywhere. Start tracking on your phone, tick off on your tablet seamlessly.`
+  String get seamlessContinuityDesc {
+    return Intl.message(
+      'Your habits, flawlessly synchronized across everywhere. Start tracking on your phone, tick off on your tablet seamlessly.',
+      name: 'seamlessContinuityDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zero-Knowledge Privacy`
+  String get zeroKnowledgePrivacy {
+    return Intl.message(
+      'Zero-Knowledge Privacy',
+      name: 'zeroKnowledgePrivacy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State-of-the-art End-to-End Encryption. Only you hold the master key — we can never read or access your personal data.`
+  String get zeroKnowledgePrivacyDesc {
+    return Intl.message(
+      'State-of-the-art End-to-End Encryption. Only you hold the master key — we can never read or access your personal data.',
+      name: 'zeroKnowledgePrivacyDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rest Easy`
+  String get restEasy {
+    return Intl.message('Rest Easy', name: 'restEasy', desc: '', args: []);
+  }
+
+  /// `We securely snapshot your entire progress history to the cloud. Total peace of mind, automatically.`
+  String get restEasyDesc {
+    return Intl.message(
+      'We securely snapshot your entire progress history to the cloud. Total peace of mind, automatically.',
+      name: 'restEasyDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Started`
+  String get getStarted {
+    return Intl.message('Get Started', name: 'getStarted', desc: '', args: []);
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message('Next', name: 'next', desc: '', args: []);
+  }
+
+  /// `Password cannot be empty`
+  String get passwordCannotBeEmpty {
+    return Intl.message(
+      'Password cannot be empty',
+      name: 'passwordCannotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm your password`
+  String get pleaseConfirmYourPassword {
+    return Intl.message(
+      'Please confirm your password',
+      name: 'pleaseConfirmYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Master Password`
+  String get createMasterPassword {
+    return Intl.message(
+      'Create Master Password',
+      name: 'createMasterPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock Your Data`
+  String get unlockYourData {
+    return Intl.message(
+      'Unlock Your Data',
+      name: 'unlockYourData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your master password encrypts all your data before it leaves your device. Choose something strong and memorable.`
+  String get masterPasswordDescriptionSetup {
+    return Intl.message(
+      'Your master password encrypts all your data before it leaves your device. Choose something strong and memorable.',
+      name: 'masterPasswordDescriptionSetup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your master password to decrypt your data and enable sync.`
+  String get masterPasswordDescriptionUnlock {
+    return Intl.message(
+      'Enter your master password to decrypt your data and enable sync.',
+      name: 'masterPasswordDescriptionUnlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Important: Cannot be recovered`
+  String get importantCannotBeRecovered {
+    return Intl.message(
+      'Important: Cannot be recovered',
+      name: 'importantCannotBeRecovered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We do not store your password. If you forget it, your data cannot be recovered. Write it down somewhere safe!`
+  String get masterPasswordWarning {
+    return Intl.message(
+      'We do not store your password. If you forget it, your data cannot be recovered. Write it down somewhere safe!',
+      name: 'masterPasswordWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Master Password`
+  String get masterPasswordLabel {
+    return Intl.message(
+      'Master Password',
+      name: 'masterPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum 8 characters`
+  String get minimum8Characters {
+    return Intl.message(
+      'Minimum 8 characters',
+      name: 'minimum8Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Password`
+  String get setPassword {
+    return Intl.message(
+      'Set Password',
+      name: 'setPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock & Sync`
+  String get unlockAndSync {
+    return Intl.message(
+      'Unlock & Sync',
+      name: 'unlockAndSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the password you created when you first set up sync on another device.`
+  String get unlockPasswordExplanation {
+    return Intl.message(
+      'This is the password you created when you first set up sync on another device.',
+      name: 'unlockPasswordExplanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Master password changed successfully`
+  String get masterPasswordChangedSuccessfully {
+    return Intl.message(
+      'Master password changed successfully',
+      name: 'masterPasswordChangedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error: {error}`
+  String errorWithDescription(String error) {
+    return Intl.message(
+      'Error: $error',
+      name: 'errorWithDescription',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Change Master Password`
+  String get changeMasterPassword {
+    return Intl.message(
+      'Change Master Password',
+      name: 'changeMasterPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Password`
+  String get changePassword {
+    return Intl.message(
+      'Change Password',
+      name: 'changePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account password changed successfully`
+  String get accountPasswordChangedSuccessfully {
+    return Intl.message(
+      'Account password changed successfully',
+      name: 'accountPasswordChangedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Account Password`
+  String get changeAccountPassword {
+    return Intl.message(
+      'Change Account Password',
+      name: 'changeAccountPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Account`
+  String get deleteAccountTitle {
+    return Intl.message(
+      'Delete Account',
+      name: 'deleteAccountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred. Please try again.`
+  String get unexpectedErrorPleaseTryAgain {
+    return Intl.message(
+      'An unexpected error occurred. Please try again.',
+      name: 'unexpectedErrorPleaseTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email for a password reset link.`
+  String get checkEmailForPasswordReset {
+    return Intl.message(
+      'Check your email for a password reset link.',
+      name: 'checkEmailForPasswordReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Out?`
+  String get signOutQuestion {
+    return Intl.message(
+      'Sign Out?',
+      name: 'signOutQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset to Habo Cloud?`
+  String get resetToHaboCloudQuestion {
+    return Intl.message(
+      'Reset to Habo Cloud?',
+      name: 'resetToHaboCloudQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get resetAction {
+    return Intl.message('Reset', name: 'resetAction', desc: '', args: []);
+  }
+
+  /// `Restart Required`
+  String get restartRequired {
+    return Intl.message(
+      'Restart Required',
+      name: 'restartRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message('OK', name: 'ok', desc: '', args: []);
+  }
+
+  /// `Server Configuration`
+  String get serverConfiguration {
+    return Intl.message(
+      'Server Configuration',
+      name: 'serverConfiguration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Test Connection & Save`
+  String get testConnectionAndSave {
+    return Intl.message(
+      'Test Connection & Save',
+      name: 'testConnectionAndSave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset to Habo Cloud`
+  String get resetToHaboCloud {
+    return Intl.message(
+      'Reset to Habo Cloud',
+      name: 'resetToHaboCloud',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current password is required`
+  String get currentPasswordIsRequired {
+    return Intl.message(
+      'Current password is required',
+      name: 'currentPasswordIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New password is required`
+  String get newPasswordIsRequired {
+    return Intl.message(
+      'New password is required',
+      name: 'newPasswordIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New password must be different from current`
+  String get newPasswordMustBeDifferent {
+    return Intl.message(
+      'New password must be different from current',
+      name: 'newPasswordMustBeDifferent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect current password`
+  String get incorrectCurrentPassword {
+    return Intl.message(
+      'Incorrect current password',
+      name: 'incorrectCurrentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your current password and choose a new one.`
+  String get enterCurrentPasswordAndChooseNew {
+    return Intl.message(
+      'Enter your current password and choose a new one.',
+      name: 'enterCurrentPasswordAndChooseNew',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current Password`
+  String get currentPassword {
+    return Intl.message(
+      'Current Password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get newPassword {
+    return Intl.message(
+      'New Password',
+      name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm New Password`
+  String get confirmNewPassword {
+    return Intl.message(
+      'Confirm New Password',
+      name: 'confirmNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This changes your login password for Habo.`
+  String get thisChangesYourLoginPassword {
+    return Intl.message(
+      'This changes your login password for Habo.',
+      name: 'thisChangesYourLoginPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password Updated!`
+  String get passwordUpdated {
+    return Intl.message(
+      'Password Updated!',
+      name: 'passwordUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password has been reset successfully. You can now sign in with your new password.`
+  String get passwordResetSuccessMessage {
+    return Intl.message(
+      'Your password has been reset successfully. You can now sign in with your new password.',
+      name: 'passwordResetSuccessMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set New Password`
+  String get setNewPassword {
+    return Intl.message(
+      'Set New Password',
+      name: 'setNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a strong password for your account.`
+  String get chooseStrongPassword {
+    return Intl.message(
+      'Choose a strong password for your account.',
+      name: 'chooseStrongPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please type DELETE to confirm`
+  String get pleaseTypeDeleteToConfirm {
+    return Intl.message(
+      'Please type DELETE to confirm',
+      name: 'pleaseTypeDeleteToConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to verify identity`
+  String get unableToVerifyIdentity {
+    return Intl.message(
+      'Unable to verify identity',
+      name: 'unableToVerifyIdentity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect password`
+  String get incorrectPassword {
+    return Intl.message(
+      'Incorrect password',
+      name: 'incorrectPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to delete account`
+  String get failedToDeleteAccount {
+    return Intl.message(
+      'Failed to delete account',
+      name: 'failedToDeleteAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Your Account`
+  String get deleteYourAccount {
+    return Intl.message(
+      'Delete Your Account',
+      name: 'deleteYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This action is permanent and cannot be undone. The following data will be permanently deleted:`
+  String get deleteAccountWarning {
+    return Intl.message(
+      'This action is permanent and cannot be undone. The following data will be permanently deleted:',
+      name: 'deleteAccountWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All your habits and tracking data`
+  String get deleteHabitsAndTrackingData {
+    return Intl.message(
+      'All your habits and tracking data',
+      name: 'deleteHabitsAndTrackingData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cloud backups and sync data`
+  String get deleteCloudBackupsAndSyncData {
+    return Intl.message(
+      'Cloud backups and sync data',
+      name: 'deleteCloudBackupsAndSyncData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Encryption keys and profile`
+  String get deleteEncryptionKeysAndProfile {
+    return Intl.message(
+      'Encryption keys and profile',
+      name: 'deleteEncryptionKeysAndProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account and login credentials`
+  String get deleteYourAccountAndLoginCredentials {
+    return Intl.message(
+      'Your account and login credentials',
+      name: 'deleteYourAccountAndLoginCredentials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscription (managed separately by store)`
+  String get deleteSubscriptionManagedSeparately {
+    return Intl.message(
+      'Subscription (managed separately by store)',
+      name: 'deleteSubscriptionManagedSeparately',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type DELETE to confirm`
+  String get typeDeleteToConfirm {
+    return Intl.message(
+      'Type DELETE to confirm',
+      name: 'typeDeleteToConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password to confirm`
+  String get enterYourPasswordToConfirm {
+    return Intl.message(
+      'Enter your password to confirm',
+      name: 'enterYourPasswordToConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permanently Delete Account`
+  String get permanentlyDeleteAccount {
+    return Intl.message(
+      'Permanently Delete Account',
+      name: 'permanentlyDeleteAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address and we'll send you a link to reset your password.`
+  String get resetPasswordDescription {
+    return Intl.message(
+      'Enter your email address and we\'ll send you a link to reset your password.',
+      name: 'resetPasswordDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update your encryption password`
+  String get updateYourEncryptionPassword {
+    return Intl.message(
+      'Update your encryption password',
+      name: 'updateYourEncryptionPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update your login password`
+  String get updateYourLoginPassword {
+    return Intl.message(
+      'Update your login password',
+      name: 'updateYourLoginPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage Subscription`
+  String get manageSubscription {
+    return Intl.message(
+      'Manage Subscription',
+      name: 'manageSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View or cancel your plan`
+  String get viewOrCancelYourPlan {
+    return Intl.message(
+      'View or cancel your plan',
+      name: 'viewOrCancelYourPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permanently delete your account and data`
+  String get permanentlyDeleteYourAccountAndData {
+    return Intl.message(
+      'Permanently delete your account and data',
+      name: 'permanentlyDeleteYourAccountAndData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will need to enter your master password again to access your synced data.`
+  String get signOutConfirmationContent {
+    return Intl.message(
+      'You will need to enter your master password again to access your synced data.',
+      name: 'signOutConfirmationContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not connect to server. Verify the URL, anon key, and that the Habo migration has been applied.\n\nError: {e}`
+  String couldNotConnectToServer(String e) {
+    return Intl.message(
+      'Could not connect to server. Verify the URL, anon key, and that the Habo migration has been applied.\n\nError: $e',
+      name: 'couldNotConnectToServer',
+      desc: '',
+      args: [e],
+    );
+  }
+
+  /// `This will disconnect from your self-hosted server and switch back to the default Habo Cloud server. You will need to sign in again.`
+  String get disconnectFromSelfHosted {
+    return Intl.message(
+      'This will disconnect from your self-hosted server and switch back to the default Habo Cloud server. You will need to sign in again.',
+      name: 'disconnectFromSelfHosted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please close and reopen the app to connect to the new server.`
+  String get restartRequiredContent {
+    return Intl.message(
+      'Please close and reopen the app to connect to the new server.',
+      name: 'restartRequiredContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connected to a custom server`
+  String get connectedToCustomServer {
+    return Intl.message(
+      'Connected to a custom server',
+      name: 'connectedToCustomServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connected to Habo Cloud (default)`
+  String get connectedToHaboCloudDefault {
+    return Intl.message(
+      'Connected to Habo Cloud (default)',
+      name: 'connectedToHaboCloudDefault',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Self-host your own Supabase backend for full sync access without a subscription. See the self-hosting guide for setup instructions.`
+  String get selfHostDescription {
+    return Intl.message(
+      'Self-host your own Supabase backend for full sync access without a subscription. See the self-hosting guide for setup instructions.',
+      name: 'selfHostDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `URL is required`
+  String get urlIsRequired {
+    return Intl.message(
+      'URL is required',
+      name: 'urlIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid URL (e.g., https://your-project.supabase.co)`
+  String get enterValidUrl {
+    return Intl.message(
+      'Enter a valid URL (e.g., https://your-project.supabase.co)',
+      name: 'enterValidUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `URL must start with https:// or http://`
+  String get urlMustStartWithHttpOrHttps {
+    return Intl.message(
+      'URL must start with https:// or http://',
+      name: 'urlMustStartWithHttpOrHttps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Anon key is required`
+  String get anonKeyIsRequired {
+    return Intl.message(
+      'Anon key is required',
+      name: 'anonKeyIsRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please sign in with your email and password.`
+  String get pleaseSignInWithEmailAndPassword {
+    return Intl.message(
+      'Please sign in with your email and password.',
+      name: 'pleaseSignInWithEmailAndPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your email`
+  String get checkYourEmail {
+    return Intl.message(
+      'Check your email',
+      name: 'checkYourEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We sent a verification link to`
+  String get weSentVerificationLinkTo {
+    return Intl.message(
+      'We sent a verification link to',
+      name: 'weSentVerificationLinkTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click the link in the email to verify your account, then come back here and tap the button below.`
+  String get clickLinkInEmailToVerify {
+    return Intl.message(
+      'Click the link in the email to verify your account, then come back here and tap the button below.',
+      name: 'clickLinkInEmailToVerify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend in {seconds}s`
+  String resendInSeconds(int seconds) {
+    return Intl.message(
+      'Resend in ${seconds}s',
+      name: 'resendInSeconds',
+      desc: '',
+      args: [seconds],
+    );
+  }
+
+  /// `Resend verification email`
+  String get resendVerificationEmail {
+    return Intl.message(
+      'Resend verification email',
+      name: 'resendVerificationEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to Sign In`
+  String get backToSignIn {
+    return Intl.message(
+      'Back to Sign In',
+      name: 'backToSignIn',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

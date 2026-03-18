@@ -24,7 +24,7 @@ class SubscriptionService {
   Completer<void>? _initCompleter;
 
   SubscriptionService({bool isSelfHosted = false})
-      : _isSelfHosted = isSelfHosted;
+    : _isSelfHosted = isSelfHosted;
 
   bool get isSelfHosted => _isSelfHosted;
 

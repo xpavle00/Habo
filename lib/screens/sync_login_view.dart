@@ -10,6 +10,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/env_config.dart';
 import 'package:habo/screens/sync_helpers.dart';
+import 'package:habo/generated/l10n.dart';
 import 'package:habo/widgets/habo_text_field.dart';
 import 'package:habo/widgets/primary_button.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -59,25 +60,25 @@ class _SyncLoginViewState extends State<SyncLoginView> {
 
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      setState(() => _emailError = 'Email is required');
+      setState(() => _emailError = S.of(context).emailIsRequired);
       isValid = false;
     } else if (!email.contains('@')) {
-      setState(() => _emailError = 'Enter a valid email');
+      setState(() => _emailError = S.of(context).enterValidEmail);
       isValid = false;
     }
 
     final password = _passwordController.text;
     if (password.isEmpty) {
-      setState(() => _passwordError = 'Password is required');
+      setState(() => _passwordError = S.of(context).passwordIsRequired);
       isValid = false;
     } else if (_isSignUp && password.length < 8) {
-      setState(() => _passwordError = 'Password must be at least 8 characters');
+      setState(() => _passwordError = S.of(context).passwordMinLengthError);
       isValid = false;
     }
 
     if (_isSignUp) {
       if (_confirmController.text != password) {
-        setState(() => _confirmError = 'Passwords do not match');
+        setState(() => _confirmError = S.of(context).passwordsDoNotMatch);
         isValid = false;
       }
     }
@@ -116,9 +117,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('An unexpected error occurred. Please try again.'),
-          ),
+          SnackBar(content: Text(S.of(context).unexpectedErrorPleaseTryAgain)),
         );
       }
     } finally {
@@ -133,14 +132,12 @@ class _SyncLoginViewState extends State<SyncLoginView> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Reset Password'),
+        title: Text(S.of(context).resetPassword),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Enter your email address and we\'ll send you a link to reset your password.',
-            ),
+            Text(S.of(context).resetPasswordDescription),
             const SizedBox(height: 16),
             TextField(
               controller: resetEmailController,
@@ -156,11 +153,11 @@ class _SyncLoginViewState extends State<SyncLoginView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Send Reset Link'),
+            child: Text(S.of(context).sendResetLink),
           ),
         ],
       ),
@@ -172,7 +169,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
 
     if (resetEmail.isEmpty || !resetEmail.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid email address')),
+        SnackBar(content: Text(S.of(context).pleaseEnterValidEmail)),
       );
       return;
     }
@@ -184,17 +181,13 @@ class _SyncLoginViewState extends State<SyncLoginView> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Check your email for a password reset link.'),
-          ),
+          SnackBar(content: Text(S.of(context).checkEmailForPasswordReset)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to send reset link. Please try again.'),
-          ),
+          SnackBar(content: Text(S.of(context).failedToSendResetLink)),
         );
       }
     }
@@ -245,15 +238,13 @@ class _SyncLoginViewState extends State<SyncLoginView> {
       if (e.code == AuthorizationErrorCode.canceled) return;
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Apple Sign In error: ${e.message}')),
+          SnackBar(content: Text(S.of(context).appleSignInError(e.message))),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sign in failed. Please try again.'),
-          ),
+          SnackBar(content: Text(S.of(context).signInFailedPleaseTryAgain)),
         );
       }
     }
@@ -374,8 +365,8 @@ class _SyncLoginViewState extends State<SyncLoginView> {
               const SizedBox(height: 8),
               Text(
                 _isSignUp
-                    ? 'Create an account to backup & sync.'
-                    : 'Welcome back! Let\'s stay consistent.',
+                    ? S.of(context).createAccountToBackupAndSync
+                    : S.of(context).welcomeBackStayConsistent,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
@@ -385,7 +376,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
 
               // Email field
               HaboTextField(
-                label: 'Email',
+                label: S.of(context).emailLabel,
                 errorText: _emailError,
                 child: TextFormField(
                   controller: _emailController,
@@ -412,7 +403,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
 
               // Password field
               HaboTextField(
-                label: 'Password',
+                label: S.of(context).passwordLabel,
                 errorText: _passwordError,
                 child: TextFormField(
                   controller: _passwordController,
@@ -454,7 +445,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
               if (_isSignUp) ...[
                 const SizedBox(height: 20),
                 HaboTextField(
-                  label: 'Confirm Password',
+                  label: S.of(context).confirmPasswordLabel,
                   errorText: _confirmError,
                   child: TextFormField(
                     controller: _confirmController,
@@ -499,7 +490,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                   child: GestureDetector(
                     onTap: _handleForgotPassword,
                     child: Text(
-                      'Forgot password?',
+                      S.of(context).forgotPassword,
                       style: TextStyle(color: Colors.grey[500], fontSize: 13),
                     ),
                   ),
@@ -525,7 +516,11 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(_isSignUp ? 'Create Account' : 'Sign In'),
+                          Text(
+                            _isSignUp
+                                ? S.of(context).createAccount
+                                : S.of(context).signIn,
+                          ),
                           const SizedBox(width: 8),
                           const Icon(Icons.arrow_forward, size: 18),
                         ],
@@ -540,14 +535,14 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                 children: [
                   Text(
                     _isSignUp
-                        ? 'Already have an account? '
-                        : 'Don\'t have an account? ',
+                        ? S.of(context).alreadyHaveAnAccount
+                        : S.of(context).dontHaveAnAccount,
                     style: TextStyle(color: Colors.grey[600], fontSize: 13),
                   ),
                   GestureDetector(
                     onTap: () => setState(() => _isSignUp = !_isSignUp),
                     child: Text(
-                      _isSignUp ? 'Sign In' : 'Sign Up',
+                      _isSignUp ? S.of(context).signIn : S.of(context).signUp,
                       style: const TextStyle(
                         color: HaboColors.primary,
                         fontWeight: FontWeight.w600,
@@ -558,7 +553,10 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                 ],
               ),
 
-              if (!ServiceLocator.instance.subscriptionService.isSelfHosted) ...[
+              if (!ServiceLocator
+                  .instance
+                  .subscriptionService
+                  .isSelfHosted) ...[
                 const SizedBox(height: 24),
 
                 // Divider
@@ -570,7 +568,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'or continue with',
+                        S.of(context).orContinueWith,
                         style: TextStyle(color: Colors.grey[500], fontSize: 13),
                       ),
                     ),
@@ -591,7 +589,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                         height: 48,
                         child: SignInWithAppleButton(
                           onPressed: _signInWithApple,
-                          text: 'Continue with Apple',
+                          text: S.of(context).continueWithApple,
                           style: Theme.of(context).brightness == Brightness.dark
                               ? SignInWithAppleButtonStyle.white
                               : SignInWithAppleButtonStyle.black,
@@ -610,7 +608,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                         width: 20,
                         height: 20,
                       ),
-                      label: 'Continue with Google',
+                      label: S.of(context).continueWithGoogle,
                       onTap: _signInWithGoogle,
                       backgroundColor:
                           Theme.of(context).brightness == Brightness.dark
@@ -619,7 +617,8 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                       textColor: Theme.of(context).brightness == Brightness.dark
                           ? const Color(0xFFE3E3E3)
                           : const Color(0xFF1F1F1F),
-                      borderColor: Theme.of(context).brightness == Brightness.dark
+                      borderColor:
+                          Theme.of(context).brightness == Brightness.dark
                           ? const Color(0xFF8E918F)
                           : const Color(0xFF747775),
                     ),

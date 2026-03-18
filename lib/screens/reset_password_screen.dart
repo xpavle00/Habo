@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habo/widgets/password_change_widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/generated/l10n.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -35,17 +36,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     final newPassword = _newPasswordController.text;
     if (newPassword.isEmpty) {
-      setState(() => _newPasswordError = 'Password is required');
+      setState(() => _newPasswordError = S.of(context).passwordCannotBeEmpty);
       isValid = false;
     } else if (newPassword.length < 8) {
-      setState(
-        () => _newPasswordError = 'Password must be at least 8 characters',
-      );
+      setState(() => _newPasswordError = S.of(context).passwordMinLengthError);
       isValid = false;
     }
 
     if (_confirmPasswordController.text != newPassword) {
-      setState(() => _confirmPasswordError = 'Passwords do not match');
+      setState(() => _confirmPasswordError = S.of(context).passwordsDoNotMatch);
       isValid = false;
     }
 
@@ -73,8 +72,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       }
     } catch (e) {
       if (mounted) {
+        String errorMsg = e.toString().replaceFirst('Exception: ', '');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(S.of(context).errorWithDescription(errorMsg)),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
@@ -86,7 +89,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reset Password'),
+        title: Text(S.of(context).resetPassword),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -128,7 +131,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
         const SizedBox(height: 24),
         Text(
-          'Password Updated!',
+          S.of(context).passwordUpdated,
           style: Theme.of(
             context,
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -136,14 +139,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Your password has been reset successfully. You can now sign in with your new password.',
+          S.of(context).passwordResetSuccessMessage,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey[600], fontSize: 14),
         ),
         const SizedBox(height: 32),
         PrimaryCTAButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Done'),
+          child: Text(S.of(context).done),
         ),
       ],
     );
@@ -169,7 +172,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
         // Title
         Text(
-          'Set New Password',
+          S.of(context).setNewPassword,
           style: Theme.of(
             context,
           ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -177,7 +180,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          'Choose a strong password for your account.',
+          S.of(context).chooseStrongPassword,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey[600], fontSize: 14),
         ),
@@ -186,8 +189,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         // New password
         PasswordFormField(
           controller: _newPasswordController,
-          label: 'New Password',
-          helperText: 'Minimum 8 characters',
+          label: S.of(context).newPassword,
+          helperText: S.of(context).minimum8Characters,
           errorText: _newPasswordError,
           obscureText: _obscureNew,
           onToggleVisibility: () => setState(() => _obscureNew = !_obscureNew),
@@ -198,7 +201,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         // Confirm password
         PasswordFormField(
           controller: _confirmPasswordController,
-          label: 'Confirm New Password',
+          label: S.of(context).confirmNewPassword,
           errorText: _confirmPasswordError,
           obscureText: _obscureConfirm,
           onToggleVisibility: () =>
@@ -219,7 +222,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 )
-              : const Text('Reset Password'),
+              : Text(S.of(context).resetPassword),
         ),
 
         const Spacer(),
