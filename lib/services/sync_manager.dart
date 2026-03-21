@@ -51,6 +51,7 @@ class SyncManager with WidgetsBindingObserver {
   SyncStatus _status = SyncStatus.idle;
   DateTime? _lastSyncTime;
   RealtimeChannel? _realtimeSubscription;
+  StreamSubscription<AuthState>? _authSubscription;
 
   /// Detected clock drift in seconds (positive = local ahead).
   /// `null` means not yet measured.
@@ -99,6 +100,19 @@ class SyncManager with WidgetsBindingObserver {
   /// Initialize the manager and register lifecycle observer
   void initialize() {
     WidgetsBinding.instance.addObserver(this);
+
+    _authSubscription = _supabaseClient.auth.onAuthStateChange.listen((data) {
+      if (data.event == AuthChangeEvent.signedIn ||
+          (data.event == AuthChangeEvent.initialSession &&
+              data.session != null)) {
+        // If we get a session and were not configured, refresh.
+        // We delay slightly to let other auth-dependent services catch up.
+        Future.microtask(() => refreshConfiguration());
+      } else if (data.event == AuthChangeEvent.signedOut) {
+        onSignOut();
+      }
+    });
+
     _checkConfiguration().then((_) {
       if (_isConfigured) {
         // Initial sync on app start
@@ -110,6 +124,7 @@ class SyncManager with WidgetsBindingObserver {
   /// Cleanup when no longer needed
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _authSubscription?.cancel();
     _unsubscribeRealtime();
     _debounceTimer?.cancel();
     _statusController.close();
@@ -313,7 +328,22 @@ class SyncManager with WidgetsBindingObserver {
         error: e.cause,
       );
       _lastError = e;
-      _updateStatus(SyncStatus.error);
+
+      // If the vault key doesn't match the remote data, the local key is
+      // invalid (e.g. user created a new master password but old encrypted
+      // data still exists on the server, or vice-versa).  Clear the stale
+      // key so the UI falls back to the master-password screen.
+      if (e.code == 'ENC_DECRYPTION_FAILED') {
+        dev.log(
+          'Clearing invalid local key — will re-prompt for master password',
+          name: _logName,
+        );
+        await _encryptionService.clearKey();
+        _isConfigured = false;
+        _updateStatus(SyncStatus.notConfigured);
+      } else {
+        _updateStatus(SyncStatus.error);
+      }
     } catch (e) {
       dev.log('Pull failed (unexpected)', name: _logName, error: e);
       _lastError = SyncException.pullFailed(e);
