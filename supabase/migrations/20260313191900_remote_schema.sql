@@ -131,6 +131,40 @@ $$;
 
 ALTER FUNCTION "public"."push_sync_version"("expected_version" integer, "new_blob_path" "text") OWNER TO "postgres";
 
+
+CREATE OR REPLACE FUNCTION "public"."protect_profile_fields"() RETURNS "trigger"
+LANGUAGE "plpgsql" SECURITY DEFINER
+SET search_path = ''
+AS $$
+BEGIN
+  -- We only restrict the authenticated end users (the mobile app).
+  -- Service roles (e.g. RevenueCat webhook) bypass this via auth.uid() IS NULL.
+  IF auth.uid() IS NOT NULL THEN
+    -- Prevent user from updating subscription fields directly
+    NEW.subscription_status = OLD.subscription_status;
+    NEW.subscription_expires_at = OLD.subscription_expires_at;
+    NEW.revenuecat_app_user_id = OLD.revenuecat_app_user_id;
+
+    -- Prevent user from updating sync fields if they don't have an active subscription
+    IF (NEW.sync_version IS DISTINCT FROM OLD.sync_version OR
+        NEW.sync_blob_path IS DISTINCT FROM OLD.sync_blob_path OR
+        NEW.last_synced_at IS DISTINCT FROM OLD.last_synced_at) THEN
+
+      IF NOT public.has_active_subscription(NEW.id) THEN
+        NEW.sync_version = OLD.sync_version;
+        NEW.sync_blob_path = OLD.sync_blob_path;
+        NEW.last_synced_at = OLD.last_synced_at;
+      END IF;
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION "public"."protect_profile_fields"() OWNER TO "postgres";
+
 SET default_tablespace = '';
 
 SET default_table_access_method = "heap";
@@ -219,52 +253,10 @@ CREATE POLICY "Users can read own backups" ON "public"."backups" FOR SELECT USIN
 
 
 
-CREATE POLICY "Users can update own profile with subscription check"
+CREATE POLICY "Users can update own profile"
   ON "public"."profiles"
   FOR UPDATE
-  USING ((select "auth"."uid"()) = "id")
-  WITH CHECK (
-    (select "auth"."uid"()) = "id"
-    AND (
-      -- User cannot change subscription fields directly
-      NOT ("subscription_status" IS DISTINCT FROM (
-        SELECT "profiles_1"."subscription_status"
-        FROM "public"."profiles" "profiles_1"
-        WHERE "profiles_1"."id" = (select "auth"."uid"())
-      ))
-      AND NOT ("subscription_expires_at" IS DISTINCT FROM (
-        SELECT "profiles_1"."subscription_expires_at"
-        FROM "public"."profiles" "profiles_1"
-        WHERE "profiles_1"."id" = (select "auth"."uid"())
-      ))
-      AND NOT ("revenuecat_app_user_id" IS DISTINCT FROM (
-        SELECT "profiles_1"."revenuecat_app_user_id"
-        FROM "public"."profiles" "profiles_1"
-        WHERE "profiles_1"."id" = (select "auth"."uid"())
-      ))
-    )
-    AND (
-      -- Sync fields: either unchanged, or user has active subscription
-      (
-        NOT ("sync_version" IS DISTINCT FROM (
-          SELECT "profiles_1"."sync_version"
-          FROM "public"."profiles" "profiles_1"
-          WHERE "profiles_1"."id" = (select "auth"."uid"())
-        ))
-        AND NOT ("sync_blob_path" IS DISTINCT FROM (
-          SELECT "profiles_1"."sync_blob_path"
-          FROM "public"."profiles" "profiles_1"
-          WHERE "profiles_1"."id" = (select "auth"."uid"())
-        ))
-        AND NOT ("last_synced_at" IS DISTINCT FROM (
-          SELECT "profiles_1"."last_synced_at"
-          FROM "public"."profiles" "profiles_1"
-          WHERE "profiles_1"."id" = (select "auth"."uid"())
-        ))
-      )
-      OR "public"."has_active_subscription"((select "auth"."uid"()))
-    )
-  );
+  USING ((select "auth"."uid"()) = "id");
 
 
 
@@ -278,6 +270,10 @@ ALTER TABLE "public"."backups" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."profiles" ENABLE ROW LEVEL SECURITY;
 
 
+CREATE TRIGGER "on_profile_update"
+BEFORE UPDATE ON "public"."profiles"
+FOR EACH ROW
+EXECUTE FUNCTION "public"."protect_profile_fields"();
 
 
 ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
