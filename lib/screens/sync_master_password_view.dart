@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/screens/sync_helpers.dart';
@@ -110,7 +111,13 @@ class _SyncMasterPasswordViewState extends State<SyncMasterPasswordView> {
           context,
         ).showSnackBar(SnackBar(content: Text(e.message)));
       }
-    } catch (e) {
+    } catch (e, stack) {
+      dev.log(
+        'Unexpected error in master password flow',
+        name: 'SyncMasterPasswordView',
+        error: e,
+        stackTrace: stack,
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(S.of(context).anUnexpectedErrorOccurred)),

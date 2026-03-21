@@ -69,13 +69,24 @@ class SyncService {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) throw HaboAuthException.notLoggedIn();
 
-    await Supabase.instance.client.from('profiles').upsert({
-      'id': user.id,
-      'encryption_salt': saltB64,
-      'verifier_token': verifierTokenB64,
-      'encrypted_vault_key': encryptedVaultKeyB64,
-      'updated_at': DateTime.now().toUtc().toIso8601String(),
-    });
+    try {
+      await Supabase.instance.client.from('profiles').upsert({
+        'id': user.id,
+        'encryption_salt': saltB64,
+        'verifier_token': verifierTokenB64,
+        'encrypted_vault_key': encryptedVaultKeyB64,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      });
+    } on PostgrestException catch (e) {
+      dev.log('Failed to upsert profile in Supabase', name: _logName, error: e);
+      throw SyncException.profileError(
+        'Failed to save profile: ${e.message}',
+        e,
+      );
+    } catch (e) {
+      dev.log('Unexpected error upserting profile', name: _logName, error: e);
+      throw SyncException.profileError('Unexpected error saving profile', e);
+    }
   }
 
   // --- Master Password Logic ---

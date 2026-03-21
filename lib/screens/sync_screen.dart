@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:habo/screens/sync_login_view.dart';
 import 'package:habo/screens/sync_master_password_view.dart';
@@ -5,6 +6,7 @@ import 'package:habo/screens/sync_onboarding_view.dart';
 import 'package:habo/screens/sync_profile_view.dart';
 import 'package:habo/screens/verify_email_view.dart';
 import 'package:habo/services/service_locator.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -31,11 +33,30 @@ class _SyncScreenState extends State<SyncScreen> {
   bool _hasCheckedProfile = false;
   Map<String, dynamic>? _remoteProfile;
   String? _pendingVerificationEmail;
+  StreamSubscription<SyncStatus>? _syncStatusSubscription;
 
   @override
   void initState() {
     super.initState();
     _checkState();
+
+    // Listen for SyncManager key-invalidation events so we re-prompt
+    // for the master password when decryption fails.
+    final syncManager = ServiceLocator.instance.syncManager;
+    if (syncManager != null) {
+      _syncStatusSubscription = syncManager.statusStream.listen((status) {
+        if (status == SyncStatus.notConfigured && _hasLocalKey) {
+          // SyncManager cleared the key — re-check our state.
+          _checkState();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _syncStatusSubscription?.cancel();
+    super.dispose();
   }
 
   /// Checks both local key state and remote profile state
@@ -57,16 +78,28 @@ class _SyncScreenState extends State<SyncScreen> {
 
     // 2. Check Local Key
     final keyData = await ServiceLocator.instance.encryptionService.loadKey();
-    _hasLocalKey = keyData != null;
+    bool hasKey = keyData != null;
 
-    if (_hasLocalKey) {
-      if (mounted) setState(() => _isLoading = false);
-      return;
+    // 3. Fetch Remote Profile to ensure we're fully synced on configuration state
+    try {
+      _remoteProfile = await ServiceLocator.instance.syncService.fetchProfile();
+      _hasCheckedProfile = true;
+
+      // If we have a local key but no remote setup, it's an orphaned key
+      // from a previous installation/account. Clear it.
+      if (hasKey &&
+          (_remoteProfile == null ||
+              _remoteProfile!['encryption_salt'] == null)) {
+        await ServiceLocator.instance.encryptionService.clearKey();
+        hasKey = false;
+      }
+    } catch (e) {
+      // If fetching configuration fails (e.g. offline), we cannot be certain it's an orphan.
+      // We keep the local key if it exists and won't mark profile as checked so it can retry later.
+      _hasCheckedProfile = false;
     }
 
-    // 3. If no local key, check Remote Profile to determine if it's SETUP or UNLOCK mode
-    _remoteProfile = await ServiceLocator.instance.syncService.fetchProfile();
-    _hasCheckedProfile = true;
+    _hasLocalKey = hasKey;
 
     if (mounted) setState(() => _isLoading = false);
   }
