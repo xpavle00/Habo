@@ -1837,10 +1837,10 @@ class S {
     );
   }
 
-  /// `Sync your habits across all your devices with Habo's end-to-end encrypted cloud service.`
+  /// `Habo Sync is here! Sync and backup your habits across all your devices with end-to-end encrypted cloud sync.`
   String get haboSyncDescription {
     return Intl.message(
-      'Sync your habits across all your devices with Habo\'s end-to-end encrypted cloud service.',
+      'Habo Sync is here! Sync and backup your habits across all your devices with end-to-end encrypted cloud sync.',
       name: 'haboSyncDescription',
       desc: '',
       args: [],

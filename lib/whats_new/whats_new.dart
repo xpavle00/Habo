@@ -127,202 +127,57 @@ class _WhatsNewState extends State<WhatsNew> {
                           ),
                         ),
                       const SizedBox(height: 48),
-                      // Body List
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: isDark ? Colors.grey[900] : Colors.grey[100],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // iOS Sound Mixing
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.music_note_outlined,
-                                  color: HaboColors.primary,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    S.of(context).featureIosSoundMixingTitle,
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 36.0),
-                              child: Text(
-                                S.of(context).featureIosSoundMixingDesc,
-                                style: TextStyle(
-                                  color: isDark
-                                      ? Colors.grey[400]
-                                      : Colors.grey[700],
-                                  height: 1.4,
-                                ),
+                      // Habo Sync
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.cloud_sync_outlined,
+                            color: HaboColors.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              "Habo Sync",
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            const SizedBox(height: 24),
-
-                            // Homescreen Widget
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.widgets_outlined,
-                                  color: HaboColors.primary,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    S.of(context).featureHomescreenWidgetTitle,
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 36.0),
-                              child: Text(
-                                S.of(context).featureHomescreenWidgetDesc,
-                                style: TextStyle(
-                                  color: isDark
-                                      ? Colors.grey[400]
-                                      : Colors.grey[700],
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-
-                            // Longpress Check
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.touch_app_outlined,
-                                  color: HaboColors.primary,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    S.of(context).featureLongpressCheckTitle,
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 36.0),
-                              child: Text(
-                                S.of(context).featureLongpressCheckDesc,
-                                style: TextStyle(
-                                  color: isDark
-                                      ? Colors.grey[400]
-                                      : Colors.grey[700],
-                                  height: 1.4,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 24),
-
-                      // Habo Sync Coming Soon
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: HaboColors.primary.withValues(alpha: 0.05),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: HaboColors.primary.withValues(alpha: 0.2),
-                            width: 1.5,
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 36.0),
+                        child: Text(
+                          S.of(context).haboSyncDescription,
+                          style: TextStyle(
+                            color: isDark ? Colors.grey[400] : Colors.grey[700],
+                            height: 1.4,
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.cloud_sync_outlined,
+                      ),
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 36.0),
+                        child: GestureDetector(
+                          onTap: _launchHaboSync,
+                          child: Row(
+                            children: [
+                              Text(
+                                S.of(context).haboSyncLearnMore,
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   color: HaboColors.primary,
-                                  size: 28,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    "Habo Sync",
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: HaboColors.primary.withValues(
-                                      alpha: 0.15,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    S.of(context).haboSyncComingSoon,
-                                    style: theme.textTheme.labelMedium
-                                        ?.copyWith(
-                                          color: HaboColors.primary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              S.of(context).haboSyncDescription,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: isDark
-                                    ? Colors.grey[300]
-                                    : Colors.grey[800],
-                                height: 1.5,
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            GestureDetector(
-                              onTap: _launchHaboSync,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    S.of(context).haboSyncLearnMore,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: HaboColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.arrow_forward_rounded,
-                                    size: 16,
-                                    color: HaboColors.primary,
-                                  ),
-                                ],
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.arrow_forward_rounded,
+                                size: 16,
+                                color: HaboColors.primary,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 48),
