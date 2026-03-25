@@ -494,7 +494,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "haboSyncComingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon"),
     "haboSyncDescription": MessageLookupByLibrary.simpleMessage(
-      "Sync your habits across all your devices with Habo\'s end-to-end encrypted cloud service.",
+      "Habo Sync is here! Sync and backup your habits across all your devices with end-to-end encrypted cloud sync.",
     ),
     "haboSyncLearnMore": MessageLookupByLibrary.simpleMessage(
       "Learn more at habo.space/sync",

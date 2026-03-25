@@ -3,11 +3,11 @@ description: Minimalistic habit tracker.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 3.1.2+5115
+version: 4.0.0+5116
 
 environment:
-  sdk: ">=3.11.0 <4.0.0"
-  flutter: ">=3.41.1"
+  sdk: ">=3.11.3"
+  flutter: ">=3.41.5"
 
 dependencies:
   flutter:

@@ -586,7 +586,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             applicationName: 'Habo',
                             applicationVersion: _packageInfo.version,
-                            applicationLegalese: '©2025 Habo',
+                            applicationLegalese: '©2026 Habo',
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),

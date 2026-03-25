@@ -5,7 +5,7 @@
     "rewardDescription": "是你在完成习惯性行为之后所体验到的益处或积极感受。它会强化这一习惯。",
     "appNotifications": "应用程序通知",
     "accountabilityPartner": "责任伙伴",
-    "themeSelect": "{theme, select,device {Device} 浅色{Light} 深色{Dark} oled{OLED black} materialYou {Material You} 跟随设备{Device}}",
+    "themeSelect": "{theme, select, device {跟随设备} light {浅色} dark {深色} oled {OLED 黑色} materialYou {Material You} other{跟随设备}}",
     "@themeSelect": {
         "placeholders": {
             "theme": {
