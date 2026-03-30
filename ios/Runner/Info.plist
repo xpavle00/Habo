@@ -55,7 +55,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>$(GOOGLE_IOS_CLIENT_ID)</string>
+				<string>$(GOOGLE_IOS_URL_SCHEME)</string>
 			</array>
 		</dict>
 	</array>
