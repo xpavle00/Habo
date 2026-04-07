@@ -204,6 +204,11 @@ class SyncManager with WidgetsBindingObserver {
     // Mark data as changed
     _settingsManager.setHasUnsyncedChanges(true);
 
+    dev.log(
+      'scheduleSync: debounce timer (re)started, push in 7s',
+      name: _logName,
+    );
+
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(seconds: 7), () async {
       await _performPushSync();
@@ -381,6 +386,11 @@ class SyncManager with WidgetsBindingObserver {
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         final expectedVersion = _settingsManager.syncVersion;
+        dev.log(
+          'Push attempt $attempt/$maxRetries '
+          '(expectedVersion=$expectedVersion)',
+          name: _logName,
+        );
         final newVersion = await _syncService.pushSync(
           expectedVersion: expectedVersion,
         );
@@ -390,7 +400,10 @@ class SyncManager with WidgetsBindingObserver {
         _lastSyncTime = DateTime.now();
         _lastError = null;
         _updateStatus(SyncStatus.synced);
-        dev.log('Push completed: version $newVersion', name: _logName);
+        dev.log(
+          'Push SUCCEEDED: version $expectedVersion → $newVersion',
+          name: _logName,
+        );
         _isSyncing = false;
         return; // Success — exit
       } on SyncException catch (e) {
