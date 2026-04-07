@@ -34,8 +34,18 @@ class SQLiteBackupRepository implements BackupRepository {
       };
 
       // Export habits with their events
+      debugPrint('\n--- EXPORT START (${habits.length} habits) ---');
       for (final habit in habits) {
         try {
+          debugPrint(
+            'EXPORT: id=${habit.habitData.id} '
+            '"${habit.habitData.title}" '
+            'uuid=${habit.habitData.uuid} '
+            'pos=${habit.habitData.position} '
+            'deleted=${habit.habitData.deletedAt != null} '
+            'updatedAt=${habit.habitData.updatedAt.toIso8601String()} '
+            'events=${habit.habitData.events.length}',
+          );
           // Use the habit's toJson method which includes events
           (data['habits'] as List).add(habit.toJson());
         } catch (e) {
@@ -44,6 +54,7 @@ class SQLiteBackupRepository implements BackupRepository {
           );
         }
       }
+      debugPrint('--- EXPORT END ---\n');
 
       // Export categories
       for (final category in categories) {
@@ -420,7 +431,12 @@ class SQLiteBackupRepository implements BackupRepository {
       final localHabitsByTitle = <String, Habit>{};
       for (final habit in localHabits) {
         localHabitsByUuid[habit.habitData.uuid] = habit;
-        localHabitsByTitle[habit.habitData.title] = habit;
+        // Only index NON-DELETED habits by title to prevent false matches
+        // between soft-deleted local habits and unrelated remote habits
+        // that happen to share the same title.
+        if (habit.habitData.deletedAt == null) {
+          localHabitsByTitle[habit.habitData.title] = habit;
+        }
       }
 
       // Get local categories as a map by uuid and title (include deleted for matching)
@@ -564,7 +580,14 @@ class SQLiteBackupRepository implements BackupRepository {
             // with an existing local habit ID and silently replace it
             // (ConflictAlgorithm.replace).
             remoteHabit.habitData.id = null;
-            final newHabitId = await _haboModel.insertHabit(remoteHabit);
+            final newHabitId = await _haboModel.insertHabit(
+              remoteHabit,
+              preserveTimestamp: true,
+            );
+            debugPrint(
+              'MERGE:   Inserted with new local id=$newHabitId '
+              '(uuid=${remoteHabit.habitData.uuid})',
+            );
             if (remoteHabit.habitData.categories.isNotEmpty) {
               await _haboModel.updateHabitCategories(
                 newHabitId,

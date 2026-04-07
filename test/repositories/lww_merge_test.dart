@@ -90,7 +90,12 @@ void main() {
           includeDeleted: any(named: 'includeDeleted'),
         ),
       ).thenAnswer((_) async => []);
-      when(() => mockModel.insertHabit(any())).thenAnswer((_) async => 1);
+      when(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async => 1);
       when(
         () => mockModel.insertEvent(
           any(),
@@ -135,7 +140,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: insertHabit should be called for the remote habit
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
     });
 
     test('mergeData preserves local-only habits', () async {
@@ -158,7 +168,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: No insertHabit calls (local habit is preserved, not touched)
-      verifyNever(() => mockModel.insertHabit(any()));
+      verifyNever(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
     });
 
     test('mergeData merges events from remote for existing habit', () async {
@@ -402,7 +417,12 @@ void main() {
           includeDeleted: any(named: 'includeDeleted'),
         ),
       ).thenAnswer((_) async => []);
-      when(() => mockModel.insertHabit(any())).thenAnswer((_) async => 2);
+      when(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async => 2);
       when(
         () => mockModel.insertEvent(
           any(),
@@ -430,7 +450,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: Only Habit B should be inserted
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
       // Assert: Habit A should be updated (editHabit)
       verify(
         () => mockModel.editHabit(
@@ -439,6 +464,109 @@ void main() {
         ),
       ).called(1);
     });
+
+    test(
+      'soft-deleted local habits do not match remote habits by title',
+      () async {
+        // Scenario: Local has deleted "Exercise" (UUID-B1), remote has active
+        // "Exercise" (UUID-A1). They should NOT match by title — the remote
+        // should be treated as a new habit and inserted.
+        final deletedLocalHabit = _createTestHabit(
+          id: 1,
+          title: 'Exercise',
+          uuid: 'local-uuid-1',
+          deletedAt: DateTime.now().subtract(const Duration(hours: 1)),
+        );
+
+        when(
+          () => mockModel.getAllHabits(
+            includeDeleted: any(named: 'includeDeleted'),
+          ),
+        ).thenAnswer((_) async => [deletedLocalHabit]);
+        when(
+          () => mockModel.getAllCategories(
+            includeDeleted: any(named: 'includeDeleted'),
+          ),
+        ).thenAnswer((_) async => []);
+        when(
+          () => mockModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((_) async => 2);
+
+        final remoteData = {
+          'habits': [
+            _createRemoteHabitJson(
+              id: 10,
+              title: 'Exercise',
+              uuid: 'remote-uuid-1',
+            ),
+          ],
+          'categories': [],
+        };
+
+        await repository.mergeData(remoteData);
+
+        // Should INSERT the remote habit (not editHabit) because the
+        // soft-deleted local habit should not be in the title map.
+        verify(
+          () => mockModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).called(1);
+        verifyNever(
+          () => mockModel.editHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        );
+      },
+    );
+
+    test(
+      'insertHabit during merge is called with preserveTimestamp: true',
+      () async {
+        when(
+          () => mockModel.getAllHabits(
+            includeDeleted: any(named: 'includeDeleted'),
+          ),
+        ).thenAnswer((_) async => []);
+        when(
+          () => mockModel.getAllCategories(
+            includeDeleted: any(named: 'includeDeleted'),
+          ),
+        ).thenAnswer((_) async => []);
+        when(
+          () => mockModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((_) async => 1);
+
+        final remoteData = {
+          'habits': [
+            _createRemoteHabitJson(
+              id: 1,
+              title: 'Test Habit',
+              uuid: 'test-uuid',
+            ),
+          ],
+          'categories': [],
+        };
+
+        await repository.mergeData(remoteData);
+
+        // Verify preserveTimestamp: true was passed
+        verify(
+          () => mockModel.insertHabit(
+            any(),
+            preserveTimestamp: true,
+          ),
+        ).called(1);
+      },
+    );
   });
 }
 
@@ -446,11 +574,14 @@ void main() {
 Habit _createTestHabit({
   required int id,
   required String title,
+  String? uuid,
   SplayTreeMap<DateTime, List>? events,
+  DateTime? deletedAt,
 }) {
   return Habit(
     habitData: HabitData(
       id: id,
+      uuid: uuid,
       title: title,
       position: 0,
       twoDayRule: false,
@@ -471,6 +602,7 @@ Habit _createTestHabit({
       unit: '',
       categories: [],
       archived: false,
+      deletedAt: deletedAt,
     ),
   );
 }
@@ -479,6 +611,7 @@ Habit _createTestHabit({
 Map<String, dynamic> _createRemoteHabitJson({
   required int id,
   required String title,
+  String? uuid,
   Map<String, List>? events,
 }) {
   return {
@@ -503,7 +636,7 @@ Map<String, dynamic> _createRemoteHabitJson({
     'archived': 0,
     'events': events ?? {},
     'categories': [],
-    'uuid': 'remote-$id-$title',
+    'uuid': uuid ?? 'remote-$id-$title',
     'updated_at': DateTime.now()
         .add(const Duration(hours: 1))
         .toIso8601String(),
