@@ -70,7 +70,12 @@ void main() {
             includeDeleted: any(named: 'includeDeleted'),
           ),
         ).thenAnswer((_) async => []);
-        when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 1);
+        when(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((_) async => 1);
         when(
           () => mockHaboModel.insertEvent(
             any(),
@@ -92,7 +97,12 @@ void main() {
         await repository.mergeData(remoteData);
 
         // Assert
-        verify(() => mockHaboModel.insertHabit(any())).called(1);
+        verify(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).called(1);
       });
 
       test('updates local habit when remote exists with same title', () async {
@@ -144,7 +154,12 @@ void main() {
             preserveTimestamp: any(named: 'preserveTimestamp'),
           ),
         ).called(1);
-        verifyNever(() => mockHaboModel.insertHabit(any()));
+        verifyNever(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        );
       });
 
       test('deletes local habit when remote is marked as deleted', () async {
@@ -208,7 +223,12 @@ void main() {
         await repository.mergeData(remoteData);
 
         // Assert: No insertions or deletions
-        verifyNever(() => mockHaboModel.insertHabit(any()));
+        verifyNever(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        );
         verifyNever(() => mockHaboModel.deleteHabit(any()));
       });
     });
@@ -374,7 +394,12 @@ void main() {
         when(
           () => mockHaboModel.updateCategory(any()),
         ).thenAnswer((_) async {});
-        when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 1);
+        when(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((_) async => 1);
         when(
           () => mockHaboModel.insertEvent(
             any(),
@@ -432,7 +457,12 @@ void main() {
         await repository.mergeData(remoteData);
 
         // Assert: No operations
-        verifyNever(() => mockHaboModel.insertHabit(any()));
+        verifyNever(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        );
         verifyNever(
           () => mockHaboModel.editHabit(
             any(),
@@ -473,7 +503,12 @@ void main() {
           'categories': [],
         };
 
-        when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 2);
+        when(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((_) async => 2);
         when(
           () => mockHaboModel.insertEvent(
             any(),
@@ -490,7 +525,12 @@ void main() {
         await repository.mergeData(remoteData);
 
         // Assert: Remote habit inserted, local preserved (no delete)
-        verify(() => mockHaboModel.insertHabit(any())).called(1);
+        verify(
+          () => mockHaboModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).called(1);
         verifyNever(() => mockHaboModel.deleteHabit(1));
       });
     });
@@ -516,7 +556,12 @@ void main() {
       when(
         () => mockHaboModel.insertCategory(any()),
       ).thenAnswer((_) async => 1);
-      when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 1);
+      when(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async => 1);
       when(
         () => mockHaboModel.insertEvent(
           any(),
@@ -548,7 +593,12 @@ void main() {
       when(
         () => mockHaboModel.insertCategory(any()),
       ).thenAnswer((_) async => 10); // New ID assigned
-      when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 1);
+      when(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async => 1);
       when(
         () => mockHaboModel.updateHabitCategories(any(), any()),
       ).thenAnswer((_) async {});
@@ -575,7 +625,12 @@ void main() {
       when(
         () => mockHaboModel.insertCategory(any()),
       ).thenAnswer((_) async => 1);
-      when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async => 100);
+      when(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async => 100);
       when(
         () => mockHaboModel.insertEvent(
           any(),
@@ -607,7 +662,12 @@ void main() {
       await repository.importData(backupData);
 
       // Assert: Habit and event imported
-      verify(() => mockHaboModel.insertHabit(any())).called(1);
+      verify(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
       verify(
         () => mockHaboModel.insertEvent(
           100,
@@ -628,7 +688,12 @@ void main() {
       });
 
       int habitInsertCount = 0;
-      when(() => mockHaboModel.insertHabit(any())).thenAnswer((_) async {
+      when(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).thenAnswer((_) async {
         habitInsertCount++;
         return habitInsertCount * 10; // New IDs: 10, 20, etc.
       });
@@ -677,7 +742,12 @@ void main() {
       await expectLater(repository.importData(backupData), completes);
 
       verify(() => mockHaboModel.emptyTables()).called(1);
-      verifyNever(() => mockHaboModel.insertHabit(any()));
+      verifyNever(
+        () => mockHaboModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
       verifyNever(() => mockHaboModel.insertCategory(any()));
     });
   });

@@ -68,6 +68,9 @@ PODS:
     - FlutterMacOS
   - package_info_plus (0.4.5):
     - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.4.0)
   - purchases_flutter (8.11.0):
     - Flutter
@@ -112,6 +115,7 @@ DEPENDENCIES:
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - purchases_ui_flutter (from `.symlinks/plugins/purchases_ui_flutter/ios`)
   - rive_native (from `.symlinks/plugins/rive_native/ios`)
@@ -166,6 +170,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/local_auth_darwin/darwin"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
   purchases_ui_flutter:
@@ -204,6 +210,7 @@ SPEC CHECKSUMS:
   IosAwnCore: 32019505f4a4909fa9079ee401b2c82aeeab78a8
   local_auth_darwin: c3ee6cce0a8d56be34c8ccb66ba31f7f180aaebb
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   purchases_flutter: 3570127ba41583a75e553d68a763367007830eff
   purchases_ui_flutter: 4f73ee267b1f50f72f71ece0d918fc5d0cb7f97f
@@ -211,7 +218,7 @@ SPEC CHECKSUMS:
   PurchasesHybridCommonUI: 8149f983d0d5fcc6d2536900c934d3dfb7cbed45
   RevenueCat: 7e1d0768fb287c9983173c9b28e39ccbeeb828a9
   RevenueCatUI: 61ddba6f94803f9b79c470ffe1e8b81d807c11ce
-  rive_native: c9ed76ccf380f38205edcb8f552121aac8ec39da
+  rive_native: a57df296c558867395bfe82fafe857ec67640f58
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0

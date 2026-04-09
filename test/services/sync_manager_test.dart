@@ -78,6 +78,9 @@ void main() {
     // Setup Supabase Mocks
     when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
     when(() => mockGoTrueClient.currentUser).thenReturn(mockUser);
+    when(
+      () => mockGoTrueClient.onAuthStateChange,
+    ).thenAnswer((_) => const Stream<AuthState>.empty());
     when(() => mockUser.id).thenReturn('test_user_id');
 
     // Setup Realtime Mocks

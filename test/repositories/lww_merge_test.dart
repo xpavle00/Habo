@@ -560,10 +560,7 @@ void main() {
 
         // Verify preserveTimestamp: true was passed
         verify(
-          () => mockModel.insertHabit(
-            any(),
-            preserveTimestamp: true,
-          ),
+          () => mockModel.insertHabit(any(), preserveTimestamp: true),
         ).called(1);
       },
     );

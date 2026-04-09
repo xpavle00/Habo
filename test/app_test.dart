@@ -57,7 +57,11 @@ void main() {
       final settingsManager = SettingsManager();
 
       final mockSupabaseClient = MockSupabaseClient();
-      when(() => mockSupabaseClient.auth).thenReturn(MockGoTrueClient());
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
 
       // Initialize service locator
       ServiceLocator.instance.initialize(
@@ -88,7 +92,11 @@ void main() {
       final settingsManager = SettingsManager();
 
       final mockSupabaseClient = MockSupabaseClient();
-      when(() => mockSupabaseClient.auth).thenReturn(MockGoTrueClient());
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
 
       ServiceLocator.instance.initialize(
         scaffoldKey: scaffoldKey,
@@ -118,7 +126,11 @@ void main() {
       final settingsManager = SettingsManager();
 
       final mockSupabaseClient = MockSupabaseClient();
-      when(() => mockSupabaseClient.auth).thenReturn(MockGoTrueClient());
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
 
       expect(
         () => ServiceLocator.instance.initialize(
