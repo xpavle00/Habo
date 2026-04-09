@@ -2,12 +2,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    android:background="#F5F5F5">
+    android:background="@color/habo_widget_background">
 
     <ImageView
         android:id="@+id/widget_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"
         android:scaleType="fitCenter"
         android:contentDescription="Habo Widget" />
 </RelativeLayout>

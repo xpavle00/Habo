@@ -24,28 +24,46 @@ class WidgetUpdateHelper {
         failedHabits: 0,
       );
 
-      // Use a dark semi-transparent color that works on both light and dark iOS widget backgrounds
-      // iOS widget has its own light/dark mode independent from the app
-      final textColor = Colors.black.withValues(alpha: 0.85);
+      final lightTextColor = Colors.black.withValues(alpha: 0.85);
+      final darkTextColor = Colors.white.withValues(alpha: 0.92);
 
-      // Create current state widget
-      final currentWidget = HaboHomeWidget(
+      // Create current state widgets for both light/dark system themes.
+      final currentWidgetLight = HaboHomeWidget(
         data: currentData,
-        textColor: textColor,
+        textColor: lightTextColor,
         date: DateTime.now(),
         title: S.of(context).habitsToday,
       );
 
-      // Create empty state widget for next day
-      final emptyWidget = HaboHomeWidget(
+      final currentWidgetDark = HaboHomeWidget(
+        data: currentData,
+        textColor: darkTextColor,
+        date: DateTime.now(),
+        title: S.of(context).habitsToday,
+      );
+
+      // Create empty state widgets for next day.
+      final emptyWidgetLight = HaboHomeWidget(
         data: emptyData,
-        textColor: textColor,
+        textColor: lightTextColor,
         date: DateTime.now().add(const Duration(days: 1)),
         title: S.of(context).habitsToday,
       );
 
-      // Update the home widget with both states
-      await HomeWidgetService.updateWidget(currentWidget, emptyWidget);
+      final emptyWidgetDark = HaboHomeWidget(
+        data: emptyData,
+        textColor: darkTextColor,
+        date: DateTime.now().add(const Duration(days: 1)),
+        title: S.of(context).habitsToday,
+      );
+
+      // Update the home widget with both states and both themes.
+      await HomeWidgetService.updateWidget(
+        currentWidgetLight,
+        currentWidgetDark,
+        emptyWidgetLight,
+        emptyWidgetDark,
+      );
     } catch (e) {
       debugPrint('Error updating home widget: $e');
     }

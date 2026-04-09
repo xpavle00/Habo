@@ -3,8 +3,10 @@ package com.pavlenko.Habo
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.RemoteViews
@@ -19,15 +21,20 @@ import java.util.concurrent.TimeUnit
  * Implementation of App Widget functionality.
  */
 class HaboWidget : AppWidgetProvider() {
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+        if (intent.action == Intent.ACTION_CONFIGURATION_CHANGED) {
+            updateAllWidgets(context)
+        }
+    }
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
+        updateAllWidgets(context)
         scheduleMidnightUpdate(context)
     }
 
@@ -53,6 +60,17 @@ class HaboWidget : AppWidgetProvider() {
             midnightWork
         )
     }
+
+    private fun updateAllWidgets(context: Context) {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(context, HaboWidget::class.java)
+        )
+
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+    }
 }
 
 internal fun updateAppWidget(
@@ -62,9 +80,18 @@ internal fun updateAppWidget(
 ) {
     // Get data from HomeWidget
     val widgetData = HomeWidgetPlugin.getData(context)
-    val filenameCurrent = widgetData.getString("filename", null)
-    val filenameEmpty = widgetData.getString("filename_empty", null)
+    val filenameCurrentLight = widgetData.getString("filename_light", null)
+        ?: widgetData.getString("filename", null)
+    val filenameCurrentDark = widgetData.getString("filename_dark", null)
+        ?: filenameCurrentLight
+    val filenameEmptyLight = widgetData.getString("filename_empty_light", null)
+        ?: widgetData.getString("filename_empty", null)
+    val filenameEmptyDark = widgetData.getString("filename_empty_dark", null)
+        ?: filenameEmptyLight
     val lastUpdateDateString = widgetData.getString("lastUpdateDate", null)
+    val isDarkMode =
+        (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
     
     // Determine which image to show based on date
     var shouldShowEmpty = false
@@ -88,8 +115,12 @@ internal fun updateAppWidget(
         }
     }
     
-    // Choose the appropriate filename
-    val filename = if (shouldShowEmpty && filenameEmpty != null) filenameEmpty else filenameCurrent
+    // Choose themed image based on system light/dark mode.
+    val filename = if (shouldShowEmpty) {
+        if (isDarkMode) filenameEmptyDark else filenameEmptyLight
+    } else {
+        if (isDarkMode) filenameCurrentDark else filenameCurrentLight
+    }
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.habo_widget)
