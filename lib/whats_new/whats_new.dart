@@ -181,6 +181,36 @@ class _WhatsNewState extends State<WhatsNew> {
                         ),
                       ),
                       const SizedBox(height: 48),
+                      // Homescreen widget dark mode
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.dark_mode_outlined,
+                            color: HaboColors.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              S.of(context).featureHomescreenWidgetTitle,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 36.0),
+                        child: Text(
+                          S.of(context).featureHomescreenWidgetDarkModeDesc,
+                          style: TextStyle(
+                            color: isDark ? Colors.grey[400] : Colors.grey[700],
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 48),
                     ],
                   ),
                 ),
