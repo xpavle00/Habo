@@ -3621,6 +3621,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Android home widget now supports light and dark mode backgrounds.`
+  String get featureHomescreenWidgetDarkModeDesc {
+    return Intl.message(
+      'Android home widget now supports light and dark mode backgrounds.',
+      name: 'featureHomescreenWidgetDarkModeDesc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

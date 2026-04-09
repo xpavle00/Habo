@@ -404,6 +404,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "URL scheme (deep links)",
     ),
+    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
+      "Android home widget now supports light and dark mode backgrounds.",
+    ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "View your habit progress at a glance from your home screen (experimental)",
     ),
