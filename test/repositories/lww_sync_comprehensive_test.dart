@@ -80,7 +80,12 @@ void main() {
         preserveTimestamp: any(named: 'preserveTimestamp'),
       ),
     ).thenAnswer((_) async {});
-    when(() => mockModel.insertHabit(any())).thenAnswer((_) async => 1);
+    when(
+      () => mockModel.insertHabit(
+        any(),
+        preserveTimestamp: any(named: 'preserveTimestamp'),
+      ),
+    ).thenAnswer((_) async => 1);
     when(() => mockModel.insertCategory(any())).thenAnswer((_) async => 1);
   });
 
@@ -347,7 +352,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: No habit should be inserted or deleted
-      verifyNever(() => mockModel.insertHabit(any()));
+      verifyNever(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
       verifyNever(() => mockModel.deleteHabit(any()));
     });
 
@@ -537,7 +547,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: New habit should be inserted
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
     });
 
     test(
@@ -623,7 +638,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
     });
 
     test(
@@ -707,7 +727,12 @@ void main() {
           preserveTimestamp: any(named: 'preserveTimestamp'),
         ),
       );
-      verifyNever(() => mockModel.insertHabit(any()));
+      verifyNever(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
     });
   });
 
@@ -755,7 +780,12 @@ void main() {
       verify(
         () => mockModel.editHabit(any(), preserveTimestamp: true),
       ).called(1);
-      verifyNever(() => mockModel.insertHabit(any()));
+      verifyNever(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
     });
 
     test('same title different uuid - falls back to title match', () async {
@@ -802,7 +832,12 @@ void main() {
       verify(
         () => mockModel.editHabit(any(), preserveTimestamp: true),
       ).called(1);
-      verifyNever(() => mockModel.insertHabit(any()));
+      verifyNever(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      );
     });
 
     test('title match used when uuid is null (legacy habits)', () async {
@@ -978,7 +1013,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: Insert was called (we verify the structure indirectly)
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
     });
   });
 
@@ -1130,7 +1170,12 @@ void main() {
       await repository.mergeData(remoteData);
 
       // Assert: Habit inserted and categories updated with remapped ID
-      verify(() => mockModel.insertHabit(any())).called(1);
+      verify(
+        () => mockModel.insertHabit(
+          any(),
+          preserveTimestamp: any(named: 'preserveTimestamp'),
+        ),
+      ).called(1);
       verify(() => mockModel.updateHabitCategories(any(), any())).called(1);
     });
   });
@@ -1231,7 +1276,12 @@ void main() {
 
         // Track what habits were passed to insertHabit
         final insertedHabits = <Habit>[];
-        when(() => mockModel.insertHabit(any())).thenAnswer((invocation) async {
+        when(
+          () => mockModel.insertHabit(
+            any(),
+            preserveTimestamp: any(named: 'preserveTimestamp'),
+          ),
+        ).thenAnswer((invocation) async {
           final habit = invocation.positionalArguments[0] as Habit;
           insertedHabits.add(habit);
           // Simulate SQLite auto-assigning new IDs (3, 4, 5)
