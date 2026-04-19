@@ -12,6 +12,8 @@
 .windsurf/
 migrate_working_dir/
 # supabase
+docs
+test/maestro
 
 # Environment secrets (use .env.example as template)
 .env

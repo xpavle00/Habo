@@ -2492,10 +2492,10 @@ class S {
     );
   }
 
-  /// `Subscribe to enable sync`
+  /// `Subscribe to enable Habo Sync`
   String get subscribeToEnableSync {
     return Intl.message(
-      'Subscribe to enable sync',
+      'Subscribe to enable Habo Sync',
       name: 'subscribeToEnableSync',
       desc: '',
       args: [],
@@ -2507,11 +2507,11 @@ class S {
     return Intl.message('Not active', name: 'notActive', desc: '', args: []);
   }
 
-  /// `Cloud & Backup`
-  String get cloudAndBackup {
+  /// `Sync & Backup`
+  String get syncAndBackup {
     return Intl.message(
-      'Cloud & Backup',
-      name: 'cloudAndBackup',
+      'Sync & Backup',
+      name: 'syncAndBackup',
       desc: '',
       args: [],
     );
