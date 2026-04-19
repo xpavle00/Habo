@@ -224,7 +224,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Click the link in the email to verify your account, then come back here and tap the button below.",
     ),
     "close": MessageLookupByLibrary.simpleMessage("Close"),
-    "cloudAndBackup": MessageLookupByLibrary.simpleMessage("Cloud & Backup"),
     "complete": MessageLookupByLibrary.simpleMessage("Complete"),
     "confirmNewPassword": MessageLookupByLibrary.simpleMessage(
       "Confirm New Password",
@@ -791,12 +790,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "subscribe": MessageLookupByLibrary.simpleMessage("Subscribe"),
     "subscribeToEnableSync": MessageLookupByLibrary.simpleMessage(
-      "Subscribe to enable sync",
+      "Subscribe to enable Habo Sync",
     ),
     "subscriptionNeeded": MessageLookupByLibrary.simpleMessage(
       "Subscription needed",
     ),
     "successful": MessageLookupByLibrary.simpleMessage("Successful"),
+    "syncAndBackup": MessageLookupByLibrary.simpleMessage("Sync & Backup"),
     "syncAndBackupYourData": MessageLookupByLibrary.simpleMessage(
       "Sync and backup your data",
     ),

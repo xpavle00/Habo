@@ -1,5 +1,6 @@
 import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/generated/l10n.dart';
@@ -11,6 +12,7 @@ import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SyncProfileView extends StatefulWidget {
   final VoidCallback onSignOut;
@@ -21,6 +23,22 @@ class SyncProfileView extends StatefulWidget {
 }
 
 class _SyncProfileViewState extends State<SyncProfileView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowPaywall();
+    });
+  }
+
+  Future<void> _checkAndShowPaywall() async {
+    final syncManager = ServiceLocator.instance.syncManager;
+    if (syncManager != null &&
+        syncManager.status == SyncStatus.noSubscription) {
+      await _showPaywall();
+    }
+  }
+
   Future<void> _showPaywall() async {
     final subscriptionService = ServiceLocator.instance.subscriptionService;
     await subscriptionService.initialize();
@@ -286,7 +304,7 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     return _buildHeroColumn(
       context,
       Icons.cloud_sync,
-      S.of(context).cloudAndBackup,
+      S.of(context).syncAndBackup,
       S.of(context).subscribeToEnableSync,
       Colors.grey,
       S.of(context).notActive,
@@ -454,37 +472,27 @@ class _SyncProfileViewState extends State<SyncProfileView> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
+        color: isDark
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Colors.white,
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [const Color(0xFF1A3A1A), const Color(0xFF0D2B0D)]
-              : [
-                  HaboColors.primary.withValues(alpha: 0.05),
-                  HaboColors.primary.withValues(alpha: 0.12),
-                ],
-        ),
-        border: Border.all(
-          color: HaboColors.primary.withValues(alpha: 0.25),
-          width: 1.5,
-        ),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.15)
+                : const Color(0x21000000),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: HaboColors.primary.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Icon(
-              Icons.rocket_launch,
-              size: 28,
-              color: HaboColors.primary,
-            ),
+          Icon(
+            Icons.cloud_off,
+            size: 48,
+            color: isDark ? Colors.grey[400] : Colors.grey[500],
           ),
           const SizedBox(height: 16),
           Text(
@@ -496,23 +504,11 @@ class _SyncProfileViewState extends State<SyncProfileView> {
           ),
           const SizedBox(height: 8),
           Text(
-            S.of(context).keepHabitsSafeAndSynced,
+            S.of(context).subscribeToEnableSync,
             style: TextStyle(color: Colors.grey[600], fontSize: 14),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
-
-          // Feature list
-          _buildFeatureItem(
-            Icons.sync,
-            S.of(context).realTimeSyncAcrossDevices,
-          ),
-          const SizedBox(height: 10),
-          _buildFeatureItem(Icons.backup, S.of(context).automaticCloudBackups),
-          const SizedBox(height: 10),
-          _buildFeatureItem(Icons.lock, S.of(context).endToEndEncryption),
-
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
 
           // Subscribe button
           PrimaryButton(
@@ -529,7 +525,7 @@ class _SyncProfileViewState extends State<SyncProfileView> {
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           GestureDetector(
             onTap: () async {
               final subscriptionService =
@@ -553,18 +549,71 @@ class _SyncProfileViewState extends State<SyncProfileView> {
               style: TextStyle(color: Colors.grey[500], fontSize: 13),
             ),
           ),
+          const SizedBox(height: 24),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              style: TextStyle(
+                color: Colors.grey[500],
+                fontSize: 11,
+                height: 1.5,
+              ),
+              children: [
+                TextSpan(
+                  text: S.of(context).termsAndConditions,
+                  style: const TextStyle(decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      final Uri url = Uri.parse(
+                        'https://habo.space/terms.html#terms',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
+                ),
+                const TextSpan(text: '  •  '),
+                TextSpan(
+                  text: S.of(context).privacyPolicy,
+                  style: const TextStyle(decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      final Uri url = Uri.parse(
+                        'https://habo.space/terms.html#privacy',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
+                ),
+                const TextSpan(text: '  •  '),
+                TextSpan(
+                  text: 'EULA',
+                  style: const TextStyle(decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      final Uri url = Uri.parse(
+                        'https://habo.space/terms.html#eula',
+                      );
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildFeatureItem(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, color: HaboColors.primary, size: 20),
-        const SizedBox(width: 12),
-        Text(text, style: const TextStyle(fontSize: 14)),
-      ],
     );
   }
 
