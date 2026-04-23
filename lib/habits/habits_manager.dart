@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/statistics/statistics.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/helpers/widget_update_helper.dart';
@@ -25,6 +27,9 @@ class HabitsManager extends ChangeNotifier {
   final BackupService? _backupService;
   final NotificationService? _notificationService;
   final UIFeedbackService? _uiFeedbackService;
+  final SyncManager? _syncManager;
+
+  StreamSubscription<void>? _syncDataChangedSubscription;
 
   late List<Habit> allHabits = [];
   late List<Category> allCategories = [];
@@ -55,22 +60,45 @@ class HabitsManager extends ChangeNotifier {
     BackupService? backupService,
     NotificationService? notificationService,
     UIFeedbackService? uiFeedbackService,
-  })  : _habitRepository = habitRepository,
-        _eventRepository = eventRepository,
-        _categoryRepository = categoryRepository,
-        _backupService = backupService,
-        _notificationService = notificationService,
-        _uiFeedbackService = uiFeedbackService;
+    SyncManager? syncManager,
+  }) : _habitRepository = habitRepository,
+       _eventRepository = eventRepository,
+       _categoryRepository = categoryRepository,
+       _backupService = backupService,
+       _notificationService = notificationService,
+       _uiFeedbackService = uiFeedbackService,
+       _syncManager = syncManager;
 
   Future<void> initialize() async {
     await initModel();
     await loadCategories();
     await HomeWidgetService.initialize();
+
+    // Listen for remote sync changes
+    _syncDataChangedSubscription = _syncManager?.onDataChanged.listen((_) {
+      reloadFromDatabase();
+    });
+
     notifyListeners();
+  }
+
+  Future<void> reloadFromDatabase() async {
+    allHabits = await _habitRepository.getAllHabits();
+    await loadCategories();
+    _notificationService?.removeNotifications(allHabits);
+    _notificationService?.resetNotifications(allHabits);
+    notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   void resetHabitsNotifications() {
     resetNotifications(allHabits);
+  }
+
+  @override
+  void dispose() {
+    _syncDataChangedSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> initModel() async {
@@ -100,11 +128,7 @@ class HabitsManager extends ChangeNotifier {
       final ok = await _backupService.restoreFromBackupFile();
       if (ok) {
         // Reload in-memory state from repositories
-        allHabits = await _habitRepository.getAllHabits();
-        await loadCategories();
-        _notificationService?.removeNotifications(allHabits);
-        _notificationService?.resetNotifications(allHabits);
-        notifyListeners();
+        await reloadFromDatabase();
         return true;
       }
     }
@@ -133,8 +157,9 @@ class HabitsManager extends ChangeNotifier {
 
   /// Get habits filtered by category (excludes archived habits)
   List<Habit> getHabitsByCategory(Category? category) {
-    final activeHabits =
-        allHabits.where((habit) => !habit.habitData.archived).toList();
+    final activeHabits = allHabits
+        .where((habit) => !habit.habitData.archived)
+        .toList();
 
     if (category == null) {
       return activeHabits;
@@ -158,6 +183,8 @@ class HabitsManager extends ChangeNotifier {
     updateOrder();
     _habitRepository.updateHabitsOrder(allHabits);
     notifyListeners();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   void addEvent(int id, DateTime dateTime, List event) {
@@ -165,6 +192,8 @@ class HabitsManager extends ChangeNotifier {
     _notificationService?.handleHabitEventAdded(id, dateTime, event);
     // Update home widget after event is added
     _updateHomeWidgetAsync();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   void deleteEvent(int id, DateTime dateTime) {
@@ -172,6 +201,8 @@ class HabitsManager extends ChangeNotifier {
     _notificationService?.handleHabitEventDeleted(id, dateTime);
     // Update home widget after event is deleted
     _updateHomeWidgetAsync();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   /// Set the context for widget updates.
@@ -199,24 +230,25 @@ class HabitsManager extends ChangeNotifier {
     await WidgetUpdateHelper.updateHomeWidget(context, allHabits);
   }
 
-  void addHabit(
-      String title,
-      bool twoDayRule,
-      String cue,
-      String routine,
-      String reward,
-      bool showReward,
-      bool advanced,
-      bool notification,
-      TimeOfDay notTime,
-      String sanction,
-      bool showSanction,
-      String accountant,
-      {HabitType habitType = HabitType.boolean,
-      double targetValue = 1.0,
-      double partialValue = 1.0,
-      String unit = '',
-      List<Category> categories = const []}) {
+  Future<void> addHabit(
+    String title,
+    bool twoDayRule,
+    String cue,
+    String routine,
+    String reward,
+    bool showReward,
+    bool advanced,
+    bool notification,
+    TimeOfDay notTime,
+    String sanction,
+    bool showSanction,
+    String accountant, {
+    HabitType habitType = HabitType.boolean,
+    double targetValue = 1.0,
+    double partialValue = 1.0,
+    String unit = '',
+    List<Category> categories = const [],
+  }) async {
     Habit newHabit = Habit(
       habitData: HabitData(
         position: allHabits.length,
@@ -240,27 +272,24 @@ class HabitsManager extends ChangeNotifier {
         categories: categories,
       ),
     );
-    _habitRepository.createHabit(newHabit).then(
-      (id) {
-        newHabit.setId = id;
-        allHabits.add(newHabit);
+    final id = await _habitRepository.createHabit(newHabit);
+    newHabit.setId = id;
+    allHabits.add(newHabit);
 
-        // Associate categories with the new habit
-        if (categories.isNotEmpty) {
-          updateHabitCategories(id, categories);
-        }
+    // Associate categories with the new habit
+    if (categories.isNotEmpty) {
+      updateHabitCategories(id, categories);
+    }
 
-        if (notification) {
-          _notificationService?.setHabitNotification(
-              id, notTime, 'Habo', title);
-        } else {
-          _notificationService?.disableHabitNotification(id);
-        }
-        notifyListeners();
-        _updateHomeWidgetAsync();
-      },
-    );
+    if (notification) {
+      _notificationService?.setHabitNotification(id, notTime, 'Habo', title);
+    } else {
+      _notificationService?.disableHabitNotification(id);
+    }
     updateOrder();
+    notifyListeners();
+    _updateHomeWidgetAsync();
+    _syncManager?.scheduleSync();
   }
 
   void editHabit(HabitData habitData) {
@@ -287,11 +316,17 @@ class HabitsManager extends ChangeNotifier {
     _habitRepository.updateHabit(hab);
     if (habitData.notification) {
       _notificationService?.setHabitNotification(
-          habitData.id!, habitData.notTime, 'Habo', habitData.title);
+        habitData.id!,
+        habitData.notTime,
+        'Habo',
+        habitData.title,
+      );
     } else {
       _notificationService?.disableHabitNotification(habitData.id!);
     }
     notifyListeners();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   String getNameOfHabit(int id) {
@@ -332,6 +367,8 @@ class HabitsManager extends ChangeNotifier {
 
     notifyListeners();
     _updateHomeWidgetAsync();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   void unarchiveHabit(int id) {
@@ -344,7 +381,11 @@ class HabitsManager extends ChangeNotifier {
     // Restore notifications if enabled
     if (habit.habitData.notification) {
       _notificationService?.setHabitNotification(
-          id, habit.habitData.notTime, 'Habo', habit.habitData.title);
+        id,
+        habit.habitData.notTime,
+        'Habo',
+        habit.habitData.title,
+      );
     }
 
     if (_uiFeedbackService != null) {
@@ -353,6 +394,8 @@ class HabitsManager extends ChangeNotifier {
 
     notifyListeners();
     _updateHomeWidgetAsync();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   List<Habit> get activeHabits {
@@ -401,10 +444,13 @@ class HabitsManager extends ChangeNotifier {
 
   Future<void> deleteFromDB() async {
     if (toDelete.isNotEmpty) {
-      _notificationService
-          ?.disableHabitNotification(toDelete.first.habitData.id!);
+      _notificationService?.disableHabitNotification(
+        toDelete.first.habitData.id!,
+      );
       await _habitRepository.deleteHabit(toDelete.first.habitData.id!);
       toDelete.removeFirst();
+      // Trigger sync after DB deletion
+      _syncManager?.scheduleSync();
     }
     if (toDelete.isNotEmpty) {
       Future.delayed(const Duration(seconds: 1), () => deleteFromDB());
@@ -428,14 +474,22 @@ class HabitsManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addCategory(String title, int iconCodePoint,
-      [String? fontFamily]) async {
+  Future<void> addCategory(
+    String title,
+    int iconCodePoint, [
+    String? fontFamily,
+  ]) async {
     final category = Category(
-        title: title, iconCodePoint: iconCodePoint, fontFamily: fontFamily);
+      title: title,
+      iconCodePoint: iconCodePoint,
+      fontFamily: fontFamily,
+    );
     final id = await _categoryRepository.createCategory(category);
     category.id = id;
     allCategories.add(category);
     notifyListeners();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   Future<void> updateCategory(Category category) async {
@@ -446,6 +500,7 @@ class HabitsManager extends ChangeNotifier {
       allCategories[index] = category;
     }
     notifyListeners();
+    _syncManager?.scheduleSync();
   }
 
   Future<void> deleteCategory(int categoryId) async {
@@ -457,10 +512,14 @@ class HabitsManager extends ChangeNotifier {
       habit.habitData.categories.removeWhere((cat) => cat.id == categoryId);
     }
     notifyListeners();
+    // Trigger sync
+    _syncManager?.scheduleSync();
   }
 
   Future<void> updateHabitCategories(
-      int habitId, List<Category> categories) async {
+    int habitId,
+    List<Category> categories,
+  ) async {
     await _categoryRepository.updateHabitCategories(habitId, categories);
 
     // Update the habit in memory
@@ -468,6 +527,8 @@ class HabitsManager extends ChangeNotifier {
     if (habit != null) {
       habit.habitData.categories = categories;
       notifyListeners();
+      // Trigger sync
+      _syncManager?.scheduleSync();
     }
   }
 
@@ -495,10 +556,7 @@ class HabitsManager extends ChangeNotifier {
 
   void _reloadHabits() {
     for (int i = 0; i < allHabits.length; i++) {
-      allHabits[i] = Habit(
-        key: UniqueKey(),
-        habitData: allHabits[i].habitData,
-      );
+      allHabits[i] = Habit(key: UniqueKey(), habitData: allHabits[i].habitData);
     }
   }
 }

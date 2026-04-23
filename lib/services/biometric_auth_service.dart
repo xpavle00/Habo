@@ -57,7 +57,8 @@ class BiometricAuthService {
       final List<BiometricType> availableBiometrics =
           await getAvailableBiometrics();
       debugPrint(
-          'BiometricAuthService: Available biometrics: $availableBiometrics');
+        'BiometricAuthService: Available biometrics: $availableBiometrics',
+      );
 
       final bool didAuthenticate = await _localAuth.authenticate(
         localizedReason: localizedReason,
@@ -66,7 +67,8 @@ class BiometricAuthService {
         persistAcrossBackgrounding: true,
       );
       debugPrint(
-          'BiometricAuthService: Authentication result: $didAuthenticate');
+        'BiometricAuthService: Authentication result: $didAuthenticate',
+      );
       return didAuthenticate;
     } on LocalAuthException catch (e) {
       debugPrint('BiometricAuthService: LocalAuthException - ${e.code}');

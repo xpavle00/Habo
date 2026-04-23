@@ -10,6 +10,7 @@ import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/habits/habit.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/constants.dart';
@@ -26,6 +27,8 @@ class MockNotificationService extends Mock implements NotificationService {}
 
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
+class MockSyncManager extends Mock implements SyncManager {}
+
 void main() {
   late HabitsManager habitsManager;
   late MockHabitRepository mockHabitRepository;
@@ -34,10 +37,31 @@ void main() {
   late MockBackupService mockBackupService;
   late MockNotificationService mockNotificationService;
   late MockUIFeedbackService mockUIFeedbackService;
+  late MockSyncManager mockSyncManager;
 
   setUpAll(() {
-    registerFallbackValue(Habit(
-      habitData: HabitData(
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: '',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          events: SplayTreeMap<DateTime, List>(),
+          notification: false,
+          notTime: const TimeOfDay(hour: 0, minute: 0),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
+      ),
+    );
+    registerFallbackValue(
+      HabitData(
         position: 0,
         title: '',
         twoDayRule: false,
@@ -53,23 +77,7 @@ void main() {
         showSanction: false,
         accountant: '',
       ),
-    ));
-    registerFallbackValue(HabitData(
-      position: 0,
-      title: '',
-      twoDayRule: false,
-      cue: '',
-      routine: '',
-      reward: '',
-      showReward: false,
-      advanced: false,
-      events: SplayTreeMap<DateTime, List>(),
-      notification: false,
-      notTime: const TimeOfDay(hour: 0, minute: 0),
-      sanction: '',
-      showSanction: false,
-      accountant: '',
-    ));
+    );
     registerFallbackValue(const TimeOfDay(hour: 0, minute: 0));
   });
 
@@ -80,14 +88,21 @@ void main() {
     mockBackupService = MockBackupService();
     mockNotificationService = MockNotificationService();
     mockUIFeedbackService = MockUIFeedbackService();
+    mockSyncManager = MockSyncManager();
+
+    // Setup SyncManager mock
+    when(() => mockSyncManager.scheduleSync()).thenReturn(null);
 
     // Setup mock returns
-    when(() => mockEventRepository.insertEvent(any(), any(), any()))
-        .thenAnswer((_) => Future.value());
-    when(() => mockEventRepository.deleteEvent(any(), any()))
-        .thenAnswer((_) => Future.value());
-    when(() => mockEventRepository.getEventsForHabit(any()))
-        .thenAnswer((_) => Future.value([]));
+    when(
+      () => mockEventRepository.insertEvent(any(), any(), any()),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => mockEventRepository.deleteEvent(any(), any()),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => mockEventRepository.getEventsForHabit(any()),
+    ).thenAnswer((_) => Future.value([]));
 
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
@@ -96,6 +111,7 @@ void main() {
       backupService: mockBackupService,
       notificationService: mockNotificationService,
       uiFeedbackService: mockUIFeedbackService,
+      syncManager: mockSyncManager,
     );
   });
 
@@ -121,8 +137,9 @@ void main() {
         ),
       );
 
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => [testHabit]);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => [testHabit]);
 
       // Act
       habitsManager.resetNotifications([testHabit]);

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
+import 'package:habo/services/sync_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/encryption_service.dart';
+import 'package:habo/services/subscription_service.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/repositories/repository_factory.dart';
 import 'package:habo/settings/settings_manager.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Service locator for dependency injection
 ///
@@ -17,30 +22,98 @@ class ServiceLocator {
   ServiceLocator._();
 
   // Service instances
-  late final BackupService _backupService;
+  late BackupService _backupService;
   late final NotificationService _notificationService;
   late final UIFeedbackService _uiFeedbackService;
+  late final EncryptionService _encryptionService;
+  late final SyncService _syncService;
+  SyncManager? _syncManager; // Optional - only initialized if user configured
+  late final SubscriptionService _subscriptionService;
   late final RepositoryFactory _repositoryFactory;
   late final HaboModel _haboModel;
   late final SettingsManager _settingsManager;
 
-  /// Initialize services and repositories with required dependencies
-  void initialize(GlobalKey<ScaffoldMessengerState> scaffoldKey,
-      HaboModel haboModel, SettingsManager settingsManager) {
+  bool _isInitialized = false; // Added initialization flag
+
+  /// Initializes all services. Must be called before accessing any service.
+  void initialize({
+    required GlobalKey<ScaffoldMessengerState> scaffoldKey,
+    required HaboModel haboModel,
+    required SettingsManager settingsManager,
+    SupabaseClient? client,
+    bool isSelfHosted = false,
+  }) {
+    if (_isInitialized) return;
+
     _haboModel = haboModel;
     _settingsManager = settingsManager;
+
+    final supabaseClient = client ?? Supabase.instance.client;
+
     _repositoryFactory = RepositoryFactory(haboModel);
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
-    _backupService =
-        BackupService(_uiFeedbackService, _repositoryFactory.backupRepository);
     _notificationService = NotificationService();
+    _encryptionService = EncryptionService();
+    _subscriptionService = SubscriptionService(isSelfHosted: isSelfHosted);
+    _syncService = SyncService(
+      _repositoryFactory.backupRepository,
+      _encryptionService,
+    );
+
+    // Initialize SyncManager first so we can pass it to BackupService
+    _syncManager = SyncManager(
+      _syncService,
+      _encryptionService,
+      _settingsManager,
+      client: supabaseClient,
+    );
+    _syncManager!.initialize();
+
+    // Initialize BackupService with SyncManager for post-restore sync
+    _backupService = BackupService(
+      _uiFeedbackService,
+      _repositoryFactory.backupRepository,
+      _syncManager,
+    );
+
+    _isInitialized = true;
+  }
+
+  /// Recreates SyncManager after a server switch.
+  /// SyncManager holds a reference to SupabaseClient which becomes stale
+  /// after Supabase.instance.dispose() + re-initialize.
+  /// SyncService is safe because it reads Supabase.instance.client on each call.
+  void reinitializeForServerSwitch() {
+    _ensureInitialized();
+
+    final supabaseClient = Supabase.instance.client;
+
+    // Dispose old sync manager
+    _syncManager?.dispose();
+
+    // Create new SyncManager with fresh client
+    _syncManager = SyncManager(
+      _syncService,
+      _encryptionService,
+      _settingsManager,
+      client: supabaseClient,
+    );
+    _syncManager!.initialize();
+
+    // Update BackupService reference
+    _backupService = BackupService(
+      _uiFeedbackService,
+      _repositoryFactory.backupRepository,
+      _syncManager,
+    );
   }
 
   /// Ensures ServiceLocator is initialized, throws StateError if not
   void _ensureInitialized() {
     if (!isInitialized) {
       throw StateError(
-          'ServiceLocator not initialized. Call ServiceLocator.instance.initialize() first.');
+        'ServiceLocator not initialized. Call ServiceLocator.instance.initialize() first.',
+      );
     }
   }
 
@@ -54,6 +127,24 @@ class ServiceLocator {
   NotificationService get notificationService {
     _ensureInitialized();
     return _notificationService;
+  }
+
+  /// Get EncryptionService instance
+  EncryptionService get encryptionService {
+    _ensureInitialized();
+    return _encryptionService;
+  }
+
+  /// Get SyncService instance
+  SyncService get syncService {
+    _ensureInitialized();
+    return _syncService;
+  }
+
+  /// Get SyncManager instance (may be null if not configured)
+  SyncManager? get syncManager {
+    _ensureInitialized();
+    return _syncManager;
   }
 
   /// Get UIFeedbackService instance
@@ -74,6 +165,12 @@ class ServiceLocator {
     return _haboModel;
   }
 
+  /// Get SubscriptionService instance
+  SubscriptionService get subscriptionService {
+    _ensureInitialized();
+    return _subscriptionService;
+  }
+
   /// Get SettingsManager instance
   SettingsManager get settingsManager {
     _ensureInitialized();
@@ -81,21 +178,27 @@ class ServiceLocator {
   }
 
   /// Check if services are initialized
-  bool get isInitialized {
-    // Since we're using late final, we need to check if they've been initialized
-    // We'll use a flag to track initialization state
-    try {
-      // Accessing any late final variable will throw if not initialized
-      _haboModel;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+  bool get isInitialized => _isInitialized;
 
   /// Reset all services (useful for testing)
+  @visibleForTesting
   void reset() {
-    // Reset all services by reinitializing the singleton
-    _instance = ServiceLocator._();
+    _instance = null;
+    _isInitialized = false;
+  }
+
+  @visibleForTesting
+  void setSyncManagerForTesting(SyncManager syncManager) {
+    _syncManager = syncManager;
+    // We treat setting a mock as 'initialized' for the scope of tests checking this
+    _isInitialized = true;
+  }
+
+  @visibleForTesting
+  void setSubscriptionServiceForTesting(
+    SubscriptionService subscriptionService,
+  ) {
+    _subscriptionService = subscriptionService;
+    _isInitialized = true;
   }
 }

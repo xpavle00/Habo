@@ -13,9 +13,7 @@ class OnboardingScreen extends StatefulWidget {
     );
   }
 
-  const OnboardingScreen({
-    super.key,
-  });
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -25,11 +23,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateManager>(
-      builder: (
-        context,
-        appStateManager,
-        child,
-      ) {
+      builder: (context, appStateManager, child) {
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {

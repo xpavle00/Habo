@@ -9,6 +9,7 @@ import 'package:habo/habits/calendar_column.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/navigation/navigation.dart';
+import 'package:habo/widgets/sync_status_indicator.dart';
 
 class HabitsScreen extends StatefulWidget {
   static MaterialPage page() {
@@ -19,9 +20,7 @@ class HabitsScreen extends StatefulWidget {
     );
   }
 
-  const HabitsScreen({
-    super.key,
-  });
+  const HabitsScreen({super.key});
 
   @override
   State<HabitsScreen> createState() => _HabitsScreenState();
@@ -74,8 +73,10 @@ class _HabitsScreenState extends State<HabitsScreen> {
                         ),
                         onTap: () {
                           Navigator.of(context).pop();
-                          Provider.of<AppStateManager>(context, listen: false)
-                              .goEditHabit(habit.habitData);
+                          Provider.of<AppStateManager>(
+                            context,
+                            listen: false,
+                          ).goEditHabit(habit.habitData);
                         },
                       );
                     },
@@ -95,11 +96,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateManager>(
-      builder: (
-        context,
-        appStateManager,
-        child,
-      ) {
+      builder: (context, appStateManager, child) {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -108,6 +105,7 @@ class _HabitsScreenState extends State<HabitsScreen> {
             ),
             backgroundColor: Colors.transparent,
             actions: <Widget>[
+              const SyncStatusIndicator(),
               IconButton(
                 icon: Icon(
                   Icons.archive,
@@ -116,8 +114,10 @@ class _HabitsScreenState extends State<HabitsScreen> {
                 color: Colors.grey[400],
                 tooltip: S.of(context).viewArchivedHabits,
                 onPressed: () {
-                  Provider.of<HabitsManager>(context, listen: false)
-                      .hideSnackBar();
+                  Provider.of<HabitsManager>(
+                    context,
+                    listen: false,
+                  ).hideSnackBar();
                   _showArchivedHabitsDialog(context);
                 },
               ),
@@ -129,10 +129,14 @@ class _HabitsScreenState extends State<HabitsScreen> {
                 color: Colors.grey[400],
                 tooltip: S.of(context).statistics,
                 onPressed: () {
-                  Provider.of<HabitsManager>(context, listen: false)
-                      .hideSnackBar();
-                  Provider.of<AppStateManager>(context, listen: false)
-                      .goStatistics(true);
+                  Provider.of<HabitsManager>(
+                    context,
+                    listen: false,
+                  ).hideSnackBar();
+                  Provider.of<AppStateManager>(
+                    context,
+                    listen: false,
+                  ).goStatistics(true);
                 },
               ),
               IconButton(
@@ -143,10 +147,14 @@ class _HabitsScreenState extends State<HabitsScreen> {
                 color: Colors.grey[400],
                 tooltip: S.of(context).settings,
                 onPressed: () {
-                  Provider.of<AppStateManager>(context, listen: false)
-                      .goSettings(true);
-                  Provider.of<HabitsManager>(context, listen: false)
-                      .hideSnackBar();
+                  Provider.of<AppStateManager>(
+                    context,
+                    listen: false,
+                  ).goSettings(true);
+                  Provider.of<HabitsManager>(
+                    context,
+                    listen: false,
+                  ).hideSnackBar();
                 },
               ),
             ],
@@ -154,8 +162,10 @@ class _HabitsScreenState extends State<HabitsScreen> {
           body: const CalendarColumn(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Provider.of<AppStateManager>(context, listen: false)
-                  .goCreateHabit(true);
+              Provider.of<AppStateManager>(
+                context,
+                listen: false,
+              ).goCreateHabit(true);
               Provider.of<HabitsManager>(context, listen: false).hideSnackBar();
             },
             child: Icon(
@@ -195,9 +205,9 @@ class _HabitsScreenState extends State<HabitsScreen> {
       btnOkColor: HaboColors.primary,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
-        AwesomeNotifications()
-            .requestPermissionToSendNotifications()
-            .then((value) {
+        AwesomeNotifications().requestPermissionToSendNotifications().then((
+          value,
+        ) {
           resetNotifications();
         });
       },
@@ -206,7 +216,9 @@ class _HabitsScreenState extends State<HabitsScreen> {
 
   void resetNotifications() {
     Provider.of<SettingsManager>(context, listen: false).resetAppNotification();
-    Provider.of<HabitsManager>(context, listen: false)
-        .resetHabitsNotifications();
+    Provider.of<HabitsManager>(
+      context,
+      listen: false,
+    ).resetHabitsNotifications();
   }
 }

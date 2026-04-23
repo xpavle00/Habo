@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/model/backup.dart';
 import 'package:habo/services/backup_result.dart';
 import 'package:habo/services/ui_feedback_service.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:habo/repositories/backup_repository.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:intl/intl.dart';
@@ -18,10 +19,16 @@ import 'package:intl/intl.dart';
 /// a focused, testable service for backup operations.
 /// Now uses BackupRepository for database operations.
 class BackupService {
+  static const _logName = 'BackupService';
   final UIFeedbackService _uiFeedbackService;
   final BackupRepository _backupRepository;
+  final SyncManager? _syncManager;
 
-  BackupService(this._uiFeedbackService, this._backupRepository);
+  BackupService(
+    this._uiFeedbackService,
+    this._backupRepository, [
+    this._syncManager,
+  ]);
 
   /// Public getter for backupRepository
   BackupRepository get backupRepository => _backupRepository;
@@ -37,8 +44,9 @@ class BackupService {
 
       // Write FULL backup structure to temporary file
       final file = await Backup.writeBackup(backupData);
-      final timestamp =
-          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final timestamp = DateFormat(
+        'yyyy-MM-dd_HH-mm-ss',
+      ).format(DateTime.now());
       final fileName = 'habo_backup_$timestamp.json';
 
       bool? userSaved = false;
@@ -68,14 +76,12 @@ class BackupService {
       }
 
       if (userSaved == true) {
-        _uiFeedbackService.showSuccess(
-          S.current.backupCreatedSuccessfully,
-        );
+        _uiFeedbackService.showSuccess(S.current.backupCreatedSuccessfully);
         return true;
       }
       return false;
     } catch (e) {
-      debugPrint('Error creating database backup: $e');
+      dev.log('Error creating database backup', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.backupFailed}: ${e.toString()}',
       );
@@ -90,8 +96,9 @@ class BackupService {
   Future<bool> createBackup(List<Habit> habits) async {
     try {
       final file = await Backup.writeBackup(habits);
-      final timestamp =
-          DateFormat('yyyy-MM-dd_HH-mm-ss').format(DateTime.now());
+      final timestamp = DateFormat(
+        'yyyy-MM-dd_HH-mm-ss',
+      ).format(DateTime.now());
       final fileName = 'habo_backup_$timestamp.json';
 
       bool? userSaved = false;
@@ -122,15 +129,13 @@ class BackupService {
 
       // Show success message if user saved the file
       if (userSaved == true) {
-        _uiFeedbackService.showSuccess(
-          S.current.backupCreatedSuccessfully,
-        );
+        _uiFeedbackService.showSuccess(S.current.backupCreatedSuccessfully);
         return true;
       }
 
       return false;
     } catch (e) {
-      debugPrint('Error creating backup: $e');
+      dev.log('Error creating backup', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.backupFailed}: ${e.toString()}',
       );
@@ -170,12 +175,10 @@ class BackupService {
       }
 
       // Success - show success message and return habits
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return parseResult;
     } catch (e) {
-      debugPrint('Error loading backup: $e');
+      dev.log('Error loading backup', name: _logName, error: e);
       final errorMessage = '${S.current.restoreFailed}: ${e.toString()}';
       _uiFeedbackService.showError(errorMessage);
       return BackupResult.failure(errorMessage);
@@ -228,7 +231,8 @@ class BackupService {
       final decoded = jsonDecode(json);
       if (decoded is! List) {
         return BackupResult.failure(
-            'Invalid backup format: expected a list of habits');
+          'Invalid backup format: expected a list of habits',
+        );
       }
 
       // Validate each habit has required fields
@@ -242,7 +246,8 @@ class BackupService {
         for (var field in requiredFields) {
           if (!habitJson.containsKey(field)) {
             return BackupResult.failure(
-                'Invalid backup: missing required field "$field"');
+              'Invalid backup: missing required field "$field"',
+            );
           }
         }
       }
@@ -306,12 +311,13 @@ class BackupService {
 
       await _backupRepository.importData(backupData);
 
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      // Reset sync version and push to cloud so restored data becomes source of truth
+      await _syncManager?.onLocalBackupRestored();
+
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
-      debugPrint('Error restoring from backup file: $e');
+      dev.log('Error restoring from backup file', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.restoreFailed}: ${e.toString()}',
       );
@@ -334,12 +340,10 @@ class BackupService {
       // Import data to database via repository
       await _backupRepository.importData(backupData);
 
-      _uiFeedbackService.showSuccess(
-        S.current.restoreCompletedSuccessfully,
-      );
+      _uiFeedbackService.showSuccess(S.current.restoreCompletedSuccessfully);
       return true;
     } catch (e) {
-      debugPrint('Error restoring to database: $e');
+      dev.log('Error restoring to database', name: _logName, error: e);
       _uiFeedbackService.showError(
         '${S.current.restoreFailed}: ${e.toString()}',
       );
@@ -353,16 +357,10 @@ class BackupService {
       final habitCount = await _backupRepository.getHabitCount();
       final eventCount = await _backupRepository.getEventCount();
 
-      return {
-        'habits': habitCount,
-        'events': eventCount,
-      };
+      return {'habits': habitCount, 'events': eventCount};
     } catch (e) {
-      debugPrint('Error getting database stats: $e');
-      return {
-        'habits': 0,
-        'events': 0,
-      };
+      dev.log('Error getting database stats', name: _logName, error: e);
+      return {'habits': 0, 'events': 0};
     }
   }
 }

@@ -13,16 +13,16 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class OneDayButton extends StatelessWidget {
-  OneDayButton(
-      {super.key,
-      required date,
-      this.color,
-      this.child,
-      required this.id,
-      required this.parent,
-      required this.callback,
-      required this.event})
-      : date = transformDate(date);
+  OneDayButton({
+    super.key,
+    required date,
+    this.color,
+    this.child,
+    required this.id,
+    required this.parent,
+    required this.callback,
+    required this.event,
+  }) : date = transformDate(date);
 
   final int id;
   final DateTime date;
@@ -37,7 +37,8 @@ class OneDayButton extends StatelessWidget {
     List<InButton> icons = [
       InButton(
         key: const Key('Date'),
-        text: child ??
+        text:
+            child ??
             Text(
               date.day.toString(),
               style: TextStyle(
@@ -54,8 +55,10 @@ class OneDayButton extends StatelessWidget {
         key: const Key('Check'),
         icon: Icon(
           Icons.check,
-          color:
-              Provider.of<SettingsManager>(context, listen: false).checkColor,
+          color: Provider.of<SettingsManager>(
+            context,
+            listen: false,
+          ).checkColor,
           semanticLabel: S.of(context).check,
         ),
       ),
@@ -65,8 +68,10 @@ class OneDayButton extends StatelessWidget {
           key: const Key('Plus'),
           icon: Icon(
             Icons.add,
-            color: Provider.of<SettingsManager>(context, listen: false)
-                .progressColor,
+            color: Provider.of<SettingsManager>(
+              context,
+              listen: false,
+            ).progressColor,
             semanticLabel: 'Add Progress',
           ),
         ),
@@ -93,7 +98,7 @@ class OneDayButton extends StatelessWidget {
           semanticLabel: S.of(context).note,
           color: HaboColors.orange,
         ),
-      )
+      ),
     ];
 
     int index = 0;
@@ -143,32 +148,40 @@ class OneDayButton extends StatelessWidget {
             parent.widget.habitData.isNumeric) {
           Provider.of<SettingsManager>(context, listen: false).playCheckSound();
           // Complete the habit with full target value
-          Provider.of<HabitsManager>(context, listen: false)
-              .addEvent(id, date, [
+          Provider.of<HabitsManager>(
+            context,
+            listen: false,
+          ).addEvent(id, date, [
             DayType.check,
             comment,
             parent.widget.habitData.targetValue,
-            parent.widget.habitData.targetValue
+            parent.widget.habitData.targetValue,
           ]);
           parent.events[date] = [
             DayType.check,
             comment,
             parent.widget.habitData.targetValue,
-            parent.widget.habitData.targetValue
+            parent.widget.habitData.targetValue,
           ];
           parent.showRewardNotification(date);
         } else {
           final dayType = _getDayTypeFromKey(value.key);
-          Provider.of<HabitsManager>(context, listen: false)
-              .addEvent(id, date, [dayType, comment]);
+          Provider.of<HabitsManager>(
+            context,
+            listen: false,
+          ).addEvent(id, date, [dayType, comment]);
           parent.events[date] = [dayType, comment];
           if (value.key == const Key('Check')) {
             parent.showRewardNotification(date);
-            Provider.of<SettingsManager>(context, listen: false)
-                .playCheckSound();
+            Provider.of<SettingsManager>(
+              context,
+              listen: false,
+            ).playCheckSound();
           } else {
-            Provider.of<SettingsManager>(context, listen: false)
-                .playClickSound();
+            Provider.of<SettingsManager>(
+              context,
+              listen: false,
+            ).playClickSound();
             if (value.key == const Key('Fail')) {
               parent.showSanctionNotification(date);
             }
@@ -181,12 +194,16 @@ class OneDayButton extends StatelessWidget {
         showCommentDialog(context, index, comment);
       } else {
         if (comment != '') {
-          Provider.of<HabitsManager>(context, listen: false)
-              .addEvent(id, date, [DayType.clear, comment]);
+          Provider.of<HabitsManager>(
+            context,
+            listen: false,
+          ).addEvent(id, date, [DayType.clear, comment]);
           parent.events[date] = [DayType.clear, comment];
         } else {
-          Provider.of<HabitsManager>(context, listen: false)
-              .deleteEvent(id, date);
+          Provider.of<HabitsManager>(
+            context,
+            listen: false,
+          ).deleteEvent(id, date);
           parent.events.remove(date);
         }
       }
@@ -217,80 +234,94 @@ class OneDayButton extends StatelessWidget {
                     gestures: <Type, GestureRecognizerFactory>{
                       TapGestureRecognizer:
                           GestureRecognizerFactoryWithHandlers<
-                              TapGestureRecognizer>(
-                        () => TapGestureRecognizer(),
-                        (TapGestureRecognizer instance) {
-                          instance.onTap = () {
-                            parent.setSelectedDay(date);
-                            if (oneTapCheck) {
-                              if (parent.widget.habitData.isNumeric) {
-                                _addIncrement(context);
-                              } else {
-                                final isCurrentlyChecked = event != null &&
-                                    event!.isNotEmpty &&
-                                    event![0] == DayType.check;
-                                InButton checkItem;
-                                if (isCurrentlyChecked) {
-                                  checkItem = icons.firstWhere(
-                                    (element) =>
-                                        element.key == const Key('Date'),
-                                    orElse: () => icons[0],
-                                  );
+                            TapGestureRecognizer
+                          >(() => TapGestureRecognizer(), (
+                            TapGestureRecognizer instance,
+                          ) {
+                            instance.onTap = () {
+                              parent.setSelectedDay(date);
+                              if (oneTapCheck) {
+                                if (parent.widget.habitData.isNumeric) {
+                                  _addIncrement(context);
                                 } else {
-                                  checkItem = icons.firstWhere(
-                                    (element) =>
-                                        element.key == const Key('Check'),
-                                    orElse: () => icons[1],
-                                  );
+                                  final isCurrentlyChecked =
+                                      event != null &&
+                                      event!.isNotEmpty &&
+                                      event![0] == DayType.check;
+                                  InButton checkItem;
+                                  if (isCurrentlyChecked) {
+                                    checkItem = icons.firstWhere(
+                                      (element) =>
+                                          element.key == const Key('Date'),
+                                      orElse: () => icons[0],
+                                    );
+                                  } else {
+                                    checkItem = icons.firstWhere(
+                                      (element) =>
+                                          element.key == const Key('Check'),
+                                      orElse: () => icons[1],
+                                    );
+                                  }
+                                  handleSelection(checkItem);
                                 }
-                                handleSelection(checkItem);
+                              } else {
+                                // Show menu when one-tap is OFF
+                                _showMenu(
+                                  context,
+                                  icons,
+                                  index,
+                                  color,
+                                  handleSelection,
+                                );
                               }
-                            } else {
-                              // Show menu when one-tap is OFF
-                              _showMenu(context, icons, index, color,
-                                  handleSelection);
-                            }
-                          };
-                        },
-                      ),
+                            };
+                          }),
                       LongPressGestureRecognizer:
                           GestureRecognizerFactoryWithHandlers<
-                              LongPressGestureRecognizer>(
-                        () => LongPressGestureRecognizer(
-                            duration: const Duration(milliseconds: 400)),
-                        (LongPressGestureRecognizer instance) {
-                          instance.onLongPress = () {
-                            if (oneTapCheck) {
-                              // Show menu when one-tap is OFF
-                              _showMenu(context, icons, index, color,
-                                  handleSelection);
-                            } else {
-                              if (parent.widget.habitData.isNumeric) {
-                                _addIncrement(context);
-                              } else {
-                                final isCurrentlyChecked = event != null &&
-                                    event!.isNotEmpty &&
-                                    event![0] == DayType.check;
-                                InButton checkItem;
-                                if (isCurrentlyChecked) {
-                                  checkItem = icons.firstWhere(
-                                    (element) =>
-                                        element.key == const Key('Date'),
-                                    orElse: () => icons[0],
+                            LongPressGestureRecognizer
+                          >(
+                            () => LongPressGestureRecognizer(
+                              duration: const Duration(milliseconds: 400),
+                            ),
+                            (LongPressGestureRecognizer instance) {
+                              instance.onLongPress = () {
+                                if (oneTapCheck) {
+                                  // Show menu when one-tap is OFF
+                                  _showMenu(
+                                    context,
+                                    icons,
+                                    index,
+                                    color,
+                                    handleSelection,
                                   );
                                 } else {
-                                  checkItem = icons.firstWhere(
-                                    (element) =>
-                                        element.key == const Key('Check'),
-                                    orElse: () => icons[1],
-                                  );
+                                  if (parent.widget.habitData.isNumeric) {
+                                    _addIncrement(context);
+                                  } else {
+                                    final isCurrentlyChecked =
+                                        event != null &&
+                                        event!.isNotEmpty &&
+                                        event![0] == DayType.check;
+                                    InButton checkItem;
+                                    if (isCurrentlyChecked) {
+                                      checkItem = icons.firstWhere(
+                                        (element) =>
+                                            element.key == const Key('Date'),
+                                        orElse: () => icons[0],
+                                      );
+                                    } else {
+                                      checkItem = icons.firstWhere(
+                                        (element) =>
+                                            element.key == const Key('Check'),
+                                        orElse: () => icons[1],
+                                      );
+                                    }
+                                    handleSelection(checkItem);
+                                  }
                                 }
-                                handleSelection(checkItem);
-                              }
-                            }
-                          };
-                        },
-                      ),
+                              };
+                            },
+                          ),
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -309,8 +340,13 @@ class OneDayButton extends StatelessWidget {
     );
   }
 
-  void _showMenu(BuildContext context, List<InButton> icons, int selectedIndex,
-      Color? color, Function(InButton) onSelected) {
+  void _showMenu(
+    BuildContext context,
+    List<InButton> icons,
+    int selectedIndex,
+    Color? color,
+    Function(InButton) onSelected,
+  ) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final overlay =
         Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
@@ -319,11 +355,14 @@ class OneDayButton extends StatelessWidget {
     const double itemHeight = 45.0; // Must match PopupMenuItem height
 
     // Calculate global position of the button
-    final buttonTopLeft =
-        renderBox.localToGlobal(Offset.zero, ancestor: overlay);
+    final buttonTopLeft = renderBox.localToGlobal(
+      Offset.zero,
+      ancestor: overlay,
+    );
     final buttonBottomRight = renderBox.localToGlobal(
-        renderBox.size.bottomRight(Offset.zero),
-        ancestor: overlay);
+      renderBox.size.bottomRight(Offset.zero),
+      ancestor: overlay,
+    );
     final buttonRect = Rect.fromPoints(buttonTopLeft, buttonBottomRight);
 
     // Calculate vertical offset to align the selected item with the button
@@ -346,10 +385,7 @@ class OneDayButton extends StatelessWidget {
         minWidth: menuWidth,
         maxWidth: menuWidth,
       ),
-      position: RelativeRect.fromRect(
-        centeredRect,
-        Offset.zero & overlay.size,
-      ),
+      position: RelativeRect.fromRect(centeredRect, Offset.zero & overlay.size),
       items: icons.map((InButton value) {
         return PopupMenuItem<InButton>(
           value: value,
@@ -359,9 +395,7 @@ class OneDayButton extends StatelessWidget {
         );
       }).toList(),
       elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     ).then((InButton? value) {
       if (value != null) {
         onSelected(value);
@@ -370,8 +404,9 @@ class OneDayButton extends StatelessWidget {
   }
 
   void showCommentDialog(BuildContext context, int index, String comment) {
-    TextEditingController commentController =
-        TextEditingController(text: comment);
+    TextEditingController commentController = TextEditingController(
+      text: comment,
+    );
 
     // Get the current event to preserve its DayType and progress value
     final currentEvent = event;
@@ -394,10 +429,7 @@ class OneDayButton extends StatelessWidget {
       animType: AnimType.bottomSlide,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8.0,
-            horizontal: 10.0,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
           child: Column(
             children: [
               Text(S.of(context).note),
@@ -405,6 +437,7 @@ class OneDayButton extends StatelessWidget {
                 controller: commentController,
                 autofocus: true,
                 maxLines: 5,
+                maxLength: 400,
                 showCursor: true,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: InputDecoration(
@@ -430,7 +463,7 @@ class OneDayButton extends StatelessWidget {
             currentDayType,
             commentController.text,
             progressValue,
-            targetValue
+            targetValue,
           ];
         } else if (progressValue != null) {
           eventData = [currentDayType, commentController.text, progressValue];
@@ -438,8 +471,10 @@ class OneDayButton extends StatelessWidget {
           eventData = [currentDayType, commentController.text];
         }
 
-        Provider.of<HabitsManager>(context, listen: false)
-            .addEvent(id, date, eventData);
+        Provider.of<HabitsManager>(
+          context,
+          listen: false,
+        ).addEvent(id, date, eventData);
         parent.events[date] = eventData;
         callback();
       },
@@ -467,8 +502,9 @@ class OneDayButton extends StatelessWidget {
     // Capture target value at time of opening modal (before any changes)
     final targetValueAtTime = habitData.targetValue;
     // Preserve existing comment
-    final existingComment =
-        (event != null && event!.length > 1) ? event![1] as String : '';
+    final existingComment = (event != null && event!.length > 1)
+        ? event![1] as String
+        : '';
 
     showDialog(
       context: context,
@@ -485,24 +521,29 @@ class OneDayButton extends StatelessWidget {
                 ? DayType.check
                 : DayType.progress;
             Provider.of<HabitsManager>(context, listen: false).addEvent(
-                id,
-                date,
-                [dayType, existingComment, progressValue, targetValueAtTime]);
+              id,
+              date,
+              [dayType, existingComment, progressValue, targetValueAtTime],
+            );
             parent.events[date] = [
               dayType,
               existingComment,
               progressValue,
-              targetValueAtTime
+              targetValueAtTime,
             ];
 
             // Play appropriate sound and show notification
             if (progressValue >= targetValueAtTime) {
               parent.showRewardNotification(date);
-              Provider.of<SettingsManager>(context, listen: false)
-                  .playCheckSound();
+              Provider.of<SettingsManager>(
+                context,
+                listen: false,
+              ).playCheckSound();
             } else {
-              Provider.of<SettingsManager>(context, listen: false)
-                  .playClickSound();
+              Provider.of<SettingsManager>(
+                context,
+                listen: false,
+              ).playClickSound();
             }
 
             callback();
@@ -520,17 +561,22 @@ class OneDayButton extends StatelessWidget {
     // Capture target value at time of increment
     final targetValueAtTime = habitData.targetValue;
     // Preserve existing comment
-    final existingComment =
-        (event != null && event!.length > 1) ? event![1] as String : '';
+    final existingComment = (event != null && event!.length > 1)
+        ? event![1] as String
+        : '';
 
     // Add progress event with the incremented value, preserving comment and target value
-    Provider.of<HabitsManager>(context, listen: false).addEvent(id, date,
-        [DayType.progress, existingComment, newProgress, targetValueAtTime]);
+    Provider.of<HabitsManager>(context, listen: false).addEvent(id, date, [
+      DayType.progress,
+      existingComment,
+      newProgress,
+      targetValueAtTime,
+    ]);
     parent.events[date] = [
       DayType.progress,
       existingComment,
       newProgress,
-      targetValueAtTime
+      targetValueAtTime,
     ];
 
     // Play appropriate sound and show notification

@@ -63,15 +63,14 @@ void main() {
   });
 
   group('HabitDetailsWidget Tests', () {
-    testWidgets('should display habit details correctly',
-        (WidgetTester tester) async {
+    testWidgets('should display habit details correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider.value(
             value: habitsManager,
-            child: Scaffold(
-              body: HabitDetailsWidget(habit: testHabit),
-            ),
+            child: Scaffold(body: HabitDetailsWidget(habit: testHabit)),
           ),
         ),
       );
@@ -97,9 +96,7 @@ void main() {
         MaterialApp(
           home: ChangeNotifierProvider.value(
             value: habitsManager,
-            child: Scaffold(
-              body: HabitDetailsWidget(habit: testHabit),
-            ),
+            child: Scaffold(body: HabitDetailsWidget(habit: testHabit)),
           ),
         ),
       );
@@ -113,16 +110,15 @@ void main() {
     });
 
     testWidgets('should handle delete button tap', (WidgetTester tester) async {
-      when(() => mockHabitRepository.deleteHabit(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockHabitRepository.deleteHabit(any()),
+      ).thenAnswer((_) async {});
 
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider.value(
             value: habitsManager,
-            child: Scaffold(
-              body: HabitDetailsWidget(habit: testHabit),
-            ),
+            child: Scaffold(body: HabitDetailsWidget(habit: testHabit)),
           ),
         ),
       );

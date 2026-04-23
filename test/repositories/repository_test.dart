@@ -11,23 +11,26 @@ void main() {
   group('Repository Pattern Tests', () {
     setUpAll(() {
       // Register fallback values for mocktail
-      registerFallbackValue(Habit(
+      registerFallbackValue(
+        Habit(
           habitData: HabitData(
-        title: 'Test Habit',
-        position: 0,
-        twoDayRule: false,
-        cue: '',
-        routine: '',
-        reward: '',
-        showReward: false,
-        advanced: false,
-        events: SplayTreeMap<DateTime, List>(),
-        notification: false,
-        notTime: const TimeOfDay(hour: 9, minute: 0),
-        sanction: '',
-        showSanction: false,
-        accountant: '',
-      )));
+            title: 'Test Habit',
+            position: 0,
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            events: SplayTreeMap<DateTime, List>(),
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+          ),
+        ),
+      );
     });
 
     group('Mock Repository Tests', () {
@@ -49,28 +52,31 @@ void main() {
 
       test('mock habit repository should work', () async {
         final habit = Habit(
-            habitData: HabitData(
-          title: 'Mock Test Habit',
-          position: 0,
-          twoDayRule: false,
-          cue: '',
-          routine: '',
-          reward: '',
-          showReward: false,
-          advanced: false,
-          events: SplayTreeMap<DateTime, List>(),
-          notification: false,
-          notTime: const TimeOfDay(hour: 9, minute: 0),
-          sanction: '',
-          showSanction: false,
-          accountant: '',
-        ));
+          habitData: HabitData(
+            title: 'Mock Test Habit',
+            position: 0,
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            events: SplayTreeMap<DateTime, List>(),
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+          ),
+        );
 
         // Setup mock behavior
-        when(() => mockHabitRepository.getAllHabits())
-            .thenAnswer((_) async => [habit]);
-        when(() => mockHabitRepository.createHabit(any()))
-            .thenAnswer((_) async => 1);
+        when(
+          () => mockHabitRepository.getAllHabits(),
+        ).thenAnswer((_) async => [habit]);
+        when(
+          () => mockHabitRepository.createHabit(any()),
+        ).thenAnswer((_) async => 1);
 
         // Test mock behavior
         final id = await mockHabitRepository.createHabit(habit);
@@ -91,10 +97,12 @@ void main() {
         eventsMap[date] = [1];
 
         // Setup mock behavior
-        when(() => mockEventRepository.insertEvent(any(), any(), any()))
-            .thenAnswer((_) async {});
-        when(() => mockEventRepository.getEventsMapForHabit(any()))
-            .thenAnswer((_) async => eventsMap);
+        when(
+          () => mockEventRepository.insertEvent(any(), any(), any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockEventRepository.getEventsMapForHabit(any()),
+        ).thenAnswer((_) async => eventsMap);
 
         // Test mock behavior
         await mockEventRepository.insertEvent(habitId, date, [1]);
@@ -103,26 +111,27 @@ void main() {
         expect(result.isNotEmpty, isTrue);
         expect(result[date], equals([1]));
 
-        verify(() => mockEventRepository.insertEvent(habitId, date, [1]))
-            .called(1);
-        verify(() => mockEventRepository.getEventsMapForHabit(habitId))
-            .called(1);
+        verify(
+          () => mockEventRepository.insertEvent(habitId, date, [1]),
+        ).called(1);
+        verify(
+          () => mockEventRepository.getEventsMapForHabit(habitId),
+        ).called(1);
       });
 
       test('mock backup repository should work', () async {
-        final testData = {
-          'habits': [],
-          'events': {},
-          'version': 3,
-        };
+        final testData = {'habits': [], 'events': {}, 'version': 3};
 
         // Setup mock behavior
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => testData);
-        when(() => mockBackupRepository.getHabitCount())
-            .thenAnswer((_) async => 0);
-        when(() => mockBackupRepository.validateDatabaseIntegrity())
-            .thenAnswer((_) async => true);
+        when(
+          () => mockBackupRepository.exportAllData(),
+        ).thenAnswer((_) async => testData);
+        when(
+          () => mockBackupRepository.getHabitCount(),
+        ).thenAnswer((_) async => 0);
+        when(
+          () => mockBackupRepository.validateDatabaseIntegrity(),
+        ).thenAnswer((_) async => true);
 
         // Test mock behavior
         final exportedData = await mockBackupRepository.exportAllData();
@@ -135,8 +144,9 @@ void main() {
 
         verify(() => mockBackupRepository.exportAllData()).called(1);
         verify(() => mockBackupRepository.getHabitCount()).called(1);
-        verify(() => mockBackupRepository.validateDatabaseIntegrity())
-            .called(1);
+        verify(
+          () => mockBackupRepository.validateDatabaseIntegrity(),
+        ).called(1);
       });
     });
 
@@ -145,22 +155,23 @@ void main() {
         final inMemoryRepo = InMemoryHabitRepository();
 
         final habit = Habit(
-            habitData: HabitData(
-          title: 'In-Memory Test',
-          position: 0,
-          twoDayRule: false,
-          cue: '',
-          routine: '',
-          reward: '',
-          showReward: false,
-          advanced: false,
-          events: SplayTreeMap<DateTime, List>(),
-          notification: false,
-          notTime: const TimeOfDay(hour: 9, minute: 0),
-          sanction: '',
-          showSanction: false,
-          accountant: '',
-        ));
+          habitData: HabitData(
+            title: 'In-Memory Test',
+            position: 0,
+            twoDayRule: false,
+            cue: '',
+            routine: '',
+            reward: '',
+            showReward: false,
+            advanced: false,
+            events: SplayTreeMap<DateTime, List>(),
+            notification: false,
+            notTime: const TimeOfDay(hour: 9, minute: 0),
+            sanction: '',
+            showSanction: false,
+            accountant: '',
+          ),
+        );
 
         await inMemoryRepo.createHabit(habit);
         final habits = await inMemoryRepo.getAllHabits();

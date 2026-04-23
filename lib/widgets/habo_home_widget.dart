@@ -34,18 +34,13 @@ class HaboHomeWidget extends StatelessWidget {
     return Container(
       width: 170,
       height: 170,
-      decoration: BoxDecoration(
-        color: bgColor,
-      ),
+      decoration: BoxDecoration(color: bgColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             title ?? 'Habits today',
-            style: TextStyle(
-              fontSize: 16,
-              color: txtColor,
-            ),
+            style: TextStyle(fontSize: 16, color: txtColor),
           ),
           SizedBox(height: 8),
           SizedBox(
@@ -64,11 +59,7 @@ class HaboHomeWidget extends StatelessWidget {
               ),
               child: Center(
                 child: todaysHabits == data.totalHabits && data.totalHabits > 0
-                    ? Icon(
-                        Icons.check_rounded,
-                        size: 80,
-                        color: primColor,
-                      )
+                    ? Icon(Icons.check_rounded, size: 80, color: primColor)
                     : Text(
                         '$todaysHabits/${data.totalHabits}',
                         style: TextStyle(

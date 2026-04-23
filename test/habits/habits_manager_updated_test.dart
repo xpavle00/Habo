@@ -12,6 +12,7 @@ import 'package:habo/services/backup_service.dart';
 import 'package:habo/services/notification_service.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/generated/l10n.dart';
+import 'package:habo/services/sync_manager.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHabitRepository extends Mock implements HabitRepository {}
@@ -26,6 +27,8 @@ class MockNotificationService extends Mock implements NotificationService {}
 
 class MockUIFeedbackService extends Mock implements UIFeedbackService {}
 
+class MockSyncManager extends Mock implements SyncManager {}
+
 void main() {
   late HabitsManager habitsManager;
   late MockHabitRepository mockHabitRepository;
@@ -34,6 +37,7 @@ void main() {
   late MockBackupService mockBackupService;
   late MockNotificationService mockNotificationService;
   late MockUIFeedbackService mockUIFeedbackService;
+  late MockSyncManager mockSyncManager;
 
   setUp(() {
     mockHabitRepository = MockHabitRepository();
@@ -42,6 +46,10 @@ void main() {
     mockBackupService = MockBackupService();
     mockNotificationService = MockNotificationService();
     mockUIFeedbackService = MockUIFeedbackService();
+    mockSyncManager = MockSyncManager();
+
+    // Setup SyncManager mock
+    when(() => mockSyncManager.scheduleSync()).thenReturn(null);
 
     habitsManager = HabitsManager(
       habitRepository: mockHabitRepository,
@@ -49,30 +57,33 @@ void main() {
       categoryRepository: mockCategoryRepository,
       backupService: mockBackupService,
       notificationService: mockNotificationService,
+      syncManager: mockSyncManager,
       // Don't pass uiFeedbackService to avoid localization
     );
   });
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    registerFallbackValue(Habit(
-      habitData: HabitData(
-        position: 0,
-        title: 'Fallback',
-        twoDayRule: false,
-        cue: '',
-        routine: '',
-        reward: '',
-        showReward: false,
-        advanced: false,
-        notification: false,
-        notTime: const TimeOfDay(hour: 9, minute: 0),
-        events: SplayTreeMap<DateTime, List>(),
-        sanction: '',
-        showSanction: false,
-        accountant: '',
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: 'Fallback',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          notification: false,
+          notTime: const TimeOfDay(hour: 9, minute: 0),
+          events: SplayTreeMap<DateTime, List>(),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
       ),
-    ));
+    );
     registerFallbackValue(TimeOfDay.now());
     registerFallbackValue(Colors.grey);
 
@@ -106,8 +117,9 @@ void main() {
         ),
       );
 
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => [testHabit]);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => [testHabit]);
 
       // Act
       await habitsManager.initModel();
@@ -120,10 +132,12 @@ void main() {
 
     test('should add habit through repository', () async {
       // Setup
-      when(() => mockHabitRepository.createHabit(any()))
-          .thenAnswer((_) async => 1);
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => []);
+      when(
+        () => mockHabitRepository.createHabit(any()),
+      ).thenAnswer((_) async => 1);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => []);
 
       // Act
       habitsManager.addHabit(
@@ -169,8 +183,9 @@ void main() {
 
       // Add habit to internal state
       habitsManager.allHabits.add(testHabit);
-      when(() => mockHabitRepository.updateHabit(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockHabitRepository.updateHabit(any()),
+      ).thenAnswer((_) async {});
 
       // Act
       habitsManager.editHabit(testHabit.habitData);
@@ -203,15 +218,18 @@ void main() {
 
       // Add habit to internal state
       habitsManager.allHabits.add(testHabit);
-      when(() => mockHabitRepository.deleteHabit(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockHabitRepository.deleteHabit(any()),
+      ).thenAnswer((_) async {});
       // Mock specific localization strings
-      when(() => mockUIFeedbackService.showMessageWithAction(
-            message: any(named: 'message'),
-            actionLabel: any(named: 'actionLabel'),
-            onActionPressed: any(named: 'onActionPressed'),
-            backgroundColor: any(named: 'backgroundColor'),
-          )).thenReturn(null);
+      when(
+        () => mockUIFeedbackService.showMessageWithAction(
+          message: any(named: 'message'),
+          actionLabel: any(named: 'actionLabel'),
+          onActionPressed: any(named: 'onActionPressed'),
+          backgroundColor: any(named: 'backgroundColor'),
+        ),
+      ).thenReturn(null);
 
       // Act
       habitsManager.deleteHabit(1);

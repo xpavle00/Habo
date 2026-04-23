@@ -4,6 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/model/habo_model.dart';
 import 'package:habo/settings/settings_manager.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class MockSupabaseClient extends Mock implements SupabaseClient {}
+
+class MockGoTrueClient extends Mock implements GoTrueClient {}
 
 void main() {
   // Initialize Flutter binding for tests
@@ -13,14 +19,31 @@ void main() {
   setUp(() {
     TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/shared_preferences'),
-      (MethodCall methodCall) async {
-        if (methodCall.method == 'getAll') {
-          return <String, dynamic>{}; // Return empty preferences
-        }
-        return null;
-      },
-    );
+          const MethodChannel('plugins.flutter.io/shared_preferences'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'getAll') {
+              return <String, dynamic>{}; // Return empty preferences
+            }
+            return null;
+          },
+        );
+
+    TestWidgetsFlutterBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('plugins.it_nomads.com/flutter_secure_storage'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'read') {
+              return null; // Return null for missing keys
+            }
+            if (methodCall.method == 'write') {
+              return null;
+            }
+            if (methodCall.method == 'delete') {
+              return null;
+            }
+            return null;
+          },
+        );
   });
 
   group('App Integration Tests', () {
@@ -33,9 +56,20 @@ void main() {
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
 
+      final mockSupabaseClient = MockSupabaseClient();
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
+
       // Initialize service locator
-      ServiceLocator.instance
-          .initialize(scaffoldKey, haboModel, settingsManager);
+      ServiceLocator.instance.initialize(
+        scaffoldKey: scaffoldKey,
+        haboModel: haboModel,
+        settingsManager: settingsManager,
+        client: mockSupabaseClient,
+      );
 
       // Verify services are accessible
       expect(ServiceLocator.instance.backupService, isNotNull);
@@ -57,14 +91,29 @@ void main() {
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
 
-      ServiceLocator.instance
-          .initialize(scaffoldKey, haboModel, settingsManager);
+      final mockSupabaseClient = MockSupabaseClient();
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
+
+      ServiceLocator.instance.initialize(
+        scaffoldKey: scaffoldKey,
+        haboModel: haboModel,
+        settingsManager: settingsManager,
+        client: mockSupabaseClient,
+      );
 
       // Verify repository factory provides repositories
       expect(
-          ServiceLocator.instance.repositoryFactory.habitRepository, isNotNull);
+        ServiceLocator.instance.repositoryFactory.habitRepository,
+        isNotNull,
+      );
       expect(
-          ServiceLocator.instance.repositoryFactory.eventRepository, isNotNull);
+        ServiceLocator.instance.repositoryFactory.eventRepository,
+        isNotNull,
+      );
     });
 
     test('service locator can be reinitialized', () async {
@@ -76,10 +125,22 @@ void main() {
       final haboModel = HaboModel();
       final settingsManager = SettingsManager();
 
+      final mockSupabaseClient = MockSupabaseClient();
+      final mockGoTrueClient = MockGoTrueClient();
+      when(
+        () => mockGoTrueClient.onAuthStateChange,
+      ).thenAnswer((_) => const Stream<AuthState>.empty());
+      when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
+
       expect(
-          () => ServiceLocator.instance
-              .initialize(scaffoldKey, haboModel, settingsManager),
-          returnsNormally);
+        () => ServiceLocator.instance.initialize(
+          scaffoldKey: scaffoldKey,
+          haboModel: haboModel,
+          settingsManager: settingsManager,
+          client: mockSupabaseClient,
+        ),
+        returnsNormally,
+      );
     });
   });
 }

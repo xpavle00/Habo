@@ -53,16 +53,15 @@ void main() {
   });
 
   group('HabitListWidget Tests', () {
-    testWidgets('should display empty state when no habits',
-        (WidgetTester tester) async {
+    testWidgets('should display empty state when no habits', (
+      WidgetTester tester,
+    ) async {
       // Build our app and trigger a frame
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider.value(
             value: habitsManager,
-            child: const Scaffold(
-              body: HabitListWidget(),
-            ),
+            child: const Scaffold(body: HabitListWidget()),
           ),
         ),
       );
@@ -72,8 +71,9 @@ void main() {
       expect(find.byType(HabitCard), findsNothing);
     });
 
-    testWidgets('should display habits when available',
-        (WidgetTester tester) async {
+    testWidgets('should display habits when available', (
+      WidgetTester tester,
+    ) async {
       // Add test habits
       final testHabit1 = Habit(
         habitData: HabitData(
@@ -101,9 +101,7 @@ void main() {
         MaterialApp(
           home: ChangeNotifierProvider.value(
             value: habitsManager,
-            child: const Scaffold(
-              body: HabitListWidget(),
-            ),
+            child: const Scaffold(body: HabitListWidget()),
           ),
         ),
       );

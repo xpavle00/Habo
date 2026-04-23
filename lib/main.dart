@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -22,19 +23,78 @@ import 'package:habo/generated/l10n.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:habo/constants.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:habo/screens/reset_password_screen.dart';
+import 'package:habo/env_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Load secrets from .env file
+  await dotenv.load();
+
+  // Load settings to check for custom server configuration
+  final prefs = await SharedPreferences.getInstance();
+  final settingsJson = prefs.getString('habo_settings');
+  String supabaseUrl = EnvConfig.supabaseUrl;
+  String supabaseAnonKey = EnvConfig.supabaseAnonKey;
+
+  if (settingsJson != null) {
+    try {
+      final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+      final customUrl = settings['customSupabaseUrl'] as String?;
+      final customKey = settings['customSupabaseAnonKey'] as String?;
+      if (customUrl != null &&
+          customUrl.isNotEmpty &&
+          customKey != null &&
+          customKey.isNotEmpty) {
+        supabaseUrl = customUrl;
+        supabaseAnonKey = customKey;
+      }
+    } catch (_) {
+      // Ignore parse errors, use defaults
+    }
+  }
+
+  // Initialize Supabase with resolved values, with error recovery
+  try {
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  } catch (e) {
+    // Bad custom server values — clear them and fall back to defaults
+    if (supabaseUrl != EnvConfig.supabaseUrl) {
+      debugPrint('Supabase.initialize() failed with custom URL: $e');
+      debugPrint('Falling back to default Habo Cloud server');
+      final prefs = await SharedPreferences.getInstance();
+      // Clear custom server from settings JSON
+      final settingsJson = prefs.getString('habo_settings');
+      if (settingsJson != null) {
+        try {
+          final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+          settings.remove('customSupabaseUrl');
+          settings.remove('customSupabaseAnonKey');
+          settings['isSelfHostedCached'] = false;
+          await prefs.setString('habo_settings', jsonEncode(settings));
+        } catch (_) {}
+      }
+      await Supabase.initialize(
+        url: EnvConfig.supabaseUrl,
+        anonKey: EnvConfig.supabaseAnonKey,
+      );
+    } else {
+      rethrow;
+    }
+  }
+
   if (Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
     windowManager.setMinimumSize(const Size(320, 320));
     windowManager.setMaximumSize(Size.infinite);
   }
   addLicenses();
-  runApp(
-    const Habo(),
-  );
+  runApp(const Habo());
 }
 
 class Habo extends StatefulWidget {
@@ -53,6 +113,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
   final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   bool _isInitialized = false;
   Timer? _dayChangeTimer;
+  StreamSubscription<AuthState>? _authSubscription;
 
   @override
   void initState() {
@@ -66,6 +127,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _stopDayChangeTimer();
+    _authSubscription?.cancel();
     super.dispose();
   }
 
@@ -115,9 +177,28 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     // Initialize database first and wait for completion
     await haboModel.initDatabase();
 
+    // Query self-hosted flag from server
+    bool isSelfHosted = _settingsManager.isSelfHostedCached;
+    try {
+      final response = await Supabase.instance.client
+          .from('app_settings')
+          .select('value')
+          .eq('key', 'self_hosted')
+          .single();
+      isSelfHosted = response['value'] == 'true';
+      _settingsManager.setIsSelfHostedCached(isSelfHosted);
+    } catch (e) {
+      debugPrint('Failed to query self_hosted flag: $e');
+      // Fall back to cached value (defaults to false if never fetched)
+    }
+
     // Initialize service locator with the scaffold key and HaboModel
-    ServiceLocator.instance
-        .initialize(_scaffoldKey, haboModel, _settingsManager);
+    ServiceLocator.instance.initialize(
+      scaffoldKey: _scaffoldKey,
+      haboModel: haboModel,
+      settingsManager: _settingsManager,
+      isSelfHosted: isSelfHosted,
+    );
 
     // Create HabitsManager with repositories and services from ServiceLocator
     final repositoryFactory = ServiceLocator.instance.repositoryFactory;
@@ -128,6 +209,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       backupService: ServiceLocator.instance.backupService,
       notificationService: ServiceLocator.instance.notificationService,
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
+      syncManager: ServiceLocator.instance.syncManager,
     );
     await habitsManager.initialize();
 
@@ -160,6 +242,25 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
 
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
+
+    // Listen for password recovery auth events
+    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen(
+      (data) {
+        if (data.event == AuthChangeEvent.passwordRecovery) {
+          // Navigate to the reset password screen
+          _navigatorKey.currentState?.push(
+            MaterialPageRoute(
+              builder: (context) => const ResetPasswordScreen(),
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        // Deep link auth failures (e.g. expired PKCE token from email
+        // confirmation) are expected on mobile — log and ignore.
+        debugPrint('Auth state change error (ignored): $error');
+      },
+    );
   }
 
   @override
@@ -178,63 +279,54 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
         systemNavigationBarDividerColor: Colors.transparent,
       ),
     );
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // Enable edge-to-edge mode explicitly for consistency
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => _appStateManager,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => _settingsManager,
-        ),
-        ChangeNotifierProvider(
-          create: (context) => _habitManager,
-        ),
+        ChangeNotifierProvider(create: (context) => _appStateManager),
+        ChangeNotifierProvider(create: (context) => _settingsManager),
+        ChangeNotifierProvider(create: (context) => _habitManager),
       ],
-      child: Consumer<SettingsManager>(builder: (context, settingsManager, _) {
-        return DynamicColorBuilder(
+      child: Consumer<SettingsManager>(
+        builder: (context, settingsManager, _) {
+          return DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-          // Only use dynamic colors if Material You theme is selected
-          final useDynamicColors =
-              settingsManager.getThemeString == Themes.materialYou;
+              // Only use dynamic colors if Material You theme is selected
+              final useDynamicColors =
+                  settingsManager.getThemeString == Themes.materialYou;
 
-          return MaterialApp.router(
-            title: 'Habo',
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            scaffoldMessengerKey: _scaffoldKey,
-            theme: (useDynamicColors && lightDynamic != null)
-                ? ThemeData(
-                    colorScheme: lightDynamic,
-                  )
-                : settingsManager.getLight,
-            darkTheme: (useDynamicColors && darkDynamic != null)
-                ? ThemeData(
-                    colorScheme: darkDynamic,
-                  )
-                : settingsManager.getDark,
-            routerDelegate: _appRouter,
-            routeInformationParser: HaboRouteInformationParser(),
-            backButtonDispatcher: RootBackButtonDispatcher(),
-            builder: (context, child) {
-              // Set context for automatic widget updates
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _habitManager.setWidgetContext(context);
-              });
-              return BiometricAuthWrapper(child: child!);
+              return MaterialApp.router(
+                title: 'Habo',
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                scaffoldMessengerKey: _scaffoldKey,
+                theme: (useDynamicColors && lightDynamic != null)
+                    ? ThemeData(colorScheme: lightDynamic)
+                    : settingsManager.getLight,
+                darkTheme: (useDynamicColors && darkDynamic != null)
+                    ? ThemeData(colorScheme: darkDynamic)
+                    : settingsManager.getDark,
+                routerDelegate: _appRouter,
+                routeInformationParser: HaboRouteInformationParser(),
+                backButtonDispatcher: RootBackButtonDispatcher(),
+                builder: (context, child) {
+                  // Set context for automatic widget updates
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _habitManager.setWidgetContext(context);
+                  });
+                  return BiometricAuthWrapper(child: child!);
+                },
+              );
             },
           );
-        });
-      }),
+        },
+      ),
     );
   }
 }

@@ -38,21 +38,23 @@ class SettingsManager extends ChangeNotifier {
   Future<void> _initializeSounds() async {
     try {
       final session = await AudioSession.instance;
-      await session.configure(const AudioSessionConfiguration(
-        avAudioSessionCategory: AVAudioSessionCategory.playback,
-        avAudioSessionCategoryOptions:
-            AVAudioSessionCategoryOptions.mixWithOthers,
-        avAudioSessionMode: AVAudioSessionMode.defaultMode,
-        avAudioSessionRouteSharingPolicy:
-            AVAudioSessionRouteSharingPolicy.defaultPolicy,
-        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-        androidAudioAttributes: AndroidAudioAttributes(
-          contentType: AndroidAudioContentType.sonification,
-          flags: AndroidAudioFlags.none,
-          usage: AndroidAudioUsage.assistanceSonification,
+      await session.configure(
+        const AudioSessionConfiguration(
+          avAudioSessionCategory: AVAudioSessionCategory.playback,
+          avAudioSessionCategoryOptions:
+              AVAudioSessionCategoryOptions.mixWithOthers,
+          avAudioSessionMode: AVAudioSessionMode.defaultMode,
+          avAudioSessionRouteSharingPolicy:
+              AVAudioSessionRouteSharingPolicy.defaultPolicy,
+          avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+          androidAudioAttributes: AndroidAudioAttributes(
+            contentType: AndroidAudioContentType.sonification,
+            flags: AndroidAudioFlags.none,
+            usage: AndroidAudioUsage.assistanceSonification,
+          ),
+          androidWillPauseWhenDucked: false,
         ),
-        androidWillPauseWhenDucked: false,
-      ));
+      );
 
       await SoLoud.instance.init();
       _checkSource = await SoLoud.instance.loadAsset('assets/sounds/check.wav');
@@ -111,7 +113,7 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
-  void saveData() async {
+  Future<void> saveData() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString('habo_settings', jsonEncode(_settingsData));
   }
@@ -327,4 +329,66 @@ class SettingsManager extends ChangeNotifier {
     saveData();
     notifyListeners();
   }
+
+  int get syncVersion => _settingsData.syncVersion;
+
+  bool get hasUnsyncedChanges => _settingsData.hasUnsyncedChanges;
+
+  Future<void> setSyncVersion(int version) async {
+    _settingsData = _settingsData.copyWith(syncVersion: version);
+    await saveData();
+    notifyListeners();
+  }
+
+  Future<void> setHasUnsyncedChanges(bool hasChanges) async {
+    if (_settingsData.hasUnsyncedChanges == hasChanges) return;
+    _settingsData = _settingsData.copyWith(hasUnsyncedChanges: hasChanges);
+    await saveData();
+    notifyListeners();
+  }
+
+  bool get isSyncPaused => _settingsData.isSyncPaused;
+
+  Future<void> setIsSyncPaused(bool isPaused) async {
+    if (_settingsData.isSyncPaused == isPaused) return;
+    _settingsData = _settingsData.copyWith(isSyncPaused: isPaused);
+    await saveData();
+    notifyListeners();
+  }
+
+  bool get hasSeenSyncOnboarding => _settingsData.hasSeenSyncOnboarding;
+
+  Future<void> setHasSeenSyncOnboarding(bool hasSeen) async {
+    if (_settingsData.hasSeenSyncOnboarding == hasSeen) return;
+    _settingsData = _settingsData.copyWith(hasSeenSyncOnboarding: hasSeen);
+    await saveData();
+    notifyListeners();
+  }
+
+  String? get customSupabaseUrl => _settingsData.customSupabaseUrl;
+  void setCustomSupabaseUrl(String? val) {
+    _settingsData.customSupabaseUrl = val;
+    saveData();
+    notifyListeners();
+  }
+
+  String? get customSupabaseAnonKey => _settingsData.customSupabaseAnonKey;
+  void setCustomSupabaseAnonKey(String? val) {
+    _settingsData.customSupabaseAnonKey = val;
+    saveData();
+    notifyListeners();
+  }
+
+  bool get isSelfHostedCached => _settingsData.isSelfHostedCached;
+  void setIsSelfHostedCached(bool val) {
+    _settingsData.isSelfHostedCached = val;
+    saveData();
+    notifyListeners();
+  }
+
+  bool get hasCustomServer =>
+      _settingsData.customSupabaseUrl != null &&
+      _settingsData.customSupabaseUrl!.isNotEmpty &&
+      _settingsData.customSupabaseAnonKey != null &&
+      _settingsData.customSupabaseAnonKey!.isNotEmpty;
 }

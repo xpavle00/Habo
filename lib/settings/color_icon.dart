@@ -4,12 +4,13 @@ import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
 
 class ColorIcon extends StatefulWidget {
-  const ColorIcon(
-      {super.key,
-      required this.color,
-      required this.icon,
-      required this.defaultColor,
-      required this.onPicked});
+  const ColorIcon({
+    super.key,
+    required this.color,
+    required this.icon,
+    required this.defaultColor,
+    required this.onPicked,
+  });
 
   final Color color;
   final IconData icon;
@@ -43,95 +44,77 @@ class _ColorIconState extends State<ColorIcon> {
           height: 32,
           child: IconButton(
             splashColor: Colors.transparent,
-            icon: Icon(
-              widget.icon,
-              size: 16,
-            ),
+            icon: Icon(widget.icon, size: 16),
             color: Colors.white,
             onPressed: () {
               showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (context, setState) {
-                        return AlertDialog(
-                          content: SingleChildScrollView(
-                            child: HueRingPicker(
-                              pickerColor: tempColor,
-                              onColorChanged: (Color color) {
-                                setState(
-                                  () {
-                                    tempColor = color.withValues(alpha: 1.0);
-                                  },
-                                );
-                              },
-                            ),
+                context: context,
+                builder: (BuildContext context) {
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return AlertDialog(
+                        content: SingleChildScrollView(
+                          child: HueRingPicker(
+                            pickerColor: tempColor,
+                            onColorChanged: (Color color) {
+                              setState(() {
+                                tempColor = color.withValues(alpha: 1.0);
+                              });
+                            },
                           ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                padding: WidgetStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                ),
-                                foregroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        Colors.white),
-                                backgroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        Colors.grey),
+                        ),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 20,
                               ),
-                              child: Text(S.of(context).cancel),
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pop(); //dismiss the color picker
-                              },
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
                             ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                padding: WidgetStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                ),
-                                foregroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        Colors.white),
-                                backgroundColor: WidgetStatePropertyAll<Color>(
-                                    widget.defaultColor),
+                            child: Text(S.of(context).cancel),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 20,
                               ),
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    tempColor = widget.defaultColor;
-                                  },
-                                );
-                              },
-                              child: Text(S.of(context).reset),
+                              backgroundColor: widget.defaultColor,
+                              foregroundColor: Colors.white,
                             ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                padding: WidgetStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                ),
-                                foregroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        Colors.white),
-                                backgroundColor:
-                                    const WidgetStatePropertyAll<Color>(
-                                        HaboColors.primary),
+                            onPressed: () {
+                              setState(() {
+                                tempColor = widget.defaultColor;
+                              });
+                            },
+                            child: Text(S.of(context).reset),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 20,
                               ),
-                              child: Text(S.of(context).done),
-                              onPressed: () {
-                                widget.onPicked(tempColor);
-                                Navigator.of(context).pop();
-                              },
+                              backgroundColor: HaboColors.primary,
+                              foregroundColor: Colors.white,
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  });
+                            child: Text(S.of(context).done),
+                            onPressed: () {
+                              widget.onPicked(tempColor);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              );
             },
           ),
         ),

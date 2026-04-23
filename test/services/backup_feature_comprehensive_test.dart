@@ -47,24 +47,26 @@ void main() {
     await S.load(const Locale('en'));
 
     // Register fallback values for mocktail
-    registerFallbackValue(Habit(
-      habitData: HabitData(
-        position: 0,
-        title: 'Fallback',
-        twoDayRule: false,
-        cue: '',
-        routine: '',
-        reward: '',
-        showReward: false,
-        advanced: false,
-        notification: false,
-        notTime: const TimeOfDay(hour: 9, minute: 0),
-        events: SplayTreeMap<DateTime, List>(),
-        sanction: '',
-        showSanction: false,
-        accountant: '',
+    registerFallbackValue(
+      Habit(
+        habitData: HabitData(
+          position: 0,
+          title: 'Fallback',
+          twoDayRule: false,
+          cue: '',
+          routine: '',
+          reward: '',
+          showReward: false,
+          advanced: false,
+          notification: false,
+          notTime: const TimeOfDay(hour: 9, minute: 0),
+          events: SplayTreeMap<DateTime, List>(),
+          sanction: '',
+          showSanction: false,
+          accountant: '',
+        ),
       ),
-    ));
+    );
     registerFallbackValue(<Habit>[]);
     registerFallbackValue(<Category>[]);
     registerFallbackValue(File(''));
@@ -94,34 +96,35 @@ void main() {
     group('Database Backup Operations', () {
       test('should create database backup successfully', () async {
         // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => {
-                  'habits': [
-                    {
-                      'id': 1,
-                      'position': 0,
-                      'title': 'Test Habit 1',
-                      'twoDayRule': false,
-                      'cue': 'Morning',
-                      'routine': 'Exercise',
-                      'reward': 'Feel good',
-                      'showReward': true,
-                      'advanced': true,
-                      'notification': true,
-                      'notTime': {'hour': 8, 'minute': 0},
-                      'events': {
-                        '2024-01-01': [1],
-                        '2024-01-02': [2],
-                        '2024-01-03': [3]
-                      },
-                      'sanction': 'No coffee',
-                      'showSanction': true,
-                      'accountant': 'John',
-                    },
-                  ],
-                  'categories': [],
-                  'habit_categories': [],
-                });
+        when(() => mockBackupRepository.exportAllData()).thenAnswer(
+          (_) async => {
+            'habits': [
+              {
+                'id': 1,
+                'position': 0,
+                'title': 'Test Habit 1',
+                'twoDayRule': false,
+                'cue': 'Morning',
+                'routine': 'Exercise',
+                'reward': 'Feel good',
+                'showReward': true,
+                'advanced': true,
+                'notification': true,
+                'notTime': {'hour': 8, 'minute': 0},
+                'events': {
+                  '2024-01-01': [1],
+                  '2024-01-02': [2],
+                  '2024-01-03': [3],
+                },
+                'sanction': 'No coffee',
+                'showSanction': true,
+                'accountant': 'John',
+              },
+            ],
+            'categories': [],
+            'habit_categories': [],
+          },
+        );
 
         // Act - Test only the repository call, not the full backup service
         final result = await mockBackupRepository.exportAllData();
@@ -134,8 +137,9 @@ void main() {
 
       test('should handle database backup failure', () async {
         // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenThrow(Exception('Database error'));
+        when(
+          () => mockBackupRepository.exportAllData(),
+        ).thenThrow(Exception('Database error'));
 
         // Act & Assert - Test that exception is thrown
         expect(() => mockBackupRepository.exportAllData(), throwsException);
@@ -150,10 +154,12 @@ void main() {
 
       test('should get database statistics correctly', () async {
         // Arrange
-        when(() => mockBackupRepository.getHabitCount())
-            .thenAnswer((_) async => 5);
-        when(() => mockBackupRepository.getEventCount())
-            .thenAnswer((_) async => 150);
+        when(
+          () => mockBackupRepository.getHabitCount(),
+        ).thenAnswer((_) async => 5);
+        when(
+          () => mockBackupRepository.getEventCount(),
+        ).thenAnswer((_) async => 150);
         // Note: getCategoryCount not available in BackupRepository interface
         // Using getHabitCount and getEventCount only
 
@@ -190,13 +196,13 @@ void main() {
               'sanction': 'No coffee',
               'showSanction': true,
               'accountant': 'John',
-            }
+            },
           ],
           'categories': [
-            {'id': 1, 'title': 'Health', 'iconCodePoint': 58718}
+            {'id': 1, 'title': 'Health', 'iconCodePoint': 58718},
           ],
           'habit_categories': [
-            {'habit_id': 1, 'category_id': 1}
+            {'habit_id': 1, 'category_id': 1},
           ],
         };
 
@@ -273,12 +279,9 @@ void main() {
       test('should handle file creation and validation', () async {
         // This test focuses on the backup service logic without actual file I/O
         // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => {
-                  'habits': [],
-                  'categories': [],
-                  'habit_categories': [],
-                });
+        when(() => mockBackupRepository.exportAllData()).thenAnswer(
+          (_) async => {'habits': [], 'categories': [], 'habit_categories': []},
+        );
 
         // Act - Test only the repository call
         final result = await mockBackupRepository.exportAllData();
@@ -308,12 +311,9 @@ void main() {
     group('Backup Integration with HabitsManager', () {
       test('should create backup through HabitsManager', () async {
         // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => {
-                  'habits': [],
-                  'categories': [],
-                  'habit_categories': [],
-                });
+        when(() => mockBackupRepository.exportAllData()).thenAnswer(
+          (_) async => {'habits': [], 'categories': [], 'habit_categories': []},
+        );
 
         // Act - Test that HabitsManager has backup service injected
         expect(habitsManager, isNotNull);
@@ -330,14 +330,15 @@ void main() {
         // Arrange
         final testData = {
           'habits': [
-            {'id': 1, 'title': 'Test'}
+            {'id': 1, 'title': 'Test'},
           ],
           'categories': [],
           'habit_categories': [],
         };
 
-        when(() => mockBackupRepository.importData(any()))
-            .thenAnswer((_) async {});
+        when(
+          () => mockBackupRepository.importData(any()),
+        ).thenAnswer((_) async {});
 
         // Act - Test only the repository call
         await mockBackupRepository.importData(testData);
@@ -348,8 +349,9 @@ void main() {
 
       test('should handle backup restoration failure gracefully', () async {
         // Arrange
-        when(() => mockBackupRepository.importData(any()))
-            .thenThrow(Exception('Import failed'));
+        when(
+          () => mockBackupRepository.importData(any()),
+        ).thenThrow(Exception('Import failed'));
 
         // Act & Assert
         expect(() => mockBackupRepository.importData({}), throwsException);
@@ -412,7 +414,7 @@ void main() {
               'sanction': '',
               'showSanction': false,
               'accountant': '',
-            }
+            },
           ],
           'categories': [
             {'id': 1, 'title': 'Health', 'iconCodePoint': 58718},
@@ -463,9 +465,9 @@ void main() {
         expect(habitData.events.length, equals(365));
         expect(habitData.events.keys.first, equals(DateTime(2024, 1, 1)));
         expect(
-            habitData.events.keys.last,
-            equals(DateTime(
-                2024, 12, 30))); // Fixed: 365 days from Jan 1 is Dec 30
+          habitData.events.keys.last,
+          equals(DateTime(2024, 12, 30)),
+        ); // Fixed: 365 days from Jan 1 is Dec 30
       });
     });
 
@@ -478,7 +480,7 @@ void main() {
               'id': 'invalid_id', // Should be int
               'title': null, // Should be string
               'events': 'invalid_events', // Should be map
-            }
+            },
           ],
           'categories': 'invalid_categories', // Should be list
         };
@@ -500,7 +502,7 @@ void main() {
             {
               'id': 1,
               // Missing required fields like title, position, etc.
-            }
+            },
           ],
         };
 
@@ -512,33 +514,33 @@ void main() {
         expect(decodedData['habits'][0]['title'], isNull);
       });
 
-      test('should provide meaningful error messages for backup failures',
-          () async {
-        // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenThrow(Exception('Database connection failed'));
+      test(
+        'should provide meaningful error messages for backup failures',
+        () async {
+          // Arrange
+          when(
+            () => mockBackupRepository.exportAllData(),
+          ).thenThrow(Exception('Database connection failed'));
 
-        // Act & Assert
-        expect(() => mockBackupRepository.exportAllData(), throwsException);
+          // Act & Assert
+          expect(() => mockBackupRepository.exportAllData(), throwsException);
 
-        try {
-          await mockBackupRepository.exportAllData();
-        } catch (e) {
-          expect(e.toString(), contains('Database connection failed'));
-        }
-      });
+          try {
+            await mockBackupRepository.exportAllData();
+          } catch (e) {
+            expect(e.toString(), contains('Database connection failed'));
+          }
+        },
+      );
     });
 
     group('Backup Performance', () {
       test('should handle backup operations efficiently', () async {
         // Arrange
         final startTime = DateTime.now();
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => {
-                  'habits': [],
-                  'categories': [],
-                  'habit_categories': [],
-                });
+        when(() => mockBackupRepository.exportAllData()).thenAnswer(
+          (_) async => {'habits': [], 'categories': [], 'habit_categories': []},
+        );
 
         // Act
         await mockBackupRepository.exportAllData();
@@ -546,22 +548,23 @@ void main() {
 
         // Assert
         final duration = endTime.difference(startTime);
-        expect(duration.inMilliseconds,
-            lessThan(1000)); // Should complete within 1 second for mock
+        expect(
+          duration.inMilliseconds,
+          lessThan(1000),
+        ); // Should complete within 1 second for mock
       });
 
       test('should handle concurrent backup operations', () async {
         // Arrange
-        when(() => mockBackupRepository.exportAllData())
-            .thenAnswer((_) async => {
-                  'habits': [],
-                  'categories': [],
-                  'habit_categories': [],
-                });
+        when(() => mockBackupRepository.exportAllData()).thenAnswer(
+          (_) async => {'habits': [], 'categories': [], 'habit_categories': []},
+        );
 
         // Act
-        final futures =
-            List.generate(3, (_) => mockBackupRepository.exportAllData());
+        final futures = List.generate(
+          3,
+          (_) => mockBackupRepository.exportAllData(),
+        );
         final results = await Future.wait(futures);
 
         // Assert

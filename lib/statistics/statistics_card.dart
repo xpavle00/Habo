@@ -6,10 +6,7 @@ import 'package:habo/statistics/statistics.dart';
 import 'package:provider/provider.dart';
 
 class StatisticsCard extends StatelessWidget {
-  const StatisticsCard({
-    super.key,
-    required this.data,
-  });
+  const StatisticsCard({super.key, required this.data});
 
   final StatisticsData data;
 
@@ -40,9 +37,7 @@ class StatisticsCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -50,9 +45,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).topStreak,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     Text(
                       data.topStreak.toString(),
@@ -67,9 +60,7 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).currentStreak,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     Text(
                       data.actualStreak.toString(),
@@ -82,18 +73,9 @@ class StatisticsCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              S.of(context).total,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
+            Text(S.of(context).total, style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.spaceEvenly,
               children: [
@@ -102,9 +84,10 @@ class StatisticsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.check,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .checkColor,
+                      color: Provider.of<SettingsManager>(
+                        context,
+                        listen: false,
+                      ).checkColor,
                     ),
                     Text(
                       data.checks.toString(),
@@ -115,17 +98,16 @@ class StatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.trending_up,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .progressColor,
+                      color: Provider.of<SettingsManager>(
+                        context,
+                        listen: false,
+                      ).progressColor,
                     ),
                     Text(
                       data.progress.toString(),
@@ -136,17 +118,16 @@ class StatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.last_page,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .skipColor,
+                      color: Provider.of<SettingsManager>(
+                        context,
+                        listen: false,
+                      ).skipColor,
                     ),
                     Text(
                       data.skips.toString(),
@@ -157,17 +138,16 @@ class StatisticsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       Icons.close,
-                      color:
-                          Provider.of<SettingsManager>(context, listen: false)
-                              .failColor,
+                      color: Provider.of<SettingsManager>(
+                        context,
+                        listen: false,
+                      ).failColor,
                     ),
                     Text(
                       data.fails.toString(),
@@ -180,9 +160,7 @@ class StatisticsCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             MonthlyGraph(data: data),
           ],
         ),

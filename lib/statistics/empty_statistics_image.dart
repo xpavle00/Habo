@@ -16,8 +16,10 @@ class EmptyStatisticsImage extends StatelessWidget {
             SizedBox(
               width: 300,
               height: 300,
-              child: SvgPicture.asset('assets/images/noDataStatistics.svg',
-                  semanticsLabel: S.of(context).emptyList),
+              child: SvgPicture.asset(
+                'assets/images/noDataStatistics.svg',
+                semanticsLabel: S.of(context).emptyList,
+              ),
             ),
             Text(
               S.of(context).noDataAboutHabits,
