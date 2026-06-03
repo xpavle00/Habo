@@ -27,7 +27,7 @@ dependencies:
   path: ^1.8.3
   fl_chart: ^1.2.0
   flutter_file_dialog: ^3.0.3
-  file_picker: ^10.3.10
+  file_picker: ^11.0.2
   path_provider: ^2.1.0
   awesome_notifications: ^0.11.0
   timezone: ^0.11.0
@@ -51,8 +51,8 @@ dependencies:
   supabase_flutter: ^2.12.2
   supabase_auth_ui: ^0.5.5
   uuid: ^4.5.3
-  purchases_flutter: ^8.10.5
-  purchases_ui_flutter: ^8.10.5
+  purchases_flutter: ^8.11.0
+  purchases_ui_flutter: ^8.11.0
   sign_in_with_apple: ^6.1.4
   google_sign_in: ^6.3.0
   crypto: ^3.0.7

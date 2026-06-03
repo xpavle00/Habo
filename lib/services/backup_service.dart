@@ -60,7 +60,7 @@ class BackupService {
         final savedPath = await FlutterFileDialog.saveFile(params: params);
         userSaved = savedPath != null;
       } else {
-        final outputFile = await FilePicker.platform.saveFile(
+        final outputFile = await FilePicker.saveFile(
           dialogTitle: '',
           type: FileType.custom,
           allowedExtensions: ['json'],
@@ -112,7 +112,7 @@ class BackupService {
         final savedPath = await FlutterFileDialog.saveFile(params: params);
         userSaved = savedPath != null;
       } else {
-        final outputFile = await FilePicker.platform.saveFile(
+        final outputFile = await FilePicker.saveFile(
           dialogTitle: '',
           type: FileType.custom,
           allowedExtensions: ['json'],
@@ -195,7 +195,7 @@ class BackupService {
       );
       return await FlutterFileDialog.pickFile(params: params);
     } else {
-      final result = await FilePicker.platform.pickFiles(
+      final result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
         allowMultiple: false,
