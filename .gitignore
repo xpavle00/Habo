@@ -38,6 +38,7 @@ test/maestro
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
+pubspec_overrides.yaml
 .pub-cache/
 .pub/
 /build/

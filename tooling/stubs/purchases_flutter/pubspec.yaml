@@ -1,0 +1,9 @@
+name: purchases_flutter
+description: Stub implementation used for izzy flavor builds without RevenueCat SDK.
+version: 8.11.0
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+flutter:

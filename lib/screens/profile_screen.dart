@@ -158,7 +158,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
 
-            if (!ServiceLocator.instance.subscriptionService.isSelfHosted) ...[
+            if (!ServiceLocator.instance.subscriptionService.isSelfHosted &&
+                ServiceLocator
+                    .instance
+                    .subscriptionService
+                    .isRevenueCatEnabled) ...[
               const SizedBox(height: 12),
               _buildProfileAction(
                 context: context,

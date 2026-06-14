@@ -198,6 +198,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       haboModel: haboModel,
       settingsManager: _settingsManager,
       isSelfHosted: isSelfHosted,
+      enableRevenueCat: EnvConfig.enableRevenueCat,
     );
 
     // Create HabitsManager with repositories and services from ServiceLocator

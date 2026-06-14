@@ -19,14 +19,19 @@ class SubscriptionService {
   static const _logName = 'SubscriptionService';
 
   bool _isSelfHosted;
+  final bool _isRevenueCatEnabled;
   bool _isInitialized = false;
   String? _currentUserId;
   Completer<void>? _initCompleter;
 
-  SubscriptionService({bool isSelfHosted = false})
-    : _isSelfHosted = isSelfHosted;
+  SubscriptionService({
+    bool isSelfHosted = false,
+    bool isRevenueCatEnabled = true,
+  }) : _isSelfHosted = isSelfHosted,
+       _isRevenueCatEnabled = isRevenueCatEnabled;
 
   bool get isSelfHosted => _isSelfHosted;
+  bool get isRevenueCatEnabled => _isRevenueCatEnabled;
 
   void updateSelfHostedMode(bool value) {
     _isSelfHosted = value;
@@ -43,8 +48,13 @@ class SubscriptionService {
       return _initCompleter!.future;
     }
 
-    if (_isSelfHosted) {
-      dev.log('Self-hosted mode — skipping RevenueCat', name: _logName);
+    if (_isSelfHosted || !_isRevenueCatEnabled) {
+      dev.log(
+        _isSelfHosted
+            ? 'Self-hosted mode - skipping RevenueCat'
+            : 'RevenueCat disabled - skipping initialization',
+        name: _logName,
+      );
       return;
     }
 
@@ -107,7 +117,7 @@ class SubscriptionService {
 
   /// Logout from RevenueCat. Call this when user signs out.
   Future<void> logout() async {
-    if (_isSelfHosted || !_isInitialized) return;
+    if (_isSelfHosted || !_isRevenueCatEnabled || !_isInitialized) return;
 
     try {
       await Purchases.logOut();
@@ -126,7 +136,7 @@ class SubscriptionService {
     if (_isSelfHosted) return true;
 
     // First try RevenueCat (source of truth)
-    if (_isInitialized) {
+    if (_isRevenueCatEnabled && _isInitialized) {
       try {
         final customerInfo = await Purchases.getCustomerInfo();
         final isActive = customerInfo.entitlements.active.containsKey(
@@ -181,7 +191,7 @@ class SubscriptionService {
   /// Throws [SubscriptionException] with code `SUB_PAYWALL_FAILED` if
   /// the paywall cannot be displayed.
   Future<bool> showPaywall() async {
-    if (_isSelfHosted) return true;
+    if (_isSelfHosted || !_isRevenueCatEnabled) return false;
 
     if (!_isInitialized) {
       dev.log('Cannot show paywall — not initialized', name: _logName);
@@ -221,7 +231,9 @@ class SubscriptionService {
   /// Throws [SubscriptionException] with code `SUB_RESTORE_FAILED` if
   /// the restore operation fails.
   Future<bool> restorePurchases() async {
-    if (_isSelfHosted || !_isInitialized) return _isSelfHosted;
+    if (_isSelfHosted || !_isRevenueCatEnabled || !_isInitialized) {
+      return _isSelfHosted;
+    }
 
     try {
       final customerInfo = await Purchases.restorePurchases();
@@ -238,7 +250,7 @@ class SubscriptionService {
   /// Throws [SubscriptionException] with code `SUB_CHECK_FAILED` if
   /// the info retrieval fails.
   Future<SubscriptionInfo?> getSubscriptionInfo() async {
-    if (_isSelfHosted) return null;
+    if (_isSelfHosted || !_isRevenueCatEnabled) return null;
     if (!_isInitialized) return null;
 
     try {

@@ -57,6 +57,16 @@ android {
         multiDexEnabled true
     }
 
+    flavorDimensions += "distribution"
+    productFlavors {
+        mainstream {
+            dimension "distribution"
+        }
+        izzy {
+            dimension "distribution"
+        }
+    }
+
     signingConfigs {
         release {
             if (keystorePropertiesFile.exists()) {

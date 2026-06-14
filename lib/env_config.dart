@@ -37,4 +37,10 @@ class EnvConfig {
   static String get revenueCatApiKeyIos => _readEnv('REVENUECAT_API_KEY_IOS');
   static String get revenueCatApiKeyAndroid =>
       _readEnv('REVENUECAT_API_KEY_ANDROID');
+
+  // Build-time switch. Use --dart-define=ENABLE_REVENUECAT=false for Izzy.
+  static const bool enableRevenueCat = bool.fromEnvironment(
+    'ENABLE_REVENUECAT',
+    defaultValue: true,
+  );
 }

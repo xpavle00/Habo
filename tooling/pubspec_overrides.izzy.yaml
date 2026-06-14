@@ -1,0 +1,5 @@
+dependency_overrides:
+  purchases_flutter:
+    path: tooling/stubs/purchases_flutter
+  purchases_ui_flutter:
+    path: tooling/stubs/purchases_ui_flutter

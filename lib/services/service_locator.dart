@@ -42,6 +42,7 @@ class ServiceLocator {
     required SettingsManager settingsManager,
     SupabaseClient? client,
     bool isSelfHosted = false,
+    bool enableRevenueCat = true,
   }) {
     if (_isInitialized) return;
 
@@ -54,7 +55,10 @@ class ServiceLocator {
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
     _notificationService = NotificationService();
     _encryptionService = EncryptionService();
-    _subscriptionService = SubscriptionService(isSelfHosted: isSelfHosted);
+    _subscriptionService = SubscriptionService(
+      isSelfHosted: isSelfHosted,
+      isRevenueCatEnabled: enableRevenueCat,
+    );
     _syncService = SyncService(
       _repositoryFactory.backupRepository,
       _encryptionService,

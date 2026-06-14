@@ -6,13 +6,11 @@
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/xpavle00/Habo)
 ![GitHub Repo stars](https://img.shields.io/github/stars/xpavle00/Habo)
 
-
-
 # Habo - Open-Source Habit Tracking App
 
 Introducing Habo, the open-source habit tracker app that helps you create and maintain healthy habits for a better life. With its user-friendly interface, Habo makes it easy to track your daily routines and monitor your progress.
 
-With Habo, you can customize your own habit list, set reminders, and add notes to help you stay motivated. Whether you're looking to improve your exercise routine, eat healthier, or simply adopt better habits, Habo is here to help you succeed. 
+With Habo, you can customize your own habit list, set reminders, and add notes to help you stay motivated. Whether you're looking to improve your exercise routine, eat healthier, or simply adopt better habits, Habo is here to help you succeed.
 
 It is built using the [Flutter](https://flutter.dev/) framework, a popular and powerful cross-platform development tool.
 
@@ -32,19 +30,37 @@ Currently available on the Play Store, IzzyOnDroid, and App Store.
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroidButtonGreyBorder_nofont.png" height="40" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/com.pavlenko.Habo)
 <a target="_blank" href="https://apps.apple.com/us/app/habo-habit-tracker/id1670223360?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 134px; height: 40px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1682121600" alt="Download on the App Store" style="border-radius: 13px; width: 134px; height: 40px;"></a>
 
+### Android Flavors
 
+- `mainstream` flavor: regular build with RevenueCat packages.
+- `izzy` flavor: RevenueCat is disabled and replaced with local stubs via `pubspec_overrides.yaml` during build.
+
+Build `izzy` APK locally:
+
+```bash
+chmod +x scripts/*.sh
+./scripts/build_izzy_android.sh
+```
+
+Build `mainstream` APK locally:
+
+```bash
+flutter pub get
+flutter build apk --release --flavor mainstream --split-per-abi --no-tree-shake-icons
+```
 
 ## Contributing
 
-We welcome contributions from the community to help make Habo even better! Whether you're a developer, designer, or just an enthusiastic user, there are many ways you can help. 
+We welcome contributions from the community to help make Habo even better! Whether you're a developer, designer, or just an enthusiastic user, there are many ways you can help.
 
 Please read our [contributing guidelines](CONTRIBUTING.md) to learn how you can get involved and make an impact.
 
 ## License
 
-Habo is released under the [GPL-3.0 license](LICENSE). Feel free to use, modify, and distribute it as you wish. 
+Habo is released under the [GPL-3.0 license](LICENSE). Feel free to use, modify, and distribute it as you wish.
 
 ## Localization
+
 We believe that the best tools should be available to everyone, no matter what language they speak. To make Habo more accessible to users worldwide, we're excited to offer community-driven localization through Weblate.
 
 <a href="https://hosted.weblate.org/engage/habo/">
@@ -53,7 +69,7 @@ We believe that the best tools should be available to everyone, no matter what l
 
 ## Acknowledgments
 
-Special thanks to [Flutter](https://flutter.dev/) and [Dart](https://dart.dev/) teams for creating such amazing tools. 
+Special thanks to [Flutter](https://flutter.dev/) and [Dart](https://dart.dev/) teams for creating such amazing tools.
 
 We hope you enjoy using Habo and find it helpful in building better habits for a better life!
 
@@ -62,4 +78,3 @@ We hope you enjoy using Habo and find it helpful in building better habits for a
 If you like this project you can [buy me a coffee](https://www.buymeacoffee.com/peterpavlenko).
 
 <a href="https://www.buymeacoffee.com/peterpavlenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-

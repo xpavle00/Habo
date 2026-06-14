@@ -33,6 +33,11 @@ class _SyncProfileViewState extends State<SyncProfileView> {
 
   Future<void> _checkAndShowPaywall() async {
     final syncManager = ServiceLocator.instance.syncManager;
+    final subscriptionService = ServiceLocator.instance.subscriptionService;
+    if (!subscriptionService.isRevenueCatEnabled) {
+      return;
+    }
+
     if (syncManager != null &&
         syncManager.status == SyncStatus.noSubscription) {
       await _showPaywall();
@@ -41,6 +46,10 @@ class _SyncProfileViewState extends State<SyncProfileView> {
 
   Future<void> _showPaywall() async {
     final subscriptionService = ServiceLocator.instance.subscriptionService;
+    if (!subscriptionService.isRevenueCatEnabled) {
+      return;
+    }
+
     await subscriptionService.initialize();
     final result = await subscriptionService.showPaywall();
 
@@ -469,6 +478,8 @@ class _SyncProfileViewState extends State<SyncProfileView> {
   }
 
   Widget _buildSubscriptionRequiredCard(BuildContext context) {
+    final canUsePaywall =
+        ServiceLocator.instance.subscriptionService.isRevenueCatEnabled;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
@@ -510,108 +521,116 @@ class _SyncProfileViewState extends State<SyncProfileView> {
           ),
           const SizedBox(height: 32),
 
-          // Subscribe button
-          PrimaryButton(
-            onPressed: _showPaywall,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.star, size: 20),
-                const SizedBox(width: 8),
-                Text(S.of(context).subscribe),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward, size: 18),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-          GestureDetector(
-            onTap: () async {
-              final subscriptionService =
-                  ServiceLocator.instance.subscriptionService;
-              await subscriptionService.initialize();
-              final restored = await subscriptionService.restorePurchases();
-              if (restored && mounted) {
-                await ServiceLocator.instance.syncManager
-                    ?.refreshConfiguration();
-                ServiceLocator.instance.uiFeedbackService.showSuccess(
-                  S.of(context).purchasesRestoredSuccessfully,
-                );
-              } else if (mounted) {
-                ServiceLocator.instance.uiFeedbackService.showError(
-                  S.of(context).noPreviousPurchasesFound,
-                );
-              }
-            },
-            child: Text(
-              S.of(context).restorePurchases,
-              style: TextStyle(color: Colors.grey[500], fontSize: 13),
-            ),
-          ),
-          const SizedBox(height: 24),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              style: TextStyle(
-                color: Colors.grey[500],
-                fontSize: 11,
-                height: 1.5,
+          if (canUsePaywall) ...[
+            // Subscribe button
+            PrimaryButton(
+              onPressed: _showPaywall,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.star, size: 20),
+                  const SizedBox(width: 8),
+                  Text(S.of(context).subscribe),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, size: 18),
+                ],
               ),
-              children: [
-                TextSpan(
-                  text: S.of(context).termsAndConditions,
-                  style: const TextStyle(decoration: TextDecoration.underline),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      final Uri url = Uri.parse(
-                        'https://habo.space/terms.html#terms',
-                      );
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(
-                          url,
-                          mode: LaunchMode.externalApplication,
-                        );
-                      }
-                    },
-                ),
-                const TextSpan(text: '  •  '),
-                TextSpan(
-                  text: S.of(context).privacyPolicy,
-                  style: const TextStyle(decoration: TextDecoration.underline),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      final Uri url = Uri.parse(
-                        'https://habo.space/terms.html#privacy',
-                      );
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(
-                          url,
-                          mode: LaunchMode.externalApplication,
-                        );
-                      }
-                    },
-                ),
-                const TextSpan(text: '  •  '),
-                TextSpan(
-                  text: 'EULA',
-                  style: const TextStyle(decoration: TextDecoration.underline),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      final Uri url = Uri.parse(
-                        'https://habo.space/terms.html#eula',
-                      );
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(
-                          url,
-                          mode: LaunchMode.externalApplication,
-                        );
-                      }
-                    },
-                ),
-              ],
             ),
-          ),
+
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () async {
+                final subscriptionService =
+                    ServiceLocator.instance.subscriptionService;
+                await subscriptionService.initialize();
+                final restored = await subscriptionService.restorePurchases();
+                if (restored && mounted) {
+                  await ServiceLocator.instance.syncManager
+                      ?.refreshConfiguration();
+                  ServiceLocator.instance.uiFeedbackService.showSuccess(
+                    S.of(context).purchasesRestoredSuccessfully,
+                  );
+                } else if (mounted) {
+                  ServiceLocator.instance.uiFeedbackService.showError(
+                    S.of(context).noPreviousPurchasesFound,
+                  );
+                }
+              },
+              child: Text(
+                S.of(context).restorePurchases,
+                style: TextStyle(color: Colors.grey[500], fontSize: 13),
+              ),
+            ),
+            const SizedBox(height: 24),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 11,
+                  height: 1.5,
+                ),
+                children: [
+                  TextSpan(
+                    text: S.of(context).termsAndConditions,
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final Uri url = Uri.parse(
+                          'https://habo.space/terms.html#terms',
+                        );
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                  ),
+                  const TextSpan(text: '  •  '),
+                  TextSpan(
+                    text: S.of(context).privacyPolicy,
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final Uri url = Uri.parse(
+                          'https://habo.space/terms.html#privacy',
+                        );
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                  ),
+                  const TextSpan(text: '  •  '),
+                  TextSpan(
+                    text: 'EULA',
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final Uri url = Uri.parse(
+                          'https://habo.space/terms.html#eula',
+                        );
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
