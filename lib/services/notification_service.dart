@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:habo/habits/habit.dart';
-import 'package:habo/constants.dart';
+import 'package:habo/helpers.dart';
+import 'package:habo/model/habit_data.dart';
 import 'package:habo/notifications.dart' as notifications;
 
 /// Service responsible for managing habit notifications
@@ -29,21 +30,12 @@ class NotificationService {
         if (element.habitData.notification) {
           var data = element.habitData;
 
-          // Check if habit is already completed for today
-          DateTime today = DateTime.now();
-          DateTime todayDate = DateTime(today.year, today.month, today.day);
-          bool isCompletedToday = false;
-
-          // Check if there's a completed event for today
-          data.events.forEach((date, event) {
-            if (date.year == todayDate.year &&
-                date.month == todayDate.month &&
-                date.day == todayDate.day) {
-              if (event[0] == DayType.check) {
-                isCompletedToday = true;
-              }
-            }
-          });
+          // Check if the habit is already completed for today. Numeric habits
+          // store completion as a DayType.progress event that reaches the
+          // target, so match via isEventCompleted rather than DayType.check.
+          final todayEvent = data.events[transformDate(DateTime.now())];
+          final isCompletedToday =
+              todayEvent != null && HabitData.isEventCompleted(todayEvent);
 
           // Only schedule notification if not completed today
           if (!isCompletedToday && !existingIds.contains(data.id)) {
@@ -89,9 +81,9 @@ class NotificationService {
       eventDate.day,
     );
 
-    if (eventDateOnly == today &&
-        event.isNotEmpty &&
-        event[0] == DayType.check) {
+    // Numeric habits complete via a DayType.progress event that reaches the
+    // target, so reschedule on any completed event, not just DayType.check.
+    if (eventDateOnly == today && HabitData.isEventCompleted(event)) {
       notifications.rescheduleNotificationForTomorrow(habitId);
     }
   }
