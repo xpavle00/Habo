@@ -59,4 +59,36 @@ void main() {
       expect(result, isTrue);
     });
   });
+
+  group('SubscriptionService - RevenueCat disabled (Izzy build)', () {
+    late SubscriptionService service;
+
+    setUp(() {
+      service = SubscriptionService(isRevenueCatEnabled: false);
+    });
+
+    test('isRevenueCatEnabled reports false', () {
+      expect(service.isRevenueCatEnabled, isFalse);
+    });
+
+    test('showPaywall returns false when RevenueCat is disabled', () async {
+      final result = await service.showPaywall();
+      expect(result, isFalse);
+    });
+
+    test('restorePurchases returns false when RevenueCat is disabled', () async {
+      final result = await service.restorePurchases();
+      expect(result, isFalse);
+    });
+
+    test('getSubscriptionInfo returns null when RevenueCat is disabled', () async {
+      final result = await service.getSubscriptionInfo();
+      expect(result, isNull);
+    });
+
+    test('initialize is a no-op when RevenueCat is disabled', () async {
+      // Should not throw and should not try to touch RevenueCat.
+      await service.initialize();
+    });
+  });
 }

@@ -191,7 +191,10 @@ class SubscriptionService {
   /// Throws [SubscriptionException] with code `SUB_PAYWALL_FAILED` if
   /// the paywall cannot be displayed.
   Future<bool> showPaywall() async {
-    if (_isSelfHosted || !_isRevenueCatEnabled) return false;
+    // Self-hosted users have full access without a paywall.
+    if (_isSelfHosted) return true;
+    // Paywall cannot be shown when RevenueCat is disabled (e.g. Izzy build).
+    if (!_isRevenueCatEnabled) return false;
 
     if (!_isInitialized) {
       dev.log('Cannot show paywall — not initialized', name: _logName);
