@@ -52,15 +52,24 @@ class SettingsManager extends ChangeNotifier {
           ),
         ),
       );
-      _checkPlayer = AudioPlayer();
-      _clickPlayer = AudioPlayer();
-      await _checkPlayer.setPlayerMode(PlayerMode.lowLatency);
-      await _clickPlayer.setPlayerMode(PlayerMode.lowLatency);
+      _checkPlayer = await _createEffectPlayer('sounds/check.wav');
+      _clickPlayer = await _createEffectPlayer('sounds/click.wav');
       _soundsLoaded = true;
     } catch (e) {
       // Handle initialization error gracefully
       _soundsLoaded = false;
     }
+  }
+
+  /// Creates a low-latency player with [assetPath] preloaded, so the first tap
+  /// plays without a decode delay. [ReleaseMode.stop] keeps the decoded buffer
+  /// between plays — the default [ReleaseMode.release] re-buffers every tap.
+  Future<AudioPlayer> _createEffectPlayer(String assetPath) async {
+    final player = AudioPlayer();
+    await player.setReleaseMode(ReleaseMode.stop);
+    await player.setPlayerMode(PlayerMode.lowLatency);
+    await player.setSource(AssetSource(assetPath));
+    return player;
   }
 
   @override
@@ -82,16 +91,8 @@ class SettingsManager extends ChangeNotifier {
     if (_settingsData.soundEffects &&
         _soundsLoaded &&
         _settingsData.soundVolume > 0) {
-      try {
-        final volume =
-            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        await _checkPlayer.setVolume(volume);
-        await _checkPlayer.play(AssetSource('sounds/check.wav'));
-      } catch (e) {
-        // Handle playback error gracefully
-      } finally {
-        HapticFeedback.lightImpact();
-      }
+      await _playEffect(_checkPlayer);
+      HapticFeedback.lightImpact();
     }
   }
 
@@ -99,16 +100,24 @@ class SettingsManager extends ChangeNotifier {
     if (_settingsData.soundEffects &&
         _soundsLoaded &&
         _settingsData.soundVolume > 0) {
-      try {
-        final volume =
-            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        await _clickPlayer.setVolume(volume);
-        await _clickPlayer.play(AssetSource('sounds/click.wav'));
-      } catch (e) {
-        // Handle playback error gracefully
-      } finally {
-        HapticFeedback.lightImpact();
+      await _playEffect(_clickPlayer);
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  /// Replays a preloaded effect [player]. Volume is only pushed to the platform
+  /// when it changes, and the player is stopped first because low-latency mode
+  /// fires no completion events (so it never resets its own position).
+  Future<void> _playEffect(AudioPlayer player) async {
+    try {
+      final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+      if (player.volume != volume) {
+        await player.setVolume(volume);
       }
+      await player.stop();
+      await player.resume();
+    } catch (e) {
+      // Handle playback error gracefully
     }
   }
 
