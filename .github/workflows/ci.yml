@@ -109,12 +109,24 @@ jobs:
       - name: Resolve dependencies for izzy
         run: ./scripts/with_izzy_overrides.sh flutter pub get
 
-      - name: Verify no RevenueCat SDK in dependency graph
+      - name: Verify RevenueCat SDK is stubbed out (not the real pub.dev package)
         run: |
-          if ./scripts/with_izzy_overrides.sh flutter pub deps | grep -i "revenuecat"; then
-            echo "RevenueCat dependency detected in izzy build graph"
-            exit 1
-          fi
+          set -euo pipefail
+          # The real RevenueCat SDK and the local stubs share the same package
+          # names and version, so only the dependency *source* distinguishes
+          # them: the stubs resolve via a path override, the real SDK via pub.dev
+          # (hosted). Assert both resolve to the local path stub.
+          deps_json="$(./scripts/with_izzy_overrides.sh flutter pub deps --json 2>/dev/null)"
+          for pkg in purchases_flutter purchases_ui_flutter; do
+            source="$(printf '%s' "$deps_json" | jq -r --arg p "$pkg" \
+              '[.packages[] | select(.name == $p) | .source] | first // "absent"')"
+            echo "$pkg resolved from source: $source"
+            if [ "$source" != "path" ]; then
+              echo "::error::$pkg did not resolve to the local stub (source=$source); the real RevenueCat SDK may be bundled in the izzy build."
+              exit 1
+            fi
+          done
+          echo "OK: RevenueCat packages resolve to local path stubs."
 
       - name: Generate Icon Packs
         run: ./scripts/with_izzy_overrides.sh dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
