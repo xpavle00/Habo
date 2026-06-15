@@ -12,6 +12,10 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - lib/generated/**
+    # Build-time RevenueCat stubs for the Izzy flavor. They are separate
+    # packages pulled in only via pubspec_overrides.yaml, so don't let their
+    # lints break the main project's `flutter analyze`.
+    - tooling/**
     
 linter:
   # The lint rules applied to this project can be customized in the
