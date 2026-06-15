@@ -76,15 +76,21 @@ void main() {
       expect(result, isFalse);
     });
 
-    test('restorePurchases returns false when RevenueCat is disabled', () async {
-      final result = await service.restorePurchases();
-      expect(result, isFalse);
-    });
+    test(
+      'restorePurchases returns false when RevenueCat is disabled',
+      () async {
+        final result = await service.restorePurchases();
+        expect(result, isFalse);
+      },
+    );
 
-    test('getSubscriptionInfo returns null when RevenueCat is disabled', () async {
-      final result = await service.getSubscriptionInfo();
-      expect(result, isNull);
-    });
+    test(
+      'getSubscriptionInfo returns null when RevenueCat is disabled',
+      () async {
+        final result = await service.getSubscriptionInfo();
+        expect(result, isNull);
+      },
+    );
 
     test('initialize is a no-op when RevenueCat is disabled', () async {
       // Should not throw and should not try to touch RevenueCat.
