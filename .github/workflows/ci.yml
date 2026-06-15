@@ -41,45 +41,6 @@ jobs:
           flutter analyze
           flutter test
 
-  build-android:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Create reproducible .env from repo
-        run: |
-          test -f .env.rb || (echo ".env.rb is required for reproducible builds" && exit 1)
-          cp .env.rb .env
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.41.5"
-          channel: "stable"
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Generate Icon Packs
-        run: dart run flutter_iconpicker:generate_packs --packs fontAwesomeIcons
-
-      - name: Build Unsigned APK
-        run: |
-          flutter build apk --release --flavor mainstream --split-per-abi --no-tree-shake-icons
-
-      - name: Upload Unsigned APKs
-        uses: actions/upload-artifact@v4
-        with:
-          name: unsigned-apks
-          path: build/app/outputs/flutter-apk/*-release.apk
-
   build-android-izzy:
     runs-on: ubuntu-latest
     needs: test
