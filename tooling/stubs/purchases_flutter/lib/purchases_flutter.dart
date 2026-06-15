@@ -1,5 +1,3 @@
-library purchases_flutter;
-
 class PurchasesConfiguration {
   final String apiKey;
   String? appUserID;
