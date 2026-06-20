@@ -1,65 +1,163 @@
-[![Screens](https://habo.space/img/social/1.png)](https://habo.space)
+<div align="center">
 
-![Codemagic build status](https://api.codemagic.io/apps/6154a5e032cdf915d1ce822b/6154a5e032cdf915d1ce822a/status_badge.svg)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Translation status](https://hosted.weblate.org/widget/habo/habo/svg-badge.svg)](https://hosted.weblate.org/engage/habo/)
-![GitHub release (with filter)](https://img.shields.io/github/v/release/xpavle00/Habo)
-![GitHub Repo stars](https://img.shields.io/github/stars/xpavle00/Habo)
+<img src="https://habo.space/images/logo.svg" alt="Habo Logo" height="80" />
 
+# Habo
 
+**Simple, open-source habit tracker for Android & iOS**
 
-# Habo - Open-Source Habit Tracking App
+[![Stars](https://img.shields.io/github/stars/xpavle00/Habo?style=flat-square&color=FFD700)](https://github.com/xpavle00/Habo/stargazers)
+[![Forks](https://img.shields.io/github/forks/xpavle00/Habo?style=flat-square)](https://github.com/xpavle00/Habo/network/members)
+[![Issues](https://img.shields.io/github/issues/xpavle00/Habo?style=flat-square)](https://github.com/xpavle00/Habo/issues)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=flat-square&logo=flutter)](https://flutter.dev)
+[![Weblate](https://img.shields.io/badge/translations-Weblate-brightgreen?style=flat-square)](https://hosted.weblate.org/projects/habo/)
 
-Introducing Habo, the open-source habit tracker app that helps you create and maintain healthy habits for a better life. With its user-friendly interface, Habo makes it easy to track your daily routines and monitor your progress.
+<br/>
 
-With Habo, you can customize your own habit list, set reminders, and add notes to help you stay motivated. Whether you're looking to improve your exercise routine, eat healthier, or simply adopt better habits, Habo is here to help you succeed. 
+[<img src="https://habo.space/images/googleplay_badge_hu_edf4094967c7bf97.webp" height="50" alt="Get it on Google Play" />](https://play.google.com/store/apps/details?id=com.pavlenko.Habo)&nbsp;&nbsp;
+[<img src="https://habo.space/images/appstore_badge_black.svg" height="50" alt="Download on the App Store" />](https://apps.apple.com/us/app/habo-habit-tracker/id1670223360)&nbsp;&nbsp;
+[<img src="https://habo.space/images/izzy_badge_hu_1e22e7507a064b3b.webp" height="50" alt="Get it on IzzyOnDroid" />](https://apt.izzysoft.de/fdroid/index/apk/com.pavlenko.Habo)
 
-It is built using the [Flutter](https://flutter.dev/) framework, a popular and powerful cross-platform development tool.
+⭐ 4.9/5 on iOS &nbsp;·&nbsp; ⭐ 4.6/5 on Google Play
+
+</div>
+
+---
+
+<p align="center">
+  <!-- <img src="https://habo.space/img/social/github_hero.png" width="700" alt="Habo screenshots" /> -->
+  <img width="1400" height="600" alt="Frame 32" src="https://github.com/user-attachments/assets/02703166-db15-44f9-9c01-d065d9153af4" />
+</p> 
+
+## What is Habo?
+
+Habo is a fast, minimalist habit tracker that respects your privacy. No accounts required. No data harvesting. No clutter, just a clean, focused tool for building routines that stick.
+
+**Habo 4.0** ships cross-device sync with end-to-end encryption, automatic encrypted backups, and full self-hosting support. Your habit data is yours, always.
+
+---
 
 ## Features
 
-- Customize your habit list
-- Set daily reminders
-- Track your progress with insightful statistics
-- Add notes to help keep you motivated
-- And more!
+### ☁️ Habo Sync: E2E Encrypted, Zero-Knowledge
+Your data is encrypted on your device before it ever leaves it. The server sees only ciphertext: we cannot read your habits, notes, or streaks. Not even if we wanted to.
 
-## Getting Started
+- Data encrypted locally with your Master Password before upload
+- Zero-knowledge architecture: no plaintext ever touches the server
+- Device-generated encryption keys
+- Automatic encrypted backups: switch phones without losing your history
+- **Self-hostable**: run your own Supabase backend, free forever
 
-Currently available on the Play Store, IzzyOnDroid, and App Store.
+### 📱 Core Tracking
+- **Multiple completion types**: yes/no, numeric, skip (doesn't break streaks)
+- **Notes & comments**: add context to each check-in
+- **Smart reminders**: gentle nudges at the right time
+- **Calendar view**: see streaks and completions on a monthly grid
+- **Statistics**: streaks, trends, and completions over time
 
-[![Google play store](https://habo.space/img/resources/en_get.svg)](https://play.google.com/store/apps/details?id=com.pavlenko.Habo)
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroidButtonGreyBorder_nofont.png" height="40" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/com.pavlenko.Habo)
-<a target="_blank" href="https://apps.apple.com/us/app/habo-habit-tracker/id1670223360?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 134px; height: 40px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1682121600" alt="Download on the App Store" style="border-radius: 13px; width: 134px; height: 40px;"></a>
+### 🎨 Personalization
+- Dark, Light, and OLED themes
+- Material You support (Android)
+- Custom button colors
+- Drag-and-drop habit reordering
+- Categories to group habits by theme
 
+### 🔒 Privacy & Control
+- **Offline first**: everything works without an internet connection
+- **Biometric lock**: Face ID, Touch ID, or passcode
+- **Export & backup**: own your data, always
+- **Archive**: pause habits without losing history
+- **URL scheme**: deep-link into Habo from Shortcuts and other apps
+- **Open source**: GPL-3.0 licensed, auditable, forkable
 
+### 🌍 Translations
+Community-contributed translations via [Weblate](https://hosted.weblate.org/projects/habo/). Want to help bring Habo to your language? Contributions are welcome: no coding required.
+
+---
+
+## Self-Hosting
+
+Habo Sync can run on your own Supabase backend. All sync features are available without a subscription.
+
+> **Self-hosting is free, forever.**
+
+### Prerequisites
+- A [Supabase](https://supabase.com) account: the free tier is enough
+- Node.js (for the Supabase CLI via `npx`)
+
+### Setup
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/xpavle00/Habo.git
+cd Habo
+
+# 2. Link to your Supabase project
+npx supabase link --project-ref <your-project-ref>
+
+# 3. Apply database migrations
+npx supabase db push
+
+# 4. Deploy the edge function
+npx supabase functions deploy delete-account
+```
+
+Then in the Habo app: **Settings → Server**, paste your Supabase Project URL and anon key, and tap **Test Connection & Save**.
+
+→ Full details and troubleshooting in [`supabase/README.md`](supabase/README.md)
+
+---
+
+## Building from Source
+
+**Requirements**
+- Flutter 3.x
+- Dart SDK (bundled with Flutter)
+- Android Studio or Xcode for device targets
+
+```bash
+git clone https://github.com/xpavle00/Habo.git
+cd Habo
+flutter pub get
+flutter run
+```
+
+---
 
 ## Contributing
 
-We welcome contributions from the community to help make Habo even better! Whether you're a developer, designer, or just an enthusiastic user, there are many ways you can help. 
+Contributions are welcome and appreciated. Here's how to help:
 
-Please read our [contributing guidelines](CONTRIBUTING.md) to learn how you can get involved and make an impact.
+- **Bug reports & feature requests** → [Open an issue](https://github.com/xpavle00/Habo/issues)
+- **Code contributions** → Fork, branch, PR: please open an issue first for large changes
+- **Translations** → Join the project on [Weblate](https://hosted.weblate.org/projects/habo/) - no coding required
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a pull request.
+
+---
+
+## Support the Project
+
+Habo is a one-person project built in the open. If it's useful to you, consider supporting its development:
+
+- ⭐ Star the repo: it helps others find the project
+- ☕ [Buy me a coffee](https://buymeacoffee.com/peterpavlenko)
+- 💬 Leave a review on the [App Store](https://apps.apple.com/us/app/habo-habit-tracker/id1670223360) or [Google Play](https://play.google.com/store/apps/details?id=com.pavlenko.Habo)
+- 🌐 Subscribe to Habo Sync: hosted sync funds continued development
+
+---
 
 ## License
 
-Habo is released under the [GPL-3.0 license](LICENSE). Feel free to use, modify, and distribute it as you wish. 
+Habo is released under the [GNU General Public License v3.0](LICENSE).
 
-## Localization
-We believe that the best tools should be available to everyone, no matter what language they speak. To make Habo more accessible to users worldwide, we're excited to offer community-driven localization through Weblate.
+---
 
-<a href="https://hosted.weblate.org/engage/habo/">
-<img src="https://hosted.weblate.org/widget/habo/open-graph.png" alt="Translation status" width="350" />
-</a>
+<div align="center">
 
-## Acknowledgments
+**[habo.space](https://habo.space)** &nbsp;·&nbsp; [Privacy Policy](https://habo.space/terms#privacy) &nbsp;·&nbsp; [Sync](https://habo.space/sync)
 
-Special thanks to [Flutter](https://flutter.dev/) and [Dart](https://dart.dev/) teams for creating such amazing tools. 
+Made with ❤️ by [Peter Pavlenko](https://github.com/xpavle00)
 
-We hope you enjoy using Habo and find it helpful in building better habits for a better life!
-
-## Support
-
-If you like this project you can [buy me a coffee](https://www.buymeacoffee.com/peterpavlenko).
-
-<a href="https://www.buymeacoffee.com/peterpavlenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
+</div>
