@@ -2,96 +2,96 @@
     "habits": "Kebiasaan:",
     "statistics": "Statistik",
     "emptyList": "Daftar kosong",
-    "noDataAboutHabits": "Tidak tersedia data untuk kebiasaan ini.",
-    "topStreak": "Streak terbaik",
+    "noDataAboutHabits": "Tidak ada data tentang kebiasaan.",
+    "topStreak": "Rekor streak",
     "currentStreak": "Streak saat ini",
     "total": "Total",
     "unknown": "Tidak diketahui",
     "warning": "Peringatan",
-    "allHabitsWillBeReplaced": "Kebiasaan Anda akan diganti dengan data cadangan.",
+    "allHabitsWillBeReplaced": "Semua kebiasaan akan diganti dengan kebiasaan dari cadangan.",
     "restore": "Pulihkan",
     "cancel": "Batal",
     "settings": "Pengaturan",
     "theme": "Tema",
-    "firstDayOfWeek": "Hari pertama dalam minggu",
-    "notifications": "Pengingat",
-    "notificationTime": "Waktu pengingat",
+    "firstDayOfWeek": "Hari pertama dalam seminggu",
+    "notifications": "Notifikasi",
+    "notificationTime": "Waktu notifikasi",
     "soundEffects": "Efek suara",
     "showMonthName": "Tampilkan nama bulan",
     "setColors": "Atur warna",
     "backup": "Cadangan",
     "create": "Buat",
-    "onboarding": "Pengenalan awal",
+    "onboarding": "Onboarding",
     "about": "Tentang",
     "habo": "Habo",
     "copyright": "©2023 Habo",
     "termsAndConditions": "Syarat dan Ketentuan",
     "privacyPolicy": "Kebijakan Privasi",
-    "disclaimer": "Pernyataan Penting",
-    "sourceCode": "Kode Sumber (GitHub)",
-    "ifYouWantToSupport": "Jika kamu ingin mendukung Habo, kamu bisa:",
-    "buyMeACoffee": "Membelikan aku segelas kopi",
-    "reset": "Atur Ulang",
+    "disclaimer": "Penafian",
+    "sourceCode": "Kode sumber (GitHub)",
+    "ifYouWantToSupport": "Jika Anda ingin mendukung Habo, Anda dapat:",
+    "buyMeACoffee": "Belikan saya kopi",
+    "reset": "Atur ulang",
     "done": "Selesai",
-    "congratulationsReward": "Selamat! Kamu mendapatkan:",
-    "ohNoSanction": "Yah, Anda mendapat sanksi:",
+    "congratulationsReward": "Selamat! Hadiah Anda:",
+    "ohNoSanction": "Oh tidak! Sanksi Anda:",
     "month": "Bulan",
     "week": "Minggu",
-    "habitLoop": "Kebiasaan Berulang",
-    "habitLoopDescription": "Kebiasaan Berulang adalah model psikologis yang menjelaskan bahwa kebiasaan terbentuk melalui lingkaran Isyarat → Rutinitas → Hadiah yang saling memperkuat sehingga kebiasaan semakin tertanam dan mudah diulangi.",
+    "habitLoop": "Siklus kebiasaan",
+    "habitLoopDescription": "Siklus kebiasaan adalah model psikologis yang menjelaskan proses pembentukan kebiasaan. Model ini terdiri dari tiga komponen: Pemicu, Rutinitas, dan Hadiah. Pemicu memicu Rutinitas (tindakan yang menjadi kebiasaan), yang kemudian diperkuat oleh Hadiah, sehingga membentuk siklus yang membuat kebiasaan semakin tertanam dan lebih mungkin diulang.",
     "cue": "Pemicu",
-    "cueDescription": "adalah hal yang memulai kebiasaanmu. Bisa berupa: waktu tertentu, lokasi, perasaan, atau sebuah kejadian.",
+    "cueDescription": "adalah pemicu yang memulai kebiasaan Anda. Ini bisa berupa waktu tertentu, lokasi, perasaan, atau suatu peristiwa.",
     "routine": "Rutinitas",
-    "routineDescription": "adalah tindakan yang kamu lakukan sebagai respon terhadap pemicu; inilah kebiasaan itu sendiri.",
+    "routineDescription": "adalah tindakan yang Anda lakukan sebagai respons terhadap pemicu. Inilah kebiasaan itu sendiri.",
     "reward": "Hadiah",
-    "rewardDescription": "adalah manfaat atau perasaan positif yang kamu rasakan setelah melakukan rutinitas; hal ini memperkuat kebiasaanmu.",
-    "editHabit": "Edit Kebiasaan",
+    "rewardDescription": "adalah manfaat atau perasaan positif yang Anda alami setelah melakukan rutinitas. Ini memperkuat kebiasaan.",
+    "editHabit": "Ubah Kebiasaan",
     "createHabit": "Buat Kebiasaan",
     "delete": "Hapus",
-    "habitTitleEmptyError": "Judul kebiasaan tidak boleh dikosongi.",
+    "habitTitleEmptyError": "Judul kebiasaan tidak boleh kosong.",
     "save": "Simpan",
-    "exercise": "Latihan",
+    "exercise": "Olahraga",
     "habit": "Kebiasaan",
-    "useTwoDayRule": "Pakai metode Dua-Hari",
-    "twoDayRule": "Metode Dua Hari",
-    "twoDayRuleDescription": "Dengan metode Dua Hari, kamu boleh melewatkan satu hari tanpa kehilangan streak, asalkan hari berikutnya tercapai.",
-    "advancedHabitBuilding": "Membangun kebiasaan tingkat lanjut",
-    "advancedHabitBuildingDescription": "Bagian ini membantu kamu mendefinisikan kebiasaan dengan lebih jelas menggunakan Kebiasaan Berulang. Kamu perlu menentukan pemicu, rutinitas, dan hadiah untuk setiap kebiasaan.",
-    "at7AM": "Jam 7 Pagi",
-    "do50PushUps": "Lakukan 50 push up",
-    "fifteenMinOfVideoGames": "15 menit bermain game",
+    "useTwoDayRule": "Gunakan aturan dua hari",
+    "twoDayRule": "Aturan dua hari",
+    "twoDayRuleDescription": "Dengan aturan dua hari, Anda dapat melewatkan satu hari dan tidak kehilangan streak jika hari berikutnya berhasil.",
+    "advancedHabitBuilding": "Pengembangan kebiasaan tingkat lanjut",
+    "advancedHabitBuildingDescription": "Bagian ini membantu Anda mendefinisikan kebiasaan dengan lebih baik menggunakan siklus kebiasaan. Anda sebaiknya mendefinisikan pemicu, rutinitas, dan hadiah untuk setiap kebiasaan.",
+    "at7AM": "Pukul 7:00 pagi",
+    "do50PushUps": "Lakukan 50 push-up",
+    "fifteenMinOfVideoGames": "15 menit bermain video game",
     "showReward": "Tampilkan hadiah",
-    "remainderOfReward": "Pengingat hadiah setelah kebiasaan yang tercapai.",
-    "habitContract": "Kontrak kebiasaaan",
-    "habitContractDescription": "Meskipun penguatan positif lebih dianjurkan, sebagian orang memilih menggunakan kontrak kebiasaan. Kontrak kebiasaan memungkinkan kamu menentukan sanksi yang akan diberlakukan jika melewatkan kebiasaan, dan dapat melibatkan teman yang membantu mengawasi tujuanmu.",
-    "donateToCharity": "Donasikan 10$ untuk amal",
+    "remainderOfReward": "Pengingat hadiah setelah rutinitas berhasil.",
+    "habitContract": "Kontrak kebiasaan",
+    "habitContractDescription": "Meskipun penguatan positif direkomendasikan, sebagian orang mungkin memilih kontrak kebiasaan. Kontrak kebiasaan memungkinkan Anda menetapkan sanksi yang akan diberlakukan jika Anda melewatkan kebiasaan, dan dapat melibatkan mitra akuntabilitas yang membantu mengawasi tujuan Anda.",
+    "donateToCharity": "Donasikan $10 ke badan amal",
     "sanction": "Sanksi",
     "showSanction": "Tampilkan sanksi",
-    "remainderOfSanction": "Pengingat sanksi setelah rutinitas tidak tercapai.",
+    "remainderOfSanction": "Pengingat sanksi setelah rutinitas tidak berhasil.",
     "dan": "Dan",
-    "accountabilityPartner": "Teman Penanggungjawab",
+    "accountabilityPartner": "Mitra akuntabilitas",
     "add": "Tambah",
-    "haboNeedsPermission": "Habo membutuhkan izin untuk mengirim notifikasi agar berfungsi dengan baik.",
+    "haboNeedsPermission": "Habo memerlukan izin untuk mengirim notifikasi agar dapat berfungsi dengan baik.",
     "allow": "Izinkan",
     "date": "Tanggal",
-    "check": "Cek",
+    "check": "Centang",
     "fail": "Gagal",
     "skip": "Lewati",
     "note": "Catatan",
-    "yourCommentHere": "Tuliskan catatan di sini",
+    "yourCommentHere": "Catatan Anda di sini",
     "close": "Tutup",
     "createYourFirstHabit": "Buat kebiasaan pertama Anda.",
-    "modify": "Edit",
-    "backupFailedError": "EROR: Gagal membuat cadangan.",
-    "restoreFailedError": "EROR: Gagal memulihkan cadangan.",
-    "habitDeleted": "Kebiasaan telah dihapus.",
-    "undo": "Batalkan",
+    "modify": "Ubah",
+    "backupFailedError": "ERROR: Gagal membuat cadangan.",
+    "restoreFailedError": "ERROR: Gagal memulihkan cadangan.",
+    "habitDeleted": "Kebiasaan dihapus.",
+    "undo": "Urungkan",
     "appNotifications": "Notifikasi aplikasi",
-    "appNotificationsChannel": "Saluran notifikasi untuk notifikasi aplikasi",
-    "habitNotifications": "Notifikasi Kebiasaan",
-    "habitNotificationsChannel": "Saluran notifikasi untuk notifikasi kebiasaan",
+    "appNotificationsChannel": "Channel notifikasi untuk notifikasi aplikasi",
+    "habitNotifications": "Notifikasi kebiasaan",
+    "habitNotificationsChannel": "Channel notifikasi untuk notifikasi kebiasaan",
     "doNotForgetToCheckYourHabits": "Jangan lupa untuk memeriksa kebiasaan Anda.",
-    "themeSelect": "{theme, select, device {Perangkat} light {Terang} dark {Gelap} oled {Gelap OLED} materialYou {Material You} other{Perangkat}}",
+    "themeSelect": "{theme, select, device {Perangkat} light {Terang} dark {Gelap} oled {Hitam OLED} materialYou {Material You} other {Perangkat}}",
     "@themeSelect": {
         "placeholders": {
             "theme": {
@@ -100,27 +100,27 @@
         }
     },
     "defineYourHabits": "Tentukan kebiasaan Anda",
-    "defineYourHabitsDescription": "Untuk lebih berpegang teguh pada kebiasaanmu, kamu dapat mendefinisikan:",
+    "defineYourHabitsDescription": "Agar lebih konsisten menjalankan kebiasaan, Anda dapat menentukan:",
     "cueNumbered": "1. Pemicu",
     "routineNumbered": "2. Rutinitas",
     "rewardNumbered": "3. Hadiah",
     "logYourDays": "Catat hari-hari Anda",
-    "successful": "Tercapai",
-    "notSoSuccessful": "Tidak tercapai",
+    "successful": "Berhasil",
+    "notSoSuccessful": "Kurang berhasil",
     "skipDoesNotAffectStreaks": "Lewati (tidak memengaruhi streak)",
-    "observeYourProgress": "Amati kemajuamu",
-    "trackYourProgress": "Kamu dapat melacak kemajuan melalui tampilan kalender di setiap kebiasaan atau di halaman statistik.",
+    "observeYourProgress": "Amati progres Anda",
+    "trackYourProgress": "Anda dapat melacak progres melalui tampilan kalender di setiap kebiasaan atau di halaman statistik.",
     "backupCreatedSuccessfully": "Cadangan berhasil dibuat!",
-    "backupFailed": "Pencadangan gagal!",
+    "backupFailed": "Cadangan gagal dibuat!",
     "restoreCompletedSuccessfully": "Pemulihan berhasil diselesaikan!",
     "restoreFailed": "Pemulihan gagal!",
     "fileNotFound": "File tidak ditemukan",
-    "fileTooLarge": "File terlalu besar (maks 10MB)",
+    "fileTooLarge": "File terlalu besar (maks. 10MB)",
     "invalidBackupFile": "File cadangan tidak valid",
-    "progress": "Kemajuan",
+    "progress": "Progres",
     "enterAmount": "Masukkan jumlah",
-    "complete": "Tercapai",
-    "saveProgress": "Simpan Kemajuan",
+    "complete": "Selesai",
+    "saveProgress": "Simpan Progres",
     "currentProgress": "Saat ini: {current} {unit}",
     "@currentProgress": {
         "placeholders": {
@@ -132,7 +132,7 @@
             }
         }
     },
-    "targetProgress": "Target : {target} {unit}",
+    "targetProgress": "Target: {target} {unit}",
     "@targetProgress": {
         "placeholders": {
             "target": {
@@ -157,22 +157,22 @@
             }
         }
     },
-    "numericHabit": "Kebiasaan numerik",
+    "numericHabit": "Progresif",
     "targetValue": "Nilai target",
     "partialValue": "Nilai parsial",
     "unit": "Satuan",
     "habitType": "Jenis kebiasaan",
-    "booleanHabit": "Kebiasaan Sederhana",
-    "slider": "Bilah Geser",
-    "input": "Kolom Masukan",
-    "numericHabitDescription": "Kebiasaan numerik memungkinkan Anda melacak kemajuan secara bertahap sepanjang hari.",
-    "partialValueDescription": "Untuk melacak kemajuan dalam peningkatan yang lebih kecil",
+    "booleanHabit": "Dapat dicentang (Ya/Tidak)",
+    "slider": "Slider",
+    "input": "Input",
+    "numericHabitDescription": "Kebiasaan numerik memungkinkan Anda melacak progres secara bertahap sepanjang hari.",
+    "partialValueDescription": "Untuk melacak progres dalam peningkatan yang lebih kecil",
     "categories": "Kategori",
     "addCategory": "Tambah Kategori",
-    "editCategory": "Edit Kategori",
+    "editCategory": "Ubah Kategori",
     "category": "Kategori",
     "noCategoriesYet": "Belum ada kategori",
-    "createFirstCategory": "Buat kategori pertamamu untuk mengelola kebiasaan",
+    "createFirstCategory": "Buat kategori pertama Anda untuk mengatur kebiasaan",
     "pleaseEnterCategoryTitle": "Silakan masukkan judul kategori",
     "categoryAlreadyExists": "Kategori \"{title}\" sudah ada",
     "@categoryAlreadyExists": {
@@ -223,7 +223,7 @@
         }
     },
     "selectCategories": "Pilih Kategori",
-    "selectedCategories": "Kategori Terpilih {count}",
+    "selectedCategories": "Kategori Terpilih ({count})",
     "@selectedCategories": {
         "placeholders": {
             "count": {
@@ -253,27 +253,27 @@
     "showCategories": "Tampilkan Kategori",
     "archive": "Arsipkan",
     "unarchive": "Batalkan arsip",
-    "archiveHabit": "Arsipkan Kebiasaan",
-    "unarchiveHabit": "Hapus dari arsip",
-    "archivedHabits": "Kebiasaan Diarsip",
+    "archiveHabit": "Arsipkan kebiasaan",
+    "unarchiveHabit": "Batalkan arsip kebiasaan",
+    "archivedHabits": "Kebiasaan yang Diarsipkan",
     "noArchivedHabits": "Tidak ada kebiasaan yang diarsipkan",
     "viewArchivedHabits": "Lihat kebiasaan yang diarsipkan",
-    "habitArchived": "Kebiasaan yang diarsipkan",
-    "habitUnarchived": "Kebiasaan yang tidak diarsipkan",
+    "habitArchived": "Kebiasaan diarsipkan",
+    "habitUnarchived": "Arsip kebiasaan dibatalkan",
     "biometric": "Biometrik",
     "biometricLockEnabled": "Kunci biometrik diaktifkan",
     "biometricLockDisabled": "Kunci biometrik dinonaktifkan",
     "authenticationError": "Kesalahan autentikasi",
-    "biometricAuthenticationRequired": "Diperlukan otentikasi biometrik",
-    "setupFingerprintFaceUnlock": "Silakan atur sidik jari atau buka kunci wajah Anda di pengaturan perangkat",
-    "touchSensor": "Sensor sentuh",
+    "biometricAuthenticationRequired": "Autentikasi biometrik diperlukan",
+    "setupFingerprintFaceUnlock": "Silakan atur sidik jari atau face unlock di pengaturan perangkat",
+    "touchSensor": "Sentuh sensor",
     "biometricNotRecognized": "Biometrik tidak dikenali, coba lagi",
-    "biometricRequired": "Diperlukan biometrik",
+    "biometricRequired": "Biometrik diperlukan",
     "biometricAuthenticationSucceeded": "Autentikasi biometrik berhasil",
     "deviceCredentialsRequired": "Kredensial perangkat diperlukan",
     "setupDeviceCredentials": "Silakan atur kredensial perangkat di pengaturan",
     "setupTouchIdFaceId": "Silakan atur Touch ID atau Face ID Anda di pengaturan perangkat",
-    "reenableTouchIdFaceId": "Aktifkan kembali Touch ID atau Face ID Anda",
+    "reenableTouchIdFaceId": "Silakan aktifkan kembali Touch ID atau Face ID Anda",
     "biometricLock": "Kunci Biometrik",
     "biometricLockDescription": "Amankan aplikasi dengan {authMethod}",
     "@biometricLockDescription": {
@@ -285,8 +285,8 @@
     },
     "authenticateToEnable": "Autentikasi untuk mengaktifkan kunci biometrik",
     "authenticateToAccess": "Silakan autentikasi untuk mengakses Habo",
-    "authenticationRequired": "Otentikasi Diperlukan",
-    "authenticationFailedMessage": "Silakan autentikasi untuk mengakses Habo menggunakan {authMethod}",
+    "authenticationRequired": "Autentikasi Diperlukan",
+    "authenticationFailedMessage": "Silakan autentikasi menggunakan {authMethod} untuk mengakses Habo",
     "@authenticationFailedMessage": {
         "placeholders": {
             "authMethod": {
@@ -295,8 +295,8 @@
         }
     },
     "tryAgain": "Coba Lagi",
-    "authenticating": "Mengautentikasi…",
-    "authenticate": "Mengautentikasi",
+    "authenticating": "Sedang mengautentikasi…",
+    "authenticate": "Autentikasi",
     "buildingBetterHabits": "Membangun Kebiasaan yang Lebih Baik",
     "authenticationPrompt": "Silakan autentikasi menggunakan {authMethod} untuk mengakses kebiasaan Anda",
     "@authenticationPrompt": {
@@ -306,10 +306,10 @@
             }
         }
     },
-    "devicePinPatternPassword": "PIN, Pola, atau Kata Sandi Perangkat",
+    "devicePinPatternPassword": "PIN, Pola, atau Kata Sandi perangkat",
     "fingerprint": "Sidik jari",
-    "iris": "Iris Mata",
-    "whatsNewTitle": "Apa yang baru",
+    "iris": "Iris",
+    "whatsNewTitle": "Yang Baru",
     "whatsNewVersion": "Versi {version}",
     "@whatsNewVersion": {
         "placeholders": {
@@ -318,28 +318,321 @@
             }
         }
     },
-    "featureNumericTitle": "Nilai numerik dalam kebiasaan",
-    "featureNumericDesc": "Lacak jumlah seperti halaman buku yang dibaca atau berapa gelas air yang diminum",
-    "featureDeepLinksTitle": "Skema URL (tautan dalam)",
+    "featureNumericTitle": "Nilai numerik pada kebiasaan",
+    "featureNumericDesc": "Lacak jumlah seperti gelas air yang diminum atau halaman yang dibaca",
+    "featureDeepLinksTitle": "Skema URL (deep link)",
     "featureDeepLinksDesc": "Buka Habo langsung ke layar seperti pengaturan atau buat",
     "featureCategoriesTitle": "Kategori",
     "featureCategoriesDesc": "Atur kebiasaan dengan filter kategori",
     "featureArchiveTitle": "Arsip",
-    "featureArchiveDesc": "Sembunyikan kebiasaan yang tidak Anda lacak lagi tanpa dihapus",
+    "featureArchiveDesc": "Sembunyikan kebiasaan yang აღარ lagi Anda lacak tanpa menghapusnya",
     "featureMaterialYouTitle": "Tema Material You (Android)",
-    "featureMaterialYouDesc": "Warna dinamis yang cocok dengan wallpaper Anda",
+    "featureMaterialYouDesc": "Warna dinamis yang menyesuaikan wallpaper Anda",
     "featureSoundTitle": "Mesin suara baru",
     "featureSoundDesc": "Volume yang dapat disesuaikan",
     "featureLockTitle": "Fitur kunci",
     "featureLockDesc": "Amankan aplikasi dengan Face ID / Touch ID / biometrik",
-    "featureIosSoundMixingTitle": "Pencampuran suara tetap",
+    "featureIosSoundMixingTitle": "Perbaikan pencampuran suara",
     "featureIosSoundMixingDesc": "Suara Habo tidak lagi mengganggu musik atau podcast Anda",
     "featureHomescreenWidgetTitle": "Widget layar utama",
-    "featureHomescreenWidgetDesc": "Melihat kemajuan kebiasaan Anda secara sekilas dari layar utama (eksperimental)",
-    "featureLongpressCheckTitle": "Periksa tekan lama",
-    "featureLongpressCheckDesc": "Tekan lama pada kebiasaan untuk mengubah status dengan cepat",
+    "featureHomescreenWidgetDesc": "Lihat progres kebiasaan Anda sekilas dari layar utama (eksperimental)",
+    "featureLongpressCheckTitle": "Centang dengan tekan lama",
+    "featureLongpressCheckDesc": "Tekan lama pada tombol kebiasaan untuk mengubah status dengan cepat",
     "haboSyncComingSoon": "Segera Hadir",
-    "haboSyncDescription": "Sinkronkan kebiasaan Anda di semua perangkat dengan layanan cloud terenkripsi end-to-end Habo.",
+    "haboSyncDescription": "Habo Sync telah hadir! Sinkronkan dan cadangkan kebiasaan Anda di semua perangkat dengan sinkronisasi cloud terenkripsi end-to-end.",
     "haboSyncLearnMore": "Pelajari lebih lanjut di habo.space/sync",
-    "habitsToday": "Kebiasaan hari ini"
+    "habitsToday": "Kebiasaan hari ini",
+    "or": "atau",
+    "oneTapCheck": "Satu ketukan untuk centang",
+    "tapCheckLongPressMenu": "Ketuk untuk centang, tekan lama untuk menu",
+    "categoryName": "Nama kategori",
+    "createCategory": "Buat kategori",
+    "all": "Semua",
+    "selectIcon": "Pilih ikon",
+    "searchIcons": "Cari",
+    "syncTitle": "Sinkronisasi",
+    "syncAndBackupYourData": "Sinkronkan dan cadangkan data Anda",
+    "server": "Server",
+    "customServer": "Server kustom",
+    "haboCloudDefault": "Habo Cloud (default)",
+    "syncNotAvailable": "Sinkronisasi tidak tersedia",
+    "syncNow": "Sinkronkan Sekarang",
+    "subscribe": "Berlangganan",
+    "restoreBackupQuestion": "Pulihkan Cadangan?",
+    "habitsCount": "{count} kebiasaan",
+    "@habitsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "anUnexpectedErrorOccurred": "Terjadi kesalahan yang tidak terduga",
+    "anUnexpectedErrorOccurredTryAgain": "Terjadi kesalahan yang tidak terduga. Silakan coba lagi.",
+    "resetPassword": "Atur Ulang Kata Sandi",
+    "sendResetLink": "Kirim Tautan Reset",
+    "pleaseEnterValidEmail": "Silakan masukkan alamat email yang valid",
+    "checkEmailForResetLink": "Periksa email Anda untuk tautan pengaturan ulang kata sandi.",
+    "failedToSendResetLink": "Gagal mengirim tautan reset. Silakan coba lagi.",
+    "appleSignInError": "Kesalahan Sign In Apple: {error}",
+    "@appleSignInError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "signInFailedPleaseTryAgain": "Gagal masuk. Silakan coba lagi.",
+    "enterEmailForResetLink": "Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.",
+    "emailLabel": "Email",
+    "passwordLabel": "Kata Sandi",
+    "confirmPasswordLabel": "Konfirmasi Kata Sandi",
+    "createAccountToBackupAndSync": "Buat akun untuk mencadangkan & menyinkronkan.",
+    "welcomeBackStayConsistent": "Selamat datang kembali! Mari tetap konsisten.",
+    "emailIsRequired": "Email wajib diisi",
+    "enterValidEmail": "Masukkan email yang valid",
+    "passwordIsRequired": "Kata sandi wajib diisi",
+    "passwordMinLengthError": "Kata sandi harus terdiri dari minimal 8 karakter",
+    "passwordsDoNotMatch": "Kata sandi tidak cocok",
+    "createAccount": "Buat Akun",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "alreadyHaveAnAccount": "Sudah punya akun? ",
+    "dontHaveAnAccount": "Belum punya akun? ",
+    "orContinueWith": "atau lanjutkan dengan",
+    "continueWithApple": "Lanjutkan dengan Apple",
+    "continueWithGoogle": "Lanjutkan dengan Google",
+    "forgotPassword": "Lupa kata sandi?",
+    "pauseSyncing": "Jeda Sinkronisasi",
+    "pausesSyncingAndBackup": "Menjeda sinkronisasi dan pencadangan",
+    "restoreData": "Pulihkan Data",
+    "fromPreviousBackups": "Dari cadangan sebelumnya",
+    "profile": "Profil",
+    "emailPasswordAndAccount": "Email, kata sandi, dan akun",
+    "signOut": "Keluar",
+    "syncingPaused": "Sinkronisasi Dijeda",
+    "syncingPausedDesc": "Dijeda",
+    "neverSynced": "Belum pernah disinkronkan",
+    "paused": "Dijeda",
+    "syncingHero": "Menyinkronkan...",
+    "dataBeingSynchronized": "Data Anda sedang disinkronkan",
+    "syncingToCloud": "Menyinkronkan ke Cloud",
+    "everythingIsSafe": "Semuanya aman",
+    "connectedToCloud": "Terhubung ke Cloud",
+    "syncError": "Kesalahan Sinkronisasi",
+    "tapSyncNowToRetry": "Ketuk Sinkronkan Sekarang untuk mencoba lagi",
+    "errorText": "Kesalahan",
+    "youAreOffline": "Anda sedang offline",
+    "willSyncWhenConnected": "Akan disinkronkan saat terhubung",
+    "offline": "Offline",
+    "notConfigured": "Belum dikonfigurasi",
+    "setUpSyncToEnable": "Siapkan sinkronisasi untuk mengaktifkan",
+    "subscriptionNeeded": "Perlu berlangganan",
+    "subscribeToEnableSync": "Berlangganan untuk mengaktifkan Habo Sync",
+    "notActive": "Tidak aktif",
+    "syncAndBackup": "Sinkronisasi & Cadangan",
+    "unlockSyncAndBackup": "Buka Sinkronisasi & Cadangan",
+    "keepHabitsSafeAndSynced": "Jaga kebiasaan Anda tetap aman dan tersinkron di semua perangkat Anda.",
+    "realTimeSyncAcrossDevices": "Sinkronisasi real-time di semua perangkat",
+    "automaticCloudBackups": "Cadangan cloud otomatis",
+    "endToEndEncryption": "Enkripsi end-to-end",
+    "restorePurchases": "Pulihkan Pembelian",
+    "lastSyncedJustNow": "Terakhir disinkronkan baru saja",
+    "lastSyncedMinsAgo": "Terakhir disinkronkan {minutes} menit lalu",
+    "@lastSyncedMinsAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedHoursAgo": "Terakhir disinkronkan {hours} jam lalu",
+    "@lastSyncedHoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedDaysAgo": "Terakhir disinkronkan {days} hari{plural} lalu",
+    "@lastSyncedDaysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            },
+            "plural": {
+                "type": "String"
+            }
+        }
+    },
+    "todayAt": "Hari ini pukul {time}",
+    "@todayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "yesterdayAt": "Kemarin pukul {time}",
+    "@yesterdayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "weekdayAt": "{weekday} pukul {time}",
+    "@weekdayAt": {
+        "placeholders": {
+            "weekday": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreBackupConfirmation": "Ini akan mengganti semua data saat ini dengan cadangan dari {date}.\n\nTindakan ini tidak dapat dibatalkan.",
+    "@restoreBackupConfirmation": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "backupRestoredSuccessfully": "Cadangan berhasil dipulihkan!",
+    "restoreFailedWithError": "Pemulihan gagal: {error}",
+    "@restoreFailedWithError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreFailedTryAgain": "Pemulihan gagal. Silakan coba lagi.",
+    "chooseBackupToRestore": "Pilih cadangan yang ingin dipulihkan",
+    "noBackupsAvailable": "Belum ada cadangan yang tersedia.\nCadangan dibuat secara otomatis saat sinkronisasi.",
+    "purchasesRestoredSuccessfully": "Pembelian berhasil dipulihkan!",
+    "noPreviousPurchasesFound": "Tidak ditemukan pembelian sebelumnya.",
+    "verificationEmailResent": "Email verifikasi berhasil dikirim ulang!",
+    "failedToResend": "Gagal mengirim ulang: {error}",
+    "@failedToResend": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "iveVerifiedMyEmail": "Saya sudah memverifikasi email saya",
+    "seamlessContinuity": "Kontinuitas Tanpa Hambatan",
+    "seamlessContinuityDesc": "Kebiasaan Anda, tersinkron sempurna di mana pun. Mulai mencatat di ponsel Anda, lalu centang di tablet Anda tanpa hambatan.",
+    "zeroKnowledgePrivacy": "Privasi Zero-Knowledge",
+    "zeroKnowledgePrivacyDesc": "Enkripsi End-to-End mutakhir. Hanya Anda yang memegang kunci utama — kami tidak pernah dapat membaca atau mengakses data pribadi Anda.",
+    "restEasy": "Tenang Saja",
+    "restEasyDesc": "Kami membuat snapshot aman dari seluruh riwayat progres Anda ke cloud. Ketenangan total, secara otomatis.",
+    "getStarted": "Mulai",
+    "next": "Berikutnya",
+    "passwordCannotBeEmpty": "Kata sandi tidak boleh kosong",
+    "pleaseConfirmYourPassword": "Silakan konfirmasi kata sandi Anda",
+    "createMasterPassword": "Buat Kata Sandi Utama",
+    "unlockYourData": "Buka Data Anda",
+    "masterPasswordDescriptionSetup": "Kata sandi utama Anda mengenkripsi semua data sebelum meninggalkan perangkat Anda. Pilih sesuatu yang kuat dan mudah diingat.",
+    "masterPasswordDescriptionUnlock": "Masukkan kata sandi utama Anda untuk mendekripsi data dan mengaktifkan sinkronisasi.",
+    "importantCannotBeRecovered": "Penting: Tidak dapat dipulihkan",
+    "masterPasswordWarning": "Kami tidak menyimpan kata sandi Anda. Jika Anda lupa, data Anda tidak dapat dipulihkan. Tulis dan simpan di tempat yang aman!",
+    "masterPasswordLabel": "Kata Sandi Utama",
+    "minimum8Characters": "Minimal 8 karakter",
+    "setPassword": "Tetapkan Kata Sandi",
+    "unlockAndSync": "Buka & Sinkronkan",
+    "unlockPasswordExplanation": "Ini adalah kata sandi yang Anda buat saat pertama kali menyiapkan sinkronisasi di perangkat lain.",
+    "masterPasswordChangedSuccessfully": "Kata sandi utama berhasil diubah",
+    "errorWithDescription": "Kesalahan: {error}",
+    "@errorWithDescription": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "changeMasterPassword": "Ubah Kata Sandi Utama",
+    "changePassword": "Ubah Kata Sandi",
+    "accountPasswordChangedSuccessfully": "Kata sandi akun berhasil diubah",
+    "changeAccountPassword": "Ubah Kata Sandi Akun",
+    "deleteAccountTitle": "Hapus Akun",
+    "unexpectedErrorPleaseTryAgain": "Terjadi kesalahan yang tidak terduga. Silakan coba lagi.",
+    "checkEmailForPasswordReset": "Periksa email Anda untuk tautan pengaturan ulang kata sandi.",
+    "signOutQuestion": "Keluar?",
+    "resetToHaboCloudQuestion": "Reset ke Habo Cloud?",
+    "resetAction": "Reset",
+    "restartRequired": "Perlu Mulai Ulang",
+    "ok": "OK",
+    "serverConfiguration": "Konfigurasi Server",
+    "testConnectionAndSave": "Uji Koneksi & Simpan",
+    "resetToHaboCloud": "Reset ke Habo Cloud",
+    "currentPasswordIsRequired": "Kata sandi saat ini wajib diisi",
+    "newPasswordIsRequired": "Kata sandi baru wajib diisi",
+    "newPasswordMustBeDifferent": "Kata sandi baru harus berbeda dari yang saat ini",
+    "incorrectCurrentPassword": "Kata sandi saat ini salah",
+    "enterCurrentPasswordAndChooseNew": "Masukkan kata sandi Anda saat ini dan pilih yang baru.",
+    "currentPassword": "Kata Sandi Saat Ini",
+    "newPassword": "Kata Sandi Baru",
+    "confirmNewPassword": "Konfirmasi Kata Sandi Baru",
+    "thisChangesYourLoginPassword": "Ini akan mengubah kata sandi login Anda untuk Habo.",
+    "passwordUpdated": "Kata Sandi Diperbarui!",
+    "passwordResetSuccessMessage": "Kata sandi Anda berhasil diatur ulang. Anda sekarang dapat masuk dengan kata sandi baru.",
+    "setNewPassword": "Tetapkan Kata Sandi Baru",
+    "chooseStrongPassword": "Pilih kata sandi yang kuat untuk akun Anda.",
+    "pleaseTypeDeleteToConfirm": "Silakan ketik DELETE untuk konfirmasi",
+    "unableToVerifyIdentity": "Tidak dapat memverifikasi identitas",
+    "incorrectPassword": "Kata sandi salah",
+    "failedToDeleteAccount": "Gagal menghapus akun",
+    "deleteYourAccount": "Hapus Akun Anda",
+    "deleteAccountWarning": "Tindakan ini bersifat permanen dan tidak dapat dibatalkan. Data berikut akan dihapus secara permanen:",
+    "deleteHabitsAndTrackingData": "Semua kebiasaan dan data pelacakan Anda",
+    "deleteCloudBackupsAndSyncData": "Cadangan cloud dan data sinkronisasi",
+    "deleteEncryptionKeysAndProfile": "Kunci enkripsi dan profil",
+    "deleteYourAccountAndLoginCredentials": "Akun Anda dan kredensial login",
+    "deleteSubscriptionManagedSeparately": "Langganan (dikelola terpisah oleh store)",
+    "typeDeleteToConfirm": "Ketik DELETE untuk konfirmasi",
+    "enterYourPasswordToConfirm": "Masukkan kata sandi Anda untuk konfirmasi",
+    "permanentlyDeleteAccount": "Hapus Akun Secara Permanen",
+    "resetPasswordDescription": "Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.",
+    "updateYourEncryptionPassword": "Perbarui kata sandi enkripsi Anda",
+    "updateYourLoginPassword": "Perbarui kata sandi login Anda",
+    "manageSubscription": "Kelola Langganan",
+    "viewOrCancelYourPlan": "Lihat atau batalkan paket Anda",
+    "permanentlyDeleteYourAccountAndData": "Hapus akun dan data Anda secara permanen",
+    "signOutConfirmationContent": "Anda perlu memasukkan lagi kata sandi utama untuk mengakses data yang tersinkron.",
+    "couldNotConnectToServer": "Tidak dapat terhubung ke server. Periksa URL, anon key, dan pastikan migrasi Habo sudah diterapkan.\n\nKesalahan: {e}",
+    "@couldNotConnectToServer": {
+        "placeholders": {
+            "e": {
+                "type": "String"
+            }
+        }
+    },
+    "disconnectFromSelfHosted": "Ini akan memutuskan koneksi dari server self-hosted Anda dan beralih kembali ke server default Habo Cloud. Anda perlu masuk lagi.",
+    "restartRequiredContent": "Silakan tutup dan buka kembali aplikasi untuk terhubung ke server baru.",
+    "connectedToCustomServer": "Terhubung ke server kustom",
+    "connectedToHaboCloudDefault": "Terhubung ke Habo Cloud (default)",
+    "selfHostDescription": "Host sendiri backend Supabase Anda untuk akses sinkronisasi penuh tanpa langganan. Lihat panduan self-hosting untuk petunjuk penyiapan.",
+    "urlIsRequired": "URL wajib diisi",
+    "enterValidUrl": "Masukkan URL yang valid (misalnya, https://your-project.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "URL harus diawali dengan https:// atau http://",
+    "anonKeyIsRequired": "Anon key wajib diisi",
+    "pleaseSignInWithEmailAndPassword": "Silakan masuk dengan email dan kata sandi Anda.",
+    "checkYourEmail": "Periksa email Anda",
+    "weSentVerificationLinkTo": "Kami mengirim tautan verifikasi ke",
+    "clickLinkInEmailToVerify": "Klik tautan di email untuk memverifikasi akun Anda, lalu kembali ke sini dan ketuk tombol di bawah.",
+    "resendInSeconds": "Kirim ulang dalam {seconds}d",
+    "@resendInSeconds": {
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "resendVerificationEmail": "Kirim ulang email verifikasi",
+    "backToSignIn": "Kembali ke Masuk",
+    "featureHomescreenWidgetDarkModeDesc": "Widget layar utama Android kini mendukung latar belakang mode terang dan gelap."
 }
