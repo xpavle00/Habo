@@ -1,47 +1,26 @@
 {
     "setColors": "Nastavit barvy",
-    "@setColors": {},
     "twoDayRuleDescription": "S pravidlem dvou dnů můžete vynechat jeden den a nepřijít o sérii, pokud je další den úspěšný.",
-    "@twoDayRuleDescription": {},
     "defineYourHabits": "Definujte své návyky",
-    "@defineYourHabits": {},
     "month": "Měsíc",
-    "@month": {},
     "close": "Zavřít",
-    "@close": {},
     "habit": "Návyk",
-    "@habit": {},
     "save": "Uložit",
-    "@save": {},
     "showSanction": "Zobrazit sankci",
-    "@showSanction": {},
     "reset": "Resetovat",
-    "@reset": {},
     "successful": "Úspěšné",
-    "@successful": {},
     "allHabitsWillBeReplaced": "Všechny návyky budou nahrazeny návyky ze zálohy.",
-    "@allHabitsWillBeReplaced": {},
     "warning": "Varování",
-    "@warning": {},
     "notSoSuccessful": "Méně úspěšné",
-    "@notSoSuccessful": {},
     "logYourDays": "Zaznamenávejte své dny",
-    "@logYourDays": {},
     "habits": "Návyky:",
-    "@habits": {},
     "trackYourProgress": "Můžete sledovat svůj pokrok prostřednictvím kalendářového zobrazení v každém návyku nebo na stránce se statistikami.",
-    "@trackYourProgress": {},
     "routineDescription": "je akce, kterou provádíte jako reakci na podnět. Jedná se o samotný návyk.",
-    "@routineDescription": {},
     "habitContractDescription": "Ačkoliv je doporučeno pozitivní posílení, někteří lidé se mohou rozhodnout pro smlouvu o zvyku. Smlouva o zvyku vám umožňuje specifikovat sankci, která bude uložena, pokud svůj návyk zmeškáte, a může zahrnovat partnera, který vám pomáhá sledovat vaše cíle.",
-    "@habitContractDescription": {},
     "haboNeedsPermission": "Habo potřebuje povolení k odesílání oznámení, aby správně fungoval.",
-    "@haboNeedsPermission": {},
     "habitLoop": "Smyčka návyků",
-    "@habitLoop": {},
     "restoreFailedError": "CHYBA: Obnovení zálohy se nezdařilo.",
-    "@restoreFailedError": {},
-    "themeSelect": "{theme, select, device {Zařízení} light {Světlá} dark {Tmavá} oled {OLED černá} other{Zařízení}}",
+    "themeSelect": "{theme, select, device {Podle zařízení} light {Světlý} dark {Tmavý} oled {Černý OLED} materialYou {Material You} other{Podle zařízení}}",
     "@themeSelect": {
         "placeholders": {
             "theme": {
@@ -50,167 +29,610 @@
         }
     },
     "sanction": "Sankce",
-    "@sanction": {},
     "doNotForgetToCheckYourHabits": "Nezapomeňte zkontrolovat své návyky.",
-    "@doNotForgetToCheckYourHabits": {},
     "soundEffects": "Zvukové efekty",
-    "@soundEffects": {},
     "createHabit": "Vytvořit návyk",
-    "@createHabit": {},
     "create": "Vytvořit",
-    "@create": {},
     "routineNumbered": "2. Rutina",
-    "@routineNumbered": {},
     "date": "Datum",
-    "@date": {},
     "total": "Celkem",
-    "@total": {},
     "ohNoSanction": "Ach ne! Vaše sankce:",
-    "@ohNoSanction": {},
     "unknown": "Neznámé",
-    "@unknown": {},
     "habitTitleEmptyError": "Název návyku nesmí být prázdný.",
-    "@habitTitleEmptyError": {},
     "donateToCharity": "Darovat 10$ na charitu",
-    "@donateToCharity": {},
     "habitDeleted": "Návyk smazán.",
-    "@habitDeleted": {},
     "onboarding": "Začínáme",
-    "@onboarding": {},
     "useTwoDayRule": "Použijte pravidlo dvou dnů",
-    "@useTwoDayRule": {},
     "restore": "Obnovit",
-    "@restore": {},
     "yourCommentHere": "Vaše poznámka zde",
-    "@yourCommentHere": {},
     "skipDoesNotAffectStreaks": "Přeskočení neovlivňuje série",
-    "@skipDoesNotAffectStreaks": {},
     "do50PushUps": "Udělat 50 kliků",
-    "@do50PushUps": {},
     "noDataAboutHabits": "Nejsou dostupné žádné informace o návycích.",
-    "@noDataAboutHabits": {},
     "theme": "Téma",
-    "@theme": {},
     "habitLoopDescription": "Smyčka návyků je psychologický model popisující proces tvorby návyků. Skládá se ze tří komponent: Podnět, Rutina a Odměna. Podnět spustí Rutinu (návykovou akci), která je poté posílena Odměnou, čímž vytváří smyčku, která způsobuje, že je návyk více zakořeněný a pravděpodobnější.",
-    "@habitLoopDescription": {},
     "exercise": "Cvičení",
-    "@exercise": {},
     "termsAndConditions": "Obchodní podmínky",
-    "@termsAndConditions": {},
     "congratulationsReward": "Gratulujeme! Vaše odměna:",
-    "@congratulationsReward": {},
     "createYourFirstHabit": "Vytvořte svůj první návyk.",
-    "@createYourFirstHabit": {},
     "delete": "Smazat",
-    "@delete": {},
     "advancedHabitBuilding": "Pokročilé budování návyků",
-    "@advancedHabitBuilding": {},
     "privacyPolicy": "Ochrana osobních údajů",
-    "@privacyPolicy": {},
     "cue": "Podnět",
-    "@cue": {},
     "at7AM": "V 7:00",
-    "@at7AM": {},
     "rewardNumbered": "3. Odměna",
-    "@rewardNumbered": {},
     "cueNumbered": "1. Podnět",
-    "@cueNumbered": {},
     "notificationTime": "Čas oznámení",
-    "@notificationTime": {},
     "notifications": "Oznámení",
-    "@notifications": {},
     "habitContract": "Smlouva o zvyku",
-    "@habitContract": {},
     "skip": "Přeskočit",
-    "@skip": {},
     "backup": "Záloha",
-    "@backup": {},
     "cueDescription": "je spouštěč, který iniciuje váš návyk. Může to být konkrétní čas, místo, pocit nebo událost.",
-    "@cueDescription": {},
     "remainderOfSanction": "Připomínka sankce po neúspěšné rutině.",
-    "@remainderOfSanction": {},
     "about": "O aplikaci",
-    "@about": {},
     "habo": "Habo",
-    "@habo": {},
     "undo": "Vrátit zpět",
-    "@undo": {},
     "editHabit": "Upravit návyk",
-    "@editHabit": {},
     "habitNotificationsChannel": "Kanál oznámení pro návyky",
-    "@habitNotificationsChannel": {},
     "firstDayOfWeek": "První den v týdnu",
-    "@firstDayOfWeek": {},
     "emptyList": "Prázdný seznam",
-    "@emptyList": {},
     "appNotifications": "Oznámení aplikace",
-    "@appNotifications": {},
     "currentStreak": "Současná série",
-    "@currentStreak": {},
     "defineYourHabitsDescription": "Aby se vám lépe dařilo dodržovat své návyky, můžete definovat:",
-    "@defineYourHabitsDescription": {},
     "cancel": "Zrušit",
-    "@cancel": {},
     "showReward": "Zobrazit odměnu",
-    "@showReward": {},
     "habitNotifications": "Oznámení o návycích",
-    "@habitNotifications": {},
     "statistics": "Statistiky",
-    "@statistics": {},
     "remainderOfReward": "Připomínka odměny po úspěšné rutině.",
-    "@remainderOfReward": {},
     "sourceCode": "Zdrojový kód (GitHub)",
-    "@sourceCode": {},
     "appNotificationsChannel": "Kanál oznámení pro aplikaci",
-    "@appNotificationsChannel": {},
     "modify": "Upravit",
-    "@modify": {},
     "routine": "Rutina",
-    "@routine": {},
     "check": "Zkontrolovat",
-    "@check": {},
     "fail": "Nezdařilo se",
-    "@fail": {},
     "showMonthName": "Zobrazit název měsíce",
-    "@showMonthName": {},
     "twoDayRule": "Pravidlo dvou dnů",
-    "@twoDayRule": {},
     "advancedHabitBuildingDescription": "Tato část vám pomáhá lépe definovat vaše návyky s využitím Smyčky návyků. Měli byste definovat podněty, rutiny a odměny pro každý návyk.",
-    "@advancedHabitBuildingDescription": {},
     "week": "Týden",
-    "@week": {},
     "allow": "Povolit",
-    "@allow": {},
     "settings": "Nastavení",
-    "@settings": {},
     "reward": "Odměna",
-    "@reward": {},
     "backupFailedError": "CHYBA: Vytvoření zálohy se nezdařilo.",
-    "@backupFailedError": {},
     "buyMeACoffee": "Koupit mi kávu",
-    "@buyMeACoffee": {},
     "topStreak": "Nejdelší série",
-    "@topStreak": {},
     "disclaimer": "Prohlášení",
-    "@disclaimer": {},
     "fifteenMinOfVideoGames": "15 min. hraní videoher",
-    "@fifteenMinOfVideoGames": {},
     "add": "Přidat",
-    "@add": {},
     "copyright": "©2023 Habo",
-    "@copyright": {},
     "dan": "Dan",
-    "@dan": {},
     "note": "Poznámka",
-    "@note": {},
     "accountabilityPartner": "Smluvni partner",
-    "@accountabilityPartner": {},
     "ifYouWantToSupport": "Pokud chcete podpořit Habo, můžete:",
-    "@ifYouWantToSupport": {},
     "done": "Hotovo",
-    "@done": {},
     "rewardDescription": "je výhoda nebo pozitivní pocit, který zažíváte po provedení rutiny. Posiluje návyk.",
-    "@rewardDescription": {},
     "observeYourProgress": "Sledujte svůj pokrok",
-    "@observeYourProgress": {}
+    "backupCreatedSuccessfully": "Záloha byla úspěšně vytvořena.",
+    "backupFailed": "Zálohu se nepodařilo vytvořit.",
+    "restoreCompletedSuccessfully": "Obnovení bylo úspěšně dokončeno.",
+    "restoreFailed": "Obnovení se nezdařilo.",
+    "fileNotFound": "Soubor nebyl nalezen",
+    "fileTooLarge": "Soubor je příliš velký (max. 10 MB)",
+    "invalidBackupFile": "Neplatný soubor zálohy",
+    "progress": "Pokrok",
+    "enterAmount": "Zadejte hodnotu",
+    "complete": "Splnit",
+    "saveProgress": "Uložit pokrok",
+    "currentProgress": "Aktuálně: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "Cíl: {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Měřitelný",
+    "targetValue": "Cílová hodnota",
+    "partialValue": "Dílčí hodnota",
+    "unit": "Jednotka",
+    "habitType": "Typ návyku",
+    "booleanHabit": "Zaškrtávací (ano/ne)",
+    "slider": "Posuvník",
+    "input": "Zadávání hodnoty",
+    "numericHabitDescription": "U měřitelných návyků můžete během dne postupně zaznamenávat pokrok.",
+    "partialValueDescription": "Slouží k zaznamenávání pokroku po menších krocích",
+    "categories": "Kategorie",
+    "addCategory": "Přidat kategorii",
+    "editCategory": "Upravit kategorii",
+    "category": "Kategorie",
+    "noCategoriesYet": "Zatím žádné kategorie",
+    "createFirstCategory": "Vytvořte první kategorii a uspořádejte si návyky",
+    "pleaseEnterCategoryTitle": "Zadejte název kategorie",
+    "categoryAlreadyExists": "Kategorie „{title}“ již existuje",
+    "@categoryAlreadyExists": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryCreatedSuccessfully": "Kategorie „{title}“ byla vytvořena",
+    "@categoryCreatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryUpdatedSuccessfully": "Kategorie „{title}“ byla aktualizována",
+    "@categoryUpdatedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "categoryDeletedSuccessfully": "Kategorie „{title}“ byla smazána",
+    "@categoryDeletedSuccessfully": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToSaveCategory": "Kategorii se nepodařilo uložit: {error}",
+    "@failedToSaveCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "failedToDeleteCategory": "Kategorii se nepodařilo smazat: {error}",
+    "@failedToDeleteCategory": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "selectCategories": "Vybrat kategorie",
+    "selectedCategories": "Vybrané kategorie: {count}",
+    "@selectedCategories": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "allCategories": "Všechny kategorie",
+    "deleteCategory": "Smazat kategorii",
+    "deleteCategoryConfirmation": "Opravdu chcete smazat kategorii „{title}“?\n\nKategorie bude odebrána ze všech návyků, které ji používají.",
+    "@deleteCategoryConfirmation": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "noHabitsInCategory": "V kategorii „{title}“ nejsou žádné návyky",
+    "@noHabitsInCategory": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "createHabitForCategory": "Vytvořte návyk a přiřaďte ho k této kategorii",
+    "showCategories": "Zobrazovat kategorie",
+    "archive": "Archivovat",
+    "unarchive": "Vyjmout z archivu",
+    "archiveHabit": "Archivovat návyk",
+    "unarchiveHabit": "Vyjmout návyk z archivu",
+    "archivedHabits": "Archivované návyky",
+    "noArchivedHabits": "Žádné archivované návyky",
+    "viewArchivedHabits": "Zobrazit archivované návyky",
+    "habitArchived": "Návyk byl archivován",
+    "habitUnarchived": "Návyk byl vyjmut z archivu",
+    "biometric": "Biometrie",
+    "biometricLockEnabled": "Biometrický zámek byl zapnut",
+    "biometricLockDisabled": "Biometrický zámek byl vypnut",
+    "authenticationError": "Chyba ověření",
+    "biometricAuthenticationRequired": "Je vyžadováno biometrické ověření",
+    "setupFingerprintFaceUnlock": "Nastavte v zařízení odemykání otiskem prstu nebo obličejem",
+    "touchSensor": "Dotkněte se snímače",
+    "biometricNotRecognized": "Biometrické údaje nebyly rozpoznány. Zkuste to znovu",
+    "biometricRequired": "Je vyžadována biometrie",
+    "biometricAuthenticationSucceeded": "Biometrické ověření proběhlo úspěšně",
+    "deviceCredentialsRequired": "Je vyžadováno ověření zařízení",
+    "setupDeviceCredentials": "Nastavte v zařízení kód PIN, gesto nebo heslo",
+    "setupTouchIdFaceId": "Nastavte v zařízení Touch ID nebo Face ID",
+    "reenableTouchIdFaceId": "Znovu zapněte Touch ID nebo Face ID",
+    "biometricLock": "Biometrický zámek",
+    "biometricLockDescription": "Zabezpečit aplikaci pomocí {authMethod}",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToEnable": "Ověřte se, chcete-li zapnout biometrický zámek",
+    "authenticateToAccess": "Ověřte svou totožnost pro přístup k Habo",
+    "authenticationRequired": "Je vyžadováno ověření",
+    "authenticationFailedMessage": "Pro přístup k Habo se ověřte pomocí {authMethod}",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "tryAgain": "Zkusit znovu",
+    "authenticating": "Probíhá ověřování…",
+    "authenticate": "Ověřit",
+    "buildingBetterHabits": "Budování lepších návyků",
+    "authenticationPrompt": "Pro přístup ke svým návykům se ověřte pomocí {authMethod}",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "devicePinPatternPassword": "Kód PIN, gesto nebo heslo zařízení",
+    "fingerprint": "Otisk prstu",
+    "iris": "Duhovka",
+    "whatsNewTitle": "Co je nového",
+    "whatsNewVersion": "Verze {version}",
+    "@whatsNewVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "featureNumericTitle": "Číselné hodnoty u návyků",
+    "featureNumericDesc": "Sledujte například počet sklenic vody nebo přečtených stran",
+    "featureDeepLinksTitle": "Schéma URL (přímé odkazy)",
+    "featureDeepLinksDesc": "Otevřete Habo přímo na obrazovce nastavení nebo vytvoření návyku",
+    "featureCategoriesTitle": "Kategorie",
+    "featureCategoriesDesc": "Uspořádejte návyky pomocí filtrů kategorií",
+    "featureArchiveTitle": "Archiv",
+    "featureArchiveDesc": "Skryjte návyky, které už nesledujete, aniž byste je smazali",
+    "featureMaterialYouTitle": "Motiv Material You (Android)",
+    "featureMaterialYouDesc": "Dynamické barvy odpovídající tapetě",
+    "featureSoundTitle": "Nový zvukový systém",
+    "featureSoundDesc": "Nastavitelná hlasitost",
+    "featureLockTitle": "Zámek aplikace",
+    "featureLockDesc": "Zabezpečte aplikaci pomocí Face ID, Touch ID nebo jiné biometrie",
+    "featureIosSoundMixingTitle": "Opravené směšování zvuku",
+    "featureIosSoundMixingDesc": "Zvuky Habo už nepřeruší hudbu ani podcasty",
+    "featureHomescreenWidgetTitle": "Widget na domovské obrazovce",
+    "featureHomescreenWidgetDesc": "Sledujte pokrok návyků přímo na domovské obrazovce (experimentální)",
+    "featureLongpressCheckTitle": "Dlouhé stisknutí",
+    "featureLongpressCheckDesc": "Dlouhým stisknutím tlačítka návyku rychle změníte jeho stav",
+    "haboSyncComingSoon": "Již brzy",
+    "haboSyncDescription": "Habo Sync je tady! Synchronizujte a zálohujte své návyky na všech zařízeních pomocí cloudové synchronizace šifrované mezi koncovými zařízeními.",
+    "haboSyncLearnMore": "Další informace najdete na habo.space/sync",
+    "habitsToday": "Dnešní návyky",
+    "or": "nebo",
+    "oneTapCheck": "Splnit jedním klepnutím",
+    "tapCheckLongPressMenu": "Klepnutím splnit, dlouhým stisknutím otevřít nabídku",
+    "categoryName": "Název kategorie",
+    "createCategory": "Vytvořit kategorii",
+    "all": "Vše",
+    "selectIcon": "Vybrat ikonu",
+    "searchIcons": "Hledat",
+    "syncTitle": "Synchronizace",
+    "syncAndBackupYourData": "Synchronizujte a zálohujte svá data",
+    "server": "Server",
+    "customServer": "Vlastní server",
+    "haboCloudDefault": "Habo Cloud (výchozí)",
+    "syncNotAvailable": "Synchronizace není dostupná",
+    "syncNow": "Synchronizovat nyní",
+    "subscribe": "Předplatit",
+    "restoreBackupQuestion": "Obnovit ze zálohy?",
+    "habitsCount": "Počet návyků: {count}",
+    "@habitsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "anUnexpectedErrorOccurred": "Došlo k neočekávané chybě",
+    "anUnexpectedErrorOccurredTryAgain": "Došlo k neočekávané chybě. Zkuste to znovu.",
+    "resetPassword": "Obnovit heslo",
+    "sendResetLink": "Odeslat odkaz pro obnovení",
+    "pleaseEnterValidEmail": "Zadejte platnou e-mailovou adresu",
+    "checkEmailForResetLink": "V e-mailu najdete odkaz pro obnovení hesla.",
+    "failedToSendResetLink": "Odkaz pro obnovení se nepodařilo odeslat. Zkuste to znovu.",
+    "appleSignInError": "Chyba přihlášení přes Apple: {error}",
+    "@appleSignInError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "signInFailedPleaseTryAgain": "Přihlášení se nezdařilo. Zkuste to znovu.",
+    "enterEmailForResetLink": "Zadejte svou e-mailovou adresu a pošleme vám odkaz pro obnovení hesla.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Heslo",
+    "confirmPasswordLabel": "Potvrzení hesla",
+    "createAccountToBackupAndSync": "Vytvořte si účet pro zálohování a synchronizaci.",
+    "welcomeBackStayConsistent": "Vítejte zpět! Pokračujte v pravidelném plnění návyků.",
+    "emailIsRequired": "E-mail je povinný",
+    "enterValidEmail": "Zadejte platný e-mail",
+    "passwordIsRequired": "Heslo je povinné",
+    "passwordMinLengthError": "Heslo musí mít alespoň 8 znaků",
+    "passwordsDoNotMatch": "Hesla se neshodují",
+    "createAccount": "Vytvořit účet",
+    "signIn": "Přihlásit se",
+    "signUp": "Zaregistrovat se",
+    "alreadyHaveAnAccount": "Už máte účet? ",
+    "dontHaveAnAccount": "Ještě nemáte účet? ",
+    "orContinueWith": "nebo pokračujte pomocí",
+    "continueWithApple": "Pokračovat přes Apple",
+    "continueWithGoogle": "Pokračovat přes Google",
+    "forgotPassword": "Zapomněli jste heslo?",
+    "pauseSyncing": "Pozastavit synchronizaci",
+    "pausesSyncingAndBackup": "Pozastaví synchronizaci a zálohování",
+    "restoreData": "Obnovit data",
+    "fromPreviousBackups": "Z předchozích záloh",
+    "profile": "Profil",
+    "emailPasswordAndAccount": "E-mail, heslo a účet",
+    "signOut": "Odhlásit se",
+    "syncingPaused": "Synchronizace je pozastavena",
+    "syncingPausedDesc": "Pozastaveno",
+    "neverSynced": "Dosud nesynchronizováno",
+    "paused": "Pozastaveno",
+    "syncingHero": "Probíhá synchronizace...",
+    "dataBeingSynchronized": "Vaše data se synchronizují",
+    "syncingToCloud": "Synchronizace s cloudem",
+    "everythingIsSafe": "Všechna data jsou v bezpečí",
+    "connectedToCloud": "Připojeno ke cloudu",
+    "syncError": "Chyba synchronizace",
+    "tapSyncNowToRetry": "Opakujte akci klepnutím na Synchronizovat nyní",
+    "errorText": "Chyba",
+    "youAreOffline": "Jste offline",
+    "willSyncWhenConnected": "Synchronizace proběhne po připojení",
+    "offline": "Offline",
+    "notConfigured": "Nenastaveno",
+    "setUpSyncToEnable": "Nejprve nastavte synchronizaci",
+    "subscriptionNeeded": "Je vyžadováno předplatné",
+    "subscribeToEnableSync": "Předplaťte si Habo Sync a zapněte synchronizaci",
+    "notActive": "Neaktivní",
+    "syncAndBackup": "Synchronizace a zálohování",
+    "unlockSyncAndBackup": "Odemknout synchronizaci a zálohování",
+    "keepHabitsSafeAndSynced": "Mějte své návyky v bezpečí a synchronizované na všech zařízeních.",
+    "realTimeSyncAcrossDevices": "Synchronizace mezi zařízeními v reálném čase",
+    "automaticCloudBackups": "Automatické cloudové zálohy",
+    "endToEndEncryption": "Šifrování typu end-to-end",
+    "restorePurchases": "Obnovit nákupy",
+    "lastSyncedJustNow": "Právě synchronizováno",
+    "lastSyncedMinsAgo": "Poslední synchronizace před {minutes} min",
+    "@lastSyncedMinsAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedHoursAgo": "Poslední synchronizace před {hours} h",
+    "@lastSyncedHoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedDaysAgo": "Poslední synchronizace před {days} {plural, select, s {dny} other {dnem}}",
+    "@lastSyncedDaysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            },
+            "plural": {
+                "type": "String"
+            }
+        }
+    },
+    "todayAt": "Dnes v {time}",
+    "@todayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "yesterdayAt": "Včera v {time}",
+    "@yesterdayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "weekdayAt": "{weekday} v {time}",
+    "@weekdayAt": {
+        "placeholders": {
+            "weekday": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreBackupConfirmation": "Všechna aktuální data budou nahrazena zálohou z {date}.\n\nTuto akci nelze vrátit zpět.",
+    "@restoreBackupConfirmation": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "backupRestoredSuccessfully": "Záloha byla úspěšně obnovena.",
+    "restoreFailedWithError": "Obnovení se nezdařilo: {error}",
+    "@restoreFailedWithError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreFailedTryAgain": "Obnovení se nezdařilo. Zkuste to znovu.",
+    "chooseBackupToRestore": "Vyberte zálohu, kterou chcete obnovit",
+    "noBackupsAvailable": "Zatím nejsou k dispozici žádné zálohy.\nZálohy se vytvářejí automaticky během synchronizace.",
+    "purchasesRestoredSuccessfully": "Nákupy byly úspěšně obnoveny.",
+    "noPreviousPurchasesFound": "Nebyly nalezeny žádné předchozí nákupy.",
+    "verificationEmailResent": "Ověřovací e-mail byl znovu odeslán.",
+    "failedToResend": "Opětovné odeslání se nezdařilo: {error}",
+    "@failedToResend": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "iveVerifiedMyEmail": "E-mail mám ověřený",
+    "seamlessContinuity": "Plynulé pokračování",
+    "seamlessContinuityDesc": "Vaše návyky jsou plynule synchronizovány na všech zařízeních. Začněte je sledovat na telefonu a bez přerušení je označujte jako splněné na tabletu.",
+    "zeroKnowledgePrivacy": "Soukromí bez přístupu k datům",
+    "zeroKnowledgePrivacyDesc": "Moderní šifrování typu end-to-end. Hlavní klíč máte pouze vy — vaše osobní data nikdy nemůžeme číst ani k nim přistupovat.",
+    "restEasy": "Buďte bez obav",
+    "restEasyDesc": "Celou historii vašeho pokroku bezpečně a automaticky zálohujeme do cloudu. Můžete tak být zcela bez obav.",
+    "getStarted": "Začít",
+    "next": "Další",
+    "passwordCannotBeEmpty": "Heslo nesmí být prázdné",
+    "pleaseConfirmYourPassword": "Potvrďte své heslo",
+    "createMasterPassword": "Vytvořte hlavní heslo",
+    "unlockYourData": "Odemkněte svá data",
+    "masterPasswordDescriptionSetup": "Hlavní heslo zašifruje všechna data ještě předtím, než opustí vaše zařízení. Zvolte silné heslo, které si zapamatujete.",
+    "masterPasswordDescriptionUnlock": "Zadejte hlavní heslo, aby bylo možné data dešifrovat a zapnout synchronizaci.",
+    "importantCannotBeRecovered": "Důležité: heslo nelze obnovit",
+    "masterPasswordWarning": "Vaše heslo neukládáme. Pokud ho zapomenete, data nebude možné obnovit. Zapište si ho a uložte na bezpečné místo.",
+    "masterPasswordLabel": "Hlavní heslo",
+    "minimum8Characters": "Alespoň 8 znaků",
+    "setPassword": "Nastavit heslo",
+    "unlockAndSync": "Odemknout a synchronizovat",
+    "unlockPasswordExplanation": "Jde o heslo, které jste vytvořili při prvním nastavení synchronizace na jiném zařízení.",
+    "masterPasswordChangedSuccessfully": "Hlavní heslo bylo úspěšně změněno",
+    "errorWithDescription": "Chyba: {error}",
+    "@errorWithDescription": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "changeMasterPassword": "Změnit hlavní heslo",
+    "changePassword": "Změnit heslo",
+    "accountPasswordChangedSuccessfully": "Heslo účtu bylo úspěšně změněno",
+    "changeAccountPassword": "Změnit heslo účtu",
+    "deleteAccountTitle": "Smazat účet",
+    "unexpectedErrorPleaseTryAgain": "Došlo k neočekávané chybě. Zkuste to znovu.",
+    "checkEmailForPasswordReset": "V e-mailu najdete odkaz pro obnovení hesla.",
+    "signOutQuestion": "Odhlásit se?",
+    "resetToHaboCloudQuestion": "Přepnout zpět na Habo Cloud?",
+    "resetAction": "Resetovat",
+    "restartRequired": "Je vyžadován restart",
+    "ok": "OK",
+    "serverConfiguration": "Nastavení serveru",
+    "testConnectionAndSave": "Otestovat připojení a uložit",
+    "resetToHaboCloud": "Přepnout zpět na Habo Cloud",
+    "currentPasswordIsRequired": "Současné heslo je povinné",
+    "newPasswordIsRequired": "Nové heslo je povinné",
+    "newPasswordMustBeDifferent": "Nové heslo se musí lišit od současného",
+    "incorrectCurrentPassword": "Nesprávné současné heslo",
+    "enterCurrentPasswordAndChooseNew": "Zadejte současné heslo a zvolte nové.",
+    "currentPassword": "Současné heslo",
+    "newPassword": "Nové heslo",
+    "confirmNewPassword": "Potvrzení nového hesla",
+    "thisChangesYourLoginPassword": "Tímto změníte heslo pro přihlášení k Habo.",
+    "passwordUpdated": "Heslo bylo změněno.",
+    "passwordResetSuccessMessage": "Heslo bylo úspěšně obnoveno. Nyní se můžete přihlásit novým heslem.",
+    "setNewPassword": "Nastavit nové heslo",
+    "chooseStrongPassword": "Zvolte pro svůj účet silné heslo.",
+    "pleaseTypeDeleteToConfirm": "Potvrďte zadáním slova DELETE",
+    "unableToVerifyIdentity": "Totožnost se nepodařilo ověřit",
+    "incorrectPassword": "Nesprávné heslo",
+    "failedToDeleteAccount": "Účet se nepodařilo smazat",
+    "deleteYourAccount": "Smazání účtu",
+    "deleteAccountWarning": "Tato akce je trvalá a nelze ji vrátit zpět. Následující data budou nenávratně smazána:",
+    "deleteHabitsAndTrackingData": "Všechny vaše návyky a údaje o jejich plnění",
+    "deleteCloudBackupsAndSyncData": "Cloudové zálohy a synchronizovaná data",
+    "deleteEncryptionKeysAndProfile": "Šifrovací klíče a profil",
+    "deleteYourAccountAndLoginCredentials": "Váš účet a přihlašovací údaje",
+    "deleteSubscriptionManagedSeparately": "Předplatné (spravuje se samostatně v obchodě)",
+    "typeDeleteToConfirm": "Potvrďte zadáním slova DELETE",
+    "enterYourPasswordToConfirm": "Potvrďte zadáním svého hesla",
+    "permanentlyDeleteAccount": "Trvale smazat účet",
+    "resetPasswordDescription": "Zadejte svou e-mailovou adresu a pošleme vám odkaz pro obnovení hesla.",
+    "updateYourEncryptionPassword": "Změna šifrovacího hesla",
+    "updateYourLoginPassword": "Změna přihlašovacího hesla",
+    "manageSubscription": "Spravovat předplatné",
+    "viewOrCancelYourPlan": "Zobrazení nebo zrušení tarifu",
+    "permanentlyDeleteYourAccountAndData": "Trvalé smazání účtu a dat",
+    "signOutConfirmationContent": "Pro přístup k synchronizovaným datům budete muset znovu zadat hlavní heslo.",
+    "couldNotConnectToServer": "K serveru se nepodařilo připojit. Ověřte adresu URL, klíč anon a zda byla použita migrace Habo.\n\nChyba: {e}",
+    "@couldNotConnectToServer": {
+        "placeholders": {
+            "e": {
+                "type": "String"
+            }
+        }
+    },
+    "disconnectFromSelfHosted": "Tímto se odpojíte od vlastního serveru a přepnete zpět na výchozí server Habo Cloud. Bude nutné se znovu přihlásit.",
+    "restartRequiredContent": "Zavřete aplikaci a znovu ji otevřete, aby se připojila k novému serveru.",
+    "connectedToCustomServer": "Připojeno k vlastnímu serveru",
+    "connectedToHaboCloudDefault": "Připojeno k Habo Cloud (výchozí)",
+    "selfHostDescription": "Provozujte vlastní backend Supabase a získejte úplný přístup k synchronizaci bez předplatného. Pokyny najdete v průvodci vlastním provozem.",
+    "urlIsRequired": "Adresa URL je povinná",
+    "enterValidUrl": "Zadejte platnou adresu URL (např. https://vas-projekt.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "Adresa URL musí začínat https:// nebo http://",
+    "anonKeyIsRequired": "Klíč anon je povinný",
+    "pleaseSignInWithEmailAndPassword": "Přihlaste se pomocí e-mailu a hesla.",
+    "checkYourEmail": "Zkontrolujte svůj e-mail",
+    "weSentVerificationLinkTo": "Ověřovací odkaz jsme poslali na adresu",
+    "clickLinkInEmailToVerify": "Otevřete odkaz v e-mailu a ověřte svůj účet. Poté se sem vraťte a klepněte na tlačítko níže.",
+    "resendInSeconds": "Znovu odeslat za {seconds} s",
+    "@resendInSeconds": {
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "resendVerificationEmail": "Znovu odeslat ověřovací e-mail",
+    "backToSignIn": "Zpět k přihlášení",
+    "featureHomescreenWidgetDarkModeDesc": "Widget Habo pro Android nyní podporuje světlé i tmavé pozadí."
 }
