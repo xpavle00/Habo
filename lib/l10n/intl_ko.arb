@@ -1,1 +1,169 @@
-{}
+{
+    "statistics": "통계",
+    "habits": "습관:",
+    "settings": "설정",
+    "theme": "테마",
+    "cancel": "취소",
+    "notifications": "알림",
+    "habo": "Habo",
+    "emptyList": "목록이 비어 있습니다",
+    "noDataAboutHabits": "습관 데이터가 없습니다.",
+    "topStreak": "최고 연속 기록",
+    "currentStreak": "현재 연속 기록",
+    "total": "전체",
+    "unknown": "알 수 없음",
+    "warning": "경고",
+    "allHabitsWillBeReplaced": "백업 데이터로 기존의 모든 습관을 덮어씁니다.",
+    "restore": "복원",
+    "firstDayOfWeek": "한 주의 시작 요일",
+    "notificationTime": "알림 시간",
+    "soundEffects": "효과음",
+    "showMonthName": "월 이름 표시",
+    "setColors": "색상 설정",
+    "backup": "백업",
+    "create": "생성",
+    "onboarding": "온보딩",
+    "about": "정보",
+    "copyright": "©2023 Habo",
+    "termsAndConditions": "이용약관",
+    "privacyPolicy": "개인정보 처리방침",
+    "disclaimer": "책임 한계 고지",
+    "sourceCode": "소스 코드 (GitHub)",
+    "ifYouWantToSupport": "Habo를 후원하고 싶다면:",
+    "buyMeACoffee": "커피 한 잔 후원하기",
+    "reset": "재설정",
+    "done": "완료",
+    "congratulationsReward": "축하합니다! 보상:",
+    "ohNoSanction": "이런! 제재 사항:",
+    "month": "월",
+    "week": "주",
+    "habitLoop": "습관 루프",
+    "habitLoopDescription": "습관 루프는 습관이 형성되는 과정을 설명하는 심리학 모델입니다. 신호, 반복 행동, 보상이라는 세 가지 요소로 구성됩니다. 신호가 반복 행동(습관적 행동)을 유발하고, 이는 보상을 통해 강화되어 습관이 더욱 정착되고 반복되기 쉽게 만드는 루프를 형성합니다.",
+    "cue": "신호",
+    "cueDescription": "은 습관을 시작하게 만드는 계기입니다. 특정 시간, 장소, 기분, 또는 이벤트일 수 있습니다.",
+    "routine": "반복 행동",
+    "routineDescription": "은 신호에 반응하여 취하는 행동입니다. 이것이 습관 그 자체입니다.",
+    "reward": "보상",
+    "rewardDescription": "은 반복 행동을 마친 후 느끼는 이점이나 긍정적인 기분입니다. 이는 습관을 강화해 줍니다.",
+    "editHabit": "습관 수정",
+    "createHabit": "습관 생성",
+    "delete": "삭제",
+    "habitTitleEmptyError": "습관 이름을 입력해 주세요.",
+    "save": "저장",
+    "exercise": "운동",
+    "habit": "습관",
+    "useTwoDayRule": "'이틀 법칙' 적용",
+    "twoDayRule": "이틀 법칙",
+    "twoDayRuleDescription": "이틀 법칙을 사용하면 하루를 거르더라도 다음 날 성공할 경우 연속 기록이 유지됩니다.",
+    "advancedHabitBuilding": "고급 습관 형성",
+    "advancedHabitBuildingDescription": "습관 루프를 활용해 습관을 더욱 구체적으로 정의할 수 있는 섹션입니다. 각 습관의 신호, 반복 행동, 보상을 설정해 보세요.",
+    "at7AM": "오전 7시",
+    "do50PushUps": "팔굽혀펴기 50회 하기",
+    "fifteenMinOfVideoGames": "비디오 게임 15분 하기",
+    "showReward": "보상 표시",
+    "remainderOfReward": "반복 행동을 성공적으로 마친 후 표시되는 보상 알림입니다.",
+    "habitContract": "습관 계약",
+    "habitContractDescription": "긍정적 강화가 권장되지만, 습관 계약을 활용할 수도 있습니다. 습관 계약은 습관을 지키지 못했을 때 적용할 제재 사항을 지정하고, 목표 이행을 함께 감독해 줄 조력자를 지정하는 방식입니다.",
+    "donateToCharity": "자선 단체에 10달러 기부하기",
+    "sanction": "제재",
+    "showSanction": "제재 표시",
+    "remainderOfSanction": "반복 행동에 실패했을 때 표시되는 제재 알림입니다.",
+    "dan": "홍길동",
+    "accountabilityPartner": "목표 달성 파트너",
+    "add": "추가",
+    "haboNeedsPermission": "Habo가 정상적으로 작동하려면 알림 권한이 필요합니다.",
+    "allow": "허용",
+    "date": "날짜",
+    "check": "완료",
+    "fail": "실패",
+    "skip": "건너뛰기",
+    "note": "메모",
+    "yourCommentHere": "여기에 메모를 입력하세요",
+    "close": "닫기",
+    "createYourFirstHabit": "첫 번째 습관을 생성하세요.",
+    "modify": "수정",
+    "backupFailedError": "오류: 백업 생성에 실패했습니다.",
+    "restoreFailedError": "오류: 백업 복원에 실패했습니다.",
+    "habitDeleted": "습관이 삭제되었습니다.",
+    "undo": "실행 취소",
+    "appNotifications": "앱 알림",
+    "appNotificationsChannel": "앱 알림을 위한 알림 채널",
+    "habitNotifications": "습관 알림",
+    "habitNotificationsChannel": "습관 알림을 위한 알림 채널",
+    "doNotForgetToCheckYourHabits": "습관을 체크하는 것을 잊지 마세요.",
+    "themeSelect": "{theme, select, device {기기 설정} light {라이트} dark {다크} oled {OLED 블랙} materialYou {Material You} other{기기 설정}}",
+    "@themeSelect": {
+        "placeholders": {
+            "theme": {
+                "type": "String"
+            }
+        }
+    },
+    "defineYourHabits": "습관 구체화하기",
+    "defineYourHabitsDescription": "습관을 더 잘 지키기 위해 다음 항목을 설정할 수 있습니다:",
+    "cueNumbered": "1. 신호",
+    "routineNumbered": "2. 반복 행동",
+    "rewardNumbered": "3. 보상",
+    "logYourDays": "일상 기록하기",
+    "successful": "성공",
+    "notSoSuccessful": "아쉬운 성과",
+    "skipDoesNotAffectStreaks": "건너뛰기 (연속 기록에 영향 없음)",
+    "observeYourProgress": "진행 상황 관찰하기",
+    "trackYourProgress": "각 습관의 달력 뷰나 통계 페이지에서 진행 상황을 확인할 수 있습니다.",
+    "backupCreatedSuccessfully": "백업을 성공적으로 생성했습니다!",
+    "backupFailed": "백업에 실패했습니다!",
+    "restoreCompletedSuccessfully": "복원을 성공적으로 완료했습니다!",
+    "restoreFailed": "복원에 실패했습니다!",
+    "fileNotFound": "파일을 찾을 수 없습니다",
+    "fileTooLarge": "파일 용량이 너무 큽니다 (최대 10MB)",
+    "invalidBackupFile": "올바르지 않은 백업 파일입니다",
+    "progress": "진행 상황",
+    "enterAmount": "수량 입력",
+    "complete": "완료",
+    "saveProgress": "진행 상황 저장",
+    "currentProgress": "현재: {current} {unit}",
+    "@currentProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "targetProgress": "목표: {target} {unit}",
+    "@targetProgress": {
+        "placeholders": {
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "수치형",
+    "targetValue": "목표값",
+    "partialValue": "중간값 / 부분 달성값",
+    "unit": "단위",
+    "habitType": "습관 유형",
+    "booleanHabit": "체크형 (예/아니오)",
+    "slider": "슬라이더",
+    "input": "직접 입력",
+    "numericHabitDescription": "수치형 습관을 사용하면 하루 동안 조금씩 진행 상황을 기록할 수 있습니다."
+}
