@@ -32,9 +32,4 @@ class EnvConfig {
   // Google Sign In
   static String get googleWebClientId => _readEnv('GOOGLE_WEB_CLIENT_ID');
   static String get googleIosClientId => _readEnv('GOOGLE_IOS_CLIENT_ID');
-
-  // RevenueCat
-  static String get revenueCatApiKeyIos => _readEnv('REVENUECAT_API_KEY_IOS');
-  static String get revenueCatApiKeyAndroid =>
-      _readEnv('REVENUECAT_API_KEY_ANDROID');
 }

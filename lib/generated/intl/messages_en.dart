@@ -804,8 +804,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "syncNotAvailable": MessageLookupByLibrary.simpleMessage(
       "Sync not available",
     ),
+    "syncNotEnabledForAccount": MessageLookupByLibrary.simpleMessage(
+      "Sync is not enabled for this account.",
+    ),
     "syncNow": MessageLookupByLibrary.simpleMessage("Sync Now"),
     "syncTitle": MessageLookupByLibrary.simpleMessage("Sync"),
+    "syncUnavailable": MessageLookupByLibrary.simpleMessage("Sync unavailable"),
     "syncingHero": MessageLookupByLibrary.simpleMessage("Syncing..."),
     "syncingPaused": MessageLookupByLibrary.simpleMessage("Syncing Paused"),
     "syncingPausedDesc": MessageLookupByLibrary.simpleMessage("Paused"),

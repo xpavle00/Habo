@@ -428,6 +428,8 @@
   "offline": "Offline",
   "notConfigured": "Not configured",
   "setUpSyncToEnable": "Set up sync to enable",
+  "syncUnavailable": "Sync unavailable",
+  "syncNotEnabledForAccount": "Sync is not enabled for this account.",
   "subscriptionNeeded": "Subscription needed",
   "subscribeToEnableSync": "Subscribe to enable Habo Sync",
   "notActive": "Not active",

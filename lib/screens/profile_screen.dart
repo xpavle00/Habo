@@ -5,7 +5,6 @@ import 'package:habo/screens/change_account_password_screen.dart';
 import 'package:habo/screens/delete_account_screen.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:habo/generated/l10n.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,45 +32,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _onSignOut() async {
-    // Logout from RevenueCat first to reset user ID
-    await ServiceLocator.instance.subscriptionService.logout();
     // Reset sync state, clear key material (syncVersion, unsynced changes, etc.)
     await ServiceLocator.instance.syncManager?.onSignOut();
     await Supabase.instance.client.auth.signOut();
     if (mounted) {
       Navigator.of(context).pop(); // Close profile screen
-    }
-  }
-
-  Future<void> _openSubscriptionManagement() async {
-    final subscriptionService = ServiceLocator.instance.subscriptionService;
-    final info = await subscriptionService.getSubscriptionInfo();
-
-    Uri? uri;
-
-    if (info?.managementUrl != null) {
-      uri = Uri.parse(info!.managementUrl!);
-    } else {
-      if (Theme.of(context).platform == TargetPlatform.iOS ||
-          Theme.of(context).platform == TargetPlatform.macOS) {
-        uri = Uri.parse('https://apps.apple.com/account/subscriptions');
-      } else if (Theme.of(context).platform == TargetPlatform.android) {
-        uri = Uri.parse('https://play.google.com/store/account/subscriptions');
-      }
-    }
-
-    if (uri != null && mounted) {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } else {
-        ServiceLocator.instance.uiFeedbackService.showError(
-          'Could not open subscription management',
-        );
-      }
-    } else if (mounted) {
-      ServiceLocator.instance.uiFeedbackService.showError(
-        'Subscription management not available on this platform',
-      );
     }
   }
 
@@ -155,18 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     builder: (context) => const ChangeAccountPasswordScreen(),
                   ),
                 ),
-              ),
-            ],
-
-            if (!ServiceLocator.instance.subscriptionService.isSelfHosted) ...[
-              const SizedBox(height: 12),
-              _buildProfileAction(
-                context: context,
-                isDark: isDark,
-                icon: Icons.credit_card,
-                title: S.of(context).manageSubscription,
-                subtitle: S.of(context).viewOrCancelYourPlan,
-                onTap: _openSubscriptionManagement,
               ),
             ],
 

@@ -224,12 +224,6 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                                     .of(context)
                                     .deleteYourAccountAndLoginCredentials,
                               ),
-                              _buildDeletionItem(
-                                context,
-                                S
-                                    .of(context)
-                                    .deleteSubscriptionManagedSeparately,
-                              ),
                             ],
                           ),
                         ),

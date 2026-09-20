@@ -145,31 +145,13 @@ class SyncManager with WidgetsBindingObserver {
       return;
     }
 
-    // 2. Subscription check — ensure RevenueCat is initialized first so we
-    //    get the real subscription status instead of relying on the Supabase
-    //    webhook fallback (which may be stale or absent).
-    try {
-      final subscriptionService = ServiceLocator.instance.subscriptionService;
-      await subscriptionService.initialize();
-      final isSubscribed = await subscriptionService.isSubscribed();
-      if (!isSubscribed) {
-        _isConfigured = false;
-        _updateStatus(SyncStatus.noSubscription);
-        return;
-      }
-    } on SubscriptionException catch (e) {
-      dev.log(
-        'Subscription check failed (${e.code}), falling through to key check',
-        name: _logName,
-        error: e,
-      );
-      // On error, don't block — fall through to key check
-    } catch (e) {
-      dev.log(
-        'Unexpected error checking subscription',
-        name: _logName,
-        error: e,
-      );
+    // 2. Subscription check.
+    final isSubscribed = await ServiceLocator.instance.subscriptionService
+        .isSubscribed();
+    if (!isSubscribed) {
+      _isConfigured = false;
+      _updateStatus(SyncStatus.noSubscription);
+      return;
     }
 
     // 3. Encryption key check

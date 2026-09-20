@@ -109,8 +109,6 @@ class _SyncScreenState extends State<SyncScreen> {
   }
 
   Future<void> _onSignOut() async {
-    // Logout from RevenueCat first to reset user ID
-    await ServiceLocator.instance.subscriptionService.logout();
     // Reset sync state, clear key material (syncVersion, unsynced changes, etc.)
     await ServiceLocator.instance.syncManager?.onSignOut();
     await Supabase.instance.client.auth.signOut();

@@ -2482,6 +2482,26 @@ class S {
     );
   }
 
+  /// `Sync unavailable`
+  String get syncUnavailable {
+    return Intl.message(
+      'Sync unavailable',
+      name: 'syncUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync is not enabled for this account.`
+  String get syncNotEnabledForAccount {
+    return Intl.message(
+      'Sync is not enabled for this account.',
+      name: 'syncNotEnabledForAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Subscription needed`
   String get subscriptionNeeded {
     return Intl.message(

@@ -137,48 +137,6 @@ class BackupException extends HaboSyncException {
       BackupException('BACKUP_CREATE_FAILED', 'Failed to create backup', cause);
 }
 
-// --- Subscription ---
-
-class SubscriptionException extends HaboSyncException {
-  const SubscriptionException(super.code, super.message, [super.cause]);
-
-  /// No active subscription.
-  factory SubscriptionException.notActive() =>
-      const SubscriptionException('SUB_NOT_ACTIVE', 'No active subscription');
-
-  /// Subscription status check failed.
-  factory SubscriptionException.checkFailed([Object? cause]) =>
-      SubscriptionException(
-        'SUB_CHECK_FAILED',
-        'Failed to check subscription status',
-        cause,
-      );
-
-  /// RevenueCat SDK initialization failed.
-  factory SubscriptionException.initFailed([Object? cause]) =>
-      SubscriptionException(
-        'SUB_INIT_FAILED',
-        'Failed to initialize subscription service',
-        cause,
-      );
-
-  /// Paywall display failed.
-  factory SubscriptionException.paywallFailed([Object? cause]) =>
-      SubscriptionException(
-        'SUB_PAYWALL_FAILED',
-        'Failed to display paywall',
-        cause,
-      );
-
-  /// Purchase restore failed.
-  factory SubscriptionException.restoreFailed([Object? cause]) =>
-      SubscriptionException(
-        'SUB_RESTORE_FAILED',
-        'Failed to restore purchases',
-        cause,
-      );
-}
-
 // --- Master Password ---
 
 class MasterPasswordException extends HaboSyncException {
