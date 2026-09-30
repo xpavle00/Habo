@@ -50,10 +50,8 @@ dependencies:
   cryptography_flutter: ^2.3.4
   flutter_secure_storage: ^10.0.0
   supabase_flutter: ^2.12.2
-  supabase_auth_ui: ^0.5.5
   uuid: ^4.5.3
   sign_in_with_apple: ^6.1.4
-  google_sign_in: ^6.3.0
   crypto: ^3.0.7
   flutter_dotenv: ^6.0.0
 

@@ -28,8 +28,4 @@ class EnvConfig {
   // Supabase (production)
   static String get supabaseUrl => _readEnv('SUPABASE_URL');
   static String get supabaseAnonKey => _readEnv('SUPABASE_ANON_KEY');
-
-  // Google Sign In
-  static String get googleWebClientId => _readEnv('GOOGLE_WEB_CLIENT_ID');
-  static String get googleIosClientId => _readEnv('GOOGLE_IOS_CLIENT_ID');
 }

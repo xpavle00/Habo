@@ -4,11 +4,8 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/services/service_locator.dart';
-import 'package:habo/env_config.dart';
 import 'package:habo/screens/sync_helpers.dart';
 import 'package:habo/generated/l10n.dart';
 import 'package:habo/widgets/habo_text_field.dart';
@@ -250,80 +247,6 @@ class _SyncLoginViewState extends State<SyncLoginView> {
     }
   }
 
-  Future<void> _signInWithGoogle() async {
-    try {
-      final googleSignIn = GoogleSignIn(
-        clientId: Platform.isIOS ? EnvConfig.googleIosClientId : null,
-        serverClientId: EnvConfig.googleWebClientId,
-      );
-
-      final googleUser = await googleSignIn.signIn();
-      if (googleUser == null) return; // User cancelled
-
-      final googleAuth = await googleUser.authentication;
-      final idToken = googleAuth.idToken;
-      final accessToken = googleAuth.accessToken;
-
-      if (idToken == null) {
-        throw Exception('Google Sign In failed — no ID token received.');
-      }
-
-      await Supabase.instance.client.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
-      );
-    } catch (e) {
-      if (mounted) {
-        final message = e.toString().contains('ApiException')
-            ? 'Google Sign In failed. Please check that Google is configured in the developer console with the correct SHA-1 fingerprint.'
-            : 'Google Sign In error: $e';
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message)));
-      }
-    }
-  }
-
-  Widget _buildSocialButton({
-    required BuildContext context,
-    required Widget iconWidget,
-    required String label,
-    required VoidCallback onTap,
-    required Color backgroundColor,
-    required Color textColor,
-    Color? borderColor,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 48,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(12),
-          border: borderColor != null
-              ? Border.all(color: borderColor, width: 1)
-              : null,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            iconWidget,
-            const SizedBox(width: 10),
-            Text(
-              label,
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -559,27 +482,6 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                   .isSelfHosted) ...[
                 const SizedBox(height: 24),
 
-                // Divider
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(color: Colors.grey[300], thickness: 1),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        S.of(context).orContinueWith,
-                        style: TextStyle(color: Colors.grey[500], fontSize: 13),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(color: Colors.grey[300], thickness: 1),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
                 // Social login buttons
                 Column(
                   children: [
@@ -600,28 +502,6 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                       ),
                       const SizedBox(height: 16),
                     ],
-                    // Google
-                    _buildSocialButton(
-                      context: context,
-                      iconWidget: SvgPicture.asset(
-                        'assets/images/google_logo.svg',
-                        width: 20,
-                        height: 20,
-                      ),
-                      label: S.of(context).continueWithGoogle,
-                      onTap: _signInWithGoogle,
-                      backgroundColor:
-                          Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF131314)
-                          : Colors.white,
-                      textColor: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFFE3E3E3)
-                          : const Color(0xFF1F1F1F),
-                      borderColor:
-                          Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF8E918F)
-                          : const Color(0xFF747775),
-                    ),
                     SizedBox(height: 48),
                   ],
                 ),
