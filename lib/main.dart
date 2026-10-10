@@ -79,12 +79,16 @@ void main() async {
           await prefs.setString('habo_settings', jsonEncode(settings));
         } catch (_) {}
       }
-      await Supabase.initialize(
-        url: EnvConfig.supabaseUrl,
-        anonKey: EnvConfig.supabaseAnonKey,
-      );
+      try {
+        await Supabase.initialize(
+          url: EnvConfig.supabaseUrl,
+          anonKey: EnvConfig.supabaseAnonKey,
+        );
+      } catch (e) {
+        debugPrint('Supabase.initialize() failed, running without sync: $e');
+      }
     } else {
-      rethrow;
+      debugPrint('Supabase.initialize() failed, running without sync: $e');
     }
   }
 
@@ -177,20 +181,8 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     // Initialize database first and wait for completion
     await haboModel.initDatabase();
 
-    // Query self-hosted flag from server
-    bool isSelfHosted = _settingsManager.isSelfHostedCached;
-    try {
-      final response = await Supabase.instance.client
-          .from('app_settings')
-          .select('value')
-          .eq('key', 'self_hosted')
-          .single();
-      isSelfHosted = response['value'] == 'true';
-      _settingsManager.setIsSelfHostedCached(isSelfHosted);
-    } catch (e) {
-      debugPrint('Failed to query self_hosted flag: $e');
-      // Fall back to cached value (defaults to false if never fetched)
-    }
+    // Use cached value; refreshed from server in background after startup
+    final isSelfHosted = _settingsManager.isSelfHostedCached;
 
     // Initialize service locator with the scaffold key and HaboModel
     ServiceLocator.instance.initialize(
@@ -243,6 +235,10 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
 
+    if (!Supabase.instance.isInitialized) return;
+
+    unawaited(_refreshSelfHostedFlag());
+
     // Listen for password recovery auth events
     _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen(
       (data) {
@@ -261,6 +257,26 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
         debugPrint('Auth state change error (ignored): $error');
       },
     );
+  }
+
+  Future<void> _refreshSelfHostedFlag() async {
+    try {
+      final response = await Supabase.instance.client
+          .from('app_settings')
+          .select('value')
+          .eq('key', 'self_hosted')
+          .single()
+          .timeout(const Duration(seconds: 5));
+      final isSelfHosted = response['value'] == 'true';
+      if (isSelfHosted == _settingsManager.isSelfHostedCached) return;
+
+      _settingsManager.setIsSelfHostedCached(isSelfHosted);
+      ServiceLocator.instance.subscriptionService
+          .updateSelfHostedMode(isSelfHosted);
+      await ServiceLocator.instance.syncManager?.refreshConfiguration();
+    } catch (e) {
+      debugPrint('Failed to query self_hosted flag: $e');
+    }
   }
 
   @override

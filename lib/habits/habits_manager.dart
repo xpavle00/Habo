@@ -70,16 +70,28 @@ class HabitsManager extends ChangeNotifier {
        _syncManager = syncManager;
 
   Future<void> initialize() async {
+    // Listen for remote sync changes before loading, so a background pull
+    // finishing mid-init isn't missed; reload is deferred until init is done
+    bool initializing = true;
+    bool reloadPending = false;
+    _syncDataChangedSubscription = _syncManager?.onDataChanged.listen((_) {
+      if (initializing) {
+        reloadPending = true;
+      } else {
+        reloadFromDatabase();
+      }
+    });
+
     await initModel();
     await loadCategories();
     await HomeWidgetService.initialize();
 
-    // Listen for remote sync changes
-    _syncDataChangedSubscription = _syncManager?.onDataChanged.listen((_) {
-      reloadFromDatabase();
-    });
-
-    notifyListeners();
+    initializing = false;
+    if (reloadPending) {
+      await reloadFromDatabase();
+    } else {
+      notifyListeners();
+    }
   }
 
   Future<void> reloadFromDatabase() async {

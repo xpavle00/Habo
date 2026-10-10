@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
@@ -584,6 +586,49 @@ void main() {
           }
         });
       });
+    });
+  });
+
+  group('HabitsManager.initialize', () {
+    const homeWidgetChannel = MethodChannel('home_widget');
+
+    setUp(() {
+      when(() => mockHabitRepository.getAllHabits())
+          .thenAnswer((_) async => []);
+      when(() => mockCategoryRepository.getAllCategories())
+          .thenAnswer((_) async => []);
+      when(() => mockNotificationService.removeNotifications(any()))
+          .thenReturn(null);
+      when(() => mockNotificationService.resetNotifications(any()))
+          .thenReturn(null);
+    });
+
+    tearDown(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(homeWidgetChannel, null);
+    });
+
+    test('reloads when sync pull completes during initialization', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      final dataChanged = StreamController<void>.broadcast();
+      final homeWidgetReady = Completer<void>();
+      when(() => mockSyncManager.onDataChanged)
+          .thenAnswer((_) => dataChanged.stream);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(homeWidgetChannel, (_) async {
+        await homeWidgetReady.future;
+        return true;
+      });
+
+      final init = habitsManager.initialize();
+      await Future<void>.delayed(Duration.zero);
+      dataChanged.add(null);
+      homeWidgetReady.complete();
+      await init;
+      await Future<void>.delayed(Duration.zero);
+
+      verify(() => mockHabitRepository.getAllHabits()).called(2);
+      await dataChanged.close();
     });
   });
 }

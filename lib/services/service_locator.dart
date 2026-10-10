@@ -48,7 +48,8 @@ class ServiceLocator {
     _haboModel = haboModel;
     _settingsManager = settingsManager;
 
-    final supabaseClient = client ?? Supabase.instance.client;
+    final supabaseClient = client ??
+        (Supabase.instance.isInitialized ? Supabase.instance.client : null);
 
     _repositoryFactory = RepositoryFactory(haboModel);
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
@@ -61,13 +62,15 @@ class ServiceLocator {
     );
 
     // Initialize SyncManager first so we can pass it to BackupService
-    _syncManager = SyncManager(
-      _syncService,
-      _encryptionService,
-      _settingsManager,
-      client: supabaseClient,
-    );
-    _syncManager!.initialize();
+    if (supabaseClient != null) {
+      _syncManager = SyncManager(
+        _syncService,
+        _encryptionService,
+        _settingsManager,
+        client: supabaseClient,
+      );
+      _syncManager!.initialize();
+    }
 
     // Initialize BackupService with SyncManager for post-restore sync
     _backupService = BackupService(
