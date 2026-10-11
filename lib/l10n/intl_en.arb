@@ -635,5 +635,9 @@
   },
   "resendVerificationEmail": "Resend verification email",
   "backToSignIn": "Back to Sign In",
-  "featureHomescreenWidgetDarkModeDesc": "Android home widget now supports light and dark mode backgrounds."
+  "featureHomescreenWidgetDarkModeDesc": "Android home widget now supports light and dark mode backgrounds.",
+  "offlineMode": "Offline mode",
+  "offlineModeDescription": "Disable sync and all network connections",
+  "offlineModeRestartContent": "Please close and reopen the app to apply offline mode.",
+  "unavailableWhileOffline": "Unavailable while offline"
 }

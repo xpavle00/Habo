@@ -93,6 +93,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void _showOfflineModeRestartDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(S.of(context).restartRequired),
+        content: Text(S.of(context).offlineModeRestartContent),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void showRestoreDialog(BuildContext context) {
     AwesomeDialog(
       context: context,
@@ -528,8 +544,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ListTile(
+                        title: Text(S.of(context).offlineMode),
+                        subtitle: Text(S.of(context).offlineModeDescription),
+                        trailing: Switch(
+                          value: Provider.of<SettingsManager>(
+                            context,
+                          ).offlineMode,
+                          onChanged: (value) {
+                            Provider.of<SettingsManager>(
+                              context,
+                              listen: false,
+                            ).setOfflineMode(value);
+                            _showOfflineModeRestartDialog(context);
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        enabled: ServiceLocator.instance.isNetworkEnabled,
                         title: Text(S.of(context).syncTitle),
-                        subtitle: Text(S.of(context).syncAndBackupYourData),
+                        subtitle: ServiceLocator.instance.isNetworkEnabled
+                            ? Text(S.of(context).syncAndBackupYourData)
+                            : Text(S.of(context).unavailableWhileOffline),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           Provider.of<AppStateManager>(
@@ -539,11 +574,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                       ),
                       ListTile(
+                        enabled: ServiceLocator.instance.isNetworkEnabled,
                         title: Text(S.of(context).server),
-                        subtitle:
-                            Provider.of<SettingsManager>(
-                              context,
-                            ).hasCustomServer
+                        subtitle: !ServiceLocator.instance.isNetworkEnabled
+                            ? Text(S.of(context).unavailableWhileOffline)
+                            : Provider.of<SettingsManager>(
+                                context,
+                              ).hasCustomServer
                             ? Text(S.of(context).customServer)
                             : Text(S.of(context).haboCloudDefault),
                         trailing: const Icon(Icons.chevron_right),

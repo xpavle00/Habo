@@ -34,6 +34,7 @@ class ServiceLocator {
   late final SettingsManager _settingsManager;
 
   bool _isInitialized = false; // Added initialization flag
+  bool _isNetworkEnabled = false;
 
   /// Initializes all services. Must be called before accessing any service.
   void initialize({
@@ -41,6 +42,7 @@ class ServiceLocator {
     required HaboModel haboModel,
     required SettingsManager settingsManager,
     SupabaseClient? client,
+    bool isNetworkEnabled = false,
     bool isSelfHosted = false,
   }) {
     if (_isInitialized) return;
@@ -48,8 +50,11 @@ class ServiceLocator {
     _haboModel = haboModel;
     _settingsManager = settingsManager;
 
-    final supabaseClient = client ??
-        (Supabase.instance.isInitialized ? Supabase.instance.client : null);
+    // Supabase.instance asserts in debug when not initialized, so only touch
+    // it when main() reports a successful init
+    final supabaseClient =
+        client ?? (isNetworkEnabled ? Supabase.instance.client : null);
+    _isNetworkEnabled = supabaseClient != null;
 
     _repositoryFactory = RepositoryFactory(haboModel);
     _uiFeedbackService = UIFeedbackService(scaffoldKey);
@@ -143,6 +148,9 @@ class ServiceLocator {
     _ensureInitialized();
     return _syncService;
   }
+
+  /// False in offline mode or when Supabase failed to initialize
+  bool get isNetworkEnabled => _isInitialized && _isNetworkEnabled;
 
   /// Get SyncManager instance (may be null if not configured)
   SyncManager? get syncManager {

@@ -8,6 +8,7 @@ import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/navigation/routes.dart';
 import 'package:habo/navigation/route_information_parser.dart';
 import 'package:habo/onboarding/onboarding_screen.dart';
+import 'package:habo/services/service_locator.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/settings/settings_screen.dart';
 import 'package:habo/splash_screen.dart';
@@ -193,10 +194,14 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
           appStateManager.goWhatsNew(true);
           break;
         case '/sync':
-          appStateManager.goSync(true);
+          if (ServiceLocator.instance.isNetworkEnabled) {
+            appStateManager.goSync(true);
+          }
           break;
         case '/profile':
-          appStateManager.goProfile(true);
+          if (ServiceLocator.instance.isNetworkEnabled) {
+            appStateManager.goProfile(true);
+          }
           break;
         case '/':
         case '/main':

@@ -3631,6 +3631,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Offline mode`
+  String get offlineMode {
+    return Intl.message(
+      'Offline mode',
+      name: 'offlineMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disable sync and all network connections`
+  String get offlineModeDescription {
+    return Intl.message(
+      'Disable sync and all network connections',
+      name: 'offlineModeDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please close and reopen the app to apply offline mode.`
+  String get offlineModeRestartContent {
+    return Intl.message(
+      'Please close and reopen the app to apply offline mode.',
+      name: 'offlineModeRestartContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unavailable while offline`
+  String get unavailableWhileOffline {
+    return Intl.message(
+      'Unavailable while offline',
+      name: 'unavailableWhileOffline',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

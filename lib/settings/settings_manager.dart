@@ -386,6 +386,13 @@ class SettingsManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get offlineMode => _settingsData.offlineMode;
+  void setOfflineMode(bool val) {
+    _settingsData.offlineMode = val;
+    saveData();
+    notifyListeners();
+  }
+
   bool get hasCustomServer =>
       _settingsData.customSupabaseUrl != null &&
       _settingsData.customSupabaseUrl!.isNotEmpty &&

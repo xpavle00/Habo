@@ -36,15 +36,17 @@ void main() async {
   // Load secrets from .env file
   await dotenv.load();
 
-  // Load settings to check for custom server configuration
+  // Load settings to check for offline mode and custom server configuration
   final prefs = await SharedPreferences.getInstance();
   final settingsJson = prefs.getString('habo_settings');
+  bool offlineMode = false;
   String supabaseUrl = EnvConfig.supabaseUrl;
   String supabaseAnonKey = EnvConfig.supabaseAnonKey;
 
   if (settingsJson != null) {
     try {
       final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+      offlineMode = settings['offlineMode'] as bool? ?? false;
       final customUrl = settings['customSupabaseUrl'] as String?;
       final customKey = settings['customSupabaseAnonKey'] as String?;
       if (customUrl != null &&
@@ -59,38 +61,9 @@ void main() async {
     }
   }
 
-  // Initialize Supabase with resolved values, with error recovery
-  try {
-    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-  } catch (e) {
-    // Bad custom server values — clear them and fall back to defaults
-    if (supabaseUrl != EnvConfig.supabaseUrl) {
-      debugPrint('Supabase.initialize() failed with custom URL: $e');
-      debugPrint('Falling back to default Habo Cloud server');
-      final prefs = await SharedPreferences.getInstance();
-      // Clear custom server from settings JSON
-      final settingsJson = prefs.getString('habo_settings');
-      if (settingsJson != null) {
-        try {
-          final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
-          settings.remove('customSupabaseUrl');
-          settings.remove('customSupabaseAnonKey');
-          settings['isSelfHostedCached'] = false;
-          await prefs.setString('habo_settings', jsonEncode(settings));
-        } catch (_) {}
-      }
-      try {
-        await Supabase.initialize(
-          url: EnvConfig.supabaseUrl,
-          anonKey: EnvConfig.supabaseAnonKey,
-        );
-      } catch (e) {
-        debugPrint('Supabase.initialize() failed, running without sync: $e');
-      }
-    } else {
-      debugPrint('Supabase.initialize() failed, running without sync: $e');
-    }
-  }
+  // Offline mode: Supabase is never started, so no network activity at all
+  final isNetworkEnabled =
+      !offlineMode && await _initializeSupabase(supabaseUrl, supabaseAnonKey);
 
   if (Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
@@ -98,11 +71,13 @@ void main() async {
     windowManager.setMaximumSize(Size.infinite);
   }
   addLicenses();
-  runApp(const Habo());
+  runApp(Habo(isNetworkEnabled: isNetworkEnabled));
 }
 
 class Habo extends StatefulWidget {
-  const Habo({super.key});
+  final bool isNetworkEnabled;
+
+  const Habo({super.key, required this.isNetworkEnabled});
 
   @override
   State<Habo> createState() => _HaboState();
@@ -189,6 +164,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       scaffoldKey: _scaffoldKey,
       haboModel: haboModel,
       settingsManager: _settingsManager,
+      isNetworkEnabled: widget.isNetworkEnabled,
       isSelfHosted: isSelfHosted,
     );
 
@@ -235,7 +211,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
     // Remove native splash once app is fully initialized
     FlutterNativeSplash.remove();
 
-    if (!Supabase.instance.isInitialized) return;
+    if (!widget.isNetworkEnabled) return;
 
     unawaited(_refreshSelfHostedFlag());
 
@@ -345,6 +321,48 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       ),
     );
   }
+}
+
+/// Returns whether Supabase is initialized and usable
+Future<bool> _initializeSupabase(
+  String supabaseUrl,
+  String supabaseAnonKey,
+) async {
+  // Initialize Supabase with resolved values, with error recovery
+  try {
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    return true;
+  } catch (e) {
+    // Bad custom server values — clear them and fall back to defaults
+    if (supabaseUrl != EnvConfig.supabaseUrl) {
+      debugPrint('Supabase.initialize() failed with custom URL: $e');
+      debugPrint('Falling back to default Habo Cloud server');
+      final prefs = await SharedPreferences.getInstance();
+      // Clear custom server from settings JSON
+      final settingsJson = prefs.getString('habo_settings');
+      if (settingsJson != null) {
+        try {
+          final settings = jsonDecode(settingsJson) as Map<String, dynamic>;
+          settings.remove('customSupabaseUrl');
+          settings.remove('customSupabaseAnonKey');
+          settings['isSelfHostedCached'] = false;
+          await prefs.setString('habo_settings', jsonEncode(settings));
+        } catch (_) {}
+      }
+      try {
+        await Supabase.initialize(
+          url: EnvConfig.supabaseUrl,
+          anonKey: EnvConfig.supabaseAnonKey,
+        );
+        return true;
+      } catch (e) {
+        debugPrint('Supabase.initialize() failed, running without sync: $e');
+      }
+    } else {
+      debugPrint('Supabase.initialize() failed, running without sync: $e');
+    }
+  }
+  return false;
 }
 
 void addLicenses() {

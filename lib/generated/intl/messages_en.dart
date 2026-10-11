@@ -597,6 +597,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Observe your progress",
     ),
     "offline": MessageLookupByLibrary.simpleMessage("Offline"),
+    "offlineMode": MessageLookupByLibrary.simpleMessage("Offline mode"),
+    "offlineModeDescription": MessageLookupByLibrary.simpleMessage(
+      "Disable sync and all network connections",
+    ),
+    "offlineModeRestartContent": MessageLookupByLibrary.simpleMessage(
+      "Please close and reopen the app to apply offline mode.",
+    ),
     "ohNoSanction": MessageLookupByLibrary.simpleMessage(
       "Oh no! Your sanction:",
     ),
@@ -849,6 +856,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "unarchive": MessageLookupByLibrary.simpleMessage("Unarchive"),
     "unarchiveHabit": MessageLookupByLibrary.simpleMessage("Unarchive habit"),
+    "unavailableWhileOffline": MessageLookupByLibrary.simpleMessage(
+      "Unavailable while offline",
+    ),
     "undo": MessageLookupByLibrary.simpleMessage("Undo"),
     "unexpectedErrorPleaseTryAgain": MessageLookupByLibrary.simpleMessage(
       "An unexpected error occurred. Please try again.",

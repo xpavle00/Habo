@@ -27,6 +27,7 @@ class SettingsData {
   String? customSupabaseUrl;
   String? customSupabaseAnonKey;
   bool isSelfHostedCached = false;
+  bool offlineMode = false;
 
   SettingsData();
 
@@ -85,6 +86,9 @@ class SettingsData {
       customSupabaseAnonKey = json['customSupabaseAnonKey'] as String?,
       isSelfHostedCached = (json['isSelfHostedCached'] != null)
           ? json['isSelfHostedCached']
+          : false,
+      offlineMode = (json['offlineMode'] != null)
+          ? json['offlineMode']
           : false;
 
   SettingsData copyWith({
@@ -111,6 +115,7 @@ class SettingsData {
     String? customSupabaseUrl,
     String? customSupabaseAnonKey,
     bool? isSelfHostedCached,
+    bool? offlineMode,
   }) {
     return SettingsData()
       ..theme = theme ?? this.theme
@@ -137,7 +142,8 @@ class SettingsData {
       ..customSupabaseUrl = customSupabaseUrl ?? this.customSupabaseUrl
       ..customSupabaseAnonKey =
           customSupabaseAnonKey ?? this.customSupabaseAnonKey
-      ..isSelfHostedCached = isSelfHostedCached ?? this.isSelfHostedCached;
+      ..isSelfHostedCached = isSelfHostedCached ?? this.isSelfHostedCached
+      ..offlineMode = offlineMode ?? this.offlineMode;
   }
 
   Map<String, dynamic> toJson() => {
@@ -165,5 +171,6 @@ class SettingsData {
     'customSupabaseUrl': customSupabaseUrl,
     'customSupabaseAnonKey': customSupabaseAnonKey,
     'isSelfHostedCached': isSelfHostedCached,
+    'offlineMode': offlineMode,
   };
 }

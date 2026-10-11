@@ -78,6 +78,20 @@ void main() {
       expect(ServiceLocator.instance.repositoryFactory, isNotNull);
     });
 
+    test('service locator initializes offline without Supabase', () async {
+      ServiceLocator.instance.reset();
+
+      ServiceLocator.instance.initialize(
+        scaffoldKey: GlobalKey<ScaffoldMessengerState>(),
+        haboModel: HaboModel(),
+        settingsManager: SettingsManager(),
+      );
+
+      expect(ServiceLocator.instance.isNetworkEnabled, isFalse);
+      expect(ServiceLocator.instance.syncManager, isNull);
+      expect(ServiceLocator.instance.backupService, isNotNull);
+    });
+
     test('habo model can be instantiated', () async {
       // Verify HaboModel can be created without exceptions
       expect(() => HaboModel(), returnsNormally);

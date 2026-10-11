@@ -55,6 +55,10 @@ class _SyncStatusIndicatorState extends State<SyncStatusIndicator> {
   }
 
   Widget _buildForCurrentState(BuildContext context, SettingsManager settings) {
+    if (!ServiceLocator.instance.isNetworkEnabled) {
+      return const SizedBox.shrink();
+    }
+
     // Sync paused overrides everything except notConfigured / noSubscription
     if (settings.isSyncPaused &&
         _syncStatus != SyncStatus.notConfigured &&
