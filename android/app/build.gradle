@@ -32,6 +32,8 @@ android {
     namespace "com.pavlenko.Habo"
 
     compileSdk flutter.compileSdkVersion
+    // jni (via path_provider_android) requires NDK 28.2
+    ndkVersion "28.2.13676358"
 
     compileOptions {
         coreLibraryDesugaringEnabled true

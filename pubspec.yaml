@@ -38,7 +38,7 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   intl_utils: ^2.8.14
-  dynamic_color: ^1.7.0
+  dynamic_color: ">=1.7.0 <1.9.0"
   percent_indicator: ^4.2.5
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
@@ -52,8 +52,8 @@ dependencies:
   supabase_flutter: ^2.12.2
   supabase_auth_ui: ^0.5.5
   uuid: ^4.5.3
-  purchases_flutter: ^8.10.5
-  purchases_ui_flutter: ^8.10.5
+  purchases_flutter: ^10.15.2
+  purchases_ui_flutter: ^10.15.2
   sign_in_with_apple: ^6.1.4
   google_sign_in: ^6.3.0
   crypto: ^3.0.7

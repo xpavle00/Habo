@@ -1,5 +1,5 @@
 PODS:
-  - app_links (6.4.1):
+  - app_links (7.0.0):
     - Flutter
   - AppAuth (1.7.6):
     - AppAuth/Core (= 1.7.6)
@@ -68,24 +68,21 @@ PODS:
     - FlutterMacOS
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - PromisesObjC (2.4.0)
-  - purchases_flutter (8.11.0):
+  - purchases_flutter (10.15.2):
     - Flutter
-    - PurchasesHybridCommon (= 14.3.0)
-  - purchases_ui_flutter (8.11.0):
+    - PurchasesHybridCommon (= 19.10.0)
+  - purchases_ui_flutter (10.15.2):
     - Flutter
-    - PurchasesHybridCommonUI (= 14.3.0)
-  - PurchasesHybridCommon (14.3.0):
-    - RevenueCat (= 5.32.0)
-  - PurchasesHybridCommonUI (14.3.0):
-    - PurchasesHybridCommon (= 14.3.0)
-    - RevenueCatUI (= 5.32.0)
-  - RevenueCat (5.32.0)
-  - RevenueCatUI (5.32.0):
-    - RevenueCat (= 5.32.0)
+    - PurchasesHybridCommonUI (= 19.10.0)
+  - PurchasesHybridCommon (19.10.0):
+    - RevenueCat (= 5.94.0)
+  - PurchasesHybridCommonUI (19.10.0):
+    - PurchasesHybridCommon (= 19.10.0)
+    - RevenueCatUI (= 5.94.0)
+  - RevenueCat (5.94.0)
+  - RevenueCatUI (5.94.0):
+    - RevenueCat (= 5.94.0)
   - rive_native (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -115,7 +112,6 @@ DEPENDENCIES:
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - purchases_ui_flutter (from `.symlinks/plugins/purchases_ui_flutter/ios`)
   - rive_native (from `.symlinks/plugins/rive_native/ios`)
@@ -170,8 +166,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/local_auth_darwin/darwin"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   purchases_flutter:
     :path: ".symlinks/plugins/purchases_flutter/ios"
   purchases_ui_flutter:
@@ -188,7 +182,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
+  app_links: a754cbec3c255bd4bbb4d236ecc06f28cd9a7ce8
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
@@ -210,20 +204,19 @@ SPEC CHECKSUMS:
   IosAwnCore: 32019505f4a4909fa9079ee401b2c82aeeab78a8
   local_auth_darwin: c3ee6cce0a8d56be34c8ccb66ba31f7f180aaebb
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
-  path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  purchases_flutter: 3570127ba41583a75e553d68a763367007830eff
-  purchases_ui_flutter: 4f73ee267b1f50f72f71ece0d918fc5d0cb7f97f
-  PurchasesHybridCommon: 7f0944cc5411bdcd1ea5d69affa6a6f9aaf87b13
-  PurchasesHybridCommonUI: 8149f983d0d5fcc6d2536900c934d3dfb7cbed45
-  RevenueCat: 7e1d0768fb287c9983173c9b28e39ccbeeb828a9
-  RevenueCatUI: 61ddba6f94803f9b79c470ffe1e8b81d807c11ce
-  rive_native: a57df296c558867395bfe82fafe857ec67640f58
+  purchases_flutter: d695b22943fb094b02badf0f5f5a8bd7ab1c035f
+  purchases_ui_flutter: 338ab82d9535689da59ddc9ebfaa0d5d179e4854
+  PurchasesHybridCommon: 4ea84285a799df27db9e4a0cc180d9129e6e9cf2
+  PurchasesHybridCommonUI: 64533f29a16a47437a194a1dec89e5fcc73a3732
+  RevenueCat: f381deba42a93e5194104b17a1f653a389d2e215
+  RevenueCatUI: 7f972d3c8cff4d64d5eb26e25b5aace659024260
+  rive_native: c8fbe631855835dc84f7d59befcdb43de3ac48d4
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
-PODFILE CHECKSUM: 18d0083f2af033201829d351b36c2bd7dd9022c5
+PODFILE CHECKSUM: 424a1667225c3cd1115d603611f7bf3c940099fa
 
 COCOAPODS: 1.16.2

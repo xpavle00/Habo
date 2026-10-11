@@ -52,6 +52,10 @@ post_install do |installer|
           '$(inherited)',
           'AUDIO_SESSION_MICROPHONE=0'
         ]
+        # Xcode 27 rejects pod deployment targets below 15.0
+        if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 15.0
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+        end
     end
     
   end
