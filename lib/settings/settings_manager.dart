@@ -6,8 +6,7 @@ import 'package:habo/constants.dart';
 import 'package:habo/model/settings_data.dart';
 import 'package:habo/notifications.dart';
 import 'package:habo/themes.dart';
-import 'package:flutter_soloud/flutter_soloud.dart';
-import 'package:audio_session/audio_session.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +17,8 @@ class SettingsManager extends ChangeNotifier {
   bool _isInitialized = false;
   String _currentAppVersion = '';
 
-  late AudioSource _checkSource;
-  late AudioSource _clickSource;
+  late AudioPlayer _checkPlayer;
+  late AudioPlayer _clickPlayer;
   bool _soundsLoaded = false;
 
   Future<void> initialize() async {
@@ -32,33 +31,29 @@ class SettingsManager extends ChangeNotifier {
     }
     _isInitialized = true;
     notifyListeners();
-    _initializeSounds();
+    await _initializeSounds();
   }
 
   Future<void> _initializeSounds() async {
     try {
-      final session = await AudioSession.instance;
-      await session.configure(
-        const AudioSessionConfiguration(
-          avAudioSessionCategory: AVAudioSessionCategory.playback,
-          avAudioSessionCategoryOptions:
-              AVAudioSessionCategoryOptions.mixWithOthers,
-          avAudioSessionMode: AVAudioSessionMode.defaultMode,
-          avAudioSessionRouteSharingPolicy:
-              AVAudioSessionRouteSharingPolicy.defaultPolicy,
-          avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-          androidAudioAttributes: AndroidAudioAttributes(
-            contentType: AndroidAudioContentType.sonification,
-            flags: AndroidAudioFlags.none,
-            usage: AndroidAudioUsage.assistanceSonification,
+      // Mix with background audio but stay audible even when iOS silent mode is on.
+      await AudioPlayer.global.setAudioContext(
+        AudioContext(
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.playback,
+            options: {AVAudioSessionOptions.mixWithOthers},
           ),
-          androidWillPauseWhenDucked: false,
+          android: AudioContextAndroid(
+            isSpeakerphoneOn: false,
+            stayAwake: false,
+            contentType: AndroidContentType.sonification,
+            usageType: AndroidUsageType.assistanceSonification,
+            audioFocus: AndroidAudioFocus.none,
+          ),
         ),
       );
-
-      await SoLoud.instance.init();
-      _checkSource = await SoLoud.instance.loadAsset('assets/sounds/check.wav');
-      _clickSource = await SoLoud.instance.loadAsset('assets/sounds/click.wav');
+      _checkPlayer = await _createEffectPlayer('sounds/check.wav');
+      _clickPlayer = await _createEffectPlayer('sounds/click.wav');
       _soundsLoaded = true;
     } catch (e) {
       // Handle initialization error gracefully
@@ -66,11 +61,22 @@ class SettingsManager extends ChangeNotifier {
     }
   }
 
+  /// Creates a low-latency player with [assetPath] preloaded, so the first tap
+  /// plays without a decode delay. [ReleaseMode.stop] keeps the decoded buffer
+  /// between plays — the default [ReleaseMode.release] re-buffers every tap.
+  Future<AudioPlayer> _createEffectPlayer(String assetPath) async {
+    final player = AudioPlayer();
+    await player.setReleaseMode(ReleaseMode.stop);
+    await player.setPlayerMode(PlayerMode.lowLatency);
+    await player.setSource(AssetSource(assetPath));
+    return player;
+  }
+
   @override
   void dispose() {
     if (_soundsLoaded) {
-      SoLoud.instance.disposeSource(_checkSource);
-      SoLoud.instance.disposeSource(_clickSource);
+      _checkPlayer.dispose();
+      _clickPlayer.dispose();
     }
     super.dispose();
   }
@@ -85,15 +91,8 @@ class SettingsManager extends ChangeNotifier {
     if (_settingsData.soundEffects &&
         _soundsLoaded &&
         _settingsData.soundVolume > 0) {
-      try {
-        final volume =
-            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        await SoLoud.instance.play(_checkSource, volume: volume);
-      } catch (e) {
-        // Handle playback error gracefully
-      } finally {
-        HapticFeedback.lightImpact();
-      }
+      await _playEffect(_checkPlayer);
+      HapticFeedback.lightImpact();
     }
   }
 
@@ -101,15 +100,24 @@ class SettingsManager extends ChangeNotifier {
     if (_settingsData.soundEffects &&
         _soundsLoaded &&
         _settingsData.soundVolume > 0) {
-      try {
-        final volume =
-            _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
-        await SoLoud.instance.play(_clickSource, volume: volume);
-      } catch (e) {
-        // Handle playback error gracefully
-      } finally {
-        HapticFeedback.lightImpact();
+      await _playEffect(_clickPlayer);
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  /// Replays a preloaded effect [player]. Volume is only pushed to the platform
+  /// when it changes, and the player is stopped first because low-latency mode
+  /// fires no completion events (so it never resets its own position).
+  Future<void> _playEffect(AudioPlayer player) async {
+    try {
+      final volume = _settingsData.soundVolume / 5.0; // Convert 0-5 to 0.0-1.0
+      if (player.volume != volume) {
+        await player.setVolume(volume);
       }
+      await player.stop();
+      await player.resume();
+    } catch (e) {
+      // Handle playback error gracefully
     }
   }
 

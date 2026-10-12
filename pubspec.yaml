@@ -42,8 +42,7 @@ dependencies:
   percent_indicator: ^4.2.5
   flutter_native_splash: ^2.4.4
   flutter_iconpicker: ^4.0.1
-  flutter_soloud: ^3.5.4
-  audio_session: ^0.2.3
+  audioplayers: ^6.0.0
   local_auth: ^3.0.1
   home_widget: ^0.9.0
   cryptography: ^2.9.0
@@ -82,6 +81,8 @@ flutter_icons:
     image_path: "assets/images/macos_icon.png"
 
 flutter:
+  config:
+    enable-swift-package-manager: false
   uses-material-design: true
   generate: true
 
