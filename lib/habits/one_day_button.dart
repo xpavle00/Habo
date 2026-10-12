@@ -516,10 +516,7 @@ class OneDayButton extends StatelessWidget {
           unit: habitData.unit,
           currentProgress: currentProgress,
           onProgressChanged: (double progressValue) {
-            // Use DayType.check if completed, otherwise DayType.progress
-            final dayType = progressValue >= targetValueAtTime
-                ? DayType.check
-                : DayType.progress;
+            final dayType = DayType.progress;
             Provider.of<HabitsManager>(context, listen: false).addEvent(
               id,
               date,

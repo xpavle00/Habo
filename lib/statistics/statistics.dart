@@ -56,8 +56,8 @@ class Statistics {
               usingTwoDayRule = false;
               break;
             case DayType.progress:
-              // Handle numeric habit progress events as separate category
-              stat.progress++;
+              // Treat completed numeric progress as a completion for stats,
+              // but keep partial progress in the progress bucket.
               if (habit.habitData.isNumeric && value.length > 2) {
                 final progressValue = (value[2] as num?)?.toDouble() ?? 0.0;
                 // Use stored target value for completion check
@@ -66,14 +66,17 @@ class Statistics {
                           habit.habitData.targetValue
                     : habit.habitData.targetValue;
                 if (progressValue >= targetAtTime) {
-                  // 100% or more = maintain streak
+                  stat.checks++;
                   stat.actualStreak++;
                   if (stat.actualStreak > stat.topStreak) {
                     stat.topStreak = stat.actualStreak;
                   }
                   usingTwoDayRule = false;
+                } else {
+                  stat.progress++;
                 }
               } else {
+                stat.progress++;
                 // Fallback for non-numeric progress events
                 if (usingTwoDayRule) {
                   stat.actualStreak = 0;
@@ -104,8 +107,19 @@ class Statistics {
           generateYearIfNull(stat, key.year);
 
           if (value[0] != DayType.clear) {
-            // Track all event types including progress in monthly stats
-            stat.monthlyCheck[key.year]![value[0]]![key.month - 1]++;
+            final monthlyBucket =
+                value[0] == DayType.progress &&
+                    habit.habitData.isNumeric &&
+                    value.length > 2 &&
+                    ((value[2] as num?)?.toDouble() ?? 0.0) >=
+                        ((value.length > 3)
+                            ? (value[3] as num?)?.toDouble() ??
+                                  habit.habitData.targetValue
+                            : habit.habitData.targetValue)
+                ? DayType.check
+                : value[0];
+            // Track completed numeric progress as check in monthly stats.
+            stat.monthlyCheck[key.year]![monthlyBucket]![key.month - 1]++;
           }
 
           lastDay = key;
