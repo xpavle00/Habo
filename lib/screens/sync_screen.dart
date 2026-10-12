@@ -7,6 +7,7 @@ import 'package:habo/screens/sync_profile_view.dart';
 import 'package:habo/screens/verify_email_view.dart';
 import 'package:habo/services/service_locator.dart';
 import 'package:habo/services/sync_manager.dart';
+import 'package:habo/navigation/app_state_manager.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -126,99 +127,109 @@ class _SyncScreenState extends State<SyncScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).syncTitle),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline_rounded),
-            tooltip: 'About Sync',
-            onPressed: () async {
-              final settingsManager = Provider.of<SettingsManager>(
-                context,
-                listen: false,
-              );
-              await settingsManager.setHasSeenSyncOnboarding(false);
-            },
-          ),
-        ],
-      ),
-      body: StreamBuilder<AuthState>(
-        stream: Supabase.instance.client.auth.onAuthStateChange,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting &&
-              _isLoading) {
-            // Initial load
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // Trigger a check state when user logs in and we are in "loading" state essentially
-          // or just whenever data changes.
-          // Since this builder runs on auth change:
-          if (snapshot.hasData &&
-              snapshot.data!.session != null &&
-              !_hasLocalKey &&
-              !_hasCheckedProfile &&
-              !_isLoading) {
-            // We detected a login but we haven't checked profile yet
-            // Schedule a check
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _checkState();
-            });
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final session =
-              snapshot.data?.session ??
-              Supabase.instance.client.auth.currentSession;
-
-          final settingsManager = Provider.of<SettingsManager>(context);
-
-          if (!settingsManager.hasSeenSyncOnboarding) {
-            return SyncOnboardingView(
-              onComplete: () {
-                // Settings handler already triggers notifyListeners
+    return PopScope(
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          // Update state immediately when the back gesture commits so the
+          // declarative pages list reflects the pop before the Navigator
+          // reconciles — prevents the sync page from being briefly re-pushed.
+          Provider.of<AppStateManager>(context, listen: false).goSync(false);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(S.of(context).syncTitle),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.help_outline_rounded),
+              tooltip: 'About Sync',
+              onPressed: () async {
+                final settingsManager = Provider.of<SettingsManager>(
+                  context,
+                  listen: false,
+                );
+                await settingsManager.setHasSeenSyncOnboarding(false);
               },
-            );
-          }
+            ),
+          ],
+        ),
+        body: StreamBuilder<AuthState>(
+          stream: Supabase.instance.client.auth.onAuthStateChange,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                _isLoading) {
+              // Initial load
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (session == null) {
-            if (_pendingVerificationEmail != null) {
-              return VerifyEmailView(
-                email: _pendingVerificationEmail!,
-                onBack: () {
-                  setState(() => _pendingVerificationEmail = null);
+            // Trigger a check state when user logs in and we are in "loading" state essentially
+            // or just whenever data changes.
+            // Since this builder runs on auth change:
+            if (snapshot.hasData &&
+                snapshot.data!.session != null &&
+                !_hasLocalKey &&
+                !_hasCheckedProfile &&
+                !_isLoading) {
+              // We detected a login but we haven't checked profile yet
+              // Schedule a check
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _checkState();
+              });
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            final session =
+                snapshot.data?.session ??
+                Supabase.instance.client.auth.currentSession;
+
+            final settingsManager = Provider.of<SettingsManager>(context);
+
+            if (!settingsManager.hasSeenSyncOnboarding) {
+              return SyncOnboardingView(
+                onComplete: () {
+                  // Settings handler already triggers notifyListeners
                 },
               );
             }
-            return SyncLoginView(
-              onPendingVerification: (email) {
-                setState(() => _pendingVerificationEmail = email);
-              },
-            );
-          }
 
-          if (_isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+            if (session == null) {
+              if (_pendingVerificationEmail != null) {
+                return VerifyEmailView(
+                  email: _pendingVerificationEmail!,
+                  onBack: () {
+                    setState(() => _pendingVerificationEmail = null);
+                  },
+                );
+              }
+              return SyncLoginView(
+                onPendingVerification: (email) {
+                  setState(() => _pendingVerificationEmail = email);
+                },
+              );
+            }
 
-          if (!_hasLocalKey) {
-            final isSetupMode =
-                _remoteProfile == null ||
-                _remoteProfile!['encryption_salt'] == null;
+            if (_isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-            return SyncMasterPasswordView(
-              isSetupMode: isSetupMode,
-              remoteProfile: _remoteProfile,
-              onKeySet: _onKeySet,
-              onSignOut: _onSignOut,
-            );
-          }
+            if (!_hasLocalKey) {
+              final isSetupMode =
+                  _remoteProfile == null ||
+                  _remoteProfile!['encryption_salt'] == null;
 
-          return SyncProfileView(onSignOut: _onSignOut);
-        },
+              return SyncMasterPasswordView(
+                isSetupMode: isSetupMode,
+                remoteProfile: _remoteProfile,
+                onKeySet: _onKeySet,
+                onSignOut: _onSignOut,
+              );
+            }
+
+            return SyncProfileView(onSignOut: _onSignOut);
+          },
+        ),
       ),
     );
   }

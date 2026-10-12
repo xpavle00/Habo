@@ -23,6 +23,10 @@ class SyncProfileView extends StatefulWidget {
 }
 
 class _SyncProfileViewState extends State<SyncProfileView> {
+  // Prevent the auto-paywall from firing more than once per app session.
+  // The user can still open it manually via the "Subscribe" button.
+  static bool _hasShownPaywallThisSession = false;
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +36,12 @@ class _SyncProfileViewState extends State<SyncProfileView> {
   }
 
   Future<void> _checkAndShowPaywall() async {
+    if (_hasShownPaywallThisSession) return;
+
     final syncManager = ServiceLocator.instance.syncManager;
     if (syncManager != null &&
         syncManager.status == SyncStatus.noSubscription) {
+      _hasShownPaywallThisSession = true;
       await _showPaywall();
     }
   }
