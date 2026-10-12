@@ -634,5 +634,9 @@
     },
     "resendVerificationEmail": "Znovu odeslat ověřovací e-mail",
     "backToSignIn": "Zpět k přihlášení",
-    "featureHomescreenWidgetDarkModeDesc": "Widget Habo pro Android nyní podporuje světlé i tmavé pozadí."
+    "featureHomescreenWidgetDarkModeDesc": "Widget Habo pro Android nyní podporuje světlé i tmavé pozadí.",
+    "offlineMode": "Režim offline",
+    "offlineModeDescription": "Zakázat synchronizaci a všechna síťová spojení",
+    "offlineModeRestartContent": "Režim offline zahájíte zavřením a opětovným otevřením aplikace.",
+    "unavailableWhileOffline": "Nedostupné v režimu offline"
 }
