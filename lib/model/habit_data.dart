@@ -113,4 +113,23 @@ class HabitData {
       return progress >= targetAtTime;
     }
   }
+
+  /// Whether a stored [event] list represents a completed day.
+  ///
+  /// Boolean habits complete with [DayType.check]. Numeric habits complete
+  /// when the entered progress (index 2) reaches the target stored alongside
+  /// the event (index 3) — they are saved as [DayType.progress], not
+  /// [DayType.check]. Operates on a self-contained event list so it can be
+  /// used where only the raw event (not the habit) is available, e.g.
+  /// notification scheduling.
+  static bool isEventCompleted(List event) {
+    if (event.isEmpty) return false;
+    if (event[0] == DayType.check) return true;
+    if (event[0] == DayType.progress && event.length > 3) {
+      final value = (event[2] as num?)?.toDouble() ?? 0.0;
+      final target = (event[3] as num?)?.toDouble() ?? 0.0;
+      return target > 0 && value >= target;
+    }
+    return false;
+  }
 }
