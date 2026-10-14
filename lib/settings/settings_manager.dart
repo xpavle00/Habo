@@ -47,7 +47,7 @@ class SettingsManager extends ChangeNotifier {
             isSpeakerphoneOn: false,
             stayAwake: false,
             contentType: AndroidContentType.sonification,
-            usageType: AndroidUsageType.assistanceSonification,
+            usageType: AndroidUsageType.media,
             audioFocus: AndroidAudioFocus.none,
           ),
         ),
