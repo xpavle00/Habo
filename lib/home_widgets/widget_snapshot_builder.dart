@@ -22,7 +22,13 @@ class WidgetLabels {
   });
 
   factory WidgetLabels.fromS(S s, String locale) {
-    final format = DateFormat.MMM(locale);
+    DateFormat format;
+    try {
+      format = DateFormat.MMM(locale);
+    } catch (_) {
+      // Locale date symbols not loaded yet; en_US is always available.
+      format = DateFormat.MMM('en_US');
+    }
     return WidgetLabels(
       habitsToday: s.habitsToday,
       chooseHabit: s.widgetChooseHabit,

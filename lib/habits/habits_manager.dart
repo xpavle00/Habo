@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
@@ -19,6 +21,7 @@ import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/helpers/widget_update_helper.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/home_widgets/widget_action.dart';
+import 'package:habo/home_widgets/widget_publisher.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
@@ -30,6 +33,7 @@ class HabitsManager extends ChangeNotifier {
   final NotificationService? _notificationService;
   final UIFeedbackService? _uiFeedbackService;
   final SyncManager? _syncManager;
+  final WidgetPublisher? _widgetPublisher;
 
   StreamSubscription<void>? _syncDataChangedSubscription;
 
@@ -63,13 +67,15 @@ class HabitsManager extends ChangeNotifier {
     NotificationService? notificationService,
     UIFeedbackService? uiFeedbackService,
     SyncManager? syncManager,
+    WidgetPublisher? widgetPublisher,
   }) : _habitRepository = habitRepository,
        _eventRepository = eventRepository,
        _categoryRepository = categoryRepository,
        _backupService = backupService,
        _notificationService = notificationService,
        _uiFeedbackService = uiFeedbackService,
-       _syncManager = syncManager;
+       _syncManager = syncManager,
+       _widgetPublisher = widgetPublisher;
 
   Future<void> initialize() async {
     // Listen for remote sync changes before loading, so a background pull
@@ -281,6 +287,11 @@ class HabitsManager extends ChangeNotifier {
   /// Updates the home widget with current habit data.
   /// This is called automatically when habits change.
   void _updateHomeWidgetAsync() {
+    // Native widgets (iOS) render from the shared snapshot.
+    _widgetPublisher?.publish([for (final h in allHabits) h.habitData]);
+
+    // Android still uses the Flutter-rendered PNG widget.
+    if (kIsWeb || !Platform.isAndroid) return;
     if (_widgetContext != null && _widgetContext!.mounted) {
       // Schedule widget update for next frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -291,9 +302,20 @@ class HabitsManager extends ChangeNotifier {
     }
   }
 
+  /// Republishes home-screen widget data, e.g. after a setting they show
+  /// (such as week start) changed.
+  void refreshWidgets() => _updateHomeWidgetAsync();
+
+  /// Applies taps queued by home-screen widgets, then republishes the
+  /// widget snapshot. Call on launch, on resume and when the day changes.
+  Future<void> drainWidgetActions() async {
+    await _widgetPublisher?.drainAndPublish(this);
+  }
+
   /// Manually update the home widget.
   /// Can be called from UI when needed.
   Future<void> updateHomeWidget(BuildContext context) async {
+    if (kIsWeb || !Platform.isAndroid) return;
     await WidgetUpdateHelper.updateHomeWidget(context, allHabits);
   }
 

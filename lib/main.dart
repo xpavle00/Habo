@@ -20,6 +20,10 @@ import 'package:habo/navigation/route_information_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:habo/generated/l10n.dart';
+import 'package:habo/home_widgets/widget_publisher.dart';
+import 'package:habo/home_widgets/widget_snapshot_builder.dart';
+import 'package:habo/home_widgets/widget_store.dart';
+import 'package:intl/intl.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:habo/constants.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -116,6 +120,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       _startDayChangeTimer();
       if (_isInitialized) {
         _habitManager.checkDayChange();
+        _habitManager.drainWidgetActions();
       }
     } else if (state == AppLifecycleState.paused) {
       _stopDayChangeTimer();
@@ -178,6 +183,11 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       notificationService: ServiceLocator.instance.notificationService,
       uiFeedbackService: ServiceLocator.instance.uiFeedbackService,
       syncManager: ServiceLocator.instance.syncManager,
+      widgetPublisher: WidgetPublisher(
+        store: const HomeWidgetStore(),
+        weekStart: () => _settingsManager.getWeekStartEnum,
+        labels: () => WidgetLabels.fromS(S.current, Intl.getCurrentLocale()),
+      ),
     );
     await habitsManager.initialize();
 
@@ -203,6 +213,8 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
 
     // Update home widget on app launch to ensure correct state
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Apply taps made on home-screen widgets while the app was closed.
+      await habitsManager.drainWidgetActions();
       if (context.mounted) {
         await habitsManager.updateHomeWidget(context);
       }
@@ -247,8 +259,9 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       if (isSelfHosted == _settingsManager.isSelfHostedCached) return;
 
       _settingsManager.setIsSelfHostedCached(isSelfHosted);
-      ServiceLocator.instance.subscriptionService
-          .updateSelfHostedMode(isSelfHosted);
+      ServiceLocator.instance.subscriptionService.updateSelfHostedMode(
+        isSelfHosted,
+      );
       await ServiceLocator.instance.syncManager?.refreshConfiguration();
     } catch (e) {
       debugPrint('Failed to query self_hosted flag: $e');

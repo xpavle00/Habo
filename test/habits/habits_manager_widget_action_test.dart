@@ -7,6 +7,7 @@ import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/home_widgets/widget_action.dart';
+import 'package:habo/home_widgets/widget_publisher.dart';
 import 'package:habo/model/habit_data.dart';
 import 'package:habo/repositories/category_repository.dart';
 import 'package:habo/repositories/event_repository.dart';
@@ -24,6 +25,8 @@ class MockCategoryRepository extends Mock implements CategoryRepository {}
 class MockNotificationService extends Mock implements NotificationService {}
 
 class MockSyncManager extends Mock implements SyncManager {}
+
+class MockWidgetPublisher extends Mock implements WidgetPublisher {}
 
 Habit _habit({
   required int id,
@@ -60,9 +63,15 @@ void main() {
   late HabitsManager manager;
   late MockEventRepository events;
   late MockNotificationService notifications;
+  late MockHabitRepository habitRepository;
+  late MockWidgetPublisher publisher;
 
   final day = DateTime(2026, 11, 5);
   final key = transformDate(day);
+
+  setUpAll(() {
+    registerFallbackValue(<HabitData>[]);
+  });
 
   setUp(() {
     events = MockEventRepository();
@@ -73,8 +82,12 @@ void main() {
       () => events.insertEvent(any(), any(), any()),
     ).thenAnswer((_) async {});
     when(() => events.deleteEvent(any(), any())).thenAnswer((_) async {});
+    habitRepository = MockHabitRepository();
+    publisher = MockWidgetPublisher();
+    when(() => publisher.publish(any())).thenAnswer((_) async {});
     manager = HabitsManager(
-      habitRepository: MockHabitRepository(),
+      widgetPublisher: publisher,
+      habitRepository: habitRepository,
       eventRepository: events,
       categoryRepository: MockCategoryRepository(),
       notificationService: notifications,
@@ -181,5 +194,38 @@ void main() {
     manager.applyWidgetAction(action('c'));
 
     expect(notified, greaterThan(0));
+  });
+
+  group('widget publishing', () {
+    test('addEvent publishes the snapshot', () {
+      manager.allHabits = [_habit(id: 1, uuid: 'u1')];
+      manager.addEvent(1, key, [DayType.check, '']);
+      verify(() => publisher.publish(any())).called(1);
+    });
+
+    test('reloadFromDatabase publishes the snapshot', () async {
+      when(() => habitRepository.getAllHabits()).thenAnswer((_) async => []);
+      final categories = MockCategoryRepository();
+      when(() => categories.getAllCategories()).thenAnswer((_) async => []);
+      final m = HabitsManager(
+        widgetPublisher: publisher,
+        habitRepository: habitRepository,
+        eventRepository: events,
+        categoryRepository: categories,
+        notificationService: notifications,
+      );
+
+      await m.reloadFromDatabase();
+
+      verify(() => publisher.publish(any())).called(1);
+    });
+
+    test('drainWidgetActions delegates to the publisher', () async {
+      when(
+        () => publisher.drainAndPublish(manager),
+      ).thenAnswer((_) async {});
+      await manager.drainWidgetActions();
+      verify(() => publisher.drainAndPublish(manager)).called(1);
+    });
   });
 }

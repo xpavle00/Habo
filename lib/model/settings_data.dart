@@ -87,9 +87,7 @@ class SettingsData {
       isSelfHostedCached = (json['isSelfHostedCached'] != null)
           ? json['isSelfHostedCached']
           : false,
-      offlineMode = (json['offlineMode'] != null)
-          ? json['offlineMode']
-          : false;
+      offlineMode = (json['offlineMode'] != null) ? json['offlineMode'] : false;
 
   SettingsData copyWith({
     Themes? theme,
