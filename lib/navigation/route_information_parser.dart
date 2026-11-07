@@ -30,7 +30,12 @@ class HaboRouteInformationParser
 
     // If the path is just a slash, check if the host has the intended path.
     // This handles custom schemes like 'habo://settings'.
-    if (path == '/' && uri.host.isNotEmpty) {
+    if (uri.scheme == 'habo' && uri.host.isNotEmpty) {
+      // habo://habit/<uuid> -> /habit/<uuid>; habo://settings -> /settings
+      path = (path.isEmpty || path == '/')
+          ? '/${uri.host}'
+          : '/${uri.host}$path';
+    } else if (path == '/' && uri.host.isNotEmpty) {
       path = '/${uri.host}';
     }
 

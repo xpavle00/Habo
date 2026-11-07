@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habo/navigation/habit_deep_link.dart';
 import 'package:habo/screens/sync_screen.dart';
 import 'package:habo/screens/profile_screen.dart';
 import 'package:habo/habits/edit_habit_screen.dart';
@@ -176,6 +177,13 @@ class AppRouter extends RouterDelegate<HaboRouteConfiguration>
       appStateManager.goWhatsNew(false);
       appStateManager.goEditHabit(null);
       appStateManager.goSync(false);
+
+      // Home-screen widgets link to a single habit.
+      final habit = resolveHabitDeepLink(path, habitsManager.allHabits);
+      if (habit != null) {
+        appStateManager.goEditHabit(habit);
+        return;
+      }
 
       // Navigate based on the URL path
       switch (normalizedPath) {
