@@ -110,4 +110,20 @@ void main() {
     );
     await expectLater(failing.publish([_data(1)]), completes);
   });
+
+  test('overlapping drainAndPublish calls drain once', () async {
+    final habits = MockHabitsManager();
+    when(() => habits.allHabits).thenReturn([Habit(habitData: _data(1))]);
+    when(() => habits.applyWidgetAction(any())).thenReturn(true);
+    store.values[WidgetKeys.pendingActions] = jsonEncode([
+      {'seq': 1, 'uuid': 'u1', 'date': '2026-11-06', 'code': 'c'},
+    ]);
+
+    await Future.wait([
+      publisher.drainAndPublish(habits),
+      publisher.drainAndPublish(habits),
+    ]);
+
+    verify(() => habits.applyWidgetAction(any())).called(1);
+  });
 }

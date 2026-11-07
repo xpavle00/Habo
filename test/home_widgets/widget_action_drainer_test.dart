@@ -123,4 +123,29 @@ void main() {
     expect(await drainer.drain(), 1);
     expect(store.values[WidgetKeys.appliedSeq], 2);
   });
+
+  test('never lowers a marker advanced by a concurrent drain', () async {
+    final racing = _RacingStore();
+    racing.values[WidgetKeys.pendingActions] = jsonEncode([
+      _action(1, 'a', '2026-11-06'),
+    ]);
+
+    await WidgetActionDrainer(racing, habits).drain();
+
+    expect(racing.values[WidgetKeys.appliedSeq], 9);
+  });
+}
+
+/// Store whose applied marker is advanced by "another drain" right after
+/// the first read.
+class _RacingStore extends FakeWidgetStore {
+  var _reads = 0;
+
+  @override
+  Future<int?> getInt(String key) async {
+    if (key == WidgetKeys.appliedSeq && _reads++ == 1) {
+      values[key] = 9;
+    }
+    return super.getInt(key);
+  }
 }

@@ -24,6 +24,7 @@ class WidgetPublisher {
   final StartingDayOfWeek Function() _weekStart;
   final WidgetLabels Function() _labels;
   final DateTime Function() _now;
+  Future<void>? _drainInFlight;
 
   /// Writes a fresh snapshot of [habits] and reloads every Habo widget.
   ///
@@ -44,7 +45,15 @@ class WidgetPublisher {
   }
 
   /// Applies pending widget taps to [habits], then publishes.
-  Future<void> drainAndPublish(HabitsManager habits) async {
+  ///
+  /// Overlapping calls (resume can fire repeatedly) share one drain.
+  Future<void> drainAndPublish(HabitsManager habits) {
+    return _drainInFlight ??= _drainAndPublish(habits).whenComplete(() {
+      _drainInFlight = null;
+    });
+  }
+
+  Future<void> _drainAndPublish(HabitsManager habits) async {
     try {
       await WidgetActionDrainer(_store, habits).drain();
     } catch (e, st) {

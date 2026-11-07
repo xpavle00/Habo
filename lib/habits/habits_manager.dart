@@ -203,6 +203,7 @@ class HabitsManager extends ChangeNotifier {
     updateOrder();
     _habitRepository.updateHabitsOrder(allHabits);
     notifyListeners();
+    _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
   }
@@ -257,6 +258,9 @@ class HabitsManager extends ChangeNotifier {
           final event = [DayType.clear, comment];
           data.events[key] = event;
           addEvent(data.id!, key, event);
+          // Keeping the comment means an event stays; restore the day's
+          // reminder as an undo without a comment does.
+          _notificationService?.handleHabitEventDeleted(data.id!, key);
         } else {
           data.events.remove(key);
           deleteEvent(data.id!, key);
@@ -414,6 +418,9 @@ class HabitsManager extends ChangeNotifier {
       _notificationService?.disableHabitNotification(habitData.id!);
     }
     notifyListeners();
+    // Title, target or reminder may have changed: widgets must not act on
+    // stale habit data.
+    _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
   }
@@ -529,6 +536,7 @@ class HabitsManager extends ChangeNotifier {
 
     updateOrder();
     notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   Future<void> deleteFromDB() async {

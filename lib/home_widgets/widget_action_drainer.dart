@@ -53,7 +53,10 @@ class WidgetActionDrainer {
       if (_habits.applyWidgetAction(action)) applied++;
     }
 
-    if (maxSeq > appliedSeq) {
+    // Re-read: an overlapping drain may have advanced the marker meanwhile.
+    // Never move it backwards, or applied taps would show and apply again.
+    final latest = await _store.getInt(WidgetKeys.appliedSeq) ?? 0;
+    if (maxSeq > latest) {
       await _store.setInt(WidgetKeys.appliedSeq, maxSeq);
     }
     return applied;

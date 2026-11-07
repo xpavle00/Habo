@@ -95,15 +95,18 @@ Map<String, dynamic> _habitJson(HabitData habit, DateTime today) {
 }
 
 String _dayCodes(HabitData habit, int year) {
-  final length = DateTime(year + 1).difference(DateTime(year)).inDays;
+  // Calendar-day arithmetic in UTC: local DateTimes are 23h apart across a
+  // daylight-saving change, which would shift indices by one day.
+  final start = DateTime.utc(year);
+  final length = DateTime.utc(year + 1).difference(start).inDays;
   final codes = List.filled(length, '.');
   habit.events.forEach((key, event) {
     if (key.year != year || event.isEmpty) return;
-    final index = DateTime(
+    final index = DateTime.utc(
       key.year,
       key.month,
       key.day,
-    ).difference(DateTime(year)).inDays;
+    ).difference(start).inDays;
     if (index < 0 || index >= length) return;
     codes[index] = _codeFor(event, habit.targetValue);
   });

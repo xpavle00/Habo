@@ -65,18 +65,21 @@ void main() {
   late MockNotificationService notifications;
   late MockHabitRepository habitRepository;
   late MockWidgetPublisher publisher;
+  late MockSyncManager sync;
 
   final day = DateTime(2026, 11, 5);
   final key = transformDate(day);
 
   setUpAll(() {
     registerFallbackValue(<HabitData>[]);
+    registerFallbackValue(<Habit>[]);
+    registerFallbackValue(_habit(id: 0, uuid: 'fallback'));
   });
 
   setUp(() {
     events = MockEventRepository();
     notifications = MockNotificationService();
-    final sync = MockSyncManager();
+    sync = MockSyncManager();
     when(() => sync.scheduleSync()).thenReturn(null);
     when(
       () => events.insertEvent(any(), any(), any()),
@@ -186,6 +189,49 @@ void main() {
     expect(habit.habitData.events[key], [DayType.progress, '', 30.0, 30.0]);
   });
 
+  test('check goes through notification, sync and widget handling', () {
+    manager.allHabits = [_habit(id: 1, uuid: 'u1')];
+
+    manager.applyWidgetAction(action('c'));
+
+    verify(
+      () => notifications.handleHabitEventAdded(1, key, [DayType.check, '']),
+    ).called(1);
+    verify(() => sync.scheduleSync()).called(1);
+    verify(() => publisher.publish(any())).called(greaterThan(0));
+  });
+
+  test('clear without comment goes through delete handling', () {
+    final habit = _habit(
+      id: 1,
+      uuid: 'u1',
+      events: SplayTreeMap.of({
+        key: [DayType.check, ''],
+      }),
+    );
+    manager.allHabits = [habit];
+
+    manager.applyWidgetAction(action('.'));
+
+    verify(() => notifications.handleHabitEventDeleted(1, key)).called(1);
+    verify(() => sync.scheduleSync()).called(1);
+  });
+
+  test('clear with comment restores the day reminder like a delete', () {
+    final habit = _habit(
+      id: 1,
+      uuid: 'u1',
+      events: SplayTreeMap.of({
+        key: [DayType.check, 'note'],
+      }),
+    );
+    manager.allHabits = [habit];
+
+    manager.applyWidgetAction(action('.'));
+
+    verify(() => notifications.handleHabitEventDeleted(1, key)).called(1);
+  });
+
   test('notifies listeners', () {
     manager.allHabits = [_habit(id: 1, uuid: 'u1')];
     var notified = 0;
@@ -220,10 +266,33 @@ void main() {
       verify(() => publisher.publish(any())).called(1);
     });
 
-    test('drainWidgetActions delegates to the publisher', () async {
+    test('editHabit publishes the snapshot', () {
+      final habit = _habit(id: 1, uuid: 'u1');
+      manager.allHabits = [habit];
+      when(() => habitRepository.updateHabit(any())).thenAnswer((_) async {});
+      manager.editHabit(habit.habitData);
+      verify(() => publisher.publish(any())).called(1);
+    });
+
+    test('reorderList publishes the snapshot', () {
+      manager.allHabits = [_habit(id: 1, uuid: 'a'), _habit(id: 2, uuid: 'b')];
       when(
-        () => publisher.drainAndPublish(manager),
+        () => habitRepository.updateHabitsOrder(any()),
       ).thenAnswer((_) async {});
+      manager.reorderList(0, 2);
+      verify(() => publisher.publish(any())).called(1);
+    });
+
+    test('undoDeleteHabit publishes the snapshot', () {
+      final habit = _habit(id: 1, uuid: 'u1');
+      manager.allHabits = [];
+      manager.deletedHabit = habit;
+      manager.undoDeleteHabit(habit);
+      verify(() => publisher.publish(any())).called(1);
+    });
+
+    test('drainWidgetActions delegates to the publisher', () async {
+      when(() => publisher.drainAndPublish(manager)).thenAnswer((_) async {});
       await manager.drainWidgetActions();
       verify(() => publisher.drainAndPublish(manager)).called(1);
     });

@@ -82,7 +82,11 @@ Map<String, dynamic> _build(
 Map<String, dynamic> _only(Map<String, dynamic> snapshot) =>
     (snapshot['habits'] as List).single as Map<String, dynamic>;
 
-int _dayIndex(DateTime d) => d.difference(DateTime(d.year)).inDays;
+int _dayIndex(DateTime d) => DateTime.utc(
+  d.year,
+  d.month,
+  d.day,
+).difference(DateTime.utc(d.year)).inDays;
 
 void main() {
   test('header fields', () {
@@ -121,6 +125,30 @@ void main() {
     );
     final days = _only(_build([h]))['days'] as String;
     expect(days.substring(0, 7), 'cfspP..');
+  });
+
+  test('day index is right across daylight saving time and leap years', () {
+    final h = _habit(
+      events: {
+        DateTime(2026, 7, 1): [DayType.check, ''],
+        DateTime(2026, 12, 31): [DayType.fail, ''],
+      },
+    );
+    final days =
+        _only(_build([h], now: DateTime(2026, 12, 31)))['days'] as String;
+    expect(days[181], 'c'); // 1 July 2026 is day 182 of the year
+    expect(days[364], 'f');
+
+    final leap = _habit(
+      events: {
+        DateTime(2028, 2, 29): [DayType.skip, ''],
+        DateTime(2028, 12, 31): [DayType.check, ''],
+      },
+    );
+    final leapDays =
+        _only(_build([leap], now: DateTime(2028, 12, 31)))['days'] as String;
+    expect(leapDays[59], 's');
+    expect(leapDays[365], 'c');
   });
 
   test('progress uses the target stored on the event', () {
