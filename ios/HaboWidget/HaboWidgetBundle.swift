@@ -13,5 +13,6 @@ struct HaboWidgetBundle: WidgetBundle {
     var body: some Widget {
         TodayWidget()
         CheckInWidget()
+        HeatmapWidget()
     }
 }
