@@ -418,6 +418,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Fixed sound mixing",
     ),
+    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.",
+    ),
+    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "New home screen widgets (iOS)",
+    ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Secure the app with Face ID / Touch ID / biometrics",
     ),

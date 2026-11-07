@@ -1807,6 +1807,26 @@ class S {
     );
   }
 
+  /// `New home screen widgets (iOS)`
+  String get featureIosWidgetsTitle {
+    return Intl.message(
+      'New home screen widgets (iOS)',
+      name: 'featureIosWidgetsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check off a habit, see today's progress, or a habit's whole year right from your home screen. Add one widget per habit.`
+  String get featureIosWidgetsDesc {
+    return Intl.message(
+      'Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.',
+      name: 'featureIosWidgetsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Longpress check`
   String get featureLongpressCheckTitle {
     return Intl.message(

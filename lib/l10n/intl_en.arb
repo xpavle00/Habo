@@ -337,6 +337,8 @@
   "featureIosSoundMixingDesc": "Habo sounds no longer interrupt your music or podcasts",
   "featureHomescreenWidgetTitle": "Homescreen widget",
   "featureHomescreenWidgetDesc": "View your habit progress at a glance from your home screen (experimental)",
+  "featureIosWidgetsTitle": "New home screen widgets (iOS)",
+  "featureIosWidgetsDesc": "Check off a habit, see today's progress, or a habit's whole year right from your home screen. Add one widget per habit.",
   "featureLongpressCheckTitle": "Longpress check",
   "featureLongpressCheckDesc": "Longpress on habit buttons to quickly change status",
   "haboSyncComingSoon": "Coming Soon",
