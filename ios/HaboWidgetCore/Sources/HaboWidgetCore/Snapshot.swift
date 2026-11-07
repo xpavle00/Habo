@@ -152,6 +152,8 @@ public struct SnapshotHabit: Codable, Equatable, Sendable, Identifiable {
     public let partial: Double
     public let unit: String
     public let position: Int
+    /// Optional so snapshots written before this field still decode.
+    public let twoDayRule: Bool?
     public let reminder: Reminder?
     public let year: Int
     public let days: String
@@ -189,5 +191,25 @@ public struct Snapshot: Codable, Equatable, Sendable {
 
     public func habit(uuid: String) -> SnapshotHabit? {
         habits.first { $0.uuid == uuid }
+    }
+}
+
+/// A habit as shown in the "Edit Widget" picker.
+public struct ResolvedHabitEntity: Equatable, Sendable {
+    public let id: String
+    public let title: String
+    /// False when the habit is gone from the snapshot (deleted or archived).
+    public let exists: Bool
+}
+
+/// Resolves stored widget selections. Ids missing from the snapshot keep
+/// their id with a placeholder title, so the widget shows "choose a habit"
+/// instead of silently switching to another habit.
+public func resolveHabitEntities(ids: [String], habits: [SnapshotHabit], missingTitle: String) -> [ResolvedHabitEntity] {
+    ids.map { id in
+        if let habit = habits.first(where: { $0.uuid == id }) {
+            return ResolvedHabitEntity(id: id, title: habit.title, exists: true)
+        }
+        return ResolvedHabitEntity(id: id, title: missingTitle, exists: false)
     }
 }

@@ -31,12 +31,13 @@ func habit(
     days: String? = nil,
     today: TodayProgress? = nil,
     streakToday: [Int] = [0, 1],
-    streakTomorrow: [[Int]] = [[0, 1], [1, 2]]
+    streakTomorrow: [[Int]] = [[0, 1], [1, 2]],
+    twoDayRule: Bool = false
 ) -> SnapshotHabit {
     let length = LocalDate.daysInYear(year)
     return SnapshotHabit(
         uuid: uuid, id: 1, title: "Habit \(uuid)", type: type,
-        target: 30, partial: 10, unit: "min", position: 0, reminder: nil,
+        target: 30, partial: 10, unit: "min", position: 0, twoDayRule: twoDayRule, reminder: nil,
         year: year, days: days ?? String(repeating: ".", count: length),
         today: today,
         streak: StreakTable(today: streakToday, tomorrow: streakTomorrow)

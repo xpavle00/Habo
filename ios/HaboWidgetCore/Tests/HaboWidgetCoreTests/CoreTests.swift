@@ -196,9 +196,47 @@ final class EffectiveStateTests: XCTestCase {
         XCTAssertEqual(streak(habit: h, today: tomorrow, snapshotDate: today, pending: [action(1, .none)]), 3)
     }
 
-    func testStreakBeyondTomorrowFallsBack() {
+    func testStreakBeyondTomorrowWithoutTapsKeepsLastValue() {
         let h = habit(streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]])
         XCTAssertEqual(streak(habit: h, today: today.adding(days: 5), snapshotDate: today, pending: []), 3)
+    }
+
+    private func ticks(_ offsets: [Int], _ code: DayCode = .check) -> [PendingAction] {
+        offsets.enumerated().map { i, offset in action(i + 1, code, date: today.adding(days: offset)) }
+    }
+
+    func testWidgetOnlyTickingKeepsCounting() {
+        // Snapshot day done (row 1), then ticked from the widget every day.
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]])
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 3), snapshotDate: today, pending: ticks([1, 2, 3])), 7)
+    }
+
+    func testMissedDayRestartsAtOne() {
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]])
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 3), snapshotDate: today, pending: ticks([1, 3])), 1)
+    }
+
+    func testUntickedTodayShowsStreakSoFar() {
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]])
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 3), snapshotDate: today, pending: ticks([1, 2])), 6)
+    }
+
+    func testFailEndsStreakWithoutTwoDayRule() {
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]])
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 2), snapshotDate: today,
+                              pending: ticks([1]) + [action(9, .fail, date: today.adding(days: 2))]), 0)
+    }
+
+    func testTwoDayRuleSingleFailBridges() {
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]], twoDayRule: true)
+        let pending = ticks([1]) + [action(8, .fail, date: today.adding(days: 2)), action(9, .check, date: today.adding(days: 3))]
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 3), snapshotDate: today, pending: pending), 6)
+    }
+
+    func testTwoDayRuleTwoFailsEndStreak() {
+        let h = habit(days: days(set: [today: "c"]), streakToday: [3, 4], streakTomorrow: [[3, 1], [4, 5]], twoDayRule: true)
+        let pending = [action(8, .fail, date: today.adding(days: 1)), action(9, .fail, date: today.adding(days: 2))]
+        XCTAssertEqual(streak(habit: h, today: today.adding(days: 2), snapshotDate: today, pending: pending), 0)
     }
 }
 
@@ -229,5 +267,23 @@ final class TodaySummaryTests: XCTestCase {
 
     func testEmptyIsNotAllDone() {
         XCTAssertFalse(todaySummary(habits: [], today: LocalDate(year: 2026, month: 1, day: 1), pending: []).allDone)
+    }
+}
+
+final class HabitEntityResolutionTests: XCTestCase {
+    func testKnownIdsResolveToTitles() {
+        let resolved = resolveHabitEntities(ids: ["a"], habits: [habit(uuid: "a")], missingTitle: "Choose a habit")
+        XCTAssertEqual(resolved.map(\.id), ["a"])
+        XCTAssertEqual(resolved.map(\.title), ["Habit a"])
+        XCTAssertEqual(resolved.map(\.exists), [true])
+    }
+
+    func testMissingIdKeepsItsIdWithPlaceholderTitle() {
+        // A deleted habit must stay selected (so the widget shows "choose a
+        // habit") instead of falling back to the first habit.
+        let resolved = resolveHabitEntities(ids: ["gone"], habits: [habit(uuid: "a")], missingTitle: "Choose a habit")
+        XCTAssertEqual(resolved.map(\.id), ["gone"])
+        XCTAssertEqual(resolved.map(\.title), ["Choose a habit"])
+        XCTAssertEqual(resolved.map(\.exists), [false])
     }
 }

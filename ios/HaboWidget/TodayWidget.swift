@@ -40,6 +40,18 @@ struct TodayWidgetView: View {
     }
 
     var body: some View {
+        if entry.snapshot == nil {
+            // Right after an app update, before Habo has run once and
+            // written the snapshot: don't show a misleading 0/0.
+            WidgetMessage(text: "Open Habo to update this widget")
+                .widgetURL(openAppURL)
+        } else {
+            ring
+        }
+    }
+
+    @ViewBuilder
+    private var ring: some View {
         let summary = entry.snapshot.map {
             todaySummary(habits: $0.habits, today: entry.today, pending: entry.pending)
         } ?? TodaySummary(total: 0, completed: 0, skipped: 0, failed: 0)

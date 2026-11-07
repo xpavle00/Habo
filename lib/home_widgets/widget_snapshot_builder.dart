@@ -84,6 +84,7 @@ Map<String, dynamic> _habitJson(HabitData habit, DateTime today) {
     'partial': habit.partialValue,
     'unit': habit.unit,
     'position': habit.position,
+    'twoDayRule': habit.twoDayRule,
     'reminder': habit.notification
         ? {'hour': habit.notTime.hour, 'minute': habit.notTime.minute}
         : null,

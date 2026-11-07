@@ -268,6 +268,11 @@ void main() {
     expect(out['partial'], 10.0);
     expect(out['unit'], 'min');
     expect(out['year'], 2026);
+    expect(out['twoDayRule'], isFalse);
+    expect(
+      _only(_build([_habit(twoDayRule: true)]))['twoDayRule'],
+      isTrue,
+    );
   });
 
   test('WidgetLabels.fromS uses app strings and locale month names', () async {

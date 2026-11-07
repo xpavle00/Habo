@@ -14,7 +14,7 @@ enum PreviewData {
         return SnapshotHabit(
             uuid: uuid, id: seed, title: title, type: type,
             target: 30, partial: 10, unit: type == "numeric" ? "min" : "",
-            position: seed, reminder: nil, year: today.year, days: String(chars),
+            position: seed, twoDayRule: false, reminder: nil, year: today.year, days: String(chars),
             today: type == "numeric" ? TodayProgress(value: todayCode == "P" ? 30 : 10, target: 30) : nil,
             streak: StreakTable(today: [12, 13], tomorrow: [[12, 1], [13, 14]])
         )

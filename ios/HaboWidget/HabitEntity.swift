@@ -15,16 +15,24 @@ struct HabitEntity: AppEntity {
 }
 
 struct HabitEntityQuery: EntityQuery {
-    private func habits() -> [SnapshotHabit] {
-        guard let defaults = sharedDefaults else { return [] }
-        return Snapshot.load(from: defaults)?.habits ?? []
+    private func snapshot() -> Snapshot? {
+        guard let defaults = sharedDefaults else { return nil }
+        return Snapshot.load(from: defaults)
     }
 
+    private func habits() -> [SnapshotHabit] {
+        snapshot()?.habits ?? []
+    }
+
+    /// Keeps ids of deleted/archived habits (with a placeholder title) so the
+    /// widget shows "choose a habit" rather than switching to another habit.
     func entities(for identifiers: [HabitEntity.ID]) async throws -> [HabitEntity] {
-        let all = habits()
-        return identifiers.compactMap { id in
-            all.first { $0.uuid == id }.map { HabitEntity(id: $0.uuid, title: $0.title) }
-        }
+        let snapshot = snapshot()
+        return resolveHabitEntities(
+            ids: identifiers,
+            habits: snapshot?.habits ?? [],
+            missingTitle: snapshot?.labels.chooseHabit ?? "Choose a habit"
+        ).map { HabitEntity(id: $0.id, title: $0.title) }
     }
 
     func suggestedEntities() async throws -> [HabitEntity] {

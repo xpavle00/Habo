@@ -38,19 +38,42 @@ public func nextState(for habit: SnapshotHabit, current: DayCode, currentValue: 
     return (current == .check ? .none : .check, nil, nil)
 }
 
-/// Current streak shown on widgets, from the app's precomputed table.
+/// Current streak shown on widgets.
+///
+/// Up to the day after the snapshot it comes from the app's precomputed
+/// table. Beyond that the app hasn't run, so it is carried forward day by
+/// day over the widget's own taps, following the app's streak rules: a done
+/// day extends the run (restarting at 1 after a day with nothing logged),
+/// skip and partial progress hold it, and a fail ends it (with the two-day
+/// rule, only a second fail in a row does).
 public func streak(habit: SnapshotHabit, today: LocalDate, snapshotDate: LocalDate, pending: [PendingAction]) -> Int {
     let table = habit.streak
-    let snapshotDayDone = effectiveCode(habit: habit, on: snapshotDate, pending: pending).isDone ? 1 : 0
-    if today == snapshotDate {
+    func code(_ date: LocalDate) -> DayCode { effectiveCode(habit: habit, on: date, pending: pending) }
+
+    let snapshotDayDone = code(snapshotDate).isDone ? 1 : 0
+    if today <= snapshotDate {
         return table.today[safe: snapshotDayDone] ?? 0
     }
+    let tomorrow = snapshotDate.adding(days: 1)
     let row = table.tomorrow[safe: snapshotDayDone] ?? []
-    if today == snapshotDate.adding(days: 1) {
-        let todayDone = effectiveCode(habit: habit, on: today, pending: pending).isDone ? 1 : 0
-        return row[safe: todayDone] ?? 0
+    var current = row[safe: code(tomorrow).isDone ? 1 : 0] ?? 0
+    var previous = code(tomorrow)
+    var day = tomorrow.adding(days: 1)
+    let twoDayRule = habit.twoDayRule ?? false
+    while day <= today {
+        let dayCode = code(day)
+        switch dayCode {
+        case .check, .progressDone:
+            current = previous == .none ? 1 : current + 1
+        case .fail:
+            if !twoDayRule || previous == .fail { current = 0 }
+        case .skip, .progress, .none:
+            break
+        }
+        previous = dayCode
+        day = day.adding(days: 1)
     }
-    return row[safe: 0] ?? 0
+    return current
 }
 
 extension Array {
