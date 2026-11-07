@@ -5,12 +5,13 @@
 //  Created by Peter Pavlenko on 07/11/2025.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct HaboWidgetBundle: WidgetBundle {
     var body: some Widget {
-        HaboWidget()
+        TodayWidget()
+        CheckInWidget()
     }
 }
