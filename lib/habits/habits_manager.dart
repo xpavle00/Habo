@@ -17,6 +17,8 @@ import 'package:habo/services/sync_manager.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/helpers/widget_update_helper.dart';
+import 'package:habo/helpers.dart';
+import 'package:habo/home_widgets/widget_action.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
@@ -215,6 +217,59 @@ class HabitsManager extends ChangeNotifier {
     _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
+  }
+
+  /// Applies a tap recorded by a native home-screen widget.
+  ///
+  /// Mirrors what `OneDayButton` does for the same action in the app, so
+  /// notifications, sync and widget refresh behave identically. Returns
+  /// false when no active habit has [WidgetAction.uuid].
+  bool applyWidgetAction(WidgetAction action) {
+    Habit? habit;
+    for (final h in allHabits) {
+      if (h.habitData.uuid == action.uuid) {
+        habit = h;
+        break;
+      }
+    }
+    final data = habit?.habitData;
+    if (data == null || data.id == null) return false;
+
+    final key = transformDate(action.date);
+    final existing = data.events[key];
+    final comment = (existing != null && existing.length > 1)
+        ? (existing[1] as String? ?? '')
+        : '';
+
+    switch (action.code) {
+      case 'c':
+        final event = [DayType.check, comment];
+        data.events[key] = event;
+        addEvent(data.id!, key, event);
+      case '.':
+        if (comment.isNotEmpty) {
+          final event = [DayType.clear, comment];
+          data.events[key] = event;
+          addEvent(data.id!, key, event);
+        } else {
+          data.events.remove(key);
+          deleteEvent(data.id!, key);
+        }
+      case 'p':
+      case 'P':
+        final event = [
+          DayType.progress,
+          comment,
+          action.value ?? 0.0,
+          action.target ?? data.targetValue,
+        ];
+        data.events[key] = event;
+        addEvent(data.id!, key, event);
+      default:
+        return false;
+    }
+    notifyListeners();
+    return true;
   }
 
   /// Set the context for widget updates.
