@@ -1867,6 +1867,26 @@ class S {
     );
   }
 
+  /// `Choose a habit`
+  String get widgetChooseHabit {
+    return Intl.message(
+      'Choose a habit',
+      name: 'widgetChooseHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a habit in Habo`
+  String get widgetNoHabits {
+    return Intl.message(
+      'Add a habit in Habo',
+      name: 'widgetNoHabits',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `or`
   String get or {
     return Intl.message('or', name: 'or', desc: '', args: []);

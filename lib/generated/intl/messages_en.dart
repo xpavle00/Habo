@@ -904,6 +904,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "whatsNewTitle": MessageLookupByLibrary.simpleMessage("What\'s New"),
     "whatsNewVersion": m16,
+    "widgetChooseHabit": MessageLookupByLibrary.simpleMessage("Choose a habit"),
+    "widgetNoHabits": MessageLookupByLibrary.simpleMessage(
+      "Add a habit in Habo",
+    ),
     "willSyncWhenConnected": MessageLookupByLibrary.simpleMessage(
       "Will sync when connected",
     ),

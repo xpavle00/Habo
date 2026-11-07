@@ -343,6 +343,8 @@
   "haboSyncDescription": "Habo Sync is here! Sync and backup your habits across all your devices with end-to-end encrypted cloud sync.",
   "haboSyncLearnMore": "Learn more at habo.space/sync",
   "habitsToday": "Habits today",
+  "widgetChooseHabit": "Choose a habit",
+  "widgetNoHabits": "Add a habit in Habo",
   "or": "or",
   "oneTapCheck": "Single tap to check",
   "tapCheckLongPressMenu": "Tap to check, long press for menu",
