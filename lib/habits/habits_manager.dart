@@ -232,15 +232,12 @@ class HabitsManager extends ChangeNotifier {
   /// notifications, sync and widget refresh behave identically. Returns
   /// false when no active habit has [WidgetAction.uuid].
   bool applyWidgetAction(WidgetAction action) {
-    Habit? habit;
-    for (final h in allHabits) {
-      if (h.habitData.uuid == action.uuid) {
-        habit = h;
-        break;
-      }
-    }
-    final data = habit?.habitData;
-    if (data == null || data.id == null) return false;
+    final index = allHabits.indexWhere(
+      (h) => h.habitData.uuid == action.uuid,
+    );
+    if (index < 0) return false;
+    final data = allHabits[index].habitData;
+    if (data.id == null) return false;
 
     final key = transformDate(action.date);
     final existing = data.events[key];
@@ -278,6 +275,9 @@ class HabitsManager extends ChangeNotifier {
       default:
         return false;
     }
+    // Rows are reused widget instances that Flutter won't rebuild on their
+    // own; a fresh instance makes the home screen show the tap.
+    allHabits[index] = Habit(key: UniqueKey(), habitData: data);
     notifyListeners();
     return true;
   }

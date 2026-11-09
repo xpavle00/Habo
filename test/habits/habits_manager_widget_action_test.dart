@@ -125,6 +125,20 @@ void main() {
     expect(habit.habitData.events[key], [DayType.check, '']);
   });
 
+  test('replaces the habit row so the home screen redraws it', () {
+    // Rows are reused widget instances; Flutter skips rebuilding an
+    // identical instance, so the tap would not show until a restart.
+    final habit = _habit(id: 1, uuid: 'u1');
+    final other = _habit(id: 2, uuid: 'u2');
+    manager.allHabits = [habit, other];
+
+    manager.applyWidgetAction(action('c'));
+
+    expect(identical(manager.allHabits[0], habit), isFalse);
+    expect(identical(manager.allHabits[0].habitData, habit.habitData), isTrue);
+    expect(identical(manager.allHabits[1], other), isTrue);
+  });
+
   test('check keeps an existing comment', () {
     final habit = _habit(
       id: 1,
