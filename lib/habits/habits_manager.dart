@@ -209,6 +209,10 @@ class HabitsManager extends ChangeNotifier {
   }
 
   void addEvent(int id, DateTime dateTime, List event) {
+    // Keep the in-memory habit current before publishing: the widget
+    // snapshot is built from it, and callers update their own copy only
+    // after this returns.
+    findHabitById(id)?.habitData.events[dateTime] = event;
     _eventRepository.insertEvent(id, dateTime, event);
     _notificationService?.handleHabitEventAdded(id, dateTime, event);
     // Update home widget after event is added
@@ -218,6 +222,7 @@ class HabitsManager extends ChangeNotifier {
   }
 
   void deleteEvent(int id, DateTime dateTime) {
+    findHabitById(id)?.habitData.events.remove(dateTime);
     _eventRepository.deleteEvent(id, dateTime);
     _notificationService?.handleHabitEventDeleted(id, dateTime);
     // Update home widget after event is deleted

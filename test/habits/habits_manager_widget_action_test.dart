@@ -311,4 +311,29 @@ void main() {
       verify(() => publisher.drainAndPublish(manager)).called(1);
     });
   });
+
+  test('addEvent publishes a snapshot that already holds the new event', () {
+    final habit = _habit(id: 1, uuid: 'u1');
+    manager.allHabits = [habit];
+
+    manager.addEvent(1, key, [DayType.fail, '']);
+
+    final published =
+        verify(() => publisher.publish(captureAny())).captured.single
+            as List<HabitData>;
+    expect(published.single.events[key], [DayType.fail, '']);
+  });
+
+  test('deleteEvent publishes a snapshot without the removed event', () {
+    final habit = _habit(id: 1, uuid: 'u1');
+    habit.habitData.events[key] = [DayType.check, ''];
+    manager.allHabits = [habit];
+
+    manager.deleteEvent(1, key);
+
+    final published =
+        verify(() => publisher.publish(captureAny())).captured.single
+            as List<HabitData>;
+    expect(published.single.events.containsKey(key), isFalse);
+  });
 }
