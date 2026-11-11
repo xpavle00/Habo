@@ -716,31 +716,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             }
                                           },
                                       ),
-                                      const TextSpan(text: '\n\n'),
-                                      TextSpan(
-                                        text: S.of(context).ifYouWantToSupport,
-                                      ),
-                                      const TextSpan(text: '\n'),
-                                      TextSpan(
-                                        style: const TextStyle(
-                                          color: Colors.blue,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                        text: S.of(context).buyMeACoffee,
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () async {
-                                            final Uri url = Uri.parse(
-                                              'https://www.buymeacoffee.com/peterpavlenko',
-                                            );
-                                            if (await canLaunchUrl(url)) {
-                                              await launchUrl(
-                                                url,
-                                                mode: LaunchMode
-                                                    .externalApplication,
-                                              );
-                                            }
-                                          },
-                                      ),
                                     ],
                                   ),
                                 ),
