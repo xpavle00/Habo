@@ -7,6 +7,8 @@ enum HaboPalette {
     static let red = Color(red: 0xF4 / 255, green: 0x43 / 255, blue: 0x36 / 255)
     static let skip = Color(red: 0xFB / 255, green: 0xC0 / 255, blue: 0x2D / 255)
     static let progress = Color(red: 0x21 / 255, green: 0x96 / 255, blue: 0xF3 / 255)
+    /// Flutter `Colors.red[300]`, the app's weekend day number.
+    static let weekend = Color(red: 0xE5 / 255, green: 0x73 / 255, blue: 0x73 / 255)
     /// Flutter `Colors.grey`.
     static let grey = Color(red: 0x9E / 255, green: 0x9E / 255, blue: 0x9E / 255)
 }
