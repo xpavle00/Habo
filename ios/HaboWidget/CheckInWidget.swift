@@ -76,6 +76,7 @@ struct CheckTile: View {
     let value: Double
     let target: Double
     let today: LocalDate
+    @Environment(\.widgetRenderingMode) private var renderingMode
     private let size: CGFloat = 68
 
     private var fraction: Double {
@@ -87,24 +88,63 @@ struct CheckTile: View {
     }
 
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: size * 0.27, style: .continuous)
-                .fill(fill)
-                .widgetAccentable(isFilled)
-            if showsRing {
-                ring
-            } else if let icon {
-                icon
-                    .fill(Color.white)
-                    .frame(width: 40, height: 40)
+        Group {
+            if renderingMode.isAccented {
+                accentedBody
             } else {
-                Text("\(today.day)")
-                    .font(HaboFont.extraBold(30))
-                    .foregroundStyle(today.isoWeekday > 5 ? HaboPalette.weekend : Color.primary)
+                ZStack {
+                    tileShape
+                        .fill(fill)
+                        .widgetAccentable(isFilled)
+                    if isFilled {
+                        mark
+                    } else {
+                        dayNumber
+                    }
+                }
             }
         }
         .frame(width: size, height: size)
         .contentShape(Rectangle())
+    }
+
+    /// Tinted and clear home screens: a filled tile with its icon cut out,
+    /// or a faint tile with the day number for "to do".
+    @ViewBuilder
+    private var accentedBody: some View {
+        if isFilled {
+            tileShape
+                .fill(Color.white)
+                .knockout { mark }
+                .widgetAccentable()
+        } else {
+            ZStack {
+                tileShape.fill(Color.white.opacity(0.14))
+                dayNumber
+            }
+        }
+    }
+
+    private var tileShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: size * 0.27, style: .continuous)
+    }
+
+    /// What sits on a filled tile: the progress ring or the state icon.
+    @ViewBuilder
+    private var mark: some View {
+        if showsRing {
+            ring
+        } else if let icon {
+            icon
+                .fill(Color.white)
+                .frame(width: 40, height: 40)
+        }
+    }
+
+    private var dayNumber: some View {
+        Text("\(today.day)")
+            .font(HaboFont.extraBold(30))
+            .foregroundStyle(today.isoWeekday > 5 ? HaboPalette.weekend : Color.primary)
     }
 
     private var ring: some View {
@@ -148,13 +188,14 @@ struct RecentDays: View {
     let habit: SnapshotHabit
     let today: LocalDate
     let pending: [PendingAction]
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
     var body: some View {
         HStack(spacing: 4) {
             ForEach((1...6).reversed(), id: \.self) { back in
                 let code = effectiveCode(habit: habit, on: today.adding(days: -back), pending: pending)
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(DayCode.tileColor(code))
+                    .fill(DayCode.tileColor(code, accented: renderingMode.isAccented))
                     .widgetAccentable(code.isDone)
                     .frame(width: 13, height: 13)
             }

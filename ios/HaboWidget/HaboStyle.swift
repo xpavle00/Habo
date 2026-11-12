@@ -11,7 +11,20 @@ enum HaboFont {
 extension DayCode {
     /// Fill colour of a day tile, as in the app's calendar row.
     /// `nil` (a day that hasn't happened yet) is fainter than an empty day.
-    static func tileColor(_ code: DayCode?) -> Color {
+    ///
+    /// In tinted and clear home screens (`accented`) iOS keeps only opacity,
+    /// so states are told apart by how opaque the tile is instead of by hue.
+    static func tileColor(_ code: DayCode?, accented: Bool = false) -> Color {
+        if accented {
+            switch code {
+            case .check?, .progressDone?: return .white
+            case .progress?: return .white.opacity(0.6)
+            case .fail?: return .white.opacity(0.42)
+            case .skip?: return .white.opacity(0.28)
+            case .none?: return .white.opacity(0.14)
+            case nil: return .white.opacity(0.06)
+            }
+        }
         switch code {
         case .check?, .progressDone?: return HaboPalette.primary
         case .fail?: return HaboPalette.red
@@ -23,18 +36,47 @@ extension DayCode {
     }
 }
 
+extension View {
+    /// Punches `mask` out of this view. Used in tinted and clear home
+    /// screens, where white-on-colour would collapse into one flat tint:
+    /// cut out, the icon or text shows the glass behind it instead.
+    func knockout<Mask: View>(@ViewBuilder _ mask: () -> Mask) -> some View {
+        overlay(mask().blendMode(.destinationOut)).compositingGroup()
+    }
+}
+
+extension WidgetRenderingMode {
+    /// Tinted and clear home screens: colour is dropped, opacity kept.
+    var isAccented: Bool { self != .fullColor }
+}
+
 /// The green streak capsule from the app's habit header.
 struct StreakPill: View {
     let count: Int
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
-    var body: some View {
+    private var label: some View {
         Text("\(count)")
             .font(HaboFont.bold(13))
-            .foregroundStyle(.white)
             .padding(.horizontal, 9)
             .frame(minWidth: 28, minHeight: 20)
-            .background(Capsule().fill(HaboPalette.primary).widgetAccentable())
-            .fixedSize()
+    }
+
+    var body: some View {
+        if renderingMode.isAccented {
+            // The invisible label sizes the capsule; the visible one is cut out.
+            label
+                .hidden()
+                .background(Capsule().fill(Color.white))
+                .knockout { label }
+                .widgetAccentable()
+                .fixedSize()
+        } else {
+            label
+                .foregroundStyle(.white)
+                .background(Capsule().fill(HaboPalette.primary).widgetAccentable())
+                .fixedSize()
+        }
     }
 }
 

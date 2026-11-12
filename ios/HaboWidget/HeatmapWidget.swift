@@ -72,6 +72,7 @@ struct YearGridView: View {
     let codes: [LocalDate: DayCode]
     let today: LocalDate
     let monthLabels: [String]
+    @Environment(\.widgetRenderingMode) private var renderingMode
 
     private let labelWidth: CGFloat = 11
 
@@ -127,7 +128,7 @@ struct YearGridView: View {
                     height: layout.cell
                 )
                 let path = Path(roundedRect: rect, cornerRadius: radius, style: .continuous)
-                context.fill(path, with: .color(DayCode.tileColor(code)))
+                context.fill(path, with: .color(DayCode.tileColor(code, accented: renderingMode.isAccented)))
                 if date == today {
                     context.stroke(path, with: .style(.primary), lineWidth: max(1, layout.cell * 0.16))
                 }

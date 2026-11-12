@@ -95,6 +95,7 @@ struct TodayWidgetView: View {
 /// arcs from 12 o'clock, each overlapping the previous (as in Flutter).
 struct TodayRing: View {
     let summary: TodaySummary
+    @Environment(\.widgetRenderingMode) private var renderingMode
     private let stroke: CGFloat = 12
 
     var body: some View {
@@ -114,7 +115,9 @@ struct TodayRing: View {
                         .widgetAccentable()
                 }
                 if summary.failed > 0 {
-                    arc(Double(summary.failed) * segment, HaboPalette.red)
+                    // Tinted/clear keep only opacity: a full-strength fail arc
+                    // would outshine the completed (accent) arc.
+                    arc(Double(summary.failed) * segment, renderingMode.isAccented ? .white.opacity(0.45) : HaboPalette.red)
                 }
             }
         }
