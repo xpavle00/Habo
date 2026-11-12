@@ -227,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               context,
                               listen: false,
                             ).setWeekStart = value;
-                            // Heatmap widget rows follow the week start.
+                            // Widgets receive the week start in their snapshot.
                             Provider.of<HabitsManager>(
                               context,
                               listen: false,
