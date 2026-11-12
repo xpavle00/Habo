@@ -37,6 +37,41 @@
                 android:resource="@xml/habo_widget_info" />
         </receiver>
 
+        <!-- Native widgets drawn from the shared snapshot (see widgets/). -->
+        <receiver
+            android:name=".widgets.CheckInWidgetProvider"
+            android:label="@string/habo_widget_checkin_label"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/habo_checkin_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widgets.YearWidgetProvider"
+            android:label="@string/habo_widget_year_label"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/habo_year_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".widgets.HabitPickerActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/HaboWidgetPicker">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

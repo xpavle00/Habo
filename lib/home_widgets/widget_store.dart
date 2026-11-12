@@ -23,6 +23,15 @@ abstract final class WidgetKinds {
   static const List<String> all = [today, checkIn, heatmap];
 }
 
+/// Android widget providers that draw themselves from the shared snapshot.
+/// The Android "today" widget is still a Flutter-rendered image.
+abstract final class AndroidWidgetProviders {
+  static const String checkIn =
+      'com.pavlenko.Habo.widgets.CheckInWidgetProvider';
+  static const String year = 'com.pavlenko.Habo.widgets.YearWidgetProvider';
+  static const List<String> all = [checkIn, year];
+}
+
 /// Seam over the shared App Group storage, so widget logic is testable
 /// without platform channels.
 abstract class WidgetStore {
@@ -31,7 +40,8 @@ abstract class WidgetStore {
   Future<void> setString(String key, String value);
   Future<void> setInt(String key, int value);
 
-  /// Asks the OS to reload the given iOS widget kinds.
+  /// Asks the OS to reload the native widgets: the given kinds on iOS,
+  /// every snapshot-drawn provider on Android.
   Future<void> reloadKinds(List<String> iosKinds);
 }
 
@@ -58,10 +68,15 @@ class HomeWidgetStore implements WidgetStore {
 
   @override
   Future<void> reloadKinds(List<String> iosKinds) async {
-    // Android widgets are still refreshed by the PNG pipeline.
-    if (kIsWeb || !Platform.isIOS) return;
-    for (final kind in iosKinds) {
-      await HomeWidget.updateWidget(iOSName: kind);
+    if (kIsWeb) return;
+    if (Platform.isIOS) {
+      for (final kind in iosKinds) {
+        await HomeWidget.updateWidget(iOSName: kind);
+      }
+    } else if (Platform.isAndroid) {
+      for (final provider in AndroidWidgetProviders.all) {
+        await HomeWidget.updateWidget(qualifiedAndroidName: provider);
+      }
     }
   }
 }
