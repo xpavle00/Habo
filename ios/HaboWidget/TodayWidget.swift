@@ -10,7 +10,7 @@ struct TodayWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: TodayProvider()) { entry in
             TodayWidgetView(entry: entry)
-                .haboWidgetBackground()
+                .haboWidgetBackground(entry)
         }
         .configurationDisplayName("Habo Habits")
         .description("Track your daily habit progress")

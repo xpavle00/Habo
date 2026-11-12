@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:habo/constants.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/home_widgets/widget_action_drainer.dart';
 import 'package:habo/home_widgets/widget_snapshot_builder.dart';
@@ -13,15 +14,18 @@ class WidgetPublisher {
   WidgetPublisher({
     required WidgetStore store,
     required StartingDayOfWeek Function() weekStart,
+    required WidgetTheme Function() theme,
     required WidgetLabels Function() labels,
     DateTime Function()? now,
   }) : _store = store,
        _weekStart = weekStart,
+       _theme = theme,
        _labels = labels,
        _now = now ?? DateTime.now;
 
   final WidgetStore _store;
   final StartingDayOfWeek Function() _weekStart;
+  final WidgetTheme Function() _theme;
   final WidgetLabels Function() _labels;
   final DateTime Function() _now;
   Future<void>? _drainInFlight;
@@ -34,6 +38,7 @@ class WidgetPublisher {
       final snapshot = buildWidgetSnapshot(
         habits: habits,
         weekStart: _weekStart(),
+        theme: _theme(),
         labels: _labels(),
         now: _now(),
       );

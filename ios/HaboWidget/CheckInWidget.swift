@@ -10,7 +10,7 @@ struct CheckInWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: SelectHabitIntent.self, provider: HabitTimelineProvider()) { entry in
             CheckInWidgetView(entry: entry)
-                .haboWidgetBackground()
+                .haboWidgetBackground(entry)
         }
         .configurationDisplayName("Habit check-in")
         .description("Check a habit right from your home screen.")

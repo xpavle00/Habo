@@ -139,6 +139,16 @@ class S {
     return Intl.message('Theme', name: 'theme', desc: '', args: []);
   }
 
+  /// `Widget theme`
+  String get widgetTheme {
+    return Intl.message(
+      'Widget theme',
+      name: 'widgetTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `First day of the week`
   String get firstDayOfWeek {
     return Intl.message(

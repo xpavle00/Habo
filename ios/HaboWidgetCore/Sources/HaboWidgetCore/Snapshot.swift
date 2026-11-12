@@ -176,6 +176,9 @@ public struct Snapshot: Codable, Equatable, Sendable {
     public let v: Int
     public let date: LocalDate
     public let weekStart: Int
+    /// `device`, `light` or `dark`. Optional so snapshots written before
+    /// this field still decode; anything else means `device`.
+    public let theme: String?
     public let labels: Labels
     public let habits: [SnapshotHabit]
 

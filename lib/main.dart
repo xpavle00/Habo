@@ -186,6 +186,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       widgetPublisher: WidgetPublisher(
         store: const HomeWidgetStore(),
         weekStart: () => _settingsManager.getWeekStartEnum,
+        theme: () => _settingsManager.getWidgetTheme,
         labels: () => WidgetLabels.fromS(S.current, Intl.getCurrentLocale()),
       ),
     );

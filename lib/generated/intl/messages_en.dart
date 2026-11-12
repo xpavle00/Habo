@@ -914,6 +914,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "widgetNoHabits": MessageLookupByLibrary.simpleMessage(
       "Add a habit in Habo",
     ),
+    "widgetTheme": MessageLookupByLibrary.simpleMessage("Widget theme"),
     "willSyncWhenConnected": MessageLookupByLibrary.simpleMessage(
       "Will sync when connected",
     ),

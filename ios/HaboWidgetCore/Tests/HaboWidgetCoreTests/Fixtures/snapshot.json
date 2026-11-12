@@ -2,6 +2,7 @@
   "v": 1,
   "date": "2026-11-06",
   "weekStart": 1,
+  "theme": "device",
   "labels": {
     "habitsToday": "Habits today",
     "chooseHabit": "Choose a habit",

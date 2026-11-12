@@ -9,6 +9,9 @@ enum HaboPalette {
     static let progress = Color(red: 0x21 / 255, green: 0x96 / 255, blue: 0xF3 / 255)
     /// Flutter `Colors.red[300]`, the app's weekend day number.
     static let weekend = Color(red: 0xE5 / 255, green: 0x73 / 255, blue: 0x73 / 255)
+    /// Widget backgrounds when the user forces a light or dark widget theme.
+    static let lightSurface = Color(red: 0xF0 / 255, green: 0xF0 / 255, blue: 0xF1 / 255)
+    static let darkSurface = Color(red: 0x2C / 255, green: 0x2C / 255, blue: 0x2E / 255)
     /// Flutter `Colors.grey`.
     static let grey = Color(red: 0x9E / 255, green: 0x9E / 255, blue: 0x9E / 255)
 }
@@ -92,10 +95,39 @@ struct WidgetMessage: View {
     }
 }
 
+/// Applies the widget background and the user's "Widget theme" setting.
+///
+/// `device` keeps the system background and colour scheme. A forced theme
+/// overrides the colour scheme for the content and uses an opaque
+/// background, since the system fill follows the phone's own appearance.
+private struct HaboWidgetTheme: ViewModifier {
+    let theme: String?
+
+    private var forced: ColorScheme? {
+        switch theme {
+        case "light": return .light
+        case "dark": return .dark
+        default: return nil
+        }
+    }
+
+    func body(content: Content) -> some View {
+        if let forced {
+            content
+                .environment(\.colorScheme, forced)
+                .containerBackground(for: .widget) {
+                    forced == .dark ? HaboPalette.darkSurface : HaboPalette.lightSurface
+                }
+        } else {
+            content.containerBackground(.fill.tertiary, for: .widget)
+        }
+    }
+}
+
 extension View {
-    /// Applies the system widget background.
-    func haboWidgetBackground() -> some View {
-        containerBackground(.fill.tertiary, for: .widget)
+    /// Applies the widget background, themed per the app's widget setting.
+    func haboWidgetBackground(_ entry: HaboEntry) -> some View {
+        modifier(HaboWidgetTheme(theme: entry.snapshot?.theme))
     }
 }
 

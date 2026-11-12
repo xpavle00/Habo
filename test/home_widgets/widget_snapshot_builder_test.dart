@@ -72,9 +72,11 @@ Map<String, dynamic> _build(
   List<HabitData> habits, {
   DateTime? now,
   StartingDayOfWeek weekStart = StartingDayOfWeek.monday,
+  WidgetTheme theme = WidgetTheme.device,
 }) => buildWidgetSnapshot(
   habits: habits,
   weekStart: weekStart,
+  theme: theme,
   labels: _labels,
   now: now ?? DateTime(2026, 11, 6, 21, 15),
 );
@@ -96,6 +98,12 @@ void main() {
     expect(s['weekStart'], 1);
     expect(s['labels']['months'], hasLength(12));
     expect(s['habits'], isEmpty);
+  });
+
+  test('theme is published by name and defaults to device', () {
+    expect(_build([])['theme'], 'device');
+    expect(_build([], theme: WidgetTheme.dark)['theme'], 'dark');
+    expect(_build([], theme: WidgetTheme.light)['theme'], 'light');
   });
 
   test('weekStart monday is 1 and sunday is 7', () {

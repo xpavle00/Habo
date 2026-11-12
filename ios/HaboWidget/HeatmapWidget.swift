@@ -8,7 +8,7 @@ struct HeatmapWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: SelectHabitIntent.self, provider: HabitTimelineProvider()) { entry in
             HeatmapWidgetView(entry: entry)
-                .haboWidgetBackground()
+                .haboWidgetBackground(entry)
         }
         .configurationDisplayName("Habit year")
         .description("A habit's whole year at a glance.")

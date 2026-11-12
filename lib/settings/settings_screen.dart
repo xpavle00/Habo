@@ -235,6 +235,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                         ),
                       ),
+                      if (Platform.isIOS || Platform.isAndroid)
+                        ListTile(
+                          title: Text(S.of(context).widgetTheme),
+                          trailing: DropdownButton<WidgetTheme>(
+                            items: WidgetTheme.values.map((WidgetTheme value) {
+                              return DropdownMenuItem<WidgetTheme>(
+                                value: value,
+                                child: Text(
+                                  S.of(context).themeSelect(value.name),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }).toList(),
+                            value: Provider.of<SettingsManager>(
+                              context,
+                            ).getWidgetTheme,
+                            onChanged: (value) {
+                              Provider.of<SettingsManager>(
+                                context,
+                                listen: false,
+                              ).setWidgetTheme = value!;
+                              Provider.of<HabitsManager>(
+                                context,
+                                listen: false,
+                              ).refreshWidgets();
+                            },
+                          ),
+                        ),
                       if (platformSupportsNotifications())
                         ListTile(
                           title: Text(S.of(context).notifications),

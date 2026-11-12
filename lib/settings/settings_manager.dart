@@ -168,6 +168,10 @@ class SettingsManager extends ChangeNotifier {
     return _settingsData.theme;
   }
 
+  WidgetTheme get getWidgetTheme {
+    return _settingsData.widgetTheme;
+  }
+
   StartingDayOfWeek get getWeekStartEnum {
     return _settingsData.weekStart;
   }
@@ -240,6 +244,12 @@ class SettingsManager extends ChangeNotifier {
 
   set setTheme(Themes value) {
     _settingsData.theme = value;
+    saveData();
+    notifyListeners();
+  }
+
+  set setWidgetTheme(WidgetTheme value) {
+    _settingsData.widgetTheme = value;
     saveData();
     notifyListeners();
   }

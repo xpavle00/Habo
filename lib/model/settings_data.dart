@@ -28,6 +28,7 @@ class SettingsData {
   String? customSupabaseAnonKey;
   bool isSelfHostedCached = false;
   bool offlineMode = false;
+  WidgetTheme widgetTheme = WidgetTheme.device;
 
   SettingsData();
 
@@ -87,7 +88,11 @@ class SettingsData {
       isSelfHostedCached = (json['isSelfHostedCached'] != null)
           ? json['isSelfHostedCached']
           : false,
-      offlineMode = (json['offlineMode'] != null) ? json['offlineMode'] : false;
+      offlineMode = (json['offlineMode'] != null) ? json['offlineMode'] : false,
+      widgetTheme = WidgetTheme.values.firstWhere(
+        (t) => t.name == json['widgetTheme'],
+        orElse: () => WidgetTheme.device,
+      );
 
   SettingsData copyWith({
     Themes? theme,
@@ -114,6 +119,7 @@ class SettingsData {
     String? customSupabaseAnonKey,
     bool? isSelfHostedCached,
     bool? offlineMode,
+    WidgetTheme? widgetTheme,
   }) {
     return SettingsData()
       ..theme = theme ?? this.theme
@@ -141,7 +147,8 @@ class SettingsData {
       ..customSupabaseAnonKey =
           customSupabaseAnonKey ?? this.customSupabaseAnonKey
       ..isSelfHostedCached = isSelfHostedCached ?? this.isSelfHostedCached
-      ..offlineMode = offlineMode ?? this.offlineMode;
+      ..offlineMode = offlineMode ?? this.offlineMode
+      ..widgetTheme = widgetTheme ?? this.widgetTheme;
   }
 
   Map<String, dynamic> toJson() => {
@@ -170,5 +177,6 @@ class SettingsData {
     'customSupabaseAnonKey': customSupabaseAnonKey,
     'isSelfHostedCached': isSelfHostedCached,
     'offlineMode': offlineMode,
+    'widgetTheme': widgetTheme.name,
   };
 }

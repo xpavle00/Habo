@@ -7,6 +7,7 @@ final class SnapshotDecodingTests: XCTestCase {
         XCTAssertEqual(snapshot.v, 1)
         XCTAssertEqual(snapshot.date, LocalDate(year: 2026, month: 11, day: 6))
         XCTAssertEqual(snapshot.weekStart, 1)
+        XCTAssertEqual(snapshot.theme, "device")
         XCTAssertEqual(snapshot.labels.months.count, 12)
         XCTAssertEqual(snapshot.habits.map(\.uuid), ["water", "read"])
 

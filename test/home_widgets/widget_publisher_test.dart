@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:habo/constants.dart';
 import 'package:habo/habits/habit.dart';
 import 'package:habo/habits/habits_manager.dart';
 import 'package:habo/home_widgets/widget_action.dart';
@@ -64,6 +65,7 @@ void main() {
     publisher = WidgetPublisher(
       store: store,
       weekStart: () => StartingDayOfWeek.sunday,
+      theme: () => WidgetTheme.dark,
       labels: () => _labels,
       now: () => DateTime(2026, 11, 6, 10),
     );
@@ -76,6 +78,7 @@ void main() {
         jsonDecode(store.values[WidgetKeys.snapshot] as String) as Map;
     expect(snapshot['date'], '2026-11-06');
     expect(snapshot['weekStart'], 7);
+    expect(snapshot['theme'], 'dark');
     expect((snapshot['habits'] as List).single['uuid'], 'u1');
     expect(store.reloads, [
       ['HaboWidget', 'HaboCheckInWidget', 'HaboHeatmapWidget'],
@@ -106,6 +109,7 @@ void main() {
     final failing = WidgetPublisher(
       store: ThrowingStore(),
       weekStart: () => StartingDayOfWeek.monday,
+      theme: () => WidgetTheme.device,
       labels: () => _labels,
     );
     await expectLater(failing.publish([_data(1)]), completes);

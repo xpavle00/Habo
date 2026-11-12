@@ -57,6 +57,7 @@ class WidgetLabels {
 Map<String, dynamic> buildWidgetSnapshot({
   required List<HabitData> habits,
   required StartingDayOfWeek weekStart,
+  required WidgetTheme theme,
   required WidgetLabels labels,
   required DateTime now,
 }) {
@@ -69,6 +70,8 @@ Map<String, dynamic> buildWidgetSnapshot({
     'v': widgetSnapshotVersion,
     'date': _formatDate(today),
     'weekStart': weekStart.index + 1,
+    // `device`, `light` or `dark`; widgets treat anything else as `device`.
+    'theme': theme.name,
     'labels': labels.toJson(),
     'habits': [for (final h in active) _habitJson(h, today)],
   };

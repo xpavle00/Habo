@@ -30,7 +30,7 @@ enum PreviewData {
     )
 
     static func snapshot(_ habits: [SnapshotHabit], weekStart: Int = 1) -> Snapshot {
-        Snapshot(v: 1, date: today, weekStart: weekStart, labels: labels, habits: habits)
+        Snapshot(v: 1, date: today, weekStart: weekStart, theme: nil, labels: labels, habits: habits)
     }
 
     static var previewDate: Date {
