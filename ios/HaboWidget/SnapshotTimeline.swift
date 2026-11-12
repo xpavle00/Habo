@@ -131,8 +131,4 @@ extension View {
     }
 }
 
-func habitURL(_ uuid: String) -> URL {
-    URL(string: "habo://habit/\(uuid)")!
-}
-
 let openAppURL = URL(string: "habo://open")!
