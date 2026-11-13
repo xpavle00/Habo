@@ -10,8 +10,11 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.RemoteViews
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.pavlenko.Habo.R
@@ -21,6 +24,8 @@ import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -87,7 +92,45 @@ object WidgetSelection {
 object HaboWidgets {
     private const val MIDNIGHT_WORK = "midnightUpdate"
 
-    private val providers = listOf(CheckInWidgetProvider::class.java, YearWidgetProvider::class.java)
+    private const val RELEASE_WORK = "todayListRelease"
+
+    private val providers = listOf(
+        CheckInWidgetProvider::class.java,
+        YearWidgetProvider::class.java,
+        TodayListWidgetProvider::class.java,
+    )
+
+    /**
+     * Records the tap's resulting state for today as a pending action (the
+     * app applies it on next launch or resume), then redraws every Habo
+     * widget so they all show it at once.
+     */
+    fun tapHabit(context: Context, uuid: String) {
+        val store = PrefsStore(HomeWidgetPlugin.getData(context))
+        val snapshot = Snapshot.parse(store.getString(SharedKeys.SNAPSHOT)) ?: return
+        val habit = snapshot.habit(uuid) ?: return
+        val today = LocalDate.now()
+        val actions = PendingActionStore(store)
+        val pending = actions.pending()
+        val current = effectiveCode(habit, today, pending)
+        val value = effectiveTodayValue(habit, today, snapshot.date, pending)
+        val target = effectiveTodayTarget(habit, today, snapshot.date)
+        val next = nextState(habit, current, value, target)
+        actions.append(habit.uuid, today, next.code, next.value, next.target, Instant.now())
+        updateAll(context)
+        scheduleListRelease(context)
+    }
+
+    /**
+     * Redraws once a just-tapped row's hold is over, so the today list
+     * reorders by itself (iOS does this with a timeline entry).
+     */
+    private fun scheduleListRelease(context: Context) {
+        val work = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
+            .setInitialDelay(TodayListWidgetProvider.HOLD_SECONDS * 1000 + 500, TimeUnit.MILLISECONDS)
+            .build()
+        WorkManager.getInstance(context).enqueueUniqueWork(RELEASE_WORK, ExistingWorkPolicy.REPLACE, work)
+    }
 
     /** Redraws every placed check-in and year widget. */
     fun updateAll(context: Context) {
@@ -145,7 +188,7 @@ abstract class SnapshotWidgetProvider : AppWidgetProvider() {
     ): Bitmap
 
     /** Hook for click targets beyond "tap opens the app". */
-    protected open fun bindClicks(context: Context, views: RemoteViews, appWidgetId: Int) = Unit
+    protected open fun bindClicks(context: Context, views: RemoteViews, appWidgetId: Int, data: WidgetData) = Unit
 
     override fun onUpdate(context: Context, manager: AppWidgetManager, appWidgetIds: IntArray) {
         val data = WidgetData.load(context)
@@ -190,7 +233,7 @@ abstract class SnapshotWidgetProvider : AppWidgetProvider() {
             WidgetTheme.DARK -> forceTheme(views, bitmap(dark = true), R.drawable.habo_native_widget_bg_dark)
         }
         views.setOnClickPendingIntent(android.R.id.background, HaboWidgets.openAppIntent(context))
-        bindClicks(context, views, appWidgetId)
+        bindClicks(context, views, appWidgetId, data)
         manager.updateAppWidget(appWidgetId, views)
     }
 
@@ -246,7 +289,7 @@ class CheckInWidgetProvider : SnapshotWidgetProvider() {
         return renderer.checkIn(width, height, model)
     }
 
-    override fun bindClicks(context: Context, views: RemoteViews, appWidgetId: Int) {
+    override fun bindClicks(context: Context, views: RemoteViews, appWidgetId: Int, data: WidgetData) {
         val tap = Intent(context, CheckInWidgetProvider::class.java)
             .setAction(ACTION_TAP)
             .setData(Uri.parse("habo://widget-tap/$appWidgetId"))
@@ -268,24 +311,11 @@ class CheckInWidgetProvider : SnapshotWidgetProvider() {
         super.onReceive(context, intent)
     }
 
-    /**
-     * Records the resulting state for today as a pending action (the app
-     * applies it on next launch or resume), then redraws every Habo widget
-     * so they all show the tap at once.
-     */
     private fun handleTap(context: Context, appWidgetId: Int) {
         val store = PrefsStore(HomeWidgetPlugin.getData(context))
         val snapshot = Snapshot.parse(store.getString(SharedKeys.SNAPSHOT)) ?: return
         val habit = WidgetSelection.resolve(context, appWidgetId, snapshot) ?: return
-        val today = LocalDate.now()
-        val actions = PendingActionStore(store)
-        val pending = actions.pending()
-        val current = effectiveCode(habit, today, pending)
-        val value = effectiveTodayValue(habit, today, snapshot.date, pending)
-        val target = effectiveTodayTarget(habit, today, snapshot.date)
-        val next = nextState(habit, current, value, target)
-        actions.append(habit.uuid, today, next.code, next.value, next.target, Instant.now())
-        HaboWidgets.updateAll(context)
+        HaboWidgets.tapHabit(context, habit.uuid)
     }
 
     companion object {
@@ -327,5 +357,112 @@ class YearWidgetProvider : SnapshotWidgetProvider() {
             monthLabels = snapshot.labels.months,
         )
         return renderer.year(width, height, model)
+    }
+}
+
+/**
+ * Large widget: today's habits as a list. Each row has the habit's name,
+ * the previous days fading out, and today's button, which checks the habit
+ * (or adds progress) without opening Habo. Mirrors the iOS TodayListWidget.
+ */
+class TodayListWidgetProvider : SnapshotWidgetProvider() {
+    override val layoutId = R.layout.habo_today_list_widget
+    override val defaultWidthDp = 320
+    override val defaultHeightDp = 340
+
+    private fun rows(data: WidgetData): List<SnapshotHabit> {
+        val snapshot = data.snapshot ?: return emptyList()
+        return todayListHabits(
+            snapshot.habits, data.today, data.pending, Instant.now(), TodayListLayout.ROWS, HOLD_SECONDS,
+        )
+    }
+
+    override fun render(
+        context: Context,
+        renderer: WidgetRenderer,
+        width: Int,
+        height: Int,
+        data: WidgetData,
+        appWidgetId: Int,
+    ): Bitmap {
+        val snapshot = data.snapshot
+        if (snapshot == null || snapshot.habits.isEmpty()) {
+            return renderer.message(width, height, emptyMessage(data))
+        }
+        val today = data.today
+        val summary = todaySummary(snapshot.habits, today, data.pending)
+        val model = TodayListModel(
+            title = snapshot.labels.habitsToday,
+            date = today.format(DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault())),
+            count = "${summary.done}/${summary.total}",
+            rows = rows(data).map { habit ->
+                val value = effectiveTodayValue(habit, today, snapshot.date, data.pending)
+                val target = effectiveTodayTarget(habit, today, snapshot.date)
+                TodayListRow(
+                    uuid = habit.uuid,
+                    tile = CheckInModel(
+                        title = habit.title,
+                        streak = 0,
+                        isNumeric = habit.isNumeric,
+                        code = effectiveCode(habit, today, data.pending),
+                        value = value,
+                        target = target,
+                        unit = habit.unit,
+                        today = today,
+                        recent = emptyList(),
+                    ),
+                    amount = if (habit.isNumeric) {
+                        "${formatAmount(value)} / ${formatAmount(target)} ${habit.unit}".trim()
+                    } else {
+                        null
+                    },
+                    recent = (5 downTo 1).map { effectiveCode(habit, today.minusDays(it.toLong()), data.pending) },
+                )
+            },
+        )
+        return renderer.todayList(width, height, model)
+    }
+
+    override fun bindClicks(context: Context, views: RemoteViews, appWidgetId: Int, data: WidgetData) {
+        val rows = rows(data)
+        ROW_TAPS.forEachIndexed { index, viewId ->
+            val habit = rows.getOrNull(index)
+            if (habit == null) {
+                views.setViewVisibility(viewId, View.GONE)
+                return@forEachIndexed
+            }
+            views.setViewVisibility(viewId, View.VISIBLE)
+            val tap = Intent(context, TodayListWidgetProvider::class.java)
+                .setAction(ACTION_TAP)
+                // Unique per widget and row, so each row keeps its own intent.
+                .setData(Uri.parse("habo://widget-list-tap/$appWidgetId/$index"))
+                .putExtra(EXTRA_HABIT, habit.uuid)
+            views.setOnClickPendingIntent(
+                viewId,
+                PendingIntent.getBroadcast(
+                    context, appWidgetId * 10 + index, tap,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+                ),
+            )
+        }
+    }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == ACTION_TAP) {
+            intent.getStringExtra(EXTRA_HABIT)?.let { HaboWidgets.tapHabit(context, it) }
+            return
+        }
+        super.onReceive(context, intent)
+    }
+
+    companion object {
+        const val ACTION_TAP = "com.pavlenko.Habo.widgets.LIST_TAP"
+        private const val EXTRA_HABIT = "habit_uuid"
+        /** How long a just-tapped row keeps its place before giving it up. */
+        const val HOLD_SECONDS = 4L
+
+        private val ROW_TAPS = listOf(
+            R.id.row_tap_0, R.id.row_tap_1, R.id.row_tap_2, R.id.row_tap_3, R.id.row_tap_4, R.id.row_tap_5,
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.pavlenko.Habo.widgets
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
@@ -54,6 +55,32 @@ data class CheckInModel(
     /** The six days before today, oldest first. */
     val recent: List<DayCode>,
 )
+
+/** One row of the large today list. */
+data class TodayListRow(
+    val uuid: String,
+    /** Drawn as the row's button; `title` is the habit name. */
+    val tile: CheckInModel,
+    /** "10 / 30 min" for numeric habits, else null. */
+    val amount: String?,
+    /** The five days before today, oldest first. */
+    val recent: List<DayCode>,
+)
+
+/** What the large today list shows. */
+data class TodayListModel(val title: String, val date: String, val count: String, val rows: List<TodayListRow>)
+
+/**
+ * Geometry shared by [WidgetRenderer.todayList] and the layout's row tap
+ * targets (`habo_today_list_widget.xml`), in dp. Keep them in step.
+ */
+object TodayListLayout {
+    const val ROWS = 6
+    /** Header height including the gap below it. */
+    const val HEADER_DP = 30
+    /** Width of the button column at the right of each row. */
+    const val BUTTON_DP = 44
+}
 
 /** What the year widget shows for one habit. */
 data class YearModel(
@@ -157,6 +184,10 @@ class WidgetRenderer(context: Context, private val dark: Boolean) {
     }
 
     private fun tile(canvas: Canvas, cx: Float, cy: Float, size: Float, u: Float, model: CheckInModel) {
+        // Sizes below are for the check-in widget's 68pt tile; smaller tiles scale down.
+        val s = size / (68 * u)
+        // Small tiles have no room for the percentage: a thicker ring alone.
+        val compact = s < 50f / 68f
         val fraction = if (model.target > 0) (model.value / model.target).coerceIn(0.0, 1.0).toFloat() else 0f
         val showsRing = model.isNumeric && !model.code.isDone &&
             model.code != DayCode.FAIL && model.code != DayCode.SKIP && model.value > 0
@@ -171,13 +202,14 @@ class WidgetRenderer(context: Context, private val dark: Boolean) {
         canvas.drawRoundRect(rect, size * 0.27f, size * 0.27f, fill)
 
         if (showsRing) {
-            val radius = 24 * u
-            stroke.strokeWidth = 5 * u
+            val radius = (if (compact) 22 else 24) * u * s
+            stroke.strokeWidth = (if (compact) 3.5f else 5f) * u
             stroke.strokeCap = Paint.Cap.ROUND
             stroke.color = 0x4DFFFFFF
             canvas.drawCircle(cx, cy, radius, stroke)
             stroke.color = 0xFFFFFFFF.toInt()
             canvas.drawArc(cx - radius, cy - radius, cx + radius, cy + radius, -90f, 360f * fraction, false, stroke)
+            if (compact) return
             text.typeface = extraBold
             text.textSize = 13 * u
             text.color = 0xFFFFFFFF.toInt()
@@ -193,13 +225,98 @@ class WidgetRenderer(context: Context, private val dark: Boolean) {
             DayCode.NONE -> null
         }
         if (icon != null && isFilled) {
-            icon(canvas, icon, cx, cy, 40 * u, 0xFFFFFFFF.toInt())
+            icon(canvas, icon, cx, cy, 40 * u * s, 0xFFFFFFFF.toInt())
         } else {
             // Unchecked: the day of the month, weekends in red, as in the app.
             text.typeface = extraBold
-            text.textSize = 30 * u
+            text.textSize = max(15f, 30 * s) * u
             text.color = if (model.today.dayOfWeek.value > 5) HaboPalette.WEEKEND else primaryText
             centred(canvas, model.today.dayOfMonth.toString(), cx, cy)
+        }
+    }
+
+    /**
+     * Large list of today's habits. Drawn at fixed dp sizes (not scaled to
+     * the widget) so the row tap targets in the layout line up with it; see
+     * [TodayListLayout].
+     */
+    fun todayList(width: Int, height: Int, model: TodayListModel): Bitmap = draw(width, height) { canvas ->
+        val u = density
+        val pad = PADDING * u
+        val content = RectF(pad, pad, width - pad, height - pad)
+
+        // Header: title, date, and the count pill.
+        val midY = content.top + 11 * u
+        text.typeface = bold
+        text.textSize = 13 * u
+        val pillWidth = max(28 * u, text.measureText(model.count) + 18 * u)
+        fill.color = HaboPalette.PRIMARY
+        canvas.drawRoundRect(content.right - pillWidth, midY - 10 * u, content.right, midY + 10 * u, 10 * u, 10 * u, fill)
+        text.color = 0xFFFFFFFF.toInt()
+        centred(canvas, model.count, content.right - pillWidth / 2, midY)
+
+        text.typeface = extraBold
+        text.textSize = 17 * u
+        text.color = primaryText
+        val titleRoom = content.width() - pillWidth - 8 * u
+        val title = TextUtils.ellipsize(model.title, text, titleRoom, TextUtils.TruncateAt.END).toString()
+        canvas.drawText(title, content.left, baseline(midY), text)
+        val dateX = content.left + text.measureText(title) + 6 * u
+        text.typeface = bold
+        text.textSize = 12 * u
+        text.color = secondaryText
+        val dateRoom = content.right - pillWidth - 6 * u - dateX
+        if (dateRoom > 0) {
+            val date = TextUtils.ellipsize(model.date, text, dateRoom, TextUtils.TruncateAt.END).toString()
+            canvas.drawText(date, dateX, baseline(midY), text)
+        }
+
+        // Rows: fixed height, so fewer habits leave space rather than stretch.
+        val rowsTop = content.top + TodayListLayout.HEADER_DP * u
+        val rowHeight = (content.bottom - rowsTop) / TodayListLayout.ROWS
+        model.rows.forEachIndexed { index, row ->
+            val top = rowsTop + index * rowHeight
+            val mid = top + rowHeight / 2
+            if (index > 0) {
+                fill.color = HaboPalette.grey(0.25f)
+                canvas.drawRect(content.left, top, content.right, top + 0.5f * u, fill)
+            }
+
+            // Today's button, right-aligned.
+            val buttonSize = 36 * u
+            val buttonCx = content.right - TodayListLayout.BUTTON_DP * u / 2
+            tile(canvas, buttonCx, mid, buttonSize, u, row.tile)
+
+            // The five days before today, oldest faintest.
+            val square = 11 * u
+            val gap = 3 * u
+            val squaresRight = content.right - TodayListLayout.BUTTON_DP * u - 8 * u
+            var x = squaresRight - 5 * square - 4 * gap
+            val squaresLeft = x
+            row.recent.forEachIndexed { i, code ->
+                fill.color = HaboPalette.tile(code)
+                fill.alpha = ((0.3f + i * 0.175f) * Color.alpha(fill.color)).roundToInt()
+                canvas.drawRoundRect(x, mid - square / 2, x + square, mid + square / 2, 3.5f * u, 3.5f * u, fill)
+                x += square + gap
+            }
+            fill.alpha = 255
+
+            // Name, and the amount under it for numeric habits.
+            val nameRoom = squaresLeft - 8 * u - content.left
+            text.typeface = extraBold
+            text.textSize = 15 * u
+            text.color = primaryText
+            val name = TextUtils.ellipsize(row.tile.title, text, nameRoom, TextUtils.TruncateAt.END).toString()
+            if (row.amount == null) {
+                canvas.drawText(name, content.left, baseline(mid), text)
+            } else {
+                canvas.drawText(name, content.left, baseline(mid - 7 * u), text)
+                text.typeface = bold
+                text.textSize = 11 * u
+                text.color = secondaryText
+                val amount = TextUtils.ellipsize(row.amount, text, nameRoom, TextUtils.TruncateAt.END).toString()
+                canvas.drawText(amount, content.left, baseline(mid + 9 * u), text)
+            }
         }
     }
 

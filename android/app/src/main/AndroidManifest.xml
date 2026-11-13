@@ -62,6 +62,18 @@
                 android:resource="@xml/habo_year_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".widgets.TodayListWidgetProvider"
+            android:label="@string/habo_widget_today_list_label"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/habo_today_list_widget_info" />
+        </receiver>
+
         <activity
             android:name=".widgets.HabitPickerActivity"
             android:exported="true"

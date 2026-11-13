@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawn by WidgetRenderer.todayList. Row geometry must match TodayListLayout:
+     16dp padding, 30dp header, 6 equal rows, 44dp button column. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/habo_native_widget_bg">
+
+    <ImageView
+        android:id="@+id/image_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="@dimen/habo_widget_light_alpha"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/image_dark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="@dimen/habo_widget_dark_alpha"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header spacer. (Space is not allowed in widgets.) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_0"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_1"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_2"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_3"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_4"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/row_tap_5"
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="-4dp"
+                android:contentDescription="@string/habo_widget_checkin_label" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

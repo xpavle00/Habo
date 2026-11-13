@@ -14,6 +14,8 @@
     <string name="habo_widget_checkin_description">Check a habit right from your home screen.</string>
     <string name="habo_widget_year_label">Habit year</string>
     <string name="habo_widget_year_description">A habit\'s whole year at a glance.</string>
+    <string name="habo_widget_today_list_label">Today\'s habits</string>
+    <string name="habo_widget_today_list_description">Check off today\'s habits from a list.</string>
     <string name="habo_widget_choose_habit">Choose a habit</string>
     <string name="habo_widget_no_habits">Add a habit in Habo</string>
 

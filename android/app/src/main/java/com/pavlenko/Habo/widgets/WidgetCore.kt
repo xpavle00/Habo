@@ -343,3 +343,85 @@ fun streak(habit: SnapshotHabit, today: LocalDate, snapshotDate: LocalDate, pend
 /** `10` for whole numbers, `2.5` otherwise. */
 fun formatAmount(value: Double): String =
     if (Math.rint(value) == value) value.toLong().toString() else String.format(java.util.Locale.US, "%.1f", value)
+
+/** Counts for "habits today". Same rules as the Swift `todaySummary`. */
+data class TodaySummary(val total: Int, val completed: Int, val skipped: Int, val failed: Int) {
+    /** Habits handled today: completed + skipped + failed. */
+    val done: Int get() = completed + skipped + failed
+}
+
+fun todaySummary(habits: List<SnapshotHabit>, today: LocalDate, pending: List<PendingAction>): TodaySummary {
+    var completed = 0
+    var skipped = 0
+    var failed = 0
+    for (habit in habits) {
+        when (effectiveCode(habit, today, pending)) {
+            DayCode.CHECK, DayCode.PROGRESS_DONE -> completed++
+            DayCode.SKIP -> skipped++
+            DayCode.FAIL -> failed++
+            DayCode.NONE, DayCode.PROGRESS -> Unit
+        }
+    }
+    return TodaySummary(habits.size, completed, skipped, failed)
+}
+
+/** Done, failed or skipped. Partial numeric progress still waits for more. */
+private fun DayCode.isHandled(): Boolean =
+    this == DayCode.CHECK || this == DayCode.PROGRESS_DONE || this == DayCode.FAIL || this == DayCode.SKIP
+
+/** When a just-tapped row's hold ends, or null if [action] didn't handle a habit today. */
+private fun holdEnd(action: PendingAction, today: LocalDate, holdSeconds: Long): Instant? {
+    if (action.date != today || !action.code.isHandled()) return null
+    val tapped = try {
+        Instant.parse(action.at)
+    } catch (e: Exception) {
+        return null
+    }
+    return tapped.plusSeconds(holdSeconds)
+}
+
+/**
+ * The habits the large "today" list shows, in app order. Mirrors the Swift
+ * `todayListHabits`: everything when it fits; otherwise habits still waiting
+ * first, handled ones filling rows left over, and a just-tapped row keeping
+ * its place for [holdSeconds].
+ */
+fun todayListHabits(
+    habits: List<SnapshotHabit>,
+    today: LocalDate,
+    pending: List<PendingAction>,
+    now: Instant,
+    capacity: Int,
+    holdSeconds: Long,
+): List<SnapshotHabit> {
+    if (habits.size <= capacity) return habits
+
+    val held = pending
+        .filter { it.date == today }
+        .groupBy { it.uuid }
+        .mapNotNull { (uuid, actions) ->
+            val newest = actions.maxBy { it.seq }
+            val end = holdEnd(newest, today, holdSeconds)
+            if (end != null && end.isAfter(now)) uuid else null
+        }
+        .toSet()
+
+    fun waits(habit: SnapshotHabit) =
+        habit.uuid in held || !effectiveCode(habit, today, pending).isHandled()
+
+    val waiting = habits.filter(::waits)
+    if (waiting.size >= capacity) return waiting.take(capacity)
+
+    val fillers = habits.filterNot(::waits).take(capacity - waiting.size)
+    val chosen = (waiting + fillers).map { it.uuid }.toSet()
+    return habits.filter { it.uuid in chosen }
+}
+
+/** Future moments when a held row is released, soonest first. */
+fun todayListReleaseTimes(
+    pending: List<PendingAction>,
+    today: LocalDate,
+    now: Instant,
+    holdSeconds: Long,
+): List<Instant> =
+    pending.mapNotNull { holdEnd(it, today, holdSeconds) }.filter { it.isAfter(now) }.sorted()

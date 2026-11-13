@@ -30,7 +30,9 @@ abstract final class AndroidWidgetProviders {
   static const String checkIn =
       'com.pavlenko.Habo.widgets.CheckInWidgetProvider';
   static const String year = 'com.pavlenko.Habo.widgets.YearWidgetProvider';
-  static const List<String> all = [checkIn, year];
+  static const String todayList =
+      'com.pavlenko.Habo.widgets.TodayListWidgetProvider';
+  static const List<String> all = [checkIn, year, todayList];
 }
 
 /// Seam over the shared App Group storage, so widget logic is testable
