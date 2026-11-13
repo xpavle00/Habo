@@ -418,6 +418,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Fixed sound mixing",
     ),
+    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.",
+    ),
+    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "New home screen widgets (iOS)",
+    ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Secure the app with Face ID / Touch ID / biometrics",
     ),
@@ -904,6 +910,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "whatsNewTitle": MessageLookupByLibrary.simpleMessage("What\'s New"),
     "whatsNewVersion": m16,
+    "widgetChooseHabit": MessageLookupByLibrary.simpleMessage("Choose a habit"),
+    "widgetNoHabits": MessageLookupByLibrary.simpleMessage(
+      "Add a habit in Habo",
+    ),
+    "widgetTheme": MessageLookupByLibrary.simpleMessage("Widget theme"),
     "willSyncWhenConnected": MessageLookupByLibrary.simpleMessage(
       "Will sync when connected",
     ),

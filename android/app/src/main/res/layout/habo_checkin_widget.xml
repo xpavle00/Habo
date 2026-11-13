@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawn by WidgetRenderer: one bitmap per theme, see SnapshotWidgetProvider. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/habo_native_widget_bg">
+
+    <ImageView
+        android:id="@+id/image_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="@dimen/habo_widget_light_alpha"
+        android:importantForAccessibility="no"
+        android:scaleType="fitCenter" />
+
+    <ImageView
+        android:id="@+id/image_dark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="@dimen/habo_widget_dark_alpha"
+        android:importantForAccessibility="no"
+        android:scaleType="fitCenter" />
+
+    <!-- Tap target over the day tile, which is drawn centred in the bitmap. -->
+    <FrameLayout
+        android:id="@+id/tile_hit"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/habo_widget_checkin_label" />
+</FrameLayout>

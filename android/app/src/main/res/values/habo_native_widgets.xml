@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Native (Kotlin-drawn) widgets: check-in and year. Matches the iOS widget background. -->
+    <color name="habo_native_widget_background">#F0F0F1</color>
+    <!-- Fixed backgrounds for a forced "Widget theme"; same in day and night. -->
+    <color name="habo_native_widget_background_light">#F0F0F1</color>
+    <color name="habo_native_widget_background_dark">#2C2C2E</color>
+    <dimen name="habo_native_widget_radius">22dp</dimen>
+    <!-- The layout stacks a light and a dark image; only one is opaque per theme. -->
+    <item name="habo_widget_light_alpha" format="float" type="dimen">1.0</item>
+    <item name="habo_widget_dark_alpha" format="float" type="dimen">0.0</item>
+
+    <string name="habo_widget_checkin_label">Habit check-in</string>
+    <string name="habo_widget_checkin_description">Check a habit right from your home screen.</string>
+    <string name="habo_widget_year_label">Habit year</string>
+    <string name="habo_widget_year_description">A habit\'s whole year at a glance.</string>
+    <string name="habo_widget_today_list_label">Today\'s habits</string>
+    <string name="habo_widget_today_list_description">Check off today\'s habits from a list.</string>
+    <string name="habo_widget_choose_habit">Choose a habit</string>
+    <string name="habo_widget_no_habits">Add a habit in Habo</string>
+
+    <style name="HaboWidgetPicker" parent="@android:style/Theme.DeviceDefault.Light.Dialog" />
+</resources>

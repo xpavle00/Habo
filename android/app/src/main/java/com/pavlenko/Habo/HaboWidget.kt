@@ -89,9 +89,17 @@ internal fun updateAppWidget(
     val filenameEmptyDark = widgetData.getString("filename_empty_dark", null)
         ?: filenameEmptyLight
     val lastUpdateDateString = widgetData.getString("lastUpdateDate", null)
-    val isDarkMode =
-        (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
-            Configuration.UI_MODE_NIGHT_YES
+    // The app's "Widget theme" setting overrides the phone's appearance.
+    val widgetTheme = com.pavlenko.Habo.widgets.Snapshot
+        .parse(widgetData.getString(com.pavlenko.Habo.widgets.SharedKeys.SNAPSHOT, null))
+        ?.theme ?: com.pavlenko.Habo.widgets.WidgetTheme.DEVICE
+    val isDarkMode = when (widgetTheme) {
+        com.pavlenko.Habo.widgets.WidgetTheme.LIGHT -> false
+        com.pavlenko.Habo.widgets.WidgetTheme.DARK -> true
+        com.pavlenko.Habo.widgets.WidgetTheme.DEVICE ->
+            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+    }
     
     // Determine which image to show based on date
     var shouldShowEmpty = false
@@ -124,6 +132,14 @@ internal fun updateAppWidget(
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.habo_widget)
+    if (widgetTheme != com.pavlenko.Habo.widgets.WidgetTheme.DEVICE) {
+        // Same colours as `habo_widget_background` in values and values-night.
+        views.setInt(
+            R.id.widget_root,
+            "setBackgroundColor",
+            if (isDarkMode) 0xFF1E1E1E.toInt() else 0xFFF5F5F5.toInt(),
+        )
+    }
     
     // Create intent to open the app when widget is clicked
     val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)

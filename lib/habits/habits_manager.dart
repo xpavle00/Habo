@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
@@ -17,6 +19,9 @@ import 'package:habo/services/sync_manager.dart';
 import 'package:habo/services/ui_feedback_service.dart';
 import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/helpers/widget_update_helper.dart';
+import 'package:habo/helpers.dart';
+import 'package:habo/home_widgets/widget_action.dart';
+import 'package:habo/home_widgets/widget_publisher.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
@@ -28,6 +33,7 @@ class HabitsManager extends ChangeNotifier {
   final NotificationService? _notificationService;
   final UIFeedbackService? _uiFeedbackService;
   final SyncManager? _syncManager;
+  final WidgetPublisher? _widgetPublisher;
 
   StreamSubscription<void>? _syncDataChangedSubscription;
 
@@ -61,13 +67,15 @@ class HabitsManager extends ChangeNotifier {
     NotificationService? notificationService,
     UIFeedbackService? uiFeedbackService,
     SyncManager? syncManager,
+    WidgetPublisher? widgetPublisher,
   }) : _habitRepository = habitRepository,
        _eventRepository = eventRepository,
        _categoryRepository = categoryRepository,
        _backupService = backupService,
        _notificationService = notificationService,
        _uiFeedbackService = uiFeedbackService,
-       _syncManager = syncManager;
+       _syncManager = syncManager,
+       _widgetPublisher = widgetPublisher;
 
   Future<void> initialize() async {
     // Listen for remote sync changes before loading, so a background pull
@@ -195,11 +203,16 @@ class HabitsManager extends ChangeNotifier {
     updateOrder();
     _habitRepository.updateHabitsOrder(allHabits);
     notifyListeners();
+    _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
   }
 
   void addEvent(int id, DateTime dateTime, List event) {
+    // Keep the in-memory habit current before publishing: the widget
+    // snapshot is built from it, and callers update their own copy only
+    // after this returns.
+    findHabitById(id)?.habitData.events[dateTime] = event;
     _eventRepository.insertEvent(id, dateTime, event);
     _notificationService?.handleHabitEventAdded(id, dateTime, event);
     // Update home widget after event is added
@@ -209,12 +222,69 @@ class HabitsManager extends ChangeNotifier {
   }
 
   void deleteEvent(int id, DateTime dateTime) {
+    findHabitById(id)?.habitData.events.remove(dateTime);
     _eventRepository.deleteEvent(id, dateTime);
     _notificationService?.handleHabitEventDeleted(id, dateTime);
     // Update home widget after event is deleted
     _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
+  }
+
+  /// Applies a tap recorded by a native home-screen widget.
+  ///
+  /// Mirrors what `OneDayButton` does for the same action in the app, so
+  /// notifications, sync and widget refresh behave identically. Returns
+  /// false when no active habit has [WidgetAction.uuid].
+  bool applyWidgetAction(WidgetAction action) {
+    final index = allHabits.indexWhere(
+      (h) => h.habitData.uuid == action.uuid,
+    );
+    if (index < 0) return false;
+    final data = allHabits[index].habitData;
+    if (data.id == null) return false;
+
+    final key = transformDate(action.date);
+    final existing = data.events[key];
+    final comment = (existing != null && existing.length > 1)
+        ? (existing[1] as String? ?? '')
+        : '';
+
+    switch (action.code) {
+      case 'c':
+        final event = [DayType.check, comment];
+        data.events[key] = event;
+        addEvent(data.id!, key, event);
+      case '.':
+        if (comment.isNotEmpty) {
+          final event = [DayType.clear, comment];
+          data.events[key] = event;
+          addEvent(data.id!, key, event);
+          // Keeping the comment means an event stays; restore the day's
+          // reminder as an undo without a comment does.
+          _notificationService?.handleHabitEventDeleted(data.id!, key);
+        } else {
+          data.events.remove(key);
+          deleteEvent(data.id!, key);
+        }
+      case 'p':
+      case 'P':
+        final event = [
+          DayType.progress,
+          comment,
+          action.value ?? 0.0,
+          action.target ?? data.targetValue,
+        ];
+        data.events[key] = event;
+        addEvent(data.id!, key, event);
+      default:
+        return false;
+    }
+    // Rows are reused widget instances that Flutter won't rebuild on their
+    // own; a fresh instance makes the home screen show the tap.
+    allHabits[index] = Habit(key: UniqueKey(), habitData: data);
+    notifyListeners();
+    return true;
   }
 
   /// Set the context for widget updates.
@@ -226,6 +296,11 @@ class HabitsManager extends ChangeNotifier {
   /// Updates the home widget with current habit data.
   /// This is called automatically when habits change.
   void _updateHomeWidgetAsync() {
+    // Native widgets (iOS) render from the shared snapshot.
+    _widgetPublisher?.publish([for (final h in allHabits) h.habitData]);
+
+    // Android still uses the Flutter-rendered PNG widget.
+    if (kIsWeb || !Platform.isAndroid) return;
     if (_widgetContext != null && _widgetContext!.mounted) {
       // Schedule widget update for next frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -236,9 +311,20 @@ class HabitsManager extends ChangeNotifier {
     }
   }
 
+  /// Republishes home-screen widget data, e.g. after a setting they show
+  /// (such as week start) changed.
+  void refreshWidgets() => _updateHomeWidgetAsync();
+
+  /// Applies taps queued by home-screen widgets, then republishes the
+  /// widget snapshot. Call on launch, on resume and when the day changes.
+  Future<void> drainWidgetActions() async {
+    await _widgetPublisher?.drainAndPublish(this);
+  }
+
   /// Manually update the home widget.
   /// Can be called from UI when needed.
   Future<void> updateHomeWidget(BuildContext context) async {
+    if (kIsWeb || !Platform.isAndroid) return;
     await WidgetUpdateHelper.updateHomeWidget(context, allHabits);
   }
 
@@ -337,6 +423,9 @@ class HabitsManager extends ChangeNotifier {
       _notificationService?.disableHabitNotification(habitData.id!);
     }
     notifyListeners();
+    // Title, target or reminder may have changed: widgets must not act on
+    // stale habit data.
+    _updateHomeWidgetAsync();
     // Trigger sync
     _syncManager?.scheduleSync();
   }
@@ -452,6 +541,7 @@ class HabitsManager extends ChangeNotifier {
 
     updateOrder();
     notifyListeners();
+    _updateHomeWidgetAsync();
   }
 
   Future<void> deleteFromDB() async {

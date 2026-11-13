@@ -6,6 +6,7 @@ import 'package:habo/model/habit_data.dart';
 import 'package:habo/habits/habit_header.dart';
 import 'package:habo/habits/one_day.dart';
 import 'package:habo/habits/one_day_button.dart';
+import 'package:habo/habits/streak.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/generated/l10n.dart';
@@ -530,113 +531,16 @@ class HabitState extends State<Habit> {
   }
 
   void _updateLastStreak() {
+    final result = computeStreak(
+      widget.habitData.events,
+      twoDayRule: widget.habitData.twoDayRule == true,
+      targetValue: widget.habitData.targetValue,
+    );
+    _streakVisible = (result.streak >= 2);
+    widget.habitData.streak = result.streak;
     if (widget.habitData.twoDayRule == true) {
-      _updateLastStreakTwoDay();
-    } else {
-      _updateLastStreakNormal();
+      // Set orange streak if last event is fail
+      _orangeStreak = result.orange;
     }
-  }
-
-  void _updateLastStreakNormal() {
-    int inStreak = 0;
-    var checkDayKey = widget.habitData.events.lastKey();
-    var lastDayKey = widget.habitData.events.lastKey();
-
-    while (widget.habitData.events[checkDayKey] != null &&
-        widget.habitData.events[checkDayKey]![0] != DayType.fail) {
-      if (widget.habitData.events[checkDayKey]![0] != DayType.clear) {
-        if (widget.habitData.events[lastDayKey]![0] != null &&
-            widget.habitData.events[lastDayKey]![0] != DayType.clear &&
-            lastDayKey!.difference(checkDayKey!).inDays > 1) {
-          break;
-        }
-        lastDayKey = checkDayKey;
-      }
-
-      final event = widget.habitData.events[checkDayKey]!;
-      final targetAtTime = (event.length > 3)
-          ? (event[3] as double?) ?? widget.habitData.targetValue
-          : widget.habitData.targetValue;
-      if (event[0] == DayType.check ||
-          (event[0] == DayType.progress &&
-              event.length > 2 &&
-              event[2] >= targetAtTime)) {
-        inStreak++;
-      }
-      checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
-    }
-
-    _streakVisible = (inStreak >= 2);
-
-    widget.habitData.streak = inStreak;
-  }
-
-  void _updateLastStreakTwoDay() {
-    int inStreak = 0;
-    var trueLastKey = widget.habitData.events.lastKey();
-
-    // Skip clear entries and single incomplete progress (treated as clear)
-    while (widget.habitData.events[trueLastKey] != null &&
-        widget.habitData.events[trueLastKey]![0] != null &&
-        (widget.habitData.events[trueLastKey]![0] == DayType.clear ||
-            (widget.habitData.events[trueLastKey]![0] == DayType.progress &&
-                widget.habitData.events[trueLastKey]!.length > 2 &&
-                widget.habitData.events[trueLastKey]![2] <
-                    ((widget.habitData.events[trueLastKey]!.length > 3)
-                        ? (widget.habitData.events[trueLastKey]![3]
-                                  as double?) ??
-                              widget.habitData.targetValue
-                        : widget.habitData.targetValue)))) {
-      trueLastKey = widget.habitData.events.lastKeyBefore(trueLastKey!);
-    }
-
-    var checkDayKey = trueLastKey;
-    var lastDayKey = trueLastKey;
-    DayType lastDay = DayType.check;
-
-    while (widget.habitData.events[checkDayKey] != null) {
-      if (widget.habitData.events[checkDayKey]![0] != DayType.clear) {
-        // End if fail and next is not check, clear or progress
-        if (widget.habitData.events[checkDayKey]![0] == DayType.fail &&
-            (lastDay != DayType.check &&
-                lastDay != DayType.clear &&
-                (lastDay != DayType.progress))) {
-          break;
-        }
-
-        // End if gap is more than 1 day
-        if (widget.habitData.events[lastDayKey]![0] != null &&
-            widget.habitData.events[lastDayKey]![0] != DayType.clear &&
-            lastDayKey!.difference(checkDayKey!).inDays > 1) {
-          break;
-        }
-
-        lastDayKey = checkDayKey;
-      }
-
-      // Count streak if check or 100% progress
-      lastDay = widget.habitData.events[checkDayKey]![0];
-      final event = widget.habitData.events[checkDayKey]!;
-      // Use stored target value for completion check
-      final targetAtTime = (event.length > 3)
-          ? (event[3] as double?) ?? widget.habitData.targetValue
-          : widget.habitData.targetValue;
-      if (event[0] == DayType.check ||
-          (event[0] == DayType.progress &&
-              event.length > 2 &&
-              (event[2] as double?) != null &&
-              (event[2] as double) >= targetAtTime)) {
-        inStreak++;
-      }
-      checkDayKey = widget.habitData.events.lastKeyBefore(checkDayKey!);
-    }
-
-    _streakVisible = (inStreak >= 2);
-
-    // Set orange streak if last event is fail
-    widget.habitData.streak = inStreak;
-    _orangeStreak =
-        (widget.habitData.events[trueLastKey] != null &&
-        widget.habitData.events[trueLastKey]![0] == DayType.fail);
   }
 }

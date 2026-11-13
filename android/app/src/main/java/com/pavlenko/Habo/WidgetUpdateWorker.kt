@@ -22,6 +22,9 @@ class WidgetUpdateWorker(
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
 
+        // The natively drawn widgets roll over to the new day too.
+        com.pavlenko.Habo.widgets.HaboWidgets.updateAll(context)
+
         return Result.success()
     }
 }

@@ -139,6 +139,16 @@ class S {
     return Intl.message('Theme', name: 'theme', desc: '', args: []);
   }
 
+  /// `Widget theme`
+  String get widgetTheme {
+    return Intl.message(
+      'Widget theme',
+      name: 'widgetTheme',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `First day of the week`
   String get firstDayOfWeek {
     return Intl.message(
@@ -1807,6 +1817,26 @@ class S {
     );
   }
 
+  /// `New home screen widgets (iOS)`
+  String get featureIosWidgetsTitle {
+    return Intl.message(
+      'New home screen widgets (iOS)',
+      name: 'featureIosWidgetsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check off a habit, see today's progress, or a habit's whole year right from your home screen. Add one widget per habit.`
+  String get featureIosWidgetsDesc {
+    return Intl.message(
+      'Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.',
+      name: 'featureIosWidgetsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Longpress check`
   String get featureLongpressCheckTitle {
     return Intl.message(
@@ -1862,6 +1892,26 @@ class S {
     return Intl.message(
       'Habits today',
       name: 'habitsToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a habit`
+  String get widgetChooseHabit {
+    return Intl.message(
+      'Choose a habit',
+      name: 'widgetChooseHabit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a habit in Habo`
+  String get widgetNoHabits {
+    return Intl.message(
+      'Add a habit in Habo',
+      name: 'widgetNoHabits',
       desc: '',
       args: [],
     );

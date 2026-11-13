@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 enum Themes { device, light, dark, oled, materialYou }
 
+/// Appearance of the home-screen widgets, independent of the app theme.
+/// [device] follows the phone's light/dark setting.
+enum WidgetTheme { device, light, dark }
+
 enum HabitType { boolean, numeric }
 
 enum DayType { clear, check, fail, skip, progress }

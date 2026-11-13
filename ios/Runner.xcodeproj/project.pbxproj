@@ -101,6 +101,16 @@
 			path = HaboWidget;
 			sourceTree = "<group>";
 		};
+		3C12CCF52EBE8AC000E0F303 /* HaboWidgetCore */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			name = HaboWidgetCore;
+			path = HaboWidgetCore/Sources/HaboWidgetCore;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +162,7 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				3C12CCE22EBE8A4B00E0F303 /* HaboWidget */,
+				3C12CCF52EBE8AC000E0F303 /* HaboWidgetCore */,
 				97C146EF1CF9000F007C117D /* Products */,
 				FF23A30CB9093AB9C341A325 /* Pods */,
 				07744879BDE3C273FD83B4DC /* Frameworks */,
@@ -210,6 +221,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				3C12CCE22EBE8A4B00E0F303 /* HaboWidget */,
+				3C12CCF52EBE8AC000E0F303 /* HaboWidgetCore */,
 			);
 			name = HaboWidgetExtension;
 			productName = HaboWidgetExtension;
@@ -268,6 +280,11 @@
 			knownRegions = (
 				en,
 				Base,
+				sk,
+				cs,
+				de,
+				es,
+				pt,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -545,7 +562,7 @@
 				INFOPLIST_FILE = HaboWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HaboWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -591,7 +608,7 @@
 				INFOPLIST_FILE = HaboWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HaboWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -634,7 +651,7 @@
 				INFOPLIST_FILE = HaboWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HaboWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

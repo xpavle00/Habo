@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="habo_native_widget_background">#2C2C2E</color>
+    <item name="habo_widget_light_alpha" format="float" type="dimen">0.0</item>
+    <item name="habo_widget_dark_alpha" format="float" type="dimen">1.0</item>
+
+    <style name="HaboWidgetPicker" parent="@android:style/Theme.DeviceDefault.Dialog" />
+</resources>
