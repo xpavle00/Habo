@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home-screen widget strings, Brazilian Portuguese (also used as the fallback for Portugal). -->
+<resources>
+    <string name="app_widget_description">Acompanhe o progresso diário dos seus hábitos</string>
+    <string name="habo_widget_checkin_label">Marcar hábito</string>
+    <string name="habo_widget_checkin_description">Marque um hábito direto da tela inicial.</string>
+    <string name="habo_widget_year_label">Ano do hábito</string>
+    <string name="habo_widget_year_description">O ano inteiro de um hábito de relance.</string>
+    <string name="habo_widget_today_list_label">Hábitos de hoje</string>
+    <string name="habo_widget_today_list_description">Marque os hábitos de hoje em uma lista.</string>
+    <string name="habo_widget_choose_habit">Escolha um hábito</string>
+    <string name="habo_widget_no_habits">Adicione um hábito no Habo</string>
+</resources>

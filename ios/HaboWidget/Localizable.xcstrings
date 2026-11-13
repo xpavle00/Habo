@@ -21,6 +21,12 @@
             "value": "Todo el año de un hábito de un vistazo."
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O ano inteiro de um hábito de relance."
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -47,6 +53,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Añade un hábito en Habo"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicione um hábito no Habo"
           }
         },
         "sk": {
@@ -77,6 +89,12 @@
             "value": "Marca un hábito directamente desde la pantalla de inicio."
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marque um hábito direto da tela inicial."
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -100,6 +118,12 @@
           }
         },
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar hábito"
+          }
+        },
+        "pt": {
           "stringUnit": {
             "state": "translated",
             "value": "Marcar hábito"
@@ -133,6 +157,12 @@
             "value": "Marca los hábitos de hoy desde una lista."
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marque os hábitos de hoje em uma lista."
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -159,6 +189,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elige un hábito"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha um hábito"
           }
         },
         "sk": {
@@ -189,6 +225,12 @@
             "value": "Elegir hábito"
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolher hábito"
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -212,6 +254,12 @@
           }
         },
         "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hábito"
+          }
+        },
+        "pt": {
           "stringUnit": {
             "state": "translated",
             "value": "Hábito"
@@ -245,6 +293,12 @@
             "value": "Marcar hábito"
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar hábito"
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -271,6 +325,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Año del hábito"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ano do hábito"
           }
         },
         "sk": {
@@ -301,6 +361,12 @@
             "value": "Hábitos de Habo"
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hábitos do Habo"
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -327,6 +393,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abre Habo para actualizar este widget"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abra o Habo para atualizar este widget"
           }
         },
         "sk": {
@@ -357,6 +429,12 @@
             "value": "El hábito que muestra este widget."
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O hábito que este widget mostra."
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -385,6 +463,12 @@
             "value": "Hábitos de hoy"
           }
         },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hábitos de hoje"
+          }
+        },
         "sk": {
           "stringUnit": {
             "state": "translated",
@@ -411,6 +495,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sigue el progreso diario de tus hábitos"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acompanhe o progresso diário dos seus hábitos"
           }
         },
         "sk": {
