@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home-screen widget strings. English source: values/strings.xml and values/habo_native_widgets.xml. -->
+<resources>
+    <string name="app_widget_description">Verfolge deinen täglichen Fortschritt</string>
+    <string name="habo_widget_checkin_label">Gewohnheit abhaken</string>
+    <string name="habo_widget_checkin_description">Hake eine Gewohnheit direkt auf dem Home-Bildschirm ab.</string>
+    <string name="habo_widget_year_label">Gewohnheitsjahr</string>
+    <string name="habo_widget_year_description">Das ganze Jahr einer Gewohnheit auf einen Blick.</string>
+    <string name="habo_widget_today_list_label">Heutige Gewohnheiten</string>
+    <string name="habo_widget_today_list_description">Hake die heutigen Gewohnheiten in einer Liste ab.</string>
+    <string name="habo_widget_choose_habit">Wähle eine Gewohnheit</string>
+    <string name="habo_widget_no_habits">Füge in Habo eine Gewohnheit hinzu</string>
+</resources>

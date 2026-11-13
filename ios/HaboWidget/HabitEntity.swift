@@ -31,7 +31,7 @@ struct HabitEntityQuery: EntityQuery {
         return resolveHabitEntities(
             ids: identifiers,
             habits: snapshot?.habits ?? [],
-            missingTitle: snapshot?.labels.chooseHabit ?? "Choose a habit"
+            missingTitle: snapshot?.labels.chooseHabit ?? String(localized: "Choose a habit")
         ).map { HabitEntity(id: $0.id, title: $0.title) }
     }
 

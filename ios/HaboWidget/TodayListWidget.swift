@@ -52,7 +52,7 @@ struct TodayListWidgetView: View {
                     .widgetURL(openAppURL)
             }
         } else {
-            WidgetMessage(text: "Open Habo to update this widget")
+            WidgetMessage(text: String(localized: "Open Habo to update this widget"))
                 .widgetURL(openAppURL)
         }
     }

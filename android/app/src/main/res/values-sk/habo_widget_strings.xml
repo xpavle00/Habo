@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home-screen widget strings. English source: values/strings.xml and values/habo_native_widgets.xml. -->
+<resources>
+    <string name="app_widget_description">Sledujte denný pokrok svojich zvykov</string>
+    <string name="habo_widget_checkin_label">Odškrtnutie zvyku</string>
+    <string name="habo_widget_checkin_description">Odškrtnite zvyk priamo z plochy.</string>
+    <string name="habo_widget_year_label">Rok zvyku</string>
+    <string name="habo_widget_year_description">Celý rok zvyku na prvý pohľad.</string>
+    <string name="habo_widget_today_list_label">Dnešné zvyky</string>
+    <string name="habo_widget_today_list_description">Odškrtnite dnešné zvyky v zozname.</string>
+    <string name="habo_widget_choose_habit">Vyberte zvyk</string>
+    <string name="habo_widget_no_habits">Pridajte zvyk v Habo</string>
+</resources>

@@ -244,8 +244,8 @@ abstract class SnapshotWidgetProvider : AppWidgetProvider() {
     }
 
     /** Text for a widget that has no habit to show. */
-    protected fun emptyMessage(data: WidgetData): String {
-        val snapshot = data.snapshot ?: return "Add a habit in Habo"
+    protected fun emptyMessage(context: Context, data: WidgetData): String {
+        val snapshot = data.snapshot ?: return context.getString(R.string.habo_widget_no_habits)
         return if (snapshot.habits.isEmpty()) snapshot.labels.noHabits else snapshot.labels.chooseHabit
     }
 
@@ -273,7 +273,7 @@ class CheckInWidgetProvider : SnapshotWidgetProvider() {
     ): Bitmap {
         val snapshot = data.snapshot
         val habit = snapshot?.let { WidgetSelection.resolve(context, appWidgetId, it) }
-            ?: return renderer.message(width, height, emptyMessage(data))
+            ?: return renderer.message(width, height, emptyMessage(context, data))
         val today = data.today
         val model = CheckInModel(
             title = habit.title,
@@ -339,7 +339,7 @@ class YearWidgetProvider : SnapshotWidgetProvider() {
     ): Bitmap {
         val snapshot = data.snapshot
         val habit = snapshot?.let { WidgetSelection.resolve(context, appWidgetId, it) }
-            ?: return renderer.message(width, height, emptyMessage(data))
+            ?: return renderer.message(width, height, emptyMessage(context, data))
         val today = data.today
         val codes = mutableMapOf<LocalDate, DayCode>()
         var date = LocalDate.of(today.year, 1, 1)
@@ -387,7 +387,7 @@ class TodayListWidgetProvider : SnapshotWidgetProvider() {
     ): Bitmap {
         val snapshot = data.snapshot
         if (snapshot == null || snapshot.habits.isEmpty()) {
-            return renderer.message(width, height, emptyMessage(data))
+            return renderer.message(width, height, emptyMessage(context, data))
         }
         val today = data.today
         val summary = todaySummary(snapshot.habits, today, data.pending)

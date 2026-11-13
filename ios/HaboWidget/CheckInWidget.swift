@@ -31,7 +31,7 @@ struct CheckInWidgetView: View {
                     .widgetURL(openAppURL)
             }
         } else {
-            WidgetMessage(text: "Add a habit in Habo")
+            WidgetMessage(text: String(localized: "Add a habit in Habo"))
                 .widgetURL(openAppURL)
         }
     }

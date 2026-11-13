@@ -43,7 +43,7 @@ struct TodayWidgetView: View {
         if entry.snapshot == nil {
             // Right after an app update, before Habo has run once and
             // written the snapshot: don't show a misleading 0/0.
-            WidgetMessage(text: "Open Habo to update this widget")
+            WidgetMessage(text: String(localized: "Open Habo to update this widget"))
                 .widgetURL(openAppURL)
         } else {
             ring
