@@ -20,7 +20,8 @@ abstract final class WidgetKinds {
   static const String today = 'HaboWidget';
   static const String checkIn = 'HaboCheckInWidget';
   static const String heatmap = 'HaboHeatmapWidget';
-  static const List<String> all = [today, checkIn, heatmap];
+  static const String todayList = 'HaboTodayListWidget';
+  static const List<String> all = [today, checkIn, heatmap, todayList];
 }
 
 /// Android widget providers that draw themselves from the shared snapshot.

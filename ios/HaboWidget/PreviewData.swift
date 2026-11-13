@@ -46,6 +46,21 @@ enum PreviewData {
         return HaboEntry(date: previewDate, snapshot: snapshot(habits, weekStart: weekStart), pending: [], habitUUID: habitUUID)
     }
 
+    /// Named habits for the today list; `P`/`p` make a numeric habit.
+    static func listEntry(codes: [Character]) -> HaboEntry {
+        let titles = [
+            "Drink water", "Read", "Morning stretch", "No sugar",
+            "Practise the piano scales", "Meditate", "Walk", "Journal",
+        ]
+        let habits = codes.enumerated().map { i, code in
+            habit(
+                uuid: "l\(i)", title: titles[i % titles.count],
+                type: code == "P" || code == "p" ? "numeric" : "boolean", seed: i, todayCode: code
+            )
+        }
+        return HaboEntry(date: previewDate, snapshot: snapshot(habits), pending: [], habitUUID: nil)
+    }
+
     static func todayEntry(codes: [Character]) -> HaboEntry {
         let habits = codes.enumerated().map { i, code in
             habit(uuid: "h\(i)", title: "Habit \(i)", type: code == "P" ? "numeric" : "boolean", seed: i, todayCode: code)

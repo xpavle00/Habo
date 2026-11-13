@@ -56,6 +56,23 @@ enum SnapshotTimeline {
         ]
         return Timeline(entries: entries, policy: .atEnd)
     }
+
+    /// Timeline for the today list: besides now and midnight, an entry at
+    /// the end of each just-tapped row's hold, so the list reorders itself.
+    static func todayListTimeline() -> Timeline<HaboEntry> {
+        let now = Date()
+        let calendar = Calendar.current
+        let midnight = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now))!
+        let first = currentEntry(habitUUID: nil, at: now)
+        let releases = todayListReleaseDates(
+            pending: first.pending, today: first.today, now: now, hold: TodayListWidget.hold
+        ).filter { $0 < midnight }
+        let dates = [now] + releases + [midnight]
+        let entries = dates.map { date in
+            HaboEntry(date: date, snapshot: first.snapshot, pending: first.pending, habitUUID: nil)
+        }
+        return Timeline(entries: entries, policy: .atEnd)
+    }
 }
 
 /// Provider for widgets configured with a habit.

@@ -14,5 +14,6 @@ struct HaboWidgetBundle: WidgetBundle {
         TodayWidget()
         CheckInWidget()
         HeatmapWidget()
+        TodayListWidget()
     }
 }

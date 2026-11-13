@@ -53,31 +53,8 @@ extension WidgetRenderingMode {
 /// The green streak capsule from the app's habit header.
 struct StreakPill: View {
     let count: Int
-    @Environment(\.widgetRenderingMode) private var renderingMode
 
-    private var label: some View {
-        Text("\(count)")
-            .font(HaboFont.bold(13))
-            .padding(.horizontal, 9)
-            .frame(minWidth: 28, minHeight: 20)
-    }
-
-    var body: some View {
-        if renderingMode.isAccented {
-            // The invisible label sizes the capsule; the visible one is cut out.
-            label
-                .hidden()
-                .background(Capsule().fill(Color.white))
-                .knockout { label }
-                .widgetAccentable()
-                .fixedSize()
-        } else {
-            label
-                .foregroundStyle(.white)
-                .background(Capsule().fill(HaboPalette.primary).widgetAccentable())
-                .fixedSize()
-        }
-    }
+    var body: some View { CountPill(text: "\(count)") }
 }
 
 /// Habit title on the left, streak pill on the right, with `detail`

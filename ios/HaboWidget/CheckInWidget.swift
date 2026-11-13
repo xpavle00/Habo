@@ -76,8 +76,12 @@ struct CheckTile: View {
     let value: Double
     let target: Double
     let today: LocalDate
+    /// Side of the tile; everything inside scales with it.
+    var size: CGFloat = 68
     @Environment(\.widgetRenderingMode) private var renderingMode
-    private let size: CGFloat = 68
+
+    /// Scale relative to the check-in widget's 68pt tile.
+    private var scale: CGFloat { size / 68 }
 
     private var fraction: Double {
         target > 0 ? min(max(value / target, 0), 1) : 0
@@ -137,31 +141,36 @@ struct CheckTile: View {
         } else if let icon {
             icon
                 .fill(Color.white)
-                .frame(width: 40, height: 40)
+                .frame(width: 40 * scale, height: 40 * scale)
         }
     }
 
     private var dayNumber: some View {
         Text("\(today.day)")
-            .font(HaboFont.extraBold(30))
+            .font(HaboFont.extraBold(max(15, 30 * scale)))
             .foregroundStyle(today.isoWeekday > 5 ? HaboPalette.weekend : Color.primary)
     }
 
     private var ring: some View {
-        ZStack {
-            Circle().stroke(Color.white.opacity(0.3), lineWidth: 5)
+        // Small tiles have no room for the percentage: a thicker ring alone.
+        let compact = size < 50
+        let line: CGFloat = compact ? 3.5 : 5
+        return ZStack {
+            Circle().stroke(Color.white.opacity(0.3), lineWidth: line)
             Circle()
                 .trim(from: 0, to: fraction)
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                .stroke(Color.white, style: StrokeStyle(lineWidth: line, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-            Text("\(Int((fraction * 100).rounded()))%")
-                .font(HaboFont.extraBold(13))
-                .foregroundStyle(.white)
-                .minimumScaleFactor(0.7)
-                .lineLimit(1)
-                .padding(.horizontal, 8)
+            if !compact {
+                Text("\(Int((fraction * 100).rounded()))%")
+                    .font(HaboFont.extraBold(13))
+                    .foregroundStyle(.white)
+                    .minimumScaleFactor(0.7)
+                    .lineLimit(1)
+                    .padding(.horizontal, 8)
+            }
         }
-        .frame(width: 48, height: 48)
+        .frame(width: (compact ? 44 : 48) * scale, height: (compact ? 44 : 48) * scale)
     }
 
     /// Whether the tile carries a state colour (as opposed to "to do").

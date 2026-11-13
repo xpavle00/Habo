@@ -6,6 +6,7 @@ enum HaboWidgetKind {
     static let today = "HaboWidget"
     static let checkIn = "HaboCheckInWidget"
     static let heatmap = "HaboHeatmapWidget"
+    static let todayList = "HaboTodayListWidget"
 }
 
 /// Shared App Group defaults, or nil if the group isn't configured.
