@@ -12,6 +12,10 @@ class StatisticsData {
   int fails = 0;
   int progress = 0; // Add progress as separate category
   SplayTreeMap<int, Map<DayType, List<int>>> monthlyCheck = SplayTreeMap();
+
+  /// Each marked day's status, keyed by local midnight. Completed numeric
+  /// progress is stored as [DayType.check], as in [monthlyCheck].
+  Map<DateTime, DayType> dailyStatus = {};
 }
 
 class OverallStatisticsData {
@@ -120,6 +124,8 @@ class Statistics {
                 : value[0];
             // Track completed numeric progress as check in monthly stats.
             stat.monthlyCheck[key.year]![monthlyBucket]![key.month - 1]++;
+            stat.dailyStatus[DateTime(key.year, key.month, key.day)] =
+                monthlyBucket as DayType;
           }
 
           lastDay = key;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:habo/constants.dart';
 import 'package:habo/settings/settings_manager.dart';
 import 'package:habo/statistics/statistics.dart';
+import 'package:habo/statistics/year_grid.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -197,9 +198,32 @@ class _MonthlyGraphState extends State<MonthlyGraph> {
             curve: Curves.linear,
           ),
         ),
+        const SizedBox(height: 16),
+        YearGrid(
+          year: year,
+          dailyStatus: widget.data.dailyStatus,
+          colors: yearGridColors(),
+          monthLabels: monthLabels(),
+        ),
       ],
     );
   }
+
+  /// Colours for the year grid; categories toggled off are left out.
+  Map<DayType, Color> yearGridColors() {
+    final settings = Provider.of<SettingsManager>(context, listen: false);
+    return {
+      if (showCheck) DayType.check: settings.checkColor,
+      if (showProgress) DayType.progress: settings.progressColor,
+      if (showSkip) DayType.skip: settings.skipColor,
+      if (showFail) DayType.fail: settings.failColor,
+    };
+  }
+
+  List<String> monthLabels() => DateFormat(
+    'M',
+    Intl.getCurrentLocale(),
+  ).dateSymbols.NARROWMONTHS.map((month) => month.toUpperCase()).toList();
 
   BarTouchData get barTouchData => BarTouchData(
     enabled: false,
