@@ -114,12 +114,14 @@ String _dayCodes(HabitData habit, int year) {
       key.day,
     ).difference(start).inDays;
     if (index < 0 || index >= length) return;
-    codes[index] = _codeFor(event, habit.targetValue);
+    codes[index] = widgetDayCode(event, habit.targetValue);
   });
   return codes.join();
 }
 
-String _codeFor(List event, double fallbackTarget) {
+/// The snapshot day code for [event]: `c` check, `f` fail, `s` skip,
+/// `.` clear, `p` progress below target, `P` progress at target.
+String widgetDayCode(List event, double fallbackTarget) {
   switch (event[0] as DayType) {
     case DayType.check:
       return 'c';
@@ -152,7 +154,7 @@ Map<String, double> _todayProgress(HabitData habit, DateTime today) {
 }
 
 bool _isDone(List event, double fallbackTarget) {
-  final code = _codeFor(event, fallbackTarget);
+  final code = widgetDayCode(event, fallbackTarget);
   return code == 'c' || code == 'P';
 }
 

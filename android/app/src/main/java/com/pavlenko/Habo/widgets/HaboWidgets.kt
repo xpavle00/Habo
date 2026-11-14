@@ -117,7 +117,7 @@ object HaboWidgets {
         val value = effectiveTodayValue(habit, today, snapshot.date, pending)
         val target = effectiveTodayTarget(habit, today, snapshot.date)
         val next = nextState(habit, current, value, target)
-        actions.append(habit.uuid, today, next.code, next.value, next.target, Instant.now())
+        actions.append(habit.uuid, today, next.code, next.value, next.target, Instant.now(), from = current)
         ReminderAdjuster.adjust(
             context,
             habitId = habit.id,

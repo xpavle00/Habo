@@ -156,6 +156,18 @@ class WidgetCoreTest {
     }
 
     @Test
+    fun recordsTheDayStateShownBeforeTheTap() {
+        val store = MemoryStore()
+        val pending = PendingActionStore(store)
+        pending.append("a", today, DayCode.CHECK, null, null, Instant.EPOCH, from = DayCode.FAIL)
+        pending.append("b", today, DayCode.CHECK, null, null, Instant.EPOCH)
+        val list = JSONArray(store.getString(SharedKeys.PENDING_ACTIONS))
+        assertEquals("f", list.getJSONObject(0).getString("from"))
+        assertFalse(list.getJSONObject(1).has("from"))
+        assertEquals(listOf(DayCode.FAIL, null), pending.pending().map { it.from })
+    }
+
+    @Test
     fun corruptListStartsFresh() {
         val store = MemoryStore()
         store.values[SharedKeys.PENDING_ACTIONS] = "{oops"

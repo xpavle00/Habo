@@ -19,6 +19,7 @@ import 'package:habo/services/home_widget_service.dart';
 import 'package:habo/helpers.dart';
 import 'package:habo/home_widgets/widget_action.dart';
 import 'package:habo/home_widgets/widget_publisher.dart';
+import 'package:habo/home_widgets/widget_snapshot_builder.dart';
 
 class HabitsManager extends ChangeNotifier {
   final HabitRepository _habitRepository;
@@ -242,35 +243,50 @@ class HabitsManager extends ChangeNotifier {
   ///
   /// Mirrors what `OneDayButton` does for the same action in the app, so
   /// notifications, sync and widget refresh behave identically. The change
-  /// is dated when the tap was made, and a tap older than the habit's last
-  /// change (e.g. an edit synced from another device) is dropped. Returns
-  /// false when the tap isn't applied.
+  /// is dated when the tap was made.
+  ///
+  /// Sync is last-write-wins per habit, so if the habit changed after the
+  /// tap (e.g. another day edited on another device and synced in), the tap
+  /// is still applied but dated now, so the merged habit wins. It is
+  /// dropped only when that same day no longer shows what the widget showed
+  /// at tap time, i.e. the day itself was changed elsewhere afterwards.
+  /// Returns false when the tap isn't applied.
   bool applyWidgetAction(WidgetAction action) {
     final index = allHabits.indexWhere((h) => h.habitData.uuid == action.uuid);
     if (index < 0) return false;
     final data = allHabits[index].habitData;
     final id = data.id;
     if (id == null) return false;
-    final tappedAt = action.tappedAt;
-    if (tappedAt != null && data.updatedAt.isAfter(tappedAt)) return false;
-
     final key = transformDate(action.date);
     final existing = data.events[key];
+
+    final tappedAt = action.tappedAt;
+    final changedSinceTap =
+        tappedAt != null && data.updatedAt.isAfter(tappedAt);
+    if (changedSinceTap) {
+      final dayNow = existing == null
+          ? '.'
+          : widgetDayCode(existing, data.targetValue);
+      // Without `from` (older widget builds) the day can't be compared, so
+      // keep the newer edit.
+      if (action.from == null || action.from != dayNow) return false;
+    }
+    final changedAt = changedSinceTap ? null : tappedAt;
     final comment = (existing != null && existing.length > 1)
         ? (existing[1] as String? ?? '')
         : '';
 
     switch (action.code) {
       case 'c':
-        addEvent(id, key, [DayType.check, comment], changedAt: tappedAt);
+        addEvent(id, key, [DayType.check, comment], changedAt: changedAt);
       case '.':
         if (comment.isNotEmpty) {
-          addEvent(id, key, [DayType.clear, comment], changedAt: tappedAt);
+          addEvent(id, key, [DayType.clear, comment], changedAt: changedAt);
           // Keeping the comment means an event stays; restore the day's
           // reminder as an undo without a comment does.
           _notificationService?.handleHabitEventDeleted(id, key);
         } else {
-          deleteEvent(id, key, changedAt: tappedAt);
+          deleteEvent(id, key, changedAt: changedAt);
         }
       case 'p':
       case 'P':
@@ -279,7 +295,7 @@ class HabitsManager extends ChangeNotifier {
           comment,
           action.value ?? 0.0,
           action.target ?? data.targetValue,
-        ], changedAt: tappedAt);
+        ], changedAt: changedAt);
       default:
         return false;
     }

@@ -20,8 +20,11 @@ public struct PendingAction: Codable, Equatable, Sendable {
     public let value: Double?
     public let target: Double?
     public let at: String
+    /// The state the widget showed for `date` just before the tap. The app
+    /// uses it to tell whether the day was changed elsewhere since.
+    public let from: DayCode?
 
-    public init(seq: Int, uuid: String, date: LocalDate, code: DayCode, value: Double?, target: Double?, at: String) {
+    public init(seq: Int, uuid: String, date: LocalDate, code: DayCode, value: Double?, target: Double?, at: String, from: DayCode? = nil) {
         self.seq = seq
         self.uuid = uuid
         self.date = date
@@ -29,6 +32,7 @@ public struct PendingAction: Codable, Equatable, Sendable {
         self.value = value
         self.target = target
         self.at = at
+        self.from = from
     }
 }
 
@@ -57,11 +61,11 @@ public struct PendingActionStore {
     }
 
     @discardableResult
-    public func append(uuid: String, date: LocalDate, code: DayCode, value: Double?, target: Double?, at: Date) -> PendingAction {
+    public func append(uuid: String, date: LocalDate, code: DayCode, value: Double?, target: Double?, at: Date, from: DayCode? = nil) -> PendingAction {
         let seq = max(store.integer(forKey: SharedKeys.pendingSeq), all().map(\.seq).max() ?? 0) + 1
         let formatter = ISO8601DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
-        let action = PendingAction(seq: seq, uuid: uuid, date: date, code: code, value: value, target: target, at: formatter.string(from: at))
+        let action = PendingAction(seq: seq, uuid: uuid, date: date, code: code, value: value, target: target, at: formatter.string(from: at), from: from)
         let list = pending() + [action]
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys

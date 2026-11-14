@@ -393,24 +393,77 @@ void main() {
       verify(() => events.deleteEvent(1, key, changedAt: tappedAt)).called(1);
     });
 
-    test('a tap older than the habit\'s last change is dropped', () {
-      // E.g. a fail made later on another device has already synced in.
+    WidgetAction tapFrom(String code, String? from) => WidgetAction(
+      seq: 1,
+      uuid: 'u1',
+      date: day,
+      code: code,
+      tappedAt: tappedAt,
+      from: from,
+    );
+
+    void expectNoWrite() => verifyNever(
+      () => events.insertEvent(
+        any(),
+        any(),
+        any(),
+        changedAt: any(named: 'changedAt'),
+      ),
+    );
+
+    test('a tap is dropped when the same day was changed after it', () {
+      // The widget showed the day empty; a fail made later on another
+      // device has already synced in, so the newer edit wins.
       final habit = _habit(id: 1, uuid: 'u1')
         ..habitData.updatedAt = DateTime.utc(2026, 11, 5, 12)
         ..habitData.events[key] = [DayType.fail, ''];
       manager.allHabits = [habit];
 
-      expect(manager.applyWidgetAction(tap('c')), isFalse);
+      expect(manager.applyWidgetAction(tapFrom('c', '.')), isFalse);
 
-      verifyNever(
-        () => events.insertEvent(
-          any(),
-          any(),
-          any(),
-          changedAt: any(named: 'changedAt'),
-        ),
-      );
+      expectNoWrite();
       expect(habit.habitData.events[key], [DayType.fail, '']);
+    });
+
+    test('a tap without a recorded day state is dropped if the habit '
+        'changed after it', () {
+      final habit = _habit(id: 1, uuid: 'u1')
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 5, 12);
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tapFrom('c', null)), isFalse);
+
+      expectNoWrite();
+    });
+
+    test('a tap is applied, dated now, when only other days changed', () {
+      // E.g. another device edited yesterday after the tap; today is
+      // still what the widget showed.
+      final habit = _habit(id: 1, uuid: 'u1')
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 5, 12);
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tapFrom('c', '.')), isTrue);
+
+      verify(
+        () => events.insertEvent(1, key, [DayType.check, ''], changedAt: null),
+      ).called(1);
+      expect(habit.habitData.events[key], [DayType.check, '']);
+      expect(
+        habit.habitData.updatedAt.isAfter(DateTime.utc(2026, 11, 5, 12)),
+        isTrue,
+      );
+    });
+
+    test('progress at target counts as P when comparing the day', () {
+      final habit = _habit(id: 1, uuid: 'u1', type: HabitType.numeric)
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 5, 12)
+        ..habitData.events[key] = [DayType.progress, '', 30.0, 30.0];
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tapFrom('.', 'P')), isTrue);
+
+      verify(() => events.deleteEvent(1, key, changedAt: null)).called(1);
     });
   });
 }

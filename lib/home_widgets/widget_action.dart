@@ -11,6 +11,7 @@ class WidgetAction {
     this.value,
     this.target,
     this.tappedAt,
+    this.from,
   });
 
   final int seq;
@@ -26,7 +27,12 @@ class WidgetAction {
   /// entries written before it was recorded.
   final DateTime? tappedAt;
 
+  /// Day code the widget showed for [date] just before the tap; null for
+  /// entries written by widget builds that didn't record it.
+  final String? from;
+
   static const Set<String> _codes = {'c', '.', 'p', 'P'};
+  static const Set<String> _dayCodes = {'c', '.', 'f', 's', 'p', 'P'};
 
   /// Parses one entry of `widget_pending_actions`.
   ///
@@ -58,6 +64,7 @@ class WidgetAction {
       value: (json['value'] as num?)?.toDouble(),
       target: (json['target'] as num?)?.toDouble(),
       tappedAt: _parseTime(json['at']),
+      from: _dayCodes.contains(json['from']) ? json['from'] as String : null,
     );
   }
 

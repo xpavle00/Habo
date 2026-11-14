@@ -196,6 +196,8 @@ data class PendingAction(
     val value: Double?,
     val target: Double?,
     val at: String,
+    /** The state the widget showed for [date] just before the tap. */
+    val from: DayCode? = null,
 ) {
     fun toJson(): JSONObject = JSONObject().apply {
         put("at", at)
@@ -205,6 +207,7 @@ data class PendingAction(
         put("uuid", uuid)
         if (value != null) put("value", value)
         if (target != null) put("target", target)
+        if (from != null) put("from", from.raw.toString())
     }
 
     companion object {
@@ -219,6 +222,7 @@ data class PendingAction(
                     value = if (json.has("value") && !json.isNull("value")) json.getDouble("value") else null,
                     target = if (json.has("target") && !json.isNull("target")) json.getDouble("target") else null,
                     at = json.optString("at", ""),
+                    from = json.optString("from").singleOrNull()?.let(DayCode::from),
                 )
             } catch (e: Exception) {
                 null
@@ -255,10 +259,11 @@ class PendingActionStore(private val store: KeyValueStore) {
         value: Double?,
         target: Double?,
         at: Instant,
+        from: DayCode? = null,
     ): PendingAction {
         val seq = maxOf(store.getInt(SharedKeys.PENDING_SEQ), all().maxOfOrNull { it.seq } ?: 0) + 1
         val stamp = DateTimeFormatter.ISO_INSTANT.format(at.truncatedTo(ChronoUnit.SECONDS))
-        val action = PendingAction(seq, uuid, date, code, value, target, stamp)
+        val action = PendingAction(seq, uuid, date, code, value, target, stamp, from)
         val list = JSONArray()
         (pending() + action).forEach { list.put(it.toJson()) }
         store.putString(SharedKeys.PENDING_ACTIONS, list.toString())

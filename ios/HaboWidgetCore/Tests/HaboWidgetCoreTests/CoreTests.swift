@@ -113,6 +113,18 @@ final class PendingActionStoreTests: XCTestCase {
         XCTAssertEqual(json.first?["at"] as? String, "1970-01-01T00:00:00Z")
     }
 
+    func testRecordsTheDayStateShownBeforeTheTap() throws {
+        let store = MemoryStore()
+        let pending = PendingActionStore(store: store)
+        pending.append(uuid: "a", date: day, code: .check, value: nil, target: nil, at: Date(), from: .fail)
+        pending.append(uuid: "b", date: day, code: .check, value: nil, target: nil, at: Date())
+        let raw = try XCTUnwrap(store.string(forKey: SharedKeys.pendingActions))
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(raw.utf8)) as? [[String: Any]])
+        XCTAssertEqual(json[0]["from"] as? String, "f")
+        XCTAssertNil(json[1]["from"])
+        XCTAssertEqual(pending.pending().map(\.from), [.fail, nil])
+    }
+
     func testCorruptListStartsFresh() {
         let store = MemoryStore()
         store.values[SharedKeys.pendingActions] = "{oops"

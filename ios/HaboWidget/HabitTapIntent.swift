@@ -33,7 +33,7 @@ struct HabitTapIntent: AppIntent {
         let target = effectiveTodayTarget(habit: habit, today: today, snapshotDate: snapshot.date)
         let next = nextState(for: habit, current: current, currentValue: value, target: target)
 
-        store.append(uuid: habit.uuid, date: today, code: next.code, value: next.value, target: next.target, at: Date())
+        store.append(uuid: habit.uuid, date: today, code: next.code, value: next.value, target: next.target, at: Date(), from: current)
         await ReminderAdjuster.adjust(
             habitId: habit.id,
             reminder: habit.reminder,

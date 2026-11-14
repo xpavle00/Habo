@@ -158,6 +158,22 @@ void main() {
             as WidgetAction;
     expect(action.tappedAt, isNull);
   });
+
+  test('passes the day state the widget showed at tap time', () async {
+    pending([
+      {..._action(1, 'a', '2026-11-06'), 'from': 'f'},
+      {..._action(2, 'a', '2026-11-07'), 'from': 'x'},
+      _action(3, 'a', '2026-11-08'),
+    ]);
+
+    await drainer.drain();
+
+    final froms = verify(
+      () => habits.applyWidgetAction(captureAny()),
+    ).captured.map((a) => (a as WidgetAction).from).toList();
+    // Unknown codes and missing values both mean "not recorded".
+    expect(froms, ['f', null, null]);
+  });
 }
 
 /// Store whose applied marker is advanced by "another drain" right after
