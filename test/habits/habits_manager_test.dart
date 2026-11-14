@@ -593,14 +593,18 @@ void main() {
     const homeWidgetChannel = MethodChannel('home_widget');
 
     setUp(() {
-      when(() => mockHabitRepository.getAllHabits())
-          .thenAnswer((_) async => []);
-      when(() => mockCategoryRepository.getAllCategories())
-          .thenAnswer((_) async => []);
-      when(() => mockNotificationService.removeNotifications(any()))
-          .thenReturn(null);
-      when(() => mockNotificationService.resetNotifications(any()))
-          .thenReturn(null);
+      when(
+        () => mockHabitRepository.getAllHabits(),
+      ).thenAnswer((_) async => []);
+      when(
+        () => mockCategoryRepository.getAllCategories(),
+      ).thenAnswer((_) async => []);
+      when(
+        () => mockNotificationService.removeNotifications(any()),
+      ).thenReturn(null);
+      when(
+        () => mockNotificationService.resetNotifications(any()),
+      ).thenReturn(null);
     });
 
     tearDown(() {
@@ -612,13 +616,14 @@ void main() {
       TestWidgetsFlutterBinding.ensureInitialized();
       final dataChanged = StreamController<void>.broadcast();
       final homeWidgetReady = Completer<void>();
-      when(() => mockSyncManager.onDataChanged)
-          .thenAnswer((_) => dataChanged.stream);
+      when(
+        () => mockSyncManager.onDataChanged,
+      ).thenAnswer((_) => dataChanged.stream);
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(homeWidgetChannel, (_) async {
-        await homeWidgetReady.future;
-        return true;
-      });
+            await homeWidgetReady.future;
+            return true;
+          });
 
       final init = habitsManager.initialize();
       await Future<void>.delayed(Duration.zero);

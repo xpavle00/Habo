@@ -81,7 +81,12 @@ void main() {
     expect(snapshot['theme'], 'dark');
     expect((snapshot['habits'] as List).single['uuid'], 'u1');
     expect(store.reloads, [
-      ['HaboWidget', 'HaboCheckInWidget', 'HaboHeatmapWidget', 'HaboTodayListWidget'],
+      [
+        'HaboWidget',
+        'HaboCheckInWidget',
+        'HaboHeatmapWidget',
+        'HaboTodayListWidget',
+      ],
     ]);
   });
 
