@@ -121,6 +121,7 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       if (_isInitialized) {
         _habitManager.checkDayChange();
         _habitManager.drainWidgetActions();
+        rescheduleNotificationsForCurrentTimeZone();
       }
     } else if (state == AppLifecycleState.paused) {
       _stopDayChangeTimer();
@@ -194,6 +195,8 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
 
     if (platformSupportsNotifications()) {
       initializeNotifications();
+      // Device may have changed time zone since reminders were scheduled.
+      unawaited(rescheduleNotificationsForCurrentTimeZone());
     }
 
     GoogleFonts.config.allowRuntimeFetching = false;
