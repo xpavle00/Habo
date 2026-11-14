@@ -333,7 +333,315 @@
     "featureLockTitle": "Sperrfunktion",
     "featureLockDesc": "Sichern Sie die App mit Face ID / Touch ID / Biometrie",
     "haboSyncComingSoon": "Demnächst",
-    "haboSyncDescription": "Synchronisiere deine Gewohnheiten auf allen deinen Geräten mit Habo's End-to-End-verschlüsseltem Cloud-Dienst.",
+    "haboSyncDescription": "Habo Sync ist da! Synchronisiere und sichere deine Gewohnheiten auf all deinen Geräten mit Ende-zu-Ende-verschlüsselter Cloud-Synchronisierung.",
     "haboSyncLearnMore": "Weitere Informationen unter habo.space/sync",
-    "or": "oder"
+    "or": "oder",
+    "widgetTheme": "Widget-Thema",
+    "featureIosSoundMixingTitle": "Tonmischung korrigiert",
+    "featureIosSoundMixingDesc": "Habo-Töne unterbrechen deine Musik oder Podcasts nicht mehr",
+    "featureHomescreenWidgetTitle": "Startbildschirm-Widget",
+    "featureHomescreenWidgetDesc": "Sieh deinen Gewohnheitsfortschritt auf einen Blick auf deinem Startbildschirm (experimentell)",
+    "featureIosWidgetsTitle": "Neue Startbildschirm-Widgets (iOS)",
+    "featureIosWidgetsDesc": "Hake eine Gewohnheit ab, sieh den heutigen Fortschritt oder das ganze Jahr einer Gewohnheit – direkt auf deinem Startbildschirm. Füge ein Widget pro Gewohnheit hinzu.",
+    "featureLongpressCheckTitle": "Abhaken durch langes Drücken",
+    "featureLongpressCheckDesc": "Drücke lange auf die Gewohnheitsschaltflächen, um den Status schnell zu ändern",
+    "habitsToday": "Gewohnheiten heute",
+    "widgetChooseHabit": "Gewohnheit auswählen",
+    "widgetNoHabits": "Füge eine Gewohnheit in Habo hinzu",
+    "oneTapCheck": "Einmal tippen zum Abhaken",
+    "tapCheckLongPressMenu": "Tippen zum Abhaken, lange drücken für Menü",
+    "categoryName": "Kategoriename",
+    "createCategory": "Kategorie erstellen",
+    "all": "Alle",
+    "selectIcon": "Symbol auswählen",
+    "searchIcons": "Suchen",
+    "syncTitle": "Synchronisierung",
+    "syncAndBackupYourData": "Synchronisiere und sichere deine Daten",
+    "server": "Server",
+    "customServer": "Eigener Server",
+    "haboCloudDefault": "Habo Cloud (Standard)",
+    "syncNotAvailable": "Synchronisierung nicht verfügbar",
+    "syncNow": "Jetzt synchronisieren",
+    "subscribe": "Abonnieren",
+    "restoreBackupQuestion": "Sicherung wiederherstellen?",
+    "habitsCount": "{count} Gewohnheiten",
+    "@habitsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "anUnexpectedErrorOccurred": "Ein unerwarteter Fehler ist aufgetreten",
+    "anUnexpectedErrorOccurredTryAgain": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "resetPassword": "Passwort zurücksetzen",
+    "sendResetLink": "Link zum Zurücksetzen senden",
+    "pleaseEnterValidEmail": "Bitte gib eine gültige E-Mail-Adresse ein",
+    "checkEmailForResetLink": "Sieh in deinem E-Mail-Postfach nach dem Link zum Zurücksetzen des Passworts.",
+    "failedToSendResetLink": "Der Link zum Zurücksetzen konnte nicht gesendet werden. Bitte versuche es erneut.",
+    "appleSignInError": "Fehler bei der Anmeldung mit Apple: {error}",
+    "@appleSignInError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "signInFailedPleaseTryAgain": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    "enterEmailForResetLink": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.",
+    "emailLabel": "E-Mail",
+    "passwordLabel": "Passwort",
+    "confirmPasswordLabel": "Passwort bestätigen",
+    "createAccountToBackupAndSync": "Erstelle ein Konto zum Sichern und Synchronisieren.",
+    "welcomeBackStayConsistent": "Willkommen zurück! Bleiben wir dran.",
+    "emailIsRequired": "E-Mail ist erforderlich",
+    "enterValidEmail": "Gib eine gültige E-Mail-Adresse ein",
+    "passwordIsRequired": "Passwort ist erforderlich",
+    "passwordMinLengthError": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "passwordsDoNotMatch": "Die Passwörter stimmen nicht überein",
+    "createAccount": "Konto erstellen",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "alreadyHaveAnAccount": "Du hast bereits ein Konto? ",
+    "dontHaveAnAccount": "Du hast noch kein Konto? ",
+    "orContinueWith": "oder weiter mit",
+    "continueWithApple": "Mit Apple fortfahren",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "forgotPassword": "Passwort vergessen?",
+    "pauseSyncing": "Synchronisierung pausieren",
+    "pausesSyncingAndBackup": "Pausiert Synchronisierung und Sicherung",
+    "restoreData": "Daten wiederherstellen",
+    "fromPreviousBackups": "Aus früheren Sicherungen",
+    "profile": "Profil",
+    "emailPasswordAndAccount": "E-Mail, Passwort und Konto",
+    "signOut": "Abmelden",
+    "syncingPaused": "Synchronisierung pausiert",
+    "syncingPausedDesc": "Pausiert",
+    "neverSynced": "Noch nie synchronisiert",
+    "paused": "Pausiert",
+    "syncingHero": "Synchronisierung läuft...",
+    "dataBeingSynchronized": "Deine Daten werden synchronisiert",
+    "syncingToCloud": "Synchronisierung mit der Cloud",
+    "everythingIsSafe": "Alles ist sicher",
+    "connectedToCloud": "Mit der Cloud verbunden",
+    "syncError": "Synchronisierungsfehler",
+    "tapSyncNowToRetry": "Tippe auf „Jetzt synchronisieren“, um es erneut zu versuchen",
+    "errorText": "Fehler",
+    "youAreOffline": "Du bist offline",
+    "willSyncWhenConnected": "Wird synchronisiert, sobald eine Verbindung besteht",
+    "offline": "Offline",
+    "notConfigured": "Nicht eingerichtet",
+    "setUpSyncToEnable": "Richte zuerst die Synchronisierung ein",
+    "subscriptionNeeded": "Abonnement erforderlich",
+    "subscribeToEnableSync": "Abonniere, um Habo Sync zu aktivieren",
+    "notActive": "Nicht aktiv",
+    "syncAndBackup": "Synchronisierung & Sicherung",
+    "unlockSyncAndBackup": "Synchronisierung & Sicherung freischalten",
+    "keepHabitsSafeAndSynced": "Halte deine Gewohnheiten sicher und auf all deinen Geräten synchron.",
+    "realTimeSyncAcrossDevices": "Echtzeit-Synchronisierung zwischen Geräten",
+    "automaticCloudBackups": "Automatische Cloud-Sicherungen",
+    "endToEndEncryption": "Ende-zu-Ende-Verschlüsselung",
+    "restorePurchases": "Käufe wiederherstellen",
+    "lastSyncedJustNow": "Gerade eben synchronisiert",
+    "lastSyncedMinsAgo": "Zuletzt vor {minutes} Min. synchronisiert",
+    "@lastSyncedMinsAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedHoursAgo": "Zuletzt vor {hours} Std. synchronisiert",
+    "@lastSyncedHoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedDaysAgo": "Zuletzt vor {days} {plural, select, s {Tagen} other {Tag}} synchronisiert",
+    "@lastSyncedDaysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            },
+            "plural": {
+                "type": "String"
+            }
+        }
+    },
+    "todayAt": "Heute um {time}",
+    "@todayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "yesterdayAt": "Gestern um {time}",
+    "@yesterdayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "weekdayAt": "{weekday} um {time}",
+    "@weekdayAt": {
+        "placeholders": {
+            "weekday": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreBackupConfirmation": "Dadurch werden alle aktuellen Daten durch die Sicherung vom {date} ersetzt.\n\nDiese Aktion kann nicht rückgängig gemacht werden.",
+    "@restoreBackupConfirmation": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "backupRestoredSuccessfully": "Sicherung erfolgreich wiederhergestellt!",
+    "restoreFailedWithError": "Wiederherstellung fehlgeschlagen: {error}",
+    "@restoreFailedWithError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreFailedTryAgain": "Wiederherstellung fehlgeschlagen. Bitte versuche es erneut.",
+    "chooseBackupToRestore": "Wähle eine Sicherung zum Wiederherstellen",
+    "noBackupsAvailable": "Noch keine Sicherungen vorhanden.\nSicherungen werden bei der Synchronisierung automatisch erstellt.",
+    "purchasesRestoredSuccessfully": "Käufe erfolgreich wiederhergestellt!",
+    "noPreviousPurchasesFound": "Keine früheren Käufe gefunden.",
+    "verificationEmailResent": "Bestätigungs-E-Mail erneut gesendet!",
+    "failedToResend": "Erneutes Senden fehlgeschlagen: {error}",
+    "@failedToResend": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "iveVerifiedMyEmail": "Ich habe meine E-Mail-Adresse bestätigt",
+    "seamlessContinuity": "Nahtlose Kontinuität",
+    "seamlessContinuityDesc": "Deine Gewohnheiten, überall perfekt synchronisiert. Beginne auf dem Smartphone und hake nahtlos auf dem Tablet ab.",
+    "zeroKnowledgePrivacy": "Zero-Knowledge-Datenschutz",
+    "zeroKnowledgePrivacyDesc": "Modernste Ende-zu-Ende-Verschlüsselung. Nur du besitzt den Hauptschlüssel – wir können deine persönlichen Daten niemals lesen oder darauf zugreifen.",
+    "restEasy": "Ganz entspannt",
+    "restEasyDesc": "Wir sichern deinen gesamten Fortschrittsverlauf sicher in der Cloud. Völlige Sorgenfreiheit, ganz automatisch.",
+    "getStarted": "Los geht's",
+    "next": "Weiter",
+    "passwordCannotBeEmpty": "Das Passwort darf nicht leer sein",
+    "pleaseConfirmYourPassword": "Bitte bestätige dein Passwort",
+    "createMasterPassword": "Master-Passwort erstellen",
+    "unlockYourData": "Entsperre deine Daten",
+    "masterPasswordDescriptionSetup": "Dein Master-Passwort verschlüsselt alle deine Daten, bevor sie dein Gerät verlassen. Wähle etwas Starkes, das du dir gut merken kannst.",
+    "masterPasswordDescriptionUnlock": "Gib dein Master-Passwort ein, um deine Daten zu entschlüsseln und die Synchronisierung zu aktivieren.",
+    "importantCannotBeRecovered": "Wichtig: Kann nicht wiederhergestellt werden",
+    "masterPasswordWarning": "Wir speichern dein Passwort nicht. Wenn du es vergisst, können deine Daten nicht wiederhergestellt werden. Schreib es dir auf und bewahre es sicher auf!",
+    "masterPasswordLabel": "Master-Passwort",
+    "minimum8Characters": "Mindestens 8 Zeichen",
+    "setPassword": "Passwort festlegen",
+    "unlockAndSync": "Entsperren & synchronisieren",
+    "unlockPasswordExplanation": "Dies ist das Passwort, das du bei der ersten Einrichtung der Synchronisierung auf einem anderen Gerät erstellt hast.",
+    "masterPasswordChangedSuccessfully": "Master-Passwort erfolgreich geändert",
+    "errorWithDescription": "Fehler: {error}",
+    "@errorWithDescription": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "changeMasterPassword": "Master-Passwort ändern",
+    "changePassword": "Passwort ändern",
+    "accountPasswordChangedSuccessfully": "Kontopasswort erfolgreich geändert",
+    "changeAccountPassword": "Kontopasswort ändern",
+    "deleteAccountTitle": "Konto löschen",
+    "unexpectedErrorPleaseTryAgain": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "checkEmailForPasswordReset": "Sieh in deinem E-Mail-Postfach nach dem Link zum Zurücksetzen des Passworts.",
+    "signOutQuestion": "Abmelden?",
+    "resetToHaboCloudQuestion": "Auf Habo Cloud zurücksetzen?",
+    "resetAction": "Zurücksetzen",
+    "restartRequired": "Neustart erforderlich",
+    "ok": "OK",
+    "serverConfiguration": "Serverkonfiguration",
+    "testConnectionAndSave": "Verbindung testen & speichern",
+    "resetToHaboCloud": "Auf Habo Cloud zurücksetzen",
+    "currentPasswordIsRequired": "Aktuelles Passwort ist erforderlich",
+    "newPasswordIsRequired": "Neues Passwort ist erforderlich",
+    "newPasswordMustBeDifferent": "Das neue Passwort muss sich vom aktuellen unterscheiden",
+    "incorrectCurrentPassword": "Aktuelles Passwort ist falsch",
+    "enterCurrentPasswordAndChooseNew": "Gib dein aktuelles Passwort ein und wähle ein neues.",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "thisChangesYourLoginPassword": "Dies ändert dein Anmeldepasswort für Habo.",
+    "passwordUpdated": "Passwort aktualisiert!",
+    "passwordResetSuccessMessage": "Dein Passwort wurde erfolgreich zurückgesetzt. Du kannst dich jetzt mit deinem neuen Passwort anmelden.",
+    "setNewPassword": "Neues Passwort festlegen",
+    "chooseStrongPassword": "Wähle ein starkes Passwort für dein Konto.",
+    "pleaseTypeDeleteToConfirm": "Bitte gib zur Bestätigung DELETE ein",
+    "unableToVerifyIdentity": "Identität konnte nicht bestätigt werden",
+    "incorrectPassword": "Falsches Passwort",
+    "failedToDeleteAccount": "Konto konnte nicht gelöscht werden",
+    "deleteYourAccount": "Dein Konto löschen",
+    "deleteAccountWarning": "Diese Aktion ist endgültig und kann nicht rückgängig gemacht werden. Die folgenden Daten werden dauerhaft gelöscht:",
+    "deleteHabitsAndTrackingData": "Alle deine Gewohnheiten und Verlaufsdaten",
+    "deleteCloudBackupsAndSyncData": "Cloud-Sicherungen und Synchronisierungsdaten",
+    "deleteEncryptionKeysAndProfile": "Verschlüsselungsschlüssel und Profil",
+    "deleteYourAccountAndLoginCredentials": "Dein Konto und deine Anmeldedaten",
+    "deleteSubscriptionManagedSeparately": "Abonnement (wird separat über den Store verwaltet)",
+    "typeDeleteToConfirm": "Zur Bestätigung DELETE eingeben",
+    "enterYourPasswordToConfirm": "Gib zur Bestätigung dein Passwort ein",
+    "permanentlyDeleteAccount": "Konto dauerhaft löschen",
+    "resetPasswordDescription": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.",
+    "updateYourEncryptionPassword": "Verschlüsselungspasswort ändern",
+    "updateYourLoginPassword": "Anmeldepasswort ändern",
+    "manageSubscription": "Abonnement verwalten",
+    "viewOrCancelYourPlan": "Tarif ansehen oder kündigen",
+    "permanentlyDeleteYourAccountAndData": "Konto und Daten dauerhaft löschen",
+    "signOutConfirmationContent": "Du musst dein Master-Passwort erneut eingeben, um auf deine synchronisierten Daten zuzugreifen.",
+    "couldNotConnectToServer": "Verbindung zum Server fehlgeschlagen. Überprüfe die URL, den Anon-Key und ob die Habo-Migration angewendet wurde.\n\nFehler: {e}",
+    "@couldNotConnectToServer": {
+        "placeholders": {
+            "e": {
+                "type": "String"
+            }
+        }
+    },
+    "disconnectFromSelfHosted": "Dadurch wird die Verbindung zu deinem selbst gehosteten Server getrennt und zum Standardserver Habo Cloud zurückgewechselt. Du musst dich erneut anmelden.",
+    "restartRequiredContent": "Bitte schließe die App und öffne sie erneut, um dich mit dem neuen Server zu verbinden.",
+    "connectedToCustomServer": "Mit einem eigenen Server verbunden",
+    "connectedToHaboCloudDefault": "Mit Habo Cloud verbunden (Standard)",
+    "selfHostDescription": "Hoste dein eigenes Supabase-Backend für vollen Synchronisierungszugriff ohne Abonnement. Eine Anleitung zur Einrichtung findest du im Self-Hosting-Leitfaden.",
+    "urlIsRequired": "URL ist erforderlich",
+    "enterValidUrl": "Gib eine gültige URL ein (z. B. https://dein-projekt.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "Die URL muss mit https:// oder http:// beginnen",
+    "anonKeyIsRequired": "Anon-Key ist erforderlich",
+    "pleaseSignInWithEmailAndPassword": "Bitte melde dich mit deiner E-Mail-Adresse und deinem Passwort an.",
+    "checkYourEmail": "Sieh in deinem E-Mail-Postfach nach",
+    "weSentVerificationLinkTo": "Wir haben einen Bestätigungslink gesendet an",
+    "clickLinkInEmailToVerify": "Klicke auf den Link in der E-Mail, um dein Konto zu bestätigen. Komm dann hierher zurück und tippe auf die Schaltfläche unten.",
+    "resendInSeconds": "Erneut senden in {seconds} s",
+    "@resendInSeconds": {
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "resendVerificationEmail": "Bestätigungs-E-Mail erneut senden",
+    "backToSignIn": "Zurück zur Anmeldung",
+    "featureHomescreenWidgetDarkModeDesc": "Das Android-Startbildschirm-Widget unterstützt jetzt helle und dunkle Hintergründe.",
+    "offlineMode": "Offline-Modus",
+    "offlineModeDescription": "Synchronisierung und alle Netzwerkverbindungen deaktivieren",
+    "offlineModeRestartContent": "Bitte schließe die App und öffne sie erneut, um den Offline-Modus anzuwenden.",
+    "unavailableWhileOffline": "Offline nicht verfügbar"
 }
