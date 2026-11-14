@@ -1940,4 +1940,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=3.11.3 <4.0.0"
-  flutter: ">=3.41.5"
+  flutter: "3.41.9"
