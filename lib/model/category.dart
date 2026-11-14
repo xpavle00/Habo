@@ -27,12 +27,22 @@ class Category {
   /// Whether this category has been soft-deleted
   bool get isDeleted => deletedAt != null;
 
-  /// Get the IconData from the stored codePoint
-  IconData get icon => IconData(
-    iconCodePoint,
-    fontFamily: fontFamily ?? 'MaterialIcons',
-    fontPackage: "font_awesome_flutter",
-  );
+  /// Get the IconData from the stored codePoint.
+  ///
+  /// Font Awesome icons (picked via flutter_iconpicker) store a
+  /// `FontAwesome*` family and live in the font_awesome_flutter package.
+  /// Everything else, including the default [Icons.category] with a null
+  /// family, is a Material icon from the app's own MaterialIcons font.
+  IconData get icon {
+    final family = fontFamily ?? 'MaterialIcons';
+    return IconData(
+      iconCodePoint,
+      fontFamily: family,
+      fontPackage: family.startsWith('FontAwesome')
+          ? 'font_awesome_flutter'
+          : null,
+    );
+  }
 
   /// Convert category to map for database storage
   Map<String, dynamic> toMap() {
