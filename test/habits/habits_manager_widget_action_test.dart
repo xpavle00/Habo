@@ -336,4 +336,81 @@ void main() {
             as List<HabitData>;
     expect(published.single.events.containsKey(key), isFalse);
   });
+
+  group('tap time', () {
+    final tappedAt = DateTime.utc(2026, 11, 5, 9);
+
+    WidgetAction tap(String code) => WidgetAction(
+      seq: 1,
+      uuid: 'u1',
+      date: day,
+      code: code,
+      tappedAt: tappedAt,
+    );
+
+    setUp(() {
+      when(
+        () => events.insertEvent(
+          any(),
+          any(),
+          any(),
+          changedAt: any(named: 'changedAt'),
+        ),
+      ).thenAnswer((_) async {});
+      when(
+        () => events.deleteEvent(
+          any(),
+          any(),
+          changedAt: any(named: 'changedAt'),
+        ),
+      ).thenAnswer((_) async {});
+    });
+
+    test('a check is saved with the tap time, not the drain time', () {
+      final habit = _habit(id: 1, uuid: 'u1')
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 4);
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tap('c')), isTrue);
+
+      verify(
+        () => events.insertEvent(1, key, [
+          DayType.check,
+          '',
+        ], changedAt: tappedAt),
+      ).called(1);
+      expect(manager.allHabits.single.habitData.updatedAt, tappedAt);
+    });
+
+    test('a clear is deleted with the tap time', () {
+      final habit = _habit(id: 1, uuid: 'u1')
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 4)
+        ..habitData.events[key] = [DayType.check, ''];
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tap('.')), isTrue);
+
+      verify(() => events.deleteEvent(1, key, changedAt: tappedAt)).called(1);
+    });
+
+    test('a tap older than the habit\'s last change is dropped', () {
+      // E.g. a fail made later on another device has already synced in.
+      final habit = _habit(id: 1, uuid: 'u1')
+        ..habitData.updatedAt = DateTime.utc(2026, 11, 5, 12)
+        ..habitData.events[key] = [DayType.fail, ''];
+      manager.allHabits = [habit];
+
+      expect(manager.applyWidgetAction(tap('c')), isFalse);
+
+      verifyNever(
+        () => events.insertEvent(
+          any(),
+          any(),
+          any(),
+          changedAt: any(named: 'changedAt'),
+        ),
+      );
+      expect(habit.habitData.events[key], [DayType.fail, '']);
+    });
+  });
 }

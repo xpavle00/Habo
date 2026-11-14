@@ -93,6 +93,8 @@ Map<String, dynamic> _habitJson(HabitData habit, DateTime today) {
         : null,
     'year': today.year,
     'days': _dayCodes(habit, today.year),
+    // Last year too, so early in January widgets still show December.
+    'prevDays': _dayCodes(habit, today.year - 1),
     'today': habit.isNumeric ? _todayProgress(habit, today) : null,
     'streak': _streakTable(habit, today),
   };

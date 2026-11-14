@@ -117,13 +117,22 @@ class InMemoryEventRepository implements EventRepository {
   }
 
   @override
-  Future<void> insertEvent(int habitId, DateTime date, List event) async {
+  Future<void> insertEvent(
+    int habitId,
+    DateTime date,
+    List event, {
+    DateTime? changedAt,
+  }) async {
     _events[habitId] ??= SplayTreeMap<DateTime, List>();
     _events[habitId]![date] = event;
   }
 
   @override
-  Future<void> deleteEvent(int habitId, DateTime date) async {
+  Future<void> deleteEvent(
+    int habitId,
+    DateTime date, {
+    DateTime? changedAt,
+  }) async {
     _events[habitId]?.remove(date);
   }
 

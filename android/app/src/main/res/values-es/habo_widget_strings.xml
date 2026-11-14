@@ -10,4 +10,5 @@
     <string name="habo_widget_today_list_description">Marca los hábitos de hoy desde una lista.</string>
     <string name="habo_widget_choose_habit">Elige un hábito</string>
     <string name="habo_widget_no_habits">Añade un hábito en Habo</string>
+    <string name="habo_widget_open_app">Abre Habo para actualizar este widget</string>
 </resources>

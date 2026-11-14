@@ -10,6 +10,7 @@ class WidgetAction {
     required this.code,
     this.value,
     this.target,
+    this.tappedAt,
   });
 
   final int seq;
@@ -20,6 +21,10 @@ class WidgetAction {
   final String code;
   final double? value;
   final double? target;
+
+  /// When the widget was tapped (UTC), from the entry's `at`; null for
+  /// entries written before it was recorded.
+  final DateTime? tappedAt;
 
   static const Set<String> _codes = {'c', '.', 'p', 'P'};
 
@@ -52,6 +57,12 @@ class WidgetAction {
       code: code,
       value: (json['value'] as num?)?.toDouble(),
       target: (json['target'] as num?)?.toDouble(),
+      tappedAt: _parseTime(json['at']),
     );
+  }
+
+  static DateTime? _parseTime(Object? value) {
+    if (value is! String) return null;
+    return DateTime.tryParse(value)?.toUtc();
   }
 }

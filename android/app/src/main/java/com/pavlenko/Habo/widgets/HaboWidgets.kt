@@ -95,6 +95,7 @@ object HaboWidgets {
     private const val RELEASE_WORK = "todayListRelease"
 
     private val providers = listOf(
+        com.pavlenko.Habo.HaboWidget::class.java,
         CheckInWidgetProvider::class.java,
         YearWidgetProvider::class.java,
         TodayListWidgetProvider::class.java,
@@ -117,6 +118,13 @@ object HaboWidgets {
         val target = effectiveTodayTarget(habit, today, snapshot.date)
         val next = nextState(habit, current, value, target)
         actions.append(habit.uuid, today, next.code, next.value, next.target, Instant.now())
+        ReminderAdjuster.adjust(
+            context,
+            habitId = habit.id,
+            reminder = habit.reminder,
+            becameDone = !current.isDone && next.code.isDone,
+            becameUndone = current.isDone && !next.code.isDone,
+        )
         updateAll(context)
         scheduleListRelease(context)
     }
@@ -132,7 +140,7 @@ object HaboWidgets {
         WorkManager.getInstance(context).enqueueUniqueWork(RELEASE_WORK, ExistingWorkPolicy.REPLACE, work)
     }
 
-    /** Redraws every placed check-in and year widget. */
+    /** Redraws every placed snapshot-drawn widget. */
     fun updateAll(context: Context) {
         val manager = AppWidgetManager.getInstance(context)
         for (provider in providers) {

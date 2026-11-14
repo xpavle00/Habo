@@ -8,15 +8,22 @@ abstract class EventRepository {
   /// [habitId] The ID of the habit this event belongs to.
   /// [date] The date of the event.
   /// [event] The event data as [List] containing [DayType] and optional comment.
+  /// [changedAt] When the user made the change, for LWW sync; defaults to now.
   /// Returns a [Future] that completes when the event is successfully inserted.
-  Future<void> insertEvent(int habitId, DateTime date, List event);
+  Future<void> insertEvent(
+    int habitId,
+    DateTime date,
+    List event, {
+    DateTime? changedAt,
+  });
 
   /// Deletes an event for a habit.
   ///
   /// [habitId] The ID of the habit this event belongs to.
   /// [date] The date of the event to be deleted.
+  /// [changedAt] When the user made the change, for LWW sync; defaults to now.
   /// Returns a [Future] that completes when the event is successfully deleted.
-  Future<void> deleteEvent(int habitId, DateTime date);
+  Future<void> deleteEvent(int habitId, DateTime date, {DateTime? changedAt});
 
   /// Retrieves all events for a specific habit.
   ///

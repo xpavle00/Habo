@@ -37,13 +37,22 @@ class SQLiteEventRepository implements EventRepository {
   }
 
   @override
-  Future<void> insertEvent(int habitId, DateTime date, List event) async {
-    await _haboModel.insertEvent(habitId, date, event);
+  Future<void> insertEvent(
+    int habitId,
+    DateTime date,
+    List event, {
+    DateTime? changedAt,
+  }) async {
+    await _haboModel.insertEvent(habitId, date, event, changedAt: changedAt);
   }
 
   @override
-  Future<void> deleteEvent(int habitId, DateTime date) async {
-    await _haboModel.deleteEvent(habitId, date);
+  Future<void> deleteEvent(
+    int habitId,
+    DateTime date, {
+    DateTime? changedAt,
+  }) async {
+    await _haboModel.deleteEvent(habitId, date, changedAt: changedAt);
   }
 
   @override

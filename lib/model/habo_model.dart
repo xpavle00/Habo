@@ -26,7 +26,13 @@ class HaboModel {
     return _db!;
   }
 
-  Future<void> deleteEvent(int id, DateTime dateTime) async {
+  /// [changedAt] is when the user made the change; defaults to now. Widget
+  /// taps applied later pass their tap time so LWW sync orders them right.
+  Future<void> deleteEvent(
+    int id,
+    DateTime dateTime, {
+    DateTime? changedAt,
+  }) async {
     try {
       await db.delete(
         'events',
@@ -37,7 +43,7 @@ class HaboModel {
       // Update the habit's updated_at so LWW recognizes the event deletion
       await db.update(
         'habits',
-        {'updated_at': DateTime.now().toUtc().toIso8601String()},
+        {'updated_at': (changedAt ?? DateTime.now()).toUtc().toIso8601String()},
         where: 'id = ?',
         whereArgs: [id],
       );
@@ -524,14 +530,18 @@ class HaboModel {
     DateTime date,
     List event, {
     bool updateHabitTimestamp = true,
+    DateTime? changedAt,
   }) async {
     try {
+      // When the user made the change; widget taps applied later pass their
+      // tap time so LWW sync orders them correctly.
+      final timestamp = (changedAt ?? DateTime.now()).toUtc().toIso8601String();
       final eventData = {
         'id': id,
         'dateTime': date.toString(),
         'dayType': event[0].index,
         'comment': event[1],
-        'updated_at': DateTime.now().toUtc().toIso8601String(),
+        'updated_at': timestamp,
       };
 
       // Add progress value for numeric habits
@@ -559,7 +569,7 @@ class HaboModel {
       if (updateHabitTimestamp) {
         await db.update(
           'habits',
-          {'updated_at': DateTime.now().toUtc().toIso8601String()},
+          {'updated_at': timestamp},
           where: 'id = ?',
           whereArgs: [id],
         );

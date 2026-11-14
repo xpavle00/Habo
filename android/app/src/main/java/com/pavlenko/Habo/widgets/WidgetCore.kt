@@ -86,15 +86,21 @@ data class SnapshotHabit(
     val days: String,
     val today: TodayProgress?,
     val streak: StreakTable,
+    /** The year before [year], same format as [days]; null in older snapshots. */
+    val prevDays: String? = null,
 ) {
     val isNumeric: Boolean get() = type == "numeric"
 
-    /** Snapshot state for [date]; [DayCode.NONE] outside the snapshot's year. */
+    /** Snapshot state for [date]; [DayCode.NONE] outside the snapshot's year and the one before it. */
     fun code(date: LocalDate): DayCode {
-        if (date.year != year) return DayCode.NONE
+        val codes = when (date.year) {
+            year -> days
+            year - 1 -> prevDays.orEmpty()
+            else -> return DayCode.NONE
+        }
         val index = date.dayOfYear - 1
-        if (index < 0 || index >= days.length) return DayCode.NONE
-        return DayCode.from(days[index]) ?: DayCode.NONE
+        if (index < 0 || index >= codes.length) return DayCode.NONE
+        return DayCode.from(codes[index]) ?: DayCode.NONE
     }
 }
 
@@ -151,6 +157,8 @@ data class Snapshot(
                 },
                 year = json.getInt("year"),
                 days = json.getString("days"),
+                // isNull is also true when the key is missing (older snapshots).
+                prevDays = if (json.isNull("prevDays")) null else json.getString("prevDays"),
                 today = json.optJSONObject("today")?.let {
                     TodayProgress(it.getDouble("value"), it.getDouble("target"))
                 },
@@ -348,6 +356,9 @@ fun formatAmount(value: Double): String =
 data class TodaySummary(val total: Int, val completed: Int, val skipped: Int, val failed: Int) {
     /** Habits handled today: completed + skipped + failed. */
     val done: Int get() = completed + skipped + failed
+
+    /** Every habit handled: the ring shows a check instead of a count. */
+    val allDone: Boolean get() = total > 0 && done == total
 }
 
 fun todaySummary(habits: List<SnapshotHabit>, today: LocalDate, pending: List<PendingAction>): TodaySummary {

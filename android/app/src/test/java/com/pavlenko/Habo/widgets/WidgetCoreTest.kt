@@ -67,6 +67,10 @@ class WidgetCoreTest {
         assertNull(water.today)
         assertEquals(DayCode.CHECK, water.code(LocalDate.of(2026, 1, 1)))
         assertEquals(DayCode.SKIP, water.code(LocalDate.of(2026, 11, 5)))
+        // Last year comes from prevDays; older years are unknown.
+        assertEquals(DayCode.FAIL, water.code(LocalDate.of(2025, 12, 31)))
+        assertEquals(DayCode.NONE, water.code(LocalDate.of(2025, 12, 30)))
+        assertEquals(DayCode.NONE, water.code(LocalDate.of(2024, 12, 31)))
 
         val read = snapshot.habits[1]
         assertTrue(read.isNumeric)

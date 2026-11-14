@@ -134,6 +134,30 @@ void main() {
 
     expect(racing.values[WidgetKeys.appliedSeq], 9);
   });
+
+  test('passes each tap\'s recorded time on as UTC', () async {
+    pending([_action(1, 'a', '2026-11-06')]);
+
+    await drainer.drain();
+
+    final action =
+        verify(() => habits.applyWidgetAction(captureAny())).captured.single
+            as WidgetAction;
+    expect(action.tappedAt, DateTime.utc(2026, 11, 6, 21, 14, 3));
+  });
+
+  test('an entry without a tap time still applies', () async {
+    pending([
+      {'seq': 1, 'uuid': 'a', 'date': '2026-11-06', 'code': 'c'},
+    ]);
+
+    await drainer.drain();
+
+    final action =
+        verify(() => habits.applyWidgetAction(captureAny())).captured.single
+            as WidgetAction;
+    expect(action.tappedAt, isNull);
+  });
 }
 
 /// Store whose applied marker is advanced by "another drain" right after
