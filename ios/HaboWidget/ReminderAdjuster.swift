@@ -18,23 +18,8 @@ enum ReminderAdjuster {
         let requests = await center.pendingNotificationRequests()
         guard let existing = requests.first(where: { $0.identifier == identifier }) else { return }
 
-        let calendar = Calendar.current
-        let now = Date()
-        var day = calendar.startOfDay(for: now)
-        if becameDone {
-            // Done today: next reminder is tomorrow.
-            day = calendar.date(byAdding: .day, value: 1, to: day)!
-        } else {
-            // Undone today: restore today's reminder if its time hasn't passed.
-            guard let fire = calendar.date(bySettingHour: reminder.hour, minute: reminder.minute, second: 0, of: now),
-                  fire > now else { return }
-        }
-        var components = calendar.dateComponents([.year, .month, .day], from: day)
-        components.hour = reminder.hour
-        components.minute = reminder.minute
-        components.second = 0
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let schedule = reminderSchedule(for: reminder, becameDone: becameDone, now: Date(), calendar: .current)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: schedule.components, repeats: schedule.repeats)
         let request = UNNotificationRequest(identifier: identifier, content: existing.content, trigger: trigger)
         center.removePendingNotificationRequests(withIdentifiers: [identifier])
         try? await center.add(request)
