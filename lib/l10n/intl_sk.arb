@@ -340,7 +340,309 @@
     "featureLongpressCheckTitle": "Dlhé stlačenie na označenie",
     "featureLongpressCheckDesc": "Dlhým stlačením tlačidiel zvykov rýchlo zmeníte stav",
     "haboSyncComingSoon": "Čoskoro",
-    "haboSyncDescription": "Synchronizujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej služby Habo.",
+    "haboSyncDescription": "Habo Sync je tu! Synchronizujte a zálohujte svoje zvyky na všetkých zariadeniach pomocou end-to-end šifrovanej cloudovej synchronizácie.",
     "haboSyncLearnMore": "Dozvedieť sa viac na habo.space/sync",
-    "habitsToday": "Dnešné zvyky"
+    "habitsToday": "Dnešné zvyky",
+    "widgetTheme": "Téma widgetu",
+    "featureIosWidgetsTitle": "Nové widgety na domovskej obrazovke (iOS)",
+    "featureIosWidgetsDesc": "Označte zvyk ako splnený, pozrite si dnešný pokrok alebo celý rok zvyku priamo z domovskej obrazovky. Pridajte jeden widget pre každý zvyk.",
+    "widgetChooseHabit": "Vyberte zvyk",
+    "widgetNoHabits": "Pridajte zvyk v Habo",
+    "or": "alebo",
+    "oneTapCheck": "Splniť jedným ťuknutím",
+    "tapCheckLongPressMenu": "Ťuknutím splniť, dlhým stlačením otvoriť ponuku",
+    "categoryName": "Názov kategórie",
+    "createCategory": "Vytvoriť kategóriu",
+    "all": "Všetko",
+    "selectIcon": "Vybrať ikonu",
+    "searchIcons": "Hľadať",
+    "syncTitle": "Synchronizácia",
+    "syncAndBackupYourData": "Synchronizujte a zálohujte svoje údaje",
+    "server": "Server",
+    "customServer": "Vlastný server",
+    "haboCloudDefault": "Habo Cloud (predvolené)",
+    "syncNotAvailable": "Synchronizácia nie je dostupná",
+    "syncNow": "Synchronizovať teraz",
+    "subscribe": "Predplatiť",
+    "restoreBackupQuestion": "Obnoviť zálohu?",
+    "habitsCount": "Počet zvykov: {count}",
+    "@habitsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "anUnexpectedErrorOccurred": "Vyskytla sa neočakávaná chyba",
+    "anUnexpectedErrorOccurredTryAgain": "Vyskytla sa neočakávaná chyba. Skúste to znova.",
+    "resetPassword": "Obnoviť heslo",
+    "sendResetLink": "Odoslať odkaz na obnovenie",
+    "pleaseEnterValidEmail": "Zadajte platnú e-mailovú adresu",
+    "checkEmailForResetLink": "Odkaz na obnovenie hesla nájdete vo svojom e-maile.",
+    "failedToSendResetLink": "Odkaz na obnovenie sa nepodarilo odoslať. Skúste to znova.",
+    "appleSignInError": "Chyba prihlásenia cez Apple: {error}",
+    "@appleSignInError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "signInFailedPleaseTryAgain": "Prihlásenie zlyhalo. Skúste to znova.",
+    "enterEmailForResetLink": "Zadajte svoju e-mailovú adresu a pošleme vám odkaz na obnovenie hesla.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Heslo",
+    "confirmPasswordLabel": "Potvrdenie hesla",
+    "createAccountToBackupAndSync": "Vytvorte si účet na zálohovanie a synchronizáciu.",
+    "welcomeBackStayConsistent": "Vitajte späť! Pokračujme v pravidelnosti.",
+    "emailIsRequired": "E-mail je povinný",
+    "enterValidEmail": "Zadajte platný e-mail",
+    "passwordIsRequired": "Heslo je povinné",
+    "passwordMinLengthError": "Heslo musí mať aspoň 8 znakov",
+    "passwordsDoNotMatch": "Heslá sa nezhodujú",
+    "createAccount": "Vytvoriť účet",
+    "signIn": "Prihlásiť sa",
+    "signUp": "Zaregistrovať sa",
+    "alreadyHaveAnAccount": "Už máte účet? ",
+    "dontHaveAnAccount": "Ešte nemáte účet? ",
+    "orContinueWith": "alebo pokračujte cez",
+    "continueWithApple": "Pokračovať cez Apple",
+    "continueWithGoogle": "Pokračovať cez Google",
+    "forgotPassword": "Zabudli ste heslo?",
+    "pauseSyncing": "Pozastaviť synchronizáciu",
+    "pausesSyncingAndBackup": "Pozastaví synchronizáciu a zálohovanie",
+    "restoreData": "Obnoviť údaje",
+    "fromPreviousBackups": "Z predchádzajúcich záloh",
+    "profile": "Profil",
+    "emailPasswordAndAccount": "E-mail, heslo a účet",
+    "signOut": "Odhlásiť sa",
+    "syncingPaused": "Synchronizácia je pozastavená",
+    "syncingPausedDesc": "Pozastavené",
+    "neverSynced": "Zatiaľ nesynchronizované",
+    "paused": "Pozastavené",
+    "syncingHero": "Synchronizuje sa...",
+    "dataBeingSynchronized": "Vaše údaje sa synchronizujú",
+    "syncingToCloud": "Synchronizácia s cloudom",
+    "everythingIsSafe": "Všetko je v bezpečí",
+    "connectedToCloud": "Pripojené ku cloudu",
+    "syncError": "Chyba synchronizácie",
+    "tapSyncNowToRetry": "Ťuknite na Synchronizovať teraz a skúste to znova",
+    "errorText": "Chyba",
+    "youAreOffline": "Ste offline",
+    "willSyncWhenConnected": "Synchronizácia prebehne po pripojení",
+    "offline": "Offline",
+    "notConfigured": "Nenastavené",
+    "setUpSyncToEnable": "Najprv nastavte synchronizáciu",
+    "subscriptionNeeded": "Vyžaduje sa predplatné",
+    "subscribeToEnableSync": "Predplaťte si Habo Sync a zapnite synchronizáciu",
+    "notActive": "Neaktívne",
+    "syncAndBackup": "Synchronizácia a zálohovanie",
+    "unlockSyncAndBackup": "Odomknúť synchronizáciu a zálohovanie",
+    "keepHabitsSafeAndSynced": "Majte svoje zvyky v bezpečí a synchronizované na všetkých zariadeniach.",
+    "realTimeSyncAcrossDevices": "Synchronizácia medzi zariadeniami v reálnom čase",
+    "automaticCloudBackups": "Automatické cloudové zálohy",
+    "endToEndEncryption": "End-to-end šifrovanie",
+    "restorePurchases": "Obnoviť nákupy",
+    "lastSyncedJustNow": "Práve synchronizované",
+    "lastSyncedMinsAgo": "Posledná synchronizácia pred {minutes} min",
+    "@lastSyncedMinsAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedHoursAgo": "Posledná synchronizácia pred {hours} h",
+    "@lastSyncedHoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedDaysAgo": "Posledná synchronizácia pred {days} {plural, select, s {dňami} other {dňom}}",
+    "@lastSyncedDaysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            },
+            "plural": {
+                "type": "String"
+            }
+        }
+    },
+    "todayAt": "Dnes o {time}",
+    "@todayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "yesterdayAt": "Včera o {time}",
+    "@yesterdayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "weekdayAt": "{weekday} o {time}",
+    "@weekdayAt": {
+        "placeholders": {
+            "weekday": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreBackupConfirmation": "Všetky aktuálne údaje budú nahradené zálohou z {date}.\n\nTúto akciu nie je možné vrátiť späť.",
+    "@restoreBackupConfirmation": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "backupRestoredSuccessfully": "Záloha bola úspešne obnovená!",
+    "restoreFailedWithError": "Obnovenie zlyhalo: {error}",
+    "@restoreFailedWithError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreFailedTryAgain": "Obnovenie zlyhalo. Skúste to znova.",
+    "chooseBackupToRestore": "Vyberte zálohu, ktorú chcete obnoviť",
+    "noBackupsAvailable": "Zatiaľ nie sú k dispozícii žiadne zálohy.\nZálohy sa vytvárajú automaticky počas synchronizácie.",
+    "purchasesRestoredSuccessfully": "Nákupy boli úspešne obnovené!",
+    "noPreviousPurchasesFound": "Nenašli sa žiadne predchádzajúce nákupy.",
+    "verificationEmailResent": "Overovací e-mail bol znova odoslaný!",
+    "failedToResend": "Opätovné odoslanie zlyhalo: {error}",
+    "@failedToResend": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "iveVerifiedMyEmail": "E-mail mám overený",
+    "seamlessContinuity": "Plynulé pokračovanie",
+    "seamlessContinuityDesc": "Vaše zvyky dokonale synchronizované všade. Začnite ich sledovať v telefóne a plynulo ich odškrtávajte na tablete.",
+    "zeroKnowledgePrivacy": "Súkromie s nulovým prístupom",
+    "zeroKnowledgePrivacyDesc": "Špičkové end-to-end šifrovanie. Hlavný kľúč máte iba vy — vaše osobné údaje nikdy nemôžeme čítať ani k nim pristupovať.",
+    "restEasy": "Buďte bez obáv",
+    "restEasyDesc": "Celú históriu vášho pokroku bezpečne zálohujeme do cloudu. Úplný pokoj, automaticky.",
+    "getStarted": "Začať",
+    "next": "Ďalej",
+    "passwordCannotBeEmpty": "Heslo nesmie byť prázdne",
+    "pleaseConfirmYourPassword": "Potvrďte svoje heslo",
+    "createMasterPassword": "Vytvorte hlavné heslo",
+    "unlockYourData": "Odomknite svoje údaje",
+    "masterPasswordDescriptionSetup": "Hlavné heslo zašifruje všetky vaše údaje ešte predtým, než opustia zariadenie. Zvoľte silné heslo, ktoré si zapamätáte.",
+    "masterPasswordDescriptionUnlock": "Zadajte hlavné heslo, aby sa dali údaje dešifrovať a zapnúť synchronizácia.",
+    "importantCannotBeRecovered": "Dôležité: heslo sa nedá obnoviť",
+    "masterPasswordWarning": "Vaše heslo neukladáme. Ak ho zabudnete, údaje sa nebudú dať obnoviť. Zapíšte si ho a uložte na bezpečné miesto!",
+    "masterPasswordLabel": "Hlavné heslo",
+    "minimum8Characters": "Aspoň 8 znakov",
+    "setPassword": "Nastaviť heslo",
+    "unlockAndSync": "Odomknúť a synchronizovať",
+    "unlockPasswordExplanation": "Ide o heslo, ktoré ste vytvorili pri prvom nastavení synchronizácie na inom zariadení.",
+    "masterPasswordChangedSuccessfully": "Hlavné heslo bolo úspešne zmenené",
+    "errorWithDescription": "Chyba: {error}",
+    "@errorWithDescription": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "changeMasterPassword": "Zmeniť hlavné heslo",
+    "changePassword": "Zmeniť heslo",
+    "accountPasswordChangedSuccessfully": "Heslo účtu bolo úspešne zmenené",
+    "changeAccountPassword": "Zmeniť heslo účtu",
+    "deleteAccountTitle": "Odstrániť účet",
+    "unexpectedErrorPleaseTryAgain": "Vyskytla sa neočakávaná chyba. Skúste to znova.",
+    "checkEmailForPasswordReset": "Odkaz na obnovenie hesla nájdete vo svojom e-maile.",
+    "signOutQuestion": "Odhlásiť sa?",
+    "resetToHaboCloudQuestion": "Prepnúť späť na Habo Cloud?",
+    "resetAction": "Resetovať",
+    "restartRequired": "Vyžaduje sa reštart",
+    "ok": "OK",
+    "serverConfiguration": "Nastavenie servera",
+    "testConnectionAndSave": "Otestovať pripojenie a uložiť",
+    "resetToHaboCloud": "Prepnúť späť na Habo Cloud",
+    "currentPasswordIsRequired": "Aktuálne heslo je povinné",
+    "newPasswordIsRequired": "Nové heslo je povinné",
+    "newPasswordMustBeDifferent": "Nové heslo sa musí líšiť od aktuálneho",
+    "incorrectCurrentPassword": "Nesprávne aktuálne heslo",
+    "enterCurrentPasswordAndChooseNew": "Zadajte aktuálne heslo a zvoľte nové.",
+    "currentPassword": "Aktuálne heslo",
+    "newPassword": "Nové heslo",
+    "confirmNewPassword": "Potvrdenie nového hesla",
+    "thisChangesYourLoginPassword": "Týmto zmeníte heslo na prihlásenie do Habo.",
+    "passwordUpdated": "Heslo bolo zmenené!",
+    "passwordResetSuccessMessage": "Heslo bolo úspešne obnovené. Teraz sa môžete prihlásiť novým heslom.",
+    "setNewPassword": "Nastaviť nové heslo",
+    "chooseStrongPassword": "Zvoľte pre svoj účet silné heslo.",
+    "pleaseTypeDeleteToConfirm": "Na potvrdenie zadajte slovo DELETE",
+    "unableToVerifyIdentity": "Totožnosť sa nepodarilo overiť",
+    "incorrectPassword": "Nesprávne heslo",
+    "failedToDeleteAccount": "Účet sa nepodarilo odstrániť",
+    "deleteYourAccount": "Odstránenie účtu",
+    "deleteAccountWarning": "Táto akcia je trvalá a nie je možné ju vrátiť späť. Nasledujúce údaje budú natrvalo odstránené:",
+    "deleteHabitsAndTrackingData": "Všetky vaše zvyky a údaje o ich plnení",
+    "deleteCloudBackupsAndSyncData": "Cloudové zálohy a synchronizované údaje",
+    "deleteEncryptionKeysAndProfile": "Šifrovacie kľúče a profil",
+    "deleteYourAccountAndLoginCredentials": "Váš účet a prihlasovacie údaje",
+    "deleteSubscriptionManagedSeparately": "Predplatné (spravuje sa samostatne v obchode)",
+    "typeDeleteToConfirm": "Potvrďte zadaním DELETE",
+    "enterYourPasswordToConfirm": "Potvrďte zadaním svojho hesla",
+    "permanentlyDeleteAccount": "Natrvalo odstrániť účet",
+    "resetPasswordDescription": "Zadajte svoju e-mailovú adresu a pošleme vám odkaz na obnovenie hesla.",
+    "updateYourEncryptionPassword": "Zmena šifrovacieho hesla",
+    "updateYourLoginPassword": "Zmena prihlasovacieho hesla",
+    "manageSubscription": "Spravovať predplatné",
+    "viewOrCancelYourPlan": "Zobrazenie alebo zrušenie plánu",
+    "permanentlyDeleteYourAccountAndData": "Trvalé odstránenie účtu a údajov",
+    "signOutConfirmationContent": "Na prístup k synchronizovaným údajom budete musieť znova zadať hlavné heslo.",
+    "couldNotConnectToServer": "K serveru sa nepodarilo pripojiť. Overte adresu URL, kľúč anon a či bola použitá migrácia Habo.\n\nChyba: {e}",
+    "@couldNotConnectToServer": {
+        "placeholders": {
+            "e": {
+                "type": "String"
+            }
+        }
+    },
+    "disconnectFromSelfHosted": "Týmto sa odpojíte od vlastného servera a prepnete späť na predvolený server Habo Cloud. Bude potrebné sa znova prihlásiť.",
+    "restartRequiredContent": "Zatvorte aplikáciu a znova ju otvorte, aby sa pripojila k novému serveru.",
+    "connectedToCustomServer": "Pripojené k vlastnému serveru",
+    "connectedToHaboCloudDefault": "Pripojené k Habo Cloud (predvolené)",
+    "selfHostDescription": "Prevádzkujte vlastný backend Supabase a získajte plný prístup k synchronizácii bez predplatného. Pokyny nájdete v príručke k vlastnému hostingu.",
+    "urlIsRequired": "Adresa URL je povinná",
+    "enterValidUrl": "Zadajte platnú adresu URL (napr. https://vas-projekt.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "Adresa URL musí začínať na https:// alebo http://",
+    "anonKeyIsRequired": "Kľúč anon je povinný",
+    "pleaseSignInWithEmailAndPassword": "Prihláste sa pomocou e-mailu a hesla.",
+    "checkYourEmail": "Skontrolujte svoj e-mail",
+    "weSentVerificationLinkTo": "Overovací odkaz sme poslali na adresu",
+    "clickLinkInEmailToVerify": "Kliknutím na odkaz v e-maile overte svoj účet. Potom sa sem vráťte a ťuknite na tlačidlo nižšie.",
+    "resendInSeconds": "Znova odoslať o {seconds} s",
+    "@resendInSeconds": {
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "resendVerificationEmail": "Znova odoslať overovací e-mail",
+    "backToSignIn": "Späť na prihlásenie",
+    "featureHomescreenWidgetDarkModeDesc": "Widget pre Android teraz podporuje svetlé aj tmavé pozadie.",
+    "offlineMode": "Režim offline",
+    "offlineModeDescription": "Vypnúť synchronizáciu a všetky sieťové pripojenia",
+    "offlineModeRestartContent": "Zatvorte aplikáciu a znova ju otvorte, aby sa režim offline použil.",
+    "unavailableWhileOffline": "Nedostupné v režime offline"
 }

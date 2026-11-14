@@ -298,5 +298,350 @@
     "ok": "OK",
     "newPasswordIsRequired": "É necessária uma nova palavra-passe",
     "currentPassword": "Palavra-passe atual",
-    "confirmNewPassword": "Confirme a palavra-passe nova"
+    "confirmNewPassword": "Confirme a palavra-passe nova",
+    "widgetTheme": "Tema do widget",
+    "progressOf": "{current} / {target} {unit}",
+    "@progressOf": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            },
+            "unit": {
+                "type": "String"
+            }
+        }
+    },
+    "numericHabit": "Progressivo",
+    "targetValue": "Valor alvo",
+    "booleanHabit": "Verificável (Sim/Não)",
+    "slider": "Controlo deslizante",
+    "setupFingerprintFaceUnlock": "Configure a impressão digital ou o desbloqueio facial nas definições do dispositivo",
+    "touchSensor": "Toque no sensor",
+    "deviceCredentialsRequired": "Credenciais do dispositivo necessárias",
+    "setupDeviceCredentials": "Configure as credenciais do dispositivo nas definições",
+    "setupTouchIdFaceId": "Configure o Touch ID ou o Face ID nas definições do dispositivo",
+    "reenableTouchIdFaceId": "Reative o Touch ID ou o Face ID",
+    "biometricLockDescription": "Proteger a aplicação com {authMethod}",
+    "@biometricLockDescription": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticateToEnable": "Autentique-se para ativar o bloqueio por biometria",
+    "authenticateToAccess": "Autentique-se para aceder à Habo",
+    "authenticationFailedMessage": "Autentique-se com {authMethod} para aceder à Habo",
+    "@authenticationFailedMessage": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "authenticationPrompt": "Autentique-se com {authMethod} para aceder aos seus hábitos",
+    "@authenticationPrompt": {
+        "placeholders": {
+            "authMethod": {
+                "type": "String"
+            }
+        }
+    },
+    "devicePinPatternPassword": "PIN, padrão ou palavra-passe do dispositivo",
+    "iris": "Íris",
+    "featureNumericTitle": "Valores numéricos nos hábitos",
+    "featureNumericDesc": "Registe contagens como copos de água ou páginas lidas",
+    "featureDeepLinksTitle": "Esquema de URL (ligações diretas)",
+    "featureDeepLinksDesc": "Abra a Habo diretamente em ecrãs como as definições ou a criação de hábitos",
+    "featureArchiveDesc": "Oculte hábitos que já não acompanha, sem os eliminar",
+    "featureSoundTitle": "Novo motor de som",
+    "featureSoundDesc": "Volume ajustável",
+    "featureLockTitle": "Bloqueio da aplicação",
+    "featureLockDesc": "Proteja a aplicação com Face ID / Touch ID / biometria",
+    "featureIosSoundMixingTitle": "Mistura de som corrigida",
+    "featureIosSoundMixingDesc": "Os sons da Habo já não interrompem a sua música ou podcasts",
+    "featureHomescreenWidgetDesc": "Veja o progresso dos seus hábitos num relance a partir do ecrã principal (experimental)",
+    "featureIosWidgetsTitle": "Novos widgets para o ecrã principal (iOS)",
+    "featureIosWidgetsDesc": "Marque um hábito, veja o progresso de hoje ou o ano inteiro de um hábito diretamente no ecrã principal. Adicione um widget por hábito.",
+    "featureLongpressCheckTitle": "Marcar com toque longo",
+    "featureLongpressCheckDesc": "Toque longamente nos botões dos hábitos para alterar rapidamente o estado",
+    "haboSyncDescription": "O Habo Sync chegou! Sincronize e faça cópias de segurança dos seus hábitos em todos os seus dispositivos com sincronização na nuvem encriptada de ponta a ponta.",
+    "habitsToday": "Hábitos de hoje",
+    "widgetChooseHabit": "Escolha um hábito",
+    "widgetNoHabits": "Adicione um hábito na Habo",
+    "oneTapCheck": "Um toque para marcar",
+    "tapCheckLongPressMenu": "Tocar para marcar, toque longo para o menu",
+    "categoryName": "Nome da categoria",
+    "createCategory": "Criar categoria",
+    "selectIcon": "Escolher um ícone",
+    "syncTitle": "Sincronização",
+    "syncAndBackupYourData": "Sincronize e faça cópias de segurança dos seus dados",
+    "haboCloudDefault": "Habo Cloud (predefinido)",
+    "syncNotAvailable": "Sincronização indisponível",
+    "syncNow": "Sincronizar agora",
+    "subscribe": "Subscrever",
+    "restoreBackupQuestion": "Restaurar cópia de segurança?",
+    "habitsCount": "{count} hábitos",
+    "@habitsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "anUnexpectedErrorOccurred": "Ocorreu um erro inesperado",
+    "anUnexpectedErrorOccurredTryAgain": "Ocorreu um erro inesperado. Por favor, tente novamente.",
+    "resetPassword": "Repor palavra-passe",
+    "sendResetLink": "Enviar ligação de reposição",
+    "pleaseEnterValidEmail": "Introduza um endereço de e-mail válido",
+    "checkEmailForResetLink": "Verifique o seu e-mail para encontrar a ligação de reposição da palavra-passe.",
+    "failedToSendResetLink": "Falha ao enviar a ligação de reposição. Por favor, tente novamente.",
+    "appleSignInError": "Erro ao iniciar sessão com a Apple: {error}",
+    "@appleSignInError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "signInFailedPleaseTryAgain": "Falha ao iniciar sessão. Por favor, tente novamente.",
+    "enterEmailForResetLink": "Introduza o seu endereço de e-mail e enviaremos uma ligação para repor a sua palavra-passe.",
+    "emailLabel": "E-mail",
+    "createAccountToBackupAndSync": "Crie uma conta para fazer cópias de segurança e sincronizar.",
+    "welcomeBackStayConsistent": "Bem-vindo de volta! Vamos manter a consistência.",
+    "emailIsRequired": "O e-mail é obrigatório",
+    "enterValidEmail": "Introduza um e-mail válido",
+    "passwordIsRequired": "A palavra-passe é obrigatória",
+    "passwordMinLengthError": "A palavra-passe deve ter pelo menos 8 caracteres",
+    "passwordsDoNotMatch": "As palavras-passe não coincidem",
+    "createAccount": "Criar conta",
+    "signIn": "Iniciar sessão",
+    "signUp": "Registar",
+    "alreadyHaveAnAccount": "Já tem uma conta? ",
+    "dontHaveAnAccount": "Ainda não tem conta? ",
+    "orContinueWith": "ou continuar com",
+    "continueWithApple": "Continuar com a Apple",
+    "continueWithGoogle": "Continuar com a Google",
+    "pauseSyncing": "Pausar sincronização",
+    "pausesSyncingAndBackup": "Pausa a sincronização e as cópias de segurança",
+    "restoreData": "Restaurar dados",
+    "fromPreviousBackups": "A partir de cópias de segurança anteriores",
+    "emailPasswordAndAccount": "E-mail, palavra-passe e conta",
+    "signOut": "Terminar sessão",
+    "syncingPaused": "Sincronização em pausa",
+    "neverSynced": "Nunca sincronizado",
+    "paused": "Em pausa",
+    "dataBeingSynchronized": "Os seus dados estão a ser sincronizados",
+    "syncingToCloud": "A sincronizar com a nuvem",
+    "everythingIsSafe": "Está tudo em segurança",
+    "connectedToCloud": "Ligado à nuvem",
+    "syncError": "Erro de sincronização",
+    "tapSyncNowToRetry": "Toque em «Sincronizar agora» para tentar novamente",
+    "youAreOffline": "Está offline",
+    "willSyncWhenConnected": "Será sincronizado quando houver ligação",
+    "offline": "Offline",
+    "setUpSyncToEnable": "Configure a sincronização para ativar",
+    "subscriptionNeeded": "Subscrição necessária",
+    "subscribeToEnableSync": "Subscreva para ativar o Habo Sync",
+    "notActive": "Inativo",
+    "syncAndBackup": "Sincronização e cópia de segurança",
+    "unlockSyncAndBackup": "Desbloquear sincronização e cópia de segurança",
+    "keepHabitsSafeAndSynced": "Mantenha os seus hábitos seguros e sincronizados em todos os seus dispositivos.",
+    "realTimeSyncAcrossDevices": "Sincronização em tempo real entre dispositivos",
+    "automaticCloudBackups": "Cópias de segurança automáticas na nuvem",
+    "endToEndEncryption": "Encriptação de ponta a ponta",
+    "lastSyncedJustNow": "Sincronizado agora mesmo",
+    "lastSyncedMinsAgo": "Última sincronização há {minutes} min",
+    "@lastSyncedMinsAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedHoursAgo": "Última sincronização há {hours} h",
+    "@lastSyncedHoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "lastSyncedDaysAgo": "Última sincronização há {days} {plural, select, s {dias} other {dia}}",
+    "@lastSyncedDaysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            },
+            "plural": {
+                "type": "String"
+            }
+        }
+    },
+    "todayAt": "Hoje às {time}",
+    "@todayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "yesterdayAt": "Ontem às {time}",
+    "@yesterdayAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "weekdayAt": "{weekday} às {time}",
+    "@weekdayAt": {
+        "placeholders": {
+            "weekday": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreBackupConfirmation": "Isto substituirá todos os dados atuais pela cópia de segurança de {date}.\n\nEsta ação não pode ser anulada.",
+    "@restoreBackupConfirmation": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "backupRestoredSuccessfully": "Cópia de segurança restaurada com sucesso!",
+    "restoreFailedWithError": "Falha ao restaurar: {error}",
+    "@restoreFailedWithError": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "restoreFailedTryAgain": "Falha ao restaurar. Por favor, tente novamente.",
+    "chooseBackupToRestore": "Escolha uma cópia de segurança para restaurar",
+    "noBackupsAvailable": "Ainda não há cópias de segurança disponíveis.\nAs cópias de segurança são criadas automaticamente durante a sincronização.",
+    "purchasesRestoredSuccessfully": "Compras restauradas com sucesso!",
+    "noPreviousPurchasesFound": "Não foram encontradas compras anteriores.",
+    "verificationEmailResent": "E-mail de verificação reenviado!",
+    "failedToResend": "Falha ao reenviar: {error}",
+    "@failedToResend": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "iveVerifiedMyEmail": "Já verifiquei o meu e-mail",
+    "seamlessContinuity": "Continuidade perfeita",
+    "seamlessContinuityDesc": "Os seus hábitos, perfeitamente sincronizados em todo o lado. Comece a acompanhar no telemóvel e marque no tablet sem interrupções.",
+    "zeroKnowledgePrivacy": "Privacidade de conhecimento zero",
+    "zeroKnowledgePrivacyDesc": "Encriptação de ponta a ponta de última geração. Só você tem a chave mestra — nunca poderemos ler nem aceder aos seus dados pessoais.",
+    "restEasy": "Sem preocupações",
+    "restEasyDesc": "Guardamos em segurança todo o seu histórico de progresso na nuvem. Total tranquilidade, de forma automática.",
+    "getStarted": "Começar",
+    "createMasterPassword": "Criar palavra-passe mestra",
+    "unlockYourData": "Desbloqueie os seus dados",
+    "masterPasswordDescriptionSetup": "A sua palavra-passe mestra encripta todos os seus dados antes de saírem do dispositivo. Escolha algo forte e fácil de memorizar.",
+    "masterPasswordDescriptionUnlock": "Introduza a sua palavra-passe mestra para desencriptar os seus dados e ativar a sincronização.",
+    "importantCannotBeRecovered": "Importante: não pode ser recuperada",
+    "masterPasswordWarning": "Não guardamos a sua palavra-passe. Se a esquecer, os seus dados não poderão ser recuperados. Anote-a num local seguro!",
+    "masterPasswordLabel": "Palavra-passe mestra",
+    "minimum8Characters": "Mínimo de 8 caracteres",
+    "setPassword": "Definir palavra-passe",
+    "unlockAndSync": "Desbloquear e sincronizar",
+    "unlockPasswordExplanation": "Esta é a palavra-passe que criou quando configurou a sincronização pela primeira vez noutro dispositivo.",
+    "masterPasswordChangedSuccessfully": "Palavra-passe mestra alterada com sucesso",
+    "errorWithDescription": "Erro: {error}",
+    "@errorWithDescription": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "changeMasterPassword": "Alterar palavra-passe mestra",
+    "changePassword": "Alterar palavra-passe",
+    "accountPasswordChangedSuccessfully": "Palavra-passe da conta alterada com sucesso",
+    "changeAccountPassword": "Alterar palavra-passe da conta",
+    "checkEmailForPasswordReset": "Verifique o seu e-mail para encontrar a ligação de reposição da palavra-passe.",
+    "signOutQuestion": "Terminar sessão?",
+    "resetToHaboCloudQuestion": "Repor para a Habo Cloud?",
+    "serverConfiguration": "Configuração do servidor",
+    "testConnectionAndSave": "Testar ligação e guardar",
+    "resetToHaboCloud": "Repor para a Habo Cloud",
+    "currentPasswordIsRequired": "A palavra-passe atual é obrigatória",
+    "newPasswordMustBeDifferent": "A nova palavra-passe tem de ser diferente da atual",
+    "incorrectCurrentPassword": "Palavra-passe atual incorreta",
+    "enterCurrentPasswordAndChooseNew": "Introduza a sua palavra-passe atual e escolha uma nova.",
+    "newPassword": "Nova palavra-passe",
+    "thisChangesYourLoginPassword": "Isto altera a sua palavra-passe de início de sessão na Habo.",
+    "passwordUpdated": "Palavra-passe atualizada!",
+    "passwordResetSuccessMessage": "A sua palavra-passe foi reposta com sucesso. Já pode iniciar sessão com a nova palavra-passe.",
+    "setNewPassword": "Definir nova palavra-passe",
+    "chooseStrongPassword": "Escolha uma palavra-passe forte para a sua conta.",
+    "pleaseTypeDeleteToConfirm": "Escreva DELETE para confirmar",
+    "unableToVerifyIdentity": "Não foi possível verificar a identidade",
+    "incorrectPassword": "Palavra-passe incorreta",
+    "failedToDeleteAccount": "Falha ao eliminar a conta",
+    "deleteYourAccount": "Eliminar a sua conta",
+    "deleteAccountWarning": "Esta ação é permanente e não pode ser anulada. Os seguintes dados serão eliminados permanentemente:",
+    "deleteHabitsAndTrackingData": "Todos os seus hábitos e dados de acompanhamento",
+    "deleteCloudBackupsAndSyncData": "Cópias de segurança na nuvem e dados de sincronização",
+    "deleteEncryptionKeysAndProfile": "Chaves de encriptação e perfil",
+    "deleteYourAccountAndLoginCredentials": "A sua conta e as credenciais de início de sessão",
+    "deleteSubscriptionManagedSeparately": "Subscrição (gerida separadamente pela loja)",
+    "typeDeleteToConfirm": "Escreva DELETE para confirmar",
+    "enterYourPasswordToConfirm": "Introduza a sua palavra-passe para confirmar",
+    "permanentlyDeleteAccount": "Eliminar conta permanentemente",
+    "resetPasswordDescription": "Introduza o seu endereço de e-mail e enviaremos uma ligação para repor a sua palavra-passe.",
+    "updateYourEncryptionPassword": "Atualizar a palavra-passe de encriptação",
+    "updateYourLoginPassword": "Atualizar a palavra-passe de início de sessão",
+    "manageSubscription": "Gerir subscrição",
+    "viewOrCancelYourPlan": "Ver ou cancelar o seu plano",
+    "permanentlyDeleteYourAccountAndData": "Eliminar permanentemente a sua conta e os seus dados",
+    "signOutConfirmationContent": "Terá de introduzir novamente a sua palavra-passe mestra para aceder aos dados sincronizados.",
+    "couldNotConnectToServer": "Não foi possível ligar ao servidor. Verifique o URL, a chave anon e se a migração da Habo foi aplicada.\n\nErro: {e}",
+    "@couldNotConnectToServer": {
+        "placeholders": {
+            "e": {
+                "type": "String"
+            }
+        }
+    },
+    "disconnectFromSelfHosted": "Isto desligará do seu servidor autoalojado e voltará ao servidor predefinido Habo Cloud. Terá de iniciar sessão novamente.",
+    "restartRequiredContent": "Feche e volte a abrir a aplicação para ligar ao novo servidor.",
+    "connectedToCustomServer": "Ligado a um servidor personalizado",
+    "connectedToHaboCloudDefault": "Ligado à Habo Cloud (predefinido)",
+    "selfHostDescription": "Aloje o seu próprio backend Supabase para ter acesso total à sincronização sem subscrição. Consulte o guia de autoalojamento para instruções de configuração.",
+    "urlIsRequired": "O URL é obrigatório",
+    "enterValidUrl": "Introduza um URL válido (p. ex., https://o-seu-projeto.supabase.co)",
+    "urlMustStartWithHttpOrHttps": "O URL tem de começar por https:// ou http://",
+    "anonKeyIsRequired": "A chave anon é obrigatória",
+    "pleaseSignInWithEmailAndPassword": "Inicie sessão com o seu e-mail e palavra-passe.",
+    "checkYourEmail": "Verifique o seu e-mail",
+    "weSentVerificationLinkTo": "Enviámos uma ligação de verificação para",
+    "clickLinkInEmailToVerify": "Clique na ligação no e-mail para verificar a sua conta e, em seguida, volte aqui e toque no botão abaixo.",
+    "resendInSeconds": "Reenviar em {seconds} s",
+    "@resendInSeconds": {
+        "placeholders": {
+            "seconds": {
+                "type": "int"
+            }
+        }
+    },
+    "resendVerificationEmail": "Reenviar e-mail de verificação",
+    "backToSignIn": "Voltar ao início de sessão",
+    "featureHomescreenWidgetDarkModeDesc": "O widget para o ecrã principal do Android suporta agora fundos claros e escuros.",
+    "offlineMode": "Modo offline",
+    "offlineModeDescription": "Desativar a sincronização e todas as ligações de rede",
+    "offlineModeRestartContent": "Feche e volte a abrir a aplicação para aplicar o modo offline.",
+    "unavailableWhileOffline": "Indisponível em modo offline"
 }

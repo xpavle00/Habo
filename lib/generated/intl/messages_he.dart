@@ -20,20 +20,27 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'he';
 
+  static String m4(title) => "הקטגוריה „${title}” כבר קיימת";
+
   static String m0(theme) =>
       "${Intl.select(theme, {'device': 'כמו המכשיר', 'light': 'בהירה', 'dark': 'כהה', 'oled': 'כהה, מותאם למסכי OLED', 'other': 'כמו המכשיר'})}";
+
+  static String m16(version) => "גרסה ${version}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("מידע כללי"),
     "accountabilityPartner": MessageLookupByLibrary.simpleMessage("שותף נאמן"),
     "add": MessageLookupByLibrary.simpleMessage("הוספה"),
+    "addCategory": MessageLookupByLibrary.simpleMessage("הוספת קטגוריה"),
     "advancedHabitBuilding": MessageLookupByLibrary.simpleMessage(
       "בניית הרגל למתקדמים",
     ),
     "advancedHabitBuildingDescription": MessageLookupByLibrary.simpleMessage(
       "סעיף זה מסייע לך להגדיר הרגלים בצורה טוב יותר בעזרת שרשרת הרגל. לצורך כך יש לקבוע סימן, שגרה ופרס עבור כל הרגל.",
     ),
+    "all": MessageLookupByLibrary.simpleMessage("הכול"),
+    "allCategories": MessageLookupByLibrary.simpleMessage("כל הקטגוריות"),
     "allHabitsWillBeReplaced": MessageLookupByLibrary.simpleMessage(
       "כל ההרגלים הקיימים יוחלפו בהרגלים מהגיבוי.",
     ),
@@ -42,6 +49,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "appNotificationsChannel": MessageLookupByLibrary.simpleMessage(
       "ערוץ התראות להתראות היישום",
     ),
+    "archive": MessageLookupByLibrary.simpleMessage("העברה לארכיון"),
+    "archiveHabit": MessageLookupByLibrary.simpleMessage("העברת ההרגל לארכיון"),
+    "archivedHabits": MessageLookupByLibrary.simpleMessage("הרגלים בארכיון"),
     "at7AM": MessageLookupByLibrary.simpleMessage("בשעה 7:00"),
     "backup": MessageLookupByLibrary.simpleMessage("גיבוי"),
     "backupCreatedSuccessfully": MessageLookupByLibrary.simpleMessage(
@@ -53,6 +63,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "buyMeACoffee": MessageLookupByLibrary.simpleMessage("Buy me a coffee"),
     "cancel": MessageLookupByLibrary.simpleMessage("ביטול"),
+    "categories": MessageLookupByLibrary.simpleMessage("קטגוריות"),
+    "category": MessageLookupByLibrary.simpleMessage("קטגוריה"),
+    "categoryAlreadyExists": m4,
     "check": MessageLookupByLibrary.simpleMessage("סימון"),
     "close": MessageLookupByLibrary.simpleMessage("סגירה"),
     "congratulationsReward": MessageLookupByLibrary.simpleMessage(
@@ -77,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "כדי לדבוק טוב יותר בהרגלים, אפשר להגדיר:",
     ),
     "delete": MessageLookupByLibrary.simpleMessage("‌מחיקה"),
+    "deleteCategory": MessageLookupByLibrary.simpleMessage("מחיקת קטגוריה"),
     "disclaimer": MessageLookupByLibrary.simpleMessage("כתב ויתור"),
     "do50PushUps": MessageLookupByLibrary.simpleMessage("50 שכיבות סמיכה"),
     "doNotForgetToCheckYourHabits": MessageLookupByLibrary.simpleMessage(
@@ -86,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "תרומה של 40₪ לצדקה",
     ),
     "done": MessageLookupByLibrary.simpleMessage("סיום"),
+    "editCategory": MessageLookupByLibrary.simpleMessage("עריכת קטגוריה"),
     "editHabit": MessageLookupByLibrary.simpleMessage("עריכת הרגל"),
     "emptyList": MessageLookupByLibrary.simpleMessage("רשימה ריקה"),
     "exercise": MessageLookupByLibrary.simpleMessage("התעמלות"),
@@ -93,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 דקות למשחקי וידאו",
     ),
+    "fingerprint": MessageLookupByLibrary.simpleMessage("טביעת אצבע"),
     "firstDayOfWeek": MessageLookupByLibrary.simpleMessage("היום הראשון בשבוע"),
     "habit": MessageLookupByLibrary.simpleMessage("הרגל"),
     "habitContract": MessageLookupByLibrary.simpleMessage("חוזה הרגל"),
@@ -119,9 +135,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "ifYouWantToSupport": MessageLookupByLibrary.simpleMessage(
       "אפשר לתמוך ב־Habo דרך:",
     ),
+    "input": MessageLookupByLibrary.simpleMessage("קלט"),
     "logYourDays": MessageLookupByLibrary.simpleMessage("מעקב יומי"),
     "modify": MessageLookupByLibrary.simpleMessage("שינוי"),
     "month": MessageLookupByLibrary.simpleMessage("חודש"),
+    "noArchivedHabits": MessageLookupByLibrary.simpleMessage(
+      "אין הרגלים בארכיון",
+    ),
+    "noCategoriesYet": MessageLookupByLibrary.simpleMessage(
+      "עדיין אין קטגוריות",
+    ),
     "noDataAboutHabits": MessageLookupByLibrary.simpleMessage(
       "אין נתוני הרגלים.",
     ),
@@ -161,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "routineNumbered": MessageLookupByLibrary.simpleMessage("2. שגרה"),
     "sanction": MessageLookupByLibrary.simpleMessage("עונש"),
     "save": MessageLookupByLibrary.simpleMessage("שמירה"),
+    "searchIcons": MessageLookupByLibrary.simpleMessage("חיפוש"),
     "setColors": MessageLookupByLibrary.simpleMessage("קביעת צבעים"),
     "settings": MessageLookupByLibrary.simpleMessage("הגדרות"),
     "showMonthName": MessageLookupByLibrary.simpleMessage("הצגת שם החודש"),
@@ -179,12 +203,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "themeSelect": m0,
     "topStreak": MessageLookupByLibrary.simpleMessage("רצף שיא"),
     "total": MessageLookupByLibrary.simpleMessage("סך הכול"),
+    "touchSensor": MessageLookupByLibrary.simpleMessage("חיישן מגע"),
     "trackYourProgress": MessageLookupByLibrary.simpleMessage(
       "אפשר לעקוב אחר ההתקדמות דרך תצוגת לוח השנה של כל הרגל, או בעמוד הסטטיסטיקה.",
     ),
     "twoDayRule": MessageLookupByLibrary.simpleMessage("‎„יום כן ויום לא”"),
     "twoDayRuleDescription": MessageLookupByLibrary.simpleMessage(
       "כלל „יום כן ויום לא” מאפשר לך להחמיץ יום אחד מבלי לשבור את הרצף אם היום למחרת היה מוצלח.",
+    ),
+    "unarchive": MessageLookupByLibrary.simpleMessage("הוצאה מהארכיון"),
+    "unarchiveHabit": MessageLookupByLibrary.simpleMessage(
+      "הוצאת ההרגל מהארכיון",
     ),
     "undo": MessageLookupByLibrary.simpleMessage("ביטול פעולה"),
     "unknown": MessageLookupByLibrary.simpleMessage("לא ידוע"),
@@ -193,6 +222,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "warning": MessageLookupByLibrary.simpleMessage("אזהרה"),
     "week": MessageLookupByLibrary.simpleMessage("שבוע"),
+    "whatsNewTitle": MessageLookupByLibrary.simpleMessage("מה חדש"),
+    "whatsNewVersion": m16,
     "yourCommentHere": MessageLookupByLibrary.simpleMessage(
       "כאן המקום להערה שלך",
     ),
