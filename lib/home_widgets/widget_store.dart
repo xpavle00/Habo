@@ -25,14 +25,14 @@ abstract final class WidgetKinds {
 }
 
 /// Android widget providers that draw themselves from the shared snapshot.
-/// The Android "today" widget is still a Flutter-rendered image.
 abstract final class AndroidWidgetProviders {
+  static const String today = 'com.pavlenko.Habo.HaboWidget';
   static const String checkIn =
       'com.pavlenko.Habo.widgets.CheckInWidgetProvider';
   static const String year = 'com.pavlenko.Habo.widgets.YearWidgetProvider';
   static const String todayList =
       'com.pavlenko.Habo.widgets.TodayListWidgetProvider';
-  static const List<String> all = [checkIn, year, todayList];
+  static const List<String> all = [today, checkIn, year, todayList];
 }
 
 /// Seam over the shared App Group storage, so widget logic is testable

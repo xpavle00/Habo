@@ -111,6 +111,20 @@ void main() {
     expect(_build([], weekStart: StartingDayOfWeek.monday)['weekStart'], 1);
   });
 
+  test('prevDays holds last year so January still shows December', () {
+    final h = _habit(
+      events: {
+        DateTime(2025, 12, 31): [DayType.fail, ''],
+        DateTime(2026, 1, 2): [DayType.check, ''],
+      },
+    );
+    final habit = _only(_build([h], now: DateTime(2026, 1, 2)));
+    final prev = habit['prevDays'] as String;
+    expect(prev, hasLength(365));
+    expect(prev[364], 'f');
+    expect((habit['days'] as String)[1], 'c');
+  });
+
   test('days has 365 chars in 2026 and 366 in 2028', () {
     expect(_only(_build([_habit()]))['days'], hasLength(365));
     expect(
@@ -277,10 +291,7 @@ void main() {
     expect(out['unit'], 'min');
     expect(out['year'], 2026);
     expect(out['twoDayRule'], isFalse);
-    expect(
-      _only(_build([_habit(twoDayRule: true)]))['twoDayRule'],
-      isTrue,
-    );
+    expect(_only(_build([_habit(twoDayRule: true)]))['twoDayRule'], isTrue);
   });
 
   test('WidgetLabels.fromS uses app strings and locale month names', () async {
@@ -302,6 +313,7 @@ void main() {
         title: 'Drink water',
         notification: true,
         events: {
+          DateTime(2025, 12, 31): [DayType.fail, ''],
           DateTime(2026, 1, 1): [DayType.check, ''],
           DateTime(2026, 11, 4): [DayType.check, ''],
           DateTime(2026, 11, 5): [DayType.skip, ''],

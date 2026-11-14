@@ -159,15 +159,24 @@ public struct SnapshotHabit: Codable, Equatable, Sendable, Identifiable {
     public let days: String
     public let today: TodayProgress?
     public let streak: StreakTable
+    /// The year before `year`, same format as `days`. Optional so snapshots
+    /// written before this field still decode.
+    public var prevDays: String? = nil
 
     public var isNumeric: Bool { type == "numeric" }
 
-    /// Snapshot state for `date`; `.none` outside the snapshot's year.
+    /// Snapshot state for `date`; `.none` outside the snapshot's year and
+    /// the one before it.
     public func code(on date: LocalDate) -> DayCode {
-        guard date.year == year else { return .none }
+        let codes: String
+        switch date.year {
+        case year: codes = days
+        case year - 1: codes = prevDays ?? ""
+        default: return .none
+        }
         let index = date.dayOfYearIndex
-        guard index >= 0, index < days.count else { return .none }
-        let char = days[days.index(days.startIndex, offsetBy: index)]
+        guard index >= 0, index < codes.count else { return .none }
+        let char = codes[codes.index(codes.startIndex, offsetBy: index)]
         return DayCode(rawValue: char) ?? .none
     }
 }

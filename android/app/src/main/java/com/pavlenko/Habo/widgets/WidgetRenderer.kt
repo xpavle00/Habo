@@ -362,6 +362,66 @@ class WidgetRenderer(context: Context, private val dark: Boolean) {
         }
     }
 
+    /**
+     * "Habits today" ring, a port of TodayWidget.swift (itself a port of the
+     * Flutter `HaboHomeWidget`): laid out in a 170pt square, then scaled.
+     */
+    fun today(width: Int, height: Int, title: String, summary: TodaySummary): Bitmap = draw(width, height) { canvas ->
+        val pad = PADDING * unit(min(width, height))
+        val k = (min(width, height) - 2 * pad) / 170f
+        val cx = width / 2f
+        val ringTextColor = if (dark) 0xEBFFFFFF.toInt() else 0xD9000000.toInt()
+
+        // Title above a 130pt ring, 8pt apart, centred as one block.
+        text.typeface = Typeface.DEFAULT
+        text.textSize = 16 * k
+        text.color = ringTextColor
+        val titleHeight = text.fontMetrics.let { it.descent - it.ascent }
+        val top = height / 2f - (titleHeight + 8 * k + 130 * k) / 2
+        val fitted = TextUtils.ellipsize(title, text, 170 * k, TextUtils.TruncateAt.END).toString()
+        centred(canvas, fitted, cx, top + titleHeight / 2)
+
+        val cy = top + titleHeight + 8 * k + 65 * k
+        if (summary.total > 0) {
+            val strokeWidth = 12 * k
+            val radius = 65 * k - strokeWidth / 2
+            val oval = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
+            stroke.strokeWidth = strokeWidth
+            stroke.strokeCap = Paint.Cap.BUTT
+            stroke.color = HaboPalette.grey(0.3f)
+            canvas.drawCircle(cx, cy, radius, stroke)
+
+            // Arcs from 12 o'clock, each drawn over the previous one.
+            val segment = 1f / summary.total
+            fun arc(fraction: Float, color: Int) {
+                stroke.strokeCap = Paint.Cap.ROUND
+                stroke.color = color
+                canvas.drawArc(oval, -90f, 360f * min(fraction, 1f), false, stroke)
+            }
+            if (summary.skipped > 0) arc(summary.done * segment, withAlpha(HaboPalette.PRIMARY, 0.2f))
+            if (summary.completed > 0) {
+                arc((summary.failed + summary.completed) * segment, withAlpha(HaboPalette.PRIMARY, 0.75f))
+            }
+            if (summary.failed > 0) arc(summary.failed * segment, HaboPalette.RED)
+        }
+
+        if (summary.allDone) {
+            icon(canvas, MaterialIcon.CHECK, cx, cy, 64 * k, HaboPalette.PRIMARY)
+        } else {
+            text.typeface = Typeface.DEFAULT_BOLD
+            text.textSize = 32 * k
+            text.color = ringTextColor
+            val label = "${summary.done}/${summary.total}"
+            // Shrink to fit the ring's inside, down to half size, as on iOS.
+            val natural = text.measureText(label)
+            if (natural > 100 * k) text.textSize = 32 * k * max(0.5f, 100 * k / natural)
+            centred(canvas, label, cx, cy)
+        }
+    }
+
+    private fun withAlpha(color: Int, alpha: Float): Int =
+        ((alpha * 255).roundToInt() shl 24) or (color and 0xFFFFFF)
+
     /** Small centred text shown when a widget has nothing to render. */
     fun message(width: Int, height: Int, message: String): Bitmap = draw(width, height) { canvas ->
         val u = unit(min(width, height))

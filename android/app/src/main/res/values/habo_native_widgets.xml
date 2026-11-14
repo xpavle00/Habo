@@ -18,6 +18,7 @@
     <string name="habo_widget_today_list_description">Check off today\'s habits from a list.</string>
     <string name="habo_widget_choose_habit">Choose a habit</string>
     <string name="habo_widget_no_habits">Add a habit in Habo</string>
+    <string name="habo_widget_open_app">Open Habo to update this widget</string>
 
     <style name="HaboWidgetPicker" parent="@android:style/Theme.DeviceDefault.Light.Dialog" />
 </resources>

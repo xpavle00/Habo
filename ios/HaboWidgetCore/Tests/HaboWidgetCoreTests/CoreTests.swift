@@ -16,6 +16,10 @@ final class SnapshotDecodingTests: XCTestCase {
         XCTAssertNil(water.today)
         XCTAssertEqual(water.code(on: LocalDate(year: 2026, month: 1, day: 1)), .check)
         XCTAssertEqual(water.code(on: LocalDate(year: 2026, month: 11, day: 5)), .skip)
+        // Last year comes from prevDays; older years are unknown.
+        XCTAssertEqual(water.code(on: LocalDate(year: 2025, month: 12, day: 31)), .fail)
+        XCTAssertEqual(water.code(on: LocalDate(year: 2025, month: 12, day: 30)), .none)
+        XCTAssertEqual(water.code(on: LocalDate(year: 2024, month: 12, day: 31)), .none)
 
         let read = snapshot.habits[1]
         XCTAssertEqual(read.isNumeric, true)

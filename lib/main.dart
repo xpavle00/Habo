@@ -212,13 +212,10 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
       _isInitialized = true;
     });
 
-    // Update home widget on app launch to ensure correct state
+    // Apply taps made on home-screen widgets while the app was closed; this
+    // also publishes a fresh snapshot for every widget.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Apply taps made on home-screen widgets while the app was closed.
       await habitsManager.drainWidgetActions();
-      if (context.mounted) {
-        await habitsManager.updateHomeWidget(context);
-      }
     });
 
     // Remove native splash once app is fully initialized
@@ -322,10 +319,6 @@ class _HaboState extends State<Habo> with WidgetsBindingObserver {
                 routeInformationParser: HaboRouteInformationParser(),
                 backButtonDispatcher: RootBackButtonDispatcher(),
                 builder: (context, child) {
-                  // Set context for automatic widget updates
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _habitManager.setWidgetContext(context);
-                  });
                   return BiometricAuthWrapper(child: child!);
                 },
               );

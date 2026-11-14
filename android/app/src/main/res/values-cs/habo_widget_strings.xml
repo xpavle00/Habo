@@ -10,4 +10,5 @@
     <string name="habo_widget_today_list_description">Odškrtněte dnešní návyky v seznamu.</string>
     <string name="habo_widget_choose_habit">Vyberte návyk</string>
     <string name="habo_widget_no_habits">Přidejte návyk v Habo</string>
+    <string name="habo_widget_open_app">Otevřete Habo, aby se widget aktualizoval</string>
 </resources>

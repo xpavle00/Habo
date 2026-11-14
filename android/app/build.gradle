@@ -91,6 +91,11 @@ dependencies {
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
+    // awesome_notifications' native core, so widget taps can adjust a
+    // habit's reminder (widgets/ReminderAdjuster.kt). compileOnly: the plugin
+    // ships it at runtime. Keep the version equal to awesome_notifications'.
+    compileOnly 'me.carda:AndroidAwnCore:0.11.0'
+
     // JVM tests for the native widget logic (org.json is stubbed in unit tests).
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.json:json:20240303'
