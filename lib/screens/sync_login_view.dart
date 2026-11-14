@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habo/constants.dart';
@@ -97,6 +98,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+        TextInput.finishAutofillContext();
         // Notify parent to show verification screen
         if (mounted && widget.onPendingVerification != null) {
           widget.onPendingVerification!(_emailController.text.trim());
@@ -106,6 +108,7 @@ class _SyncLoginViewState extends State<SyncLoginView> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+        TextInput.finishAutofillContext();
         // StreamBuilder picks up auth state change and triggers rebuild
       }
     } on AuthException catch (e) {
@@ -334,123 +337,100 @@ class _SyncLoginViewState extends State<SyncLoginView> {
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
-              // Green circle icon
-              Center(
-                child: Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    color: HaboColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.cloud_sync,
-                    size: 36,
-                    color: HaboColors.primary,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Habo',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _isSignUp
-                    ? S.of(context).createAccountToBackupAndSync
-                    : S.of(context).welcomeBackStayConsistent,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 28),
-
-              // Email field
-              HaboTextField(
-                label: S.of(context).emailLabel,
-                errorText: _emailError,
-                child: TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  maxLength: 254,
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: 'hello@habo.app',
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    enabledBorder: _emailError != null ? syncErrorBorder : null,
-                    focusedBorder: _emailError != null
-                        ? syncFocusedErrorBorder
-                        : null,
-                  ),
-                  onChanged: (_) {
-                    if (_emailError != null) {
-                      setState(() => _emailError = null);
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Password field
-              HaboTextField(
-                label: S.of(context).passwordLabel,
-                errorText: _passwordError,
-                child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  textInputAction: _isSignUp
-                      ? TextInputAction.next
-                      : TextInputAction.done,
-                  maxLength: 128,
-                  decoration: InputDecoration(
-                    counterText: '',
-                    hintText: '••••••••',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () =>
-                          setState(() => _obscurePassword = !_obscurePassword),
+          // Lets password managers fill email + password (and the confirm
+          // field on sign-up) together, and offer to save new credentials.
+          child: AutofillGroup(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                // Green circle icon
+                Center(
+                  child: Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: HaboColors.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
                     ),
-                    enabledBorder: _passwordError != null
-                        ? syncErrorBorder
-                        : null,
-                    focusedBorder: _passwordError != null
-                        ? syncFocusedErrorBorder
-                        : null,
+                    child: const Icon(
+                      Icons.cloud_sync,
+                      size: 36,
+                      color: HaboColors.primary,
+                    ),
                   ),
-                  onChanged: (_) {
-                    if (_passwordError != null) {
-                      setState(() => _passwordError = null);
-                    }
-                  },
-                  onFieldSubmitted: _isSignUp ? null : (_) => _handleSubmit(),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Text(
+                  'Habo',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _isSignUp
+                      ? S.of(context).createAccountToBackupAndSync
+                      : S.of(context).welcomeBackStayConsistent,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 28),
 
-              // Confirm password field (sign-up only)
-              if (_isSignUp) ...[
-                const SizedBox(height: 20),
+                // Email field
                 HaboTextField(
-                  label: S.of(context).confirmPasswordLabel,
-                  errorText: _confirmError,
+                  label: S.of(context).emailLabel,
+                  errorText: _emailError,
                   child: TextFormField(
-                    controller: _confirmController,
-                    obscureText: _obscureConfirm,
-                    textInputAction: TextInputAction.done,
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    autofillHints: [
+                      _isSignUp
+                          ? AutofillHints.newUsername
+                          : AutofillHints.username,
+                      AutofillHints.email,
+                    ],
+                    autocorrect: false,
+                    maxLength: 254,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: 'hello@habo.space',
+                      prefixIcon: const Icon(Icons.email_outlined),
+                      enabledBorder: _emailError != null
+                          ? syncErrorBorder
+                          : null,
+                      focusedBorder: _emailError != null
+                          ? syncFocusedErrorBorder
+                          : null,
+                    ),
+                    onChanged: (_) {
+                      if (_emailError != null) {
+                        setState(() => _emailError = null);
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Password field
+                HaboTextField(
+                  label: S.of(context).passwordLabel,
+                  errorText: _passwordError,
+                  child: TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    textInputAction: _isSignUp
+                        ? TextInputAction.next
+                        : TextInputAction.done,
+                    autofillHints: [
+                      _isSignUp
+                          ? AutofillHints.newPassword
+                          : AutofillHints.password,
+                    ],
                     maxLength: 128,
                     decoration: InputDecoration(
                       counterText: '',
@@ -458,175 +438,224 @@ class _SyncLoginViewState extends State<SyncLoginView> {
                       prefixIcon: const Icon(Icons.lock_outline),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureConfirm
+                          _obscurePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
                         ),
-                        onPressed: () =>
-                            setState(() => _obscureConfirm = !_obscureConfirm),
+                        onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
                       ),
-                      enabledBorder: _confirmError != null
+                      enabledBorder: _passwordError != null
                           ? syncErrorBorder
                           : null,
-                      focusedBorder: _confirmError != null
+                      focusedBorder: _passwordError != null
                           ? syncFocusedErrorBorder
                           : null,
                     ),
                     onChanged: (_) {
-                      if (_confirmError != null) {
-                        setState(() => _confirmError = null);
+                      if (_passwordError != null) {
+                        setState(() => _passwordError = null);
                       }
                     },
-                    onFieldSubmitted: (_) => _handleSubmit(),
+                    onFieldSubmitted: _isSignUp ? null : (_) => _handleSubmit(),
                   ),
                 ),
-              ],
 
-              // Forgot password (sign-in only)
-              if (!_isSignUp) ...[
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: _handleForgotPassword,
-                    child: Text(
-                      S.of(context).forgotPassword,
-                      style: TextStyle(color: Colors.grey[500], fontSize: 13),
-                    ),
-                  ),
-                ),
-              ],
-
-              const SizedBox(height: 24),
-
-              // CTA button with green glow
-              PrimaryButton(
-                onPressed: _isLoading ? null : _handleSubmit,
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
+                // Confirm password field (sign-up only)
+                if (_isSignUp) ...[
+                  const SizedBox(height: 20),
+                  HaboTextField(
+                    label: S.of(context).confirmPasswordLabel,
+                    errorText: _confirmError,
+                    child: TextFormField(
+                      controller: _confirmController,
+                      obscureText: _obscureConfirm,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.newPassword],
+                      maxLength: 128,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        hintText: '••••••••',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirm
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () => setState(
+                            () => _obscureConfirm = !_obscureConfirm,
                           ),
                         ),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _isSignUp
-                                ? S.of(context).createAccount
-                                : S.of(context).signIn,
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward, size: 18),
-                        ],
+                        enabledBorder: _confirmError != null
+                            ? syncErrorBorder
+                            : null,
+                        focusedBorder: _confirmError != null
+                            ? syncFocusedErrorBorder
+                            : null,
                       ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Toggle sign-in / sign-up
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _isSignUp
-                        ? S.of(context).alreadyHaveAnAccount
-                        : S.of(context).dontHaveAnAccount,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                      onChanged: (_) {
+                        if (_confirmError != null) {
+                          setState(() => _confirmError = null);
+                        }
+                      },
+                      onFieldSubmitted: (_) => _handleSubmit(),
+                    ),
                   ),
-                  GestureDetector(
-                    onTap: () => setState(() => _isSignUp = !_isSignUp),
-                    child: Text(
-                      _isSignUp ? S.of(context).signIn : S.of(context).signUp,
-                      style: const TextStyle(
-                        color: HaboColors.primary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                ],
+
+                // Forgot password (sign-in only)
+                if (!_isSignUp) ...[
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: _handleForgotPassword,
+                      child: Text(
+                        S.of(context).forgotPassword,
+                        style: TextStyle(color: Colors.grey[500], fontSize: 13),
                       ),
                     ),
                   ),
                 ],
-              ),
 
-              if (!ServiceLocator
-                  .instance
-                  .subscriptionService
-                  .isSelfHosted) ...[
                 const SizedBox(height: 24),
 
-                // Divider
+                // CTA button with green glow
+                PrimaryButton(
+                  onPressed: _isLoading ? null : _handleSubmit,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isSignUp
+                                  ? S.of(context).createAccount
+                                  : S.of(context).signIn,
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.arrow_forward, size: 18),
+                          ],
+                        ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Toggle sign-in / sign-up
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Divider(color: Colors.grey[300], thickness: 1),
+                    Text(
+                      _isSignUp
+                          ? S.of(context).alreadyHaveAnAccount
+                          : S.of(context).dontHaveAnAccount,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 13),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                    GestureDetector(
+                      onTap: () => setState(() => _isSignUp = !_isSignUp),
                       child: Text(
-                        S.of(context).orContinueWith,
-                        style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                        _isSignUp ? S.of(context).signIn : S.of(context).signUp,
+                        style: const TextStyle(
+                          color: HaboColors.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Divider(color: Colors.grey[300], thickness: 1),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                if (!ServiceLocator
+                    .instance
+                    .subscriptionService
+                    .isSelfHosted) ...[
+                  const SizedBox(height: 24),
 
-                // Social login buttons
-                Column(
-                  children: [
-                    // Apple
-                    if (Platform.isIOS || Platform.isMacOS) ...[
-                      SizedBox(
-                        height: 48,
-                        child: SignInWithAppleButton(
-                          onPressed: _signInWithApple,
-                          text: S.of(context).continueWithApple,
-                          style: Theme.of(context).brightness == Brightness.dark
-                              ? SignInWithAppleButtonStyle.white
-                              : SignInWithAppleButtonStyle.black,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(12),
+                  // Divider
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Divider(color: Colors.grey[300], thickness: 1),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          S.of(context).orContinueWith,
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 13,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                    ],
-                    // Google
-                    _buildSocialButton(
-                      context: context,
-                      iconWidget: SvgPicture.asset(
-                        'assets/images/google_logo.svg',
-                        width: 20,
-                        height: 20,
+                      Expanded(
+                        child: Divider(color: Colors.grey[300], thickness: 1),
                       ),
-                      label: S.of(context).continueWithGoogle,
-                      onTap: _signInWithGoogle,
-                      backgroundColor:
-                          Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF131314)
-                          : Colors.white,
-                      textColor: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFFE3E3E3)
-                          : const Color(0xFF1F1F1F),
-                      borderColor:
-                          Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF8E918F)
-                          : const Color(0xFF747775),
-                    ),
-                    SizedBox(height: 48),
-                  ],
-                ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Social login buttons
+                  Column(
+                    children: [
+                      // Apple
+                      if (Platform.isIOS || Platform.isMacOS) ...[
+                        SizedBox(
+                          height: 48,
+                          child: SignInWithAppleButton(
+                            onPressed: _signInWithApple,
+                            text: S.of(context).continueWithApple,
+                            style:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? SignInWithAppleButtonStyle.white
+                                : SignInWithAppleButtonStyle.black,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                      // Google
+                      _buildSocialButton(
+                        context: context,
+                        iconWidget: SvgPicture.asset(
+                          'assets/images/google_logo.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                        label: S.of(context).continueWithGoogle,
+                        onTap: _signInWithGoogle,
+                        backgroundColor:
+                            Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF131314)
+                            : Colors.white,
+                        textColor:
+                            Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFE3E3E3)
+                            : const Color(0xFF1F1F1F),
+                        borderColor:
+                            Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF8E918F)
+                            : const Color(0xFF747775),
+                      ),
+                      SizedBox(height: 48),
+                    ],
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
