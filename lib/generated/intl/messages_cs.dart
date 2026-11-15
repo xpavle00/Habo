@@ -412,9 +412,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "Schéma URL (přímé odkazy)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "Widget Habo pro Android nyní podporuje světlé i tmavé pozadí.",
-    ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "Sledujte pokrok návyků přímo na domovské obrazovce (experimentální)",
     ),

@@ -181,7 +181,7 @@ class _WhatsNewState extends State<WhatsNew> {
                         ),
                       ),
                       const SizedBox(height: 48),
-                      // iOS home screen widgets
+                      // Home screen widgets (iOS & Android)
                       Row(
                         children: [
                           const Icon(
@@ -191,7 +191,7 @@ class _WhatsNewState extends State<WhatsNew> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              S.of(context).featureIosWidgetsTitle,
+                              S.of(context).featureHomeWidgetsTitle,
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -203,7 +203,7 @@ class _WhatsNewState extends State<WhatsNew> {
                       Padding(
                         padding: const EdgeInsets.only(left: 36.0),
                         child: Text(
-                          S.of(context).featureIosWidgetsDesc,
+                          S.of(context).featureHomeWidgetsDesc,
                           style: TextStyle(
                             color: isDark ? Colors.grey[400] : Colors.grey[700],
                             height: 1.4,
@@ -211,17 +211,17 @@ class _WhatsNewState extends State<WhatsNew> {
                         ),
                       ),
                       const SizedBox(height: 48),
-                      // Homescreen widget dark mode
+                      // Year grid in statistics
                       Row(
                         children: [
                           const Icon(
-                            Icons.dark_mode_outlined,
+                            Icons.calendar_view_month_outlined,
                             color: HaboColors.primary,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              S.of(context).featureHomescreenWidgetTitle,
+                              S.of(context).featureYearGridTitle,
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -233,7 +233,37 @@ class _WhatsNewState extends State<WhatsNew> {
                       Padding(
                         padding: const EdgeInsets.only(left: 36.0),
                         child: Text(
-                          S.of(context).featureHomescreenWidgetDarkModeDesc,
+                          S.of(context).featureYearGridDesc,
+                          style: TextStyle(
+                            color: isDark ? Colors.grey[400] : Colors.grey[700],
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 48),
+                      // Offline mode
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.cloud_off_outlined,
+                            color: HaboColors.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              S.of(context).offlineMode,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 36.0),
+                        child: Text(
+                          S.of(context).featureOfflineModeDesc,
                           style: TextStyle(
                             color: isDark ? Colors.grey[400] : Colors.grey[700],
                             height: 1.4,

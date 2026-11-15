@@ -403,8 +403,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "URL scheme (deep links)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "Android home widget now supports light and dark mode backgrounds.",
+    "featureHomeWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Check off a habit, see today\'s list, or a habit\'s whole year right from your home screen on iOS and Android. Pick a light, dark or device widget theme in Settings.",
+    ),
+    "featureHomeWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "New home screen widgets",
     ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "View your habit progress at a glance from your home screen (experimental)",
@@ -417,12 +420,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Fixed sound mixing",
-    ),
-    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
-      "Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.",
-    ),
-    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
-      "New home screen widgets (iOS)",
     ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Secure the app with Face ID / Touch ID / biometrics",
@@ -446,11 +443,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
       "Numeric values in habits",
     ),
+    "featureOfflineModeDesc": MessageLookupByLibrary.simpleMessage(
+      "Turn off sync and all network connections in Settings.",
+    ),
     "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
       "Adjustable volume",
     ),
     "featureSoundTitle": MessageLookupByLibrary.simpleMessage(
       "New sound engine",
+    ),
+    "featureYearGridDesc": MessageLookupByLibrary.simpleMessage(
+      "Each habit\'s statistics card now shows the whole year at a glance.",
+    ),
+    "featureYearGridTitle": MessageLookupByLibrary.simpleMessage(
+      "Year view in statistics",
     ),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 min. of video games",

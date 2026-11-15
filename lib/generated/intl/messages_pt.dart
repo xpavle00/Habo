@@ -416,8 +416,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "Esquema de URL (ligações diretas)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "O widget para o ecrã principal do Android suporta agora fundos claros e escuros.",
+    "featureHomeWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Marque um hábito, veja a lista de hoje ou o ano inteiro de um hábito diretamente no ecrã principal, em iOS e Android. Escolha um tema claro, escuro ou do dispositivo para os widgets nas Definições.",
+    ),
+    "featureHomeWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "Novos widgets para o ecrã principal",
     ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "Veja o progresso dos seus hábitos num relance a partir do ecrã principal (experimental)",
@@ -430,12 +433,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Mistura de som corrigida",
-    ),
-    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
-      "Marque um hábito, veja o progresso de hoje ou o ano inteiro de um hábito diretamente no ecrã principal. Adicione um widget por hábito.",
-    ),
-    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
-      "Novos widgets para o ecrã principal (iOS)",
     ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Proteja a aplicação com Face ID / Touch ID / biometria",
@@ -461,11 +458,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
       "Valores numéricos nos hábitos",
     ),
+    "featureOfflineModeDesc": MessageLookupByLibrary.simpleMessage(
+      "Desative a sincronização e todas as ligações de rede nas Definições.",
+    ),
     "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
       "Volume ajustável",
     ),
     "featureSoundTitle": MessageLookupByLibrary.simpleMessage(
       "Novo motor de som",
+    ),
+    "featureYearGridDesc": MessageLookupByLibrary.simpleMessage(
+      "O cartão de estatísticas de cada hábito mostra agora o ano inteiro num relance.",
+    ),
+    "featureYearGridTitle": MessageLookupByLibrary.simpleMessage(
+      "Vista anual nas estatísticas",
     ),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 minutos de videojogos",

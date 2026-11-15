@@ -408,9 +408,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "Skema URL (deep link)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "Widget layar utama Android kini mendukung latar belakang mode terang dan gelap.",
-    ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "Lihat progres kebiasaan Anda sekilas dari layar utama (eksperimental)",
     ),

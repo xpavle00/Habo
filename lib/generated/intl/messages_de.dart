@@ -429,8 +429,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "URL-Schema (Deep Links)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "Das Android-Startbildschirm-Widget unterstützt jetzt helle und dunkle Hintergründe.",
+    "featureHomeWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Hake eine Gewohnheit ab, sieh die heutige Liste oder das ganze Jahr einer Gewohnheit – direkt auf deinem Startbildschirm, auf iOS und Android. Wähle in den Einstellungen ein helles, dunkles oder Geräte-Widget-Thema.",
+    ),
+    "featureHomeWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "Neue Startbildschirm-Widgets",
     ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "Sieh deinen Gewohnheitsfortschritt auf einen Blick auf deinem Startbildschirm (experimentell)",
@@ -443,12 +446,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Tonmischung korrigiert",
-    ),
-    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
-      "Hake eine Gewohnheit ab, sieh den heutigen Fortschritt oder das ganze Jahr einer Gewohnheit – direkt auf deinem Startbildschirm. Füge ein Widget pro Gewohnheit hinzu.",
-    ),
-    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
-      "Neue Startbildschirm-Widgets (iOS)",
     ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Sichern Sie die App mit Face ID / Touch ID / Biometrie",
@@ -472,11 +469,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
       "Numerische Werte in Gewohnheiten",
     ),
+    "featureOfflineModeDesc": MessageLookupByLibrary.simpleMessage(
+      "Schalte Synchronisierung und alle Netzwerkverbindungen in den Einstellungen aus.",
+    ),
     "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
       "Einstellbare Lautstärke",
     ),
     "featureSoundTitle": MessageLookupByLibrary.simpleMessage(
       "Neue Sound-Engine",
+    ),
+    "featureYearGridDesc": MessageLookupByLibrary.simpleMessage(
+      "Die Statistikkarte jeder Gewohnheit zeigt jetzt das ganze Jahr auf einen Blick.",
+    ),
+    "featureYearGridTitle": MessageLookupByLibrary.simpleMessage(
+      "Jahresansicht in der Statistik",
     ),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 Min. Videospiele",

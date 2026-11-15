@@ -409,8 +409,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureDeepLinksTitle": MessageLookupByLibrary.simpleMessage(
       "URL schéma (deep links)",
     ),
-    "featureHomescreenWidgetDarkModeDesc": MessageLookupByLibrary.simpleMessage(
-      "Widget pre Android teraz podporuje svetlé aj tmavé pozadie.",
+    "featureHomeWidgetsDesc": MessageLookupByLibrary.simpleMessage(
+      "Označte zvyk ako splnený, pozrite si dnešný zoznam alebo celý rok zvyku priamo z domovskej obrazovky na iOS aj Androide. V Nastaveniach si vyberte svetlú, tmavú alebo systémovú tému widgetov.",
+    ),
+    "featureHomeWidgetsTitle": MessageLookupByLibrary.simpleMessage(
+      "Nové widgety na domovskej obrazovke",
     ),
     "featureHomescreenWidgetDesc": MessageLookupByLibrary.simpleMessage(
       "Zobrazte svoj postup z domovskej obrazovky (experimentálne)",
@@ -423,12 +426,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "featureIosSoundMixingTitle": MessageLookupByLibrary.simpleMessage(
       "Opravené mixovanie zvuku",
-    ),
-    "featureIosWidgetsDesc": MessageLookupByLibrary.simpleMessage(
-      "Označte zvyk ako splnený, pozrite si dnešný pokrok alebo celý rok zvyku priamo z domovskej obrazovky. Pridajte jeden widget pre každý zvyk.",
-    ),
-    "featureIosWidgetsTitle": MessageLookupByLibrary.simpleMessage(
-      "Nové widgety na domovskej obrazovke (iOS)",
     ),
     "featureLockDesc": MessageLookupByLibrary.simpleMessage(
       "Zabezpečte aplikáciu pomocou Face ID / Touch ID / biometrických údajov",
@@ -452,11 +449,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "featureNumericTitle": MessageLookupByLibrary.simpleMessage(
       "Číselné hodnoty vo zvykoch",
     ),
+    "featureOfflineModeDesc": MessageLookupByLibrary.simpleMessage(
+      "V Nastaveniach vypnite synchronizáciu a všetky sieťové pripojenia.",
+    ),
     "featureSoundDesc": MessageLookupByLibrary.simpleMessage(
       "Nastaviteľná hlasitosť",
     ),
     "featureSoundTitle": MessageLookupByLibrary.simpleMessage(
       "Nový zvukový engine",
+    ),
+    "featureYearGridDesc": MessageLookupByLibrary.simpleMessage(
+      "Karta štatistík každého zvyku teraz zobrazuje celý rok na prvý pohľad.",
+    ),
+    "featureYearGridTitle": MessageLookupByLibrary.simpleMessage(
+      "Ročný prehľad v štatistikách",
     ),
     "fifteenMinOfVideoGames": MessageLookupByLibrary.simpleMessage(
       "15 min. hrania videohier",

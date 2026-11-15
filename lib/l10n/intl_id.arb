@@ -633,6 +633,5 @@
         }
     },
     "resendVerificationEmail": "Kirim ulang email verifikasi",
-    "backToSignIn": "Kembali ke Masuk",
-    "featureHomescreenWidgetDarkModeDesc": "Widget layar utama Android kini mendukung latar belakang mode terang dan gelap."
+    "backToSignIn": "Kembali ke Masuk"
 }

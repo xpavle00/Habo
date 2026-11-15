@@ -1817,21 +1817,51 @@ class S {
     );
   }
 
-  /// `New home screen widgets (iOS)`
-  String get featureIosWidgetsTitle {
+  /// `New home screen widgets`
+  String get featureHomeWidgetsTitle {
     return Intl.message(
-      'New home screen widgets (iOS)',
-      name: 'featureIosWidgetsTitle',
+      'New home screen widgets',
+      name: 'featureHomeWidgetsTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Check off a habit, see today's progress, or a habit's whole year right from your home screen. Add one widget per habit.`
-  String get featureIosWidgetsDesc {
+  /// `Check off a habit, see today's list, or a habit's whole year right from your home screen on iOS and Android. Pick a light, dark or device widget theme in Settings.`
+  String get featureHomeWidgetsDesc {
     return Intl.message(
-      'Check off a habit, see today\'s progress, or a habit\'s whole year right from your home screen. Add one widget per habit.',
-      name: 'featureIosWidgetsDesc',
+      'Check off a habit, see today\'s list, or a habit\'s whole year right from your home screen on iOS and Android. Pick a light, dark or device widget theme in Settings.',
+      name: 'featureHomeWidgetsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Year view in statistics`
+  String get featureYearGridTitle {
+    return Intl.message(
+      'Year view in statistics',
+      name: 'featureYearGridTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Each habit's statistics card now shows the whole year at a glance.`
+  String get featureYearGridDesc {
+    return Intl.message(
+      'Each habit\'s statistics card now shows the whole year at a glance.',
+      name: 'featureYearGridDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turn off sync and all network connections in Settings.`
+  String get featureOfflineModeDesc {
+    return Intl.message(
+      'Turn off sync and all network connections in Settings.',
+      name: 'featureOfflineModeDesc',
       desc: '',
       args: [],
     );
@@ -3667,16 +3697,6 @@ class S {
     return Intl.message(
       'Back to Sign In',
       name: 'backToSignIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Android home widget now supports light and dark mode backgrounds.`
-  String get featureHomescreenWidgetDarkModeDesc {
-    return Intl.message(
-      'Android home widget now supports light and dark mode backgrounds.',
-      name: 'featureHomescreenWidgetDarkModeDesc',
       desc: '',
       args: [],
     );
