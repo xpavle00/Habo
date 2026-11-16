@@ -7,6 +7,8 @@ enum HaboWidgetKind {
     static let checkIn = "HaboCheckInWidget"
     static let heatmap = "HaboHeatmapWidget"
     static let todayList = "HaboTodayListWidget"
+
+    static let all = [today, checkIn, heatmap, todayList]
 }
 
 /// Shared App Group defaults, or nil if the group isn't configured.
@@ -14,6 +16,13 @@ var sharedDefaults: UserDefaults? { UserDefaults(suiteName: SharedKeys.appGroup)
 
 /// Every Habo widget renders snapshot + pending taps, so a tap on one must
 /// refresh all of them.
+///
+/// From an intent, iOS only promises to refresh the tapped widget; other
+/// reloads are requests it may defer. Naming each kind is reported to be
+/// honoured more readily than `reloadAllTimelines()` alone.
 func reloadAllHaboWidgets() {
-    WidgetCenter.shared.reloadAllTimelines()
+    let center = WidgetCenter.shared
+    for kind in HaboWidgetKind.all {
+        center.reloadTimelines(ofKind: kind)
+    }
 }

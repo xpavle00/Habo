@@ -34,13 +34,15 @@ struct HabitTapIntent: AppIntent {
         let next = nextState(for: habit, current: current, currentValue: value, target: target)
 
         store.append(uuid: habit.uuid, date: today, code: next.code, value: next.value, target: next.target, at: Date(), from: current)
+        // Ask for the reload before awaiting the notification center, so the
+        // other widgets' refresh isn't held back by a slow reminder update.
+        reloadAllHaboWidgets()
         await ReminderAdjuster.adjust(
             habitId: habit.id,
             reminder: habit.reminder,
             becameDone: !current.isDone && next.code.isDone,
             becameUndone: current.isDone && !next.code.isDone
         )
-        reloadAllHaboWidgets()
         return .result()
     }
 }
