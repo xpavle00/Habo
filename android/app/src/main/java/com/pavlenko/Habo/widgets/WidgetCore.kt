@@ -2,8 +2,10 @@ package com.pavlenko.Habo.widgets
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -441,3 +443,7 @@ fun todayListReleaseTimes(
     holdSeconds: Long,
 ): List<Instant> =
     pending.mapNotNull { holdEnd(it, today, holdSeconds) }.filter { it.isAfter(now) }.sorted()
+
+/** How long after [now] the widgets should redraw for the new day: one minute past the next midnight. */
+fun delayUntilDayChange(now: LocalDateTime): Duration =
+    Duration.between(now, now.toLocalDate().plusDays(1).atStartOfDay()).plusMinutes(1)

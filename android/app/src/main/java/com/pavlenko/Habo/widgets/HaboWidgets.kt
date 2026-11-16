@@ -12,15 +12,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.pavlenko.Habo.R
 import com.pavlenko.Habo.WidgetUpdateWorker
 import es.antonborri.home_widget.HomeWidgetPlugin
-import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -154,15 +151,21 @@ object HaboWidgets {
         }
     }
 
-    /** Daily refresh so "today" rolls over without the app running. */
+    /**
+     * Redraw just after the next midnight so "today" rolls over without the
+     * app running. One-time work, replaced on every redraw: the midnight
+     * redraw itself schedules the following night's. (Periodic work can't do
+     * this: updating it keeps the original enqueue time, so a recomputed
+     * initial delay fires before midnight and then repeats at that hour.)
+     */
     fun scheduleMidnightUpdate(context: Context) {
-        val now = LocalDateTime.now()
-        val midnight = now.toLocalDate().plusDays(1).atStartOfDay()
-        val work = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(24, TimeUnit.HOURS)
-            .setInitialDelay(Duration.between(now, midnight).toMinutes() + 1, TimeUnit.MINUTES)
+        val work = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
+            .setInitialDelay(delayUntilDayChange(LocalDateTime.now()).toMillis(), TimeUnit.MILLISECONDS)
             .build()
+        // Same unique name as the periodic work older versions enqueued, so
+        // REPLACE also removes that one.
         WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(MIDNIGHT_WORK, ExistingPeriodicWorkPolicy.UPDATE, work)
+            .enqueueUniqueWork(MIDNIGHT_WORK, ExistingWorkPolicy.REPLACE, work)
     }
 
     /** Opens Habo's main screen. */
